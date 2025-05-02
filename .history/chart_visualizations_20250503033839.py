@@ -1974,6 +1974,7 @@ def update_graph(
                                         trace.marker.color = plot_df[color_col].map(color_map)
                         print("Color theme enforcement complete", flush=True)
                 elif chart_type == 'heatmap_map':
+                    
                     if province_col and province_col in plot_df.columns:
                         # 点密度热力图模式 -- 省市区数据模式
                         # 准备热力图颜色参数
