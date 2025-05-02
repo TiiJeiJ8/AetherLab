@@ -174,7 +174,7 @@ chart_visualizations_layout = html.Div([
                     ],
                     label="数据处理与分析",
                     id='data-analysis-button',
-                    className="btn btn-animated",
+                    className="btn ",
                     style={'margin-top': '1.1rem', 'margin-right': '1rem'},
                     menu_variant="dark",
                     toggle_style={

@@ -1943,6 +1943,7 @@ def update_graph(
                         opacity=scatter_opacity,
                         zoom=map_zoom if map_zoom else default_zoom,
                         mapbox_style=map_theme if map_theme else default_style,
+                        colorscale=selected_color_sequence,
                         height=600,
                         **map_color_args
                     )

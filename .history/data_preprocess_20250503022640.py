@@ -92,7 +92,7 @@ data_preprocessing_layout = html.Div([
                         ],
                         label="数据处理与分析",
                         id='data-analysis-button',
-                        className="btn btn-animated",
+                        className="btn",
                         style={'margin-top': '1.1rem', 'margin-right': '1rem'},
                         menu_variant="dark",
                         toggle_style={
@@ -112,7 +112,7 @@ data_preprocessing_layout = html.Div([
                         }
                     ),
                     dbc.Button(
-                        'About ME', href="https://tiijeij8.github.io/", id='about-button', className="btn btn-primary btn-animated", disabled=False,
+                        'About ME', href="https://tiijeij8.github.io/", id='about-button btn-animated', className="btn btn-primary", disabled=False,
                         style={
                             'margin-top': '1.1rem', 'margin-right': '1rem',
                             'background': 'linear-gradient(to right, #ff512f, #dd2476)',
