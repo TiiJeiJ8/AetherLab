@@ -18,7 +18,7 @@ index_layout = html.Div(
                     children=[
                         dbc.Row(
                             children=[
-                                html.H1("Fuck-Charts", className="text-center mb-2 d-inline-block dynamic-gradient-text-home"),
+                                html.H1("Fuck  Charts", className="text-center mb-2 d-inline-block dynamic-gradient-text-home"),
                                 html.P(
                                     "---- Present by TiiJeiJ8 ----",
                                     className="lead text-muted dynamic-gradient-text-sub",
