@@ -1,0 +1,81 @@
+/* styles.css */
+.top-header {
+    border-radius: 35px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 1rem auto;
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.3s ease;
+}
+
+.top-header #top-header-title {
+    display: flex;
+}
+
+.top-header #top-header-subtitle {
+    display: flex
+}
+
+/* 在窗口宽度小于 1256px 时缩小导航栏 */
+@media (max-width: 1256px) {
+    .top-header {
+        border-radius: 20px;
+        width: 80%;
+        max-width: 800px;
+        margin: 0.5rem auto;
+        z-index: 1000;
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: all 0.3s ease;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* 隐藏导航栏中的标题文本 */
+    .top-header #top-header-title {
+        display: none;
+    }
+
+    .top-header #top-header-subtitle {
+        display: none;
+    }
+
+    /* 调整按钮区域的宽度 */
+    .top-header #top-header-buttons {
+        width: 12
+    }
+}
+
+/* 在窗口宽度小于 970px 时调整样式 */
+@media (max-width: 970px) {
+    .top-header {
+        transform: translateX(-50%) translateY(-100%);
+        opacity: 30;
+    }
+
+    /* 调整按钮区域的宽度 */
+    .top-header #top-header-buttons {
+        width: 12
+    }
+
+    #data-visualization-button {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .top-header {
+        transform: translateX(-50%) translateY(-100%);
+        opacity: 0;
+    }
+}
+
+/* 为导航栏标题大字添加渐变动画 */
+.dynamic-gradient-text {
+    
+}

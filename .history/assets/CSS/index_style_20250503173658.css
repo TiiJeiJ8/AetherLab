@@ -1,0 +1,57 @@
+.neon-title {
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff;
+    position: relative;
+    animation: neonPulse 1.5s infinite;
+}
+
+.cyber-card {
+    background: rgba(10, 10, 18, 0.9) !important;
+    border: 1px solid #0ff;
+    border-radius: 5px;
+    padding: 2rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+}
+
+.cyber-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+}
+
+.neon-btn {
+    background: none !important;
+    border: 2px solid #0ff !important;
+    color: #0ff !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.scanline {
+    height: 2px;
+    background: linear-gradient(90deg,
+            transparent, #0ff, transparent);
+    animation: scan 3s linear infinite;
+}
+
+@keyframes neonPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes scan {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}

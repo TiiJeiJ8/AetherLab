@@ -1,0 +1,196 @@
+/* styles.css */
+/* todo 按钮动画 */
+.btn-animated:hover {
+    transition: transform 0.3s;
+    transform: scale(1.05);
+}
+
+.btn-animated:active {
+    transform: scale(0.95);
+}
+
+/* todo Menu按钮样式 */
+#main-content #sidebar-toggle {
+    top: 100px;
+    left: 130px;
+    z-index: 1050;
+    padding: 0.5rem 0.8rem;
+    width: 100px;
+    height: 38px;
+    border-radius: 80px;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    border: none;
+    color: white;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0.5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* 在窗口小于1632px时，变成条形 */
+@media (max-width: 1632px) {
+    #main-content #sidebar-toggle {
+        text-indent: -9999px;
+        /* 放置在左上角 */
+        top: 300px;
+        left: 10px;
+        /* 调整大小 */
+        width: 1%;
+        height: 10%;
+        /* 调整圆角 */
+        border-radius: 80px;
+        border-radius: 50px;
+        /* 调整背景色 */
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+        /* 调整边框 */
+        border: none;
+        /* 调整字体颜色 */
+        color: white;
+        /* 调整透明度 */
+        opacity: 0.5;
+        /* 调整阴影 */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        /* 调整光标 */
+        cursor: pointer;
+        transition: 0.3s;
+    }
+}
+
+/* 在窗口小于1256px时，调整样式 */
+@media (max-width: 1256px) {
+    #main-content #sidebar-toggle {
+        text-indent: 0%;
+        top: 100px;
+        left: 130px;
+        z-index: 1050;
+        padding: 0.5rem 0.8rem;
+        width: 100px;
+        height: 38px;
+        border-radius: 80px;
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+        border: none;
+        color: white;
+        transition: opacity 0.3s ease-in-out;
+        opacity: 0.5;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        cursor: pointer;
+        transition: 0.3s;
+    }
+}
+
+/* todo Home按钮样式 */
+#home-btn {
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    background: linear-gradient(to right, #dd2476, #6a11cb);
+    opacity: 0.60;
+}
+
+/* 在窗口小于1632px时，调整样式 */
+@media (max-width: 1632px) {
+    #home-btn {
+        text-indent: -9999px;
+        top: 150px;
+        left: 10px;
+        width: 1%;
+        height: 10%;
+    }
+}
+
+/* 在窗口小于1256px时，调整样式 */
+@media (max-width: 1256px) {
+    #home-btn {
+        text-indent: 0%;
+        position: fixed;
+        top: 100px;
+        left: 20px;
+        width: 100px;
+        height: 38px;
+        z-index: 1000;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        border-radius: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+        background: linear-gradient(to right, #dd2476, #6a11cb);
+        opacity: 0.60;
+    }
+}
+
+/* todo Backtotop按钮样式 */
+#back-to-top-btn {
+    top: 98px;
+    left: 130px;
+    z-index: 1050;
+    padding: 0.5rem 0.8rem;
+    width: 100px;
+    height: 38px;
+    border-radius: 80px;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    border: none;
+    color: white;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0.5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* 在窗口小于1632px时，变成条形 */
+@media (max-width: 1632px) {
+    #back-to-top-btn {
+        text-indent: -9999px;
+        /* 放置在左上角 */
+        top: 300px;
+        left: 10px;
+        /* 调整大小 */
+        width: 1%;
+        height: 10%;
+        /* 调整圆角 */
+        border-radius: 80px;
+        border-radius: 50px;
+        /* 调整背景色 */
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+        /* 调整边框 */
+        border: none;
+        /* 调整字体颜色 */
+        color: white;
+        /* 调整透明度 */
+        opacity: 0.5;
+        /* 调整阴影 */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        /* 调整光标 */
+        cursor: pointer;
+        transition: 0.3s;
+    }
+}
+
+/* 在窗口小于1256px时，调整样式 */
+@media (max-width: 1256px) {
+    #back-to-top-btn {
+        text-indent: 0%;
+        top: 100px;
+        left: 150px;
+        z-index: 1050;
+        padding: 0.5rem 0.8rem;
+        width: 100px;
+        height: 38px;
+        border-radius: 80px;
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+        border: none;
+        color: white;
+        transition: opacity 0.3s ease-in-out;
+        opacity: 0.5;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        cursor: pointer;
+        transition: 0.3s;
+    }
+}
+
+/**/
