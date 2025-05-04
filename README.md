@@ -76,9 +76,12 @@ git clone https://github.com/TiiJeiJ8/Fuck-Charts.git
 cd Fuck-Charts
 
 # Create virtual environment
-python3 -m venv venv
+python -m venv venv
 .\venv\Scripts\activate  # Windows
 # source venv/bin/activate  # Linux/macOS
+
+# Update pip
+python -m pip install --upgrade pip
 
 # Install dependencies
 pip install -r requirements.txt

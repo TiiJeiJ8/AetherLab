@@ -7,3 +7,6 @@
 /.ico
 /.history
 /venv
+/app.spec
+/build
+/dist

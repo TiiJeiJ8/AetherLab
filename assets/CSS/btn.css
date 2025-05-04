@@ -195,7 +195,8 @@
 
 /* Home页按钮样式，动画 */
 .hover-button {
-    transition: transform 0.75s ease, box-shadow 0.3s ease;
+    transition: transform 0.75s ease,
+        box-shadow 0.3s ease;
 }
 
 .hover-button:hover {
