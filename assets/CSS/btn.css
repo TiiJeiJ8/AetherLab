@@ -199,7 +199,7 @@
 }
 
 .hover-button:hover {
-    transform: scale(1.6) rotate(370deg);
+    transform: scale(2) rotate(370deg);
     background-color: #7b7ce4;
     border-color: #b1b2f0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

@@ -7,15 +7,18 @@ from chart_visualizations import chart_visualizations_layout
 from data_preprocess import data_preprocessing_layout
 from data_cluster import data_cluster_layout
 from data_modeling import data_modeling_layout
+from under_constraction import construction_layout, register_construction_callbacks
 
 app = dash.Dash(
     __name__,
-    external_stylesheets=[dbc.themes.BOOTSTRAP, 'assets/CSS/topBar_style.css', 'assets/CSS/btn.css', 'assets/CSS/index_style.css', ],
+    external_stylesheets=[dbc.themes.BOOTSTRAP, 'assets/CSS/topBar_style.css', 'assets/CSS/btn.css', 'assets/CSS/index_style.css', 'assets/CSS/construction_style.css'],
     external_scripts=['assets/JS/topBar_custom.js', ],
     suppress_callback_exceptions=True,
     title="Fuck-Charts",
     update_title="Updating..."
 )
+
+register_construction_callbacks(app)
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
@@ -36,6 +39,8 @@ def display_page(pathname):
         return data_cluster_layout, "Fuck-Charts · Data Clustering"
     elif pathname == '/data-modeling':
         return data_modeling_layout, "Fuck-Charts · Data Modeling"
+    elif pathname == '/under-constraction':
+        return construction_layout, "Fuck-Charts · Under Construction"
     else:
         return index_layout, "Fuck-Charts · Home"
 

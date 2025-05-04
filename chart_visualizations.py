@@ -252,7 +252,8 @@ chart_visualizations_layout = html.Div([
                                            '-moz-user-select': 'none', 
                                            'cursor': 'pointer'
                                     },
-                                    multiple=False
+                                    multiple=False,
+                                    accept='.csv, .xlsx, .json'
                                 ),
                                 html.Div(id='upload-status', className="mt-2"),
                             ]),

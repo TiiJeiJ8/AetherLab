@@ -44,7 +44,7 @@ index_layout = html.Div(
                                             children=[
                                                 html.Div(
                                                     className="text-primary mb-3",
-                                                    style={"fontSize": "2.5rem"},
+                                                    style={"fontSize": "3rem", 'userSelect': 'none'},
                                                     children="📈",
                                                 ),
                                                 html.H4(
@@ -80,7 +80,7 @@ index_layout = html.Div(
                                             children=[
                                                 html.Div(
                                                     className="text-primary mb-3",
-                                                    style={"fontSize": "2.5rem"},
+                                                    style={"fontSize": "3rem", 'userSelect': 'none'},
                                                     children="🔍",
                                                 ),
                                                 html.H4(
@@ -116,7 +116,7 @@ index_layout = html.Div(
                                             children=[
                                                 html.Div(
                                                     className="text-primary mb-3",
-                                                    style={"fontSize": "2.5rem"},
+                                                    style={"fontSize": "3rem", 'userSelect': 'none'},
                                                     children="🥜",
                                                 ),
                                                 html.H4(
@@ -129,7 +129,7 @@ index_layout = html.Div(
                                                 ),
                                                 dbc.Button(
                                                     "Developing",
-                                                    href="/data-clustering",
+                                                    href="/under-constraction",
                                                     color="primary",
                                                     className="mt-3 px-4 py-2 btn-animated hover-button",
                                                 ),
@@ -152,7 +152,7 @@ index_layout = html.Div(
                                             children=[
                                                 html.Div(
                                                     className="text-primary mb-3",
-                                                    style={"fontSize": "2.5rem"},
+                                                    style={"fontSize": "3rem", 'userSelect': 'none'},
                                                     children="✏️",
                                                 ),
                                                 html.H4(
@@ -165,7 +165,7 @@ index_layout = html.Div(
                                                 ),
                                                 dbc.Button(
                                                     "Developing",
-                                                    href="/data-modeling",
+                                                    href="/under-constraction",
                                                     color="primary",
                                                     className="mt-3 px-4 py-2 btn-animated hover-button",
                                                 ),
@@ -188,7 +188,7 @@ index_layout = html.Div(
                                             children=[
                                                 html.Div(
                                                     className="text-primary mb-3",
-                                                    style={"fontSize": "2.5rem"},
+                                                    style={"fontSize": "3rem", 'userSelect': 'none'},
                                                     children="🎨",
                                                 ),
                                                 html.H4(
@@ -227,7 +227,7 @@ index_layout = html.Div(
                                             children=[
                                                 html.Div(
                                                     className="text-primary mb-3",
-                                                    style={"fontSize": "2.5rem"},
+                                                    style={"fontSize": "3rem", 'userSelect': 'none'},
                                                     children="🫣",
                                                 ),
                                                 html.H4(
