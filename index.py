@@ -156,7 +156,7 @@ index_layout = html.Div(
                                                     children="✏️",
                                                 ),
                                                 html.H4(
-                                                    "Math Modeling 🚧",
+                                                    "Mathematial Modeling 🚧",
                                                     className="card-title mb-3",
                                                 ),
                                                 html.P(

@@ -62,12 +62,14 @@ A Python/Dash web app for rapid data visualization & exploratory analysis. Uploa
 
 ## 🚀 Quick Start
 
-### Requirements
+> **Note:** You can click the .exe file to run the application without installing Python and dependencies.
+
+### 1.Requirements
 - Python 3.7+
 - pip package manager
 - Virtual environment (recommended)
 
-### Installation
+### 2.Installation
 ```bash
 # Clone repository
 git clone https://github.com/TiiJeiJ8/Fuck-Charts.git
@@ -88,9 +90,6 @@ Access at: `http://127.0.0.1:8050/`
 
 ---
 
-## 📚 Documentation
-- Full guide available in **GuideLine.pdf** *(Under development)*
-
 ## 📋 Usage Instructions
 
 1. **Access the Application**
@@ -98,8 +97,12 @@ Access at: `http://127.0.0.1:8050/`
 
 2. **Navigate to Pages**
    - Go to either:
-     - **Data Preprocessing** page
-     - **Data Visualization** page
+     - **Data Visualization** page 
+     - **Data Preprocessing** page 🚧
+     - **Data Clustering** page 🚧
+     - **Mathematical Modeling** page 🚧
+     - **Color Palette** page (Link)
+     - **About ME** page (Link)
 
 3. **Upload Data**
    - In the sidebar's **Data Import** section:
@@ -121,11 +124,11 @@ Access at: `http://127.0.0.1:8050/`
      - Toggle `Live Rendering` for instant updates
      - Manual refresh: Click **Render Chart** button
    
-   ### ⚠️ Visualization Notes
+   #### ⚠️ Visualization Notes
    - **Styling Sync Issues**:
      - If title/background changes don't apply: 
        1. Use Plotly's native controls (top-right)
-       2. Perform any zoom action
+       2. Perform it with any zoom action
        3. Click "Auto Scale"
    - **Statistical Lines**:
      - Mean/median lines disabled for datasets <50 rows
@@ -136,14 +139,24 @@ Access at: `http://127.0.0.1:8050/`
 5. **Data Preprocessing**
    - **Data Overview Tab**:
      - File metadata
-     - Missing values heatmap
+     - Missing values bar chart
      - Basic statistics
    - **Analysis Report Tab**:
      - Feature distributions
      - Outlier detection
      - Statistical breakdowns
-     - Correlation matrices *(planned)*
+     - Correlation matrices *(planned🚧)*
 
+6. **Data Clustering** *(planned🚧)*
+
+7. **Mathematical Modeling** *(planned🚧)*
+   
+8. **Color Palette** *(Link)*
+   - Find the perfect color palette for your charts
+
+9.  **About ME** *(Link)*
+   - Learn more about TiiJeiJ8 (ME!!! 🕶)
+    
 ---
 
 ## 🤝 Contributing
