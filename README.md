@@ -29,11 +29,11 @@ A Python/Dash web app for rapid data visualization & exploratory analysis. Uploa
 - **Upload Methods**: Drag-and-drop & file picker
 
 ### 📈 Visualization Types
-| Basic Charts  | Statistical        | Geospatial       | Specialized     |
-| ------------- | ------------------ | ---------------- | --------------- |
-| Line/Bar/Area | Box & Violin plots | Scatter maps     | Treemaps        |
-| Scatter plots | Heatmaps           | Density heatmaps | Sunburst charts |
-| Pie charts    | Radar charts       |                  |                 |
+| Basic Charts  | Statistical        | Geospatial   | Specialized     |
+| ------------- | ------------------ | ------------ | --------------- |
+| Line/Bar/Area | Box & Violin plots | Scatter maps | Treemaps        |
+| Scatter plots | Heatmaps           |              | Sunburst charts |
+| Pie charts    | Radar charts       |              |                 |
 
 ### 🎨 Customization
 - **Styling**: Color themes (Viridis, Plasma), custom palettes, background colors
@@ -129,11 +129,6 @@ Access at: `http://127.0.0.1:8050/`
        3. Click "Auto Scale"
    - **Statistical Lines**:
      - Mean/median lines disabled for datasets <50 rows
-   - **Map Troubleshooting**:
-     - Tiles not loading? Check:
-       1. Internet connection
-       2. VPN status (🪜 symbol indicates potential geo-blocking)
-       3. Server-side restrictions (some map providers block specific regions)
    - **Graphical Artifacts**:
      - If residual elements persist after chart switching:
        - Hard refresh: `F5` or `Ctrl + R`

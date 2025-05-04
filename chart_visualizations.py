@@ -284,8 +284,9 @@ chart_visualizations_layout = html.Div([
                                              {'label': 'Box Plot Chart', 'value': 'box'},
                                              {'label': 'Violin Chart', 'value': 'violin'}, 
                                              {'label': 'TreeMap Chart', 'value': 'treemap'},
+                                             #! 暂时收回精美地图绘制功能（优化后释出🚧） -- 保留离线简单的散点地图绘制
                                              {'label': 'Scatter Map Chart', 'value': 'scatter_map'},
-                                             {'label': 'Heatmap Map Chart', 'value': 'heatmap_map'},
+                                            #  {'label': 'Heatmap Map Chart', 'value': 'heatmap_map'},
                                              ],
                                     value='line', clearable=False, className="mb-3"
                                 ),
@@ -346,7 +347,6 @@ chart_visualizations_layout = html.Div([
                                             dbc.Alert(
                                                 "Tips: Hierarchical columns need to be selected in order from root to leaf (e.g. country → province → city)",
                                                 color="info",
-                                                dismissable=True,
                                                 className="small p-2"
                                             )
                                         ]
@@ -369,72 +369,25 @@ chart_visualizations_layout = html.Div([
                                             dcc.Dropdown(id='province-column', className="mb-3", placeholder="Select region column")
                                     ]),
                                     html.Div([html.Label("Map themes", className="text-secondary"),
-                                            # 添加提示信息
-                                            dbc.Tooltip("Choose a map theme, loading map tiles may require 🪜", target="map-theme"),
+                                            
+                                            # 地图投影
                                             dcc.Dropdown(
-                                                id='map-theme',
+                                                id='map-projection',
                                                 options=[
-                                                    {'label': 'Default', 'value': 'carto-positron'},
-                                                    {'label': 'Open Street Map', 'value': 'open-street-map'},
-                                                    {'label': 'Stamen Terrain', 'value': 'stamen-terrain'},
-                                                    {'label': 'Dark', 'value': 'carto-darkmatter'},
-                                                    {'label': 'Black & White', 'value': 'stamen-toner'},
+                                                    {'label': 'Equirectangular (Default)', 'value': 'equirectangular'},
+                                                    {'label': 'Mercator', 'value': 'mercator'},
+                                                    {'label': 'Orthographic', 'value': 'orthographic'},
+                                                    {'label': 'Natural Earth', 'value': 'natural earth'},
                                                 ],
-                                                value='carto-positron',
+                                                value='equirectangular',
                                             ),
-                                            dbc.Input(
-                                                id='mapbox-api-key',
-                                                type='password',
-                                                placeholder='Input Mapbox API key(Optional)',
-                                                className="mt-2",
-                                                value=' ',
-                                                style={'display': 'none'}
-                                            ),
-                                            dbc.Tooltip(
-                                                "To use Mapbox online map style, please enter your Mapbox API key here",
-                                                target="mapbox-api-key",
+                                            dbc.Tooltip("Select a map projection type", target="map-projection"),
+
+                                            dbc.Col(
+
                                             ),
                                     ]),
-                                    html.Div([html.Label("Zoom level", className='text-secondary'),
-                                            dcc.Slider(id='map-zoom', min=1, max=15, marks={1: str(i) for i in range(1, 16)}, value=5),
-                                            ], style={'display': 'none'}),
-                                ]),
-                                html.Div(id='heatmap-map-style', style={'display': 'none'}, children=[
-                                    html.Hr(),
-                                    dbc.Row([
-                                        dbc.Label("Heatmap Map Style", width=3, style={'display': 'none'}),
-                                        dbc.Col(
-                                            dcc.Dropdown(
-                                                id='heatmap-type',
-                                                options=[
-                                                    {'label': 'Density Heatmap', 'value': 'density'},
-                                                    {'label': 'Regional heat map', 'value': 'region'}
-                                                ],
-                                                value='density', style={'display': 'none'}, className="mb-3"
-                                            ),
-                                            width=9
-                                        )
-                                        ], className="mb-3"),
-                                    dbc.Row([
-                                        # 区域热力图数值列选择
-                                        html.Div(id='heatmap-value-select', style={'display': 'none'}, children=[
-                                            html.Label("Heatmap Value Column", className="text-secondary"),
-                                            dcc.Dropdown(id='heatmap-value-col', options=[], placeholder='Select value column', className="mb-3"),
-                                        ]),
-                                        dbc.Label("Thermal radius", width=3),
-                                        dbc.Col(
-                                            dcc.Slider(
-                                                id='heatmap-radius',
-                                                min=1,
-                                                max=50,
-                                                step=1,
-                                                value=10,
-                                                marks={i: str(i) for i in range(0, 51, 10)}
-                                            ),
-                                            width=9
-                                        )
-                                    ], className="mb-3"),
-                                    html.Hr(),
+                                    
                                 ]),
 
                                 # 添加比例选择控件
@@ -862,17 +815,16 @@ def update_on_upload(contents, filename):
      Output('color-column-div', 'style'), Output('size-column-div', 'style'),
      Output('line-bar-area-options', 'style'), # Changed Output ID
      Output('scatter-options', 'style'), Output('line-style-options', 'style'),
-     Output('heatmap-value-select', 'style'), # 新增热力图数值列选择器
      Output('radar-options', 'style'), # 新增雷达图选项
      Output('sunburst-options', 'style'),  # 新增旭日图控件显示控制
      Output('x-axis', 'placeholder'), Output('y-axis', 'placeholder'),
      Output('pie-values', 'placeholder'), Output('pie-names', 'placeholder'),
-     Output('x-axis', 'multi'), Output('y-axis', 'multi'), Output('Formap', 'style'), Output('heatmap-map-style', 'style'), Output('heatmap-type', 'value'), Output('x-axis-div', 'style'), Output('y-axis-div', 'style'), Output('x-y-grid-options', 'style')],
-    [Input('chart-type', 'value'), Input('heatmap-type', 'value')]
+     Output('x-axis', 'multi'), Output('y-axis', 'multi'), Output('Formap', 'style'), Output('x-axis-div', 'style'), Output('y-axis-div', 'style'), Output('x-y-grid-options', 'style')],
+    [Input('chart-type', 'value'), ]
 )
-def toggle_chart_options(chart_type, heatmap_type):
+def toggle_chart_options(chart_type):
     # Default styles (hidden)
-    pie_style = heatmap_style = size_style = line_bar_area_style = scatter_opt_style = heatmap_value_select_style = Formap = line_style_options_style = heatmap_map_style = x_axis_div_style = y_axis_div_style = radar_style = sunburst_style = {'display': 'none'}
+    pie_style = heatmap_style = size_style = line_bar_area_style = scatter_opt_style = Formap = line_style_options_style = x_axis_div_style = y_axis_div_style = radar_style = sunburst_style = {'display': 'none'}
     # Default visibility for general options
     color_style = {'display': 'block'}
     x_y_grid_options_style = {'display': 'block'}
@@ -902,20 +854,6 @@ def toggle_chart_options(chart_type, heatmap_type):
         size_style = {'display': 'block'} # Show dot size style
         pie_style = {'display': 'none'} # Hide pie options for map
         heatmap_style = {'display': 'none'} # Hide heatmap options for map
-        Formap = {'display': 'block'}
-        y_multi = False
-    elif chart_type in ['heatmap_map']:
-        heatmap_map_style = {'display': 'block'} # Show heatmap options
-        line_bar_area_style = {'display': 'none'} # Hide X/Y selectors for map
-        scatter_opt_style = {'display': 'block'} # Hide size/color for map
-        color_style = {'display': 'block'} # Show color for map
-        size_style = {'display': 'block'} # Show dot size style
-        pie_style = {'display': 'none'} # Hide pie options for map
-        heatmap_style = {'display': 'none'} # Hide heatmap options for map
-        if heatmap_style == 'density':
-            heatmap_value_select_style = {'display': 'none'}
-        else:
-            heatmap_value_select_style = {'display': 'block'}
         Formap = {'display': 'block'}
         y_multi = False
     elif chart_type == 'scatter':
@@ -973,8 +911,8 @@ def toggle_chart_options(chart_type, heatmap_type):
         color_style = size_style = {'display': 'none'}
         x_y_grid_options_style = {'display': 'none'}
 
-    return (pie_style, heatmap_style, color_style, size_style, line_bar_area_style, scatter_opt_style, line_style_options_style, heatmap_value_select_style, radar_style, sunburst_style, 
-            x_placeholder, y_placeholder, pie_val_placeholder, pie_name_placeholder, x_multi, y_multi, Formap, heatmap_map_style, heatmap_type, x_axis_div_style, y_axis_div_style, x_y_grid_options_style)
+    return (pie_style, heatmap_style, color_style, size_style, line_bar_area_style, scatter_opt_style, line_style_options_style, radar_style, sunburst_style, 
+            x_placeholder, y_placeholder, pie_val_placeholder, pie_name_placeholder, x_multi, y_multi, Formap, x_axis_div_style, y_axis_div_style, x_y_grid_options_style)
 
 # Callback: Toggle manual render button display
 @callback(Output('start-render-button', 'style'), Input('real-time-render-switch', 'value'))
@@ -1087,8 +1025,6 @@ def update_radar_columns(data_store_data):
     
     # 分类列选择：字符串/分类列
     category_cols = [col for col in df.columns ] 
-    # if pd.api.types.is_string_dtype(df[col]) 
-    #                 or pd.api.types.is_categorical_dtype(df[col])
     
     # 数值列选择：数值类型列
     numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
@@ -1142,11 +1078,11 @@ def update_sunburst_columns(data_store_data):
      Input('aspect-ratio-select', 'value'),
      Input('width-input', 'value'), Input('height-input', 'value'),
      Input('province-column', 'value'), Input('longitude-column', 'value'), Input('latitude-column', 'value'), 
-     Input('map-theme', 'value'), Input('map-zoom', 'value'), Input('mapbox-api-key', 'value'), Input('heatmap-radius', 'value'),
      Input('line-width', 'value'), Input('line-dash', 'value'), 
-     Input('marker-size', 'value'), Input('marker-symbol', 'value'), Input('heatmap-value-col', 'value'), 
+     Input('marker-size', 'value'), Input('marker-symbol', 'value'), 
      Input('radar-category', 'value'), Input('radar-values', 'value'), Input('radar-normalize', 'value'), # 雷达图参数
      Input('sunburst-path', 'value'), Input('sunburst-value', 'value'), # 旭日图参数
+     Input('map-projection', 'value'),  # 地图参数
      ],
     prevent_initial_call=True
 )
@@ -1158,11 +1094,11 @@ def update_graph(
     real_time_render, n_clicks_render,
     bg_color_select, custom_bg_color,
     aspect_ratio, width_input, height_input,  # 输入框参数
-    province_col, longitude_column, latitude_column, map_theme, map_zoom,mapbox_api_key, heatmap_radius, # 地图参数
+    province_col, longitude_column, latitude_column,  # 地图参数
     line_width, line_dash, marker_size, marker_symbol,  # 线/点样式参数
-    heatmap_value_col,  # 热力图数值列选择器
     radar_category, radar_values, radar_normalize, # 雷达图参数
-    sunburst_path, sunburst_value # 旭日图参数
+    sunburst_path, sunburst_value, # 旭日图参数
+    map_projection # 地图参数
     ):
     
     # 处理图表比例
@@ -1889,194 +1825,55 @@ def update_graph(
                             }]
                         })
             
-            # 设置默认地图样式和缩放级别
-            default_style = "carto-positron"  # 使用轻量级默认样式
-            default_zoom = 4
+            # 准备颜色参数
+            print(f"Applying color theme to scatter map: {color_theme}", flush=True)
+            print(f"Color sequence: {selected_color_sequence}", flush=True)
             
-            # 优化：根据数据范围自动计算合适的缩放级别
-            if map_zoom is None and len(plot_df) > 0:
-                try:
-                    lat_range = plot_df[latitude_col].max() - plot_df[latitude_col].min()
-                    lon_range = plot_df[longitude_col].max() - plot_df[longitude_col].min()
-                    max_range = max(lat_range, lon_range)
-                    if max_range > 20: default_zoom = 3
-                    elif max_range > 10: default_zoom = 4
-                    elif max_range > 5: default_zoom = 5
-                    elif max_range > 2: default_zoom = 6
-                    else: default_zoom = 7
-                    print(f"Auto-calculated zoom level: {default_zoom}", flush=True)
-                except Exception as zoom_err:
-                    print(f"Could not calculate zoom level: {zoom_err}", flush=True)
-            
-            # 地图模式选择
-            print(f"Using Mapbox API key: {mapbox_api_key}", flush=True)
-            if mapbox_api_key and chart_type in ['scatter_map', 'heatmap_map', 'line_map']:
-                # 在线Mapbox模式
-                if chart_type == 'scatter_map':
-                    # 准备颜色参数
-                    print(f"Applying color theme to scatter map: {color_theme}", flush=True)
-                    print(f"Color sequence: {selected_color_sequence}", flush=True)
-                    
-                    map_color_args = {}
-                    color_col = color_column if color_column else y_axis_list[0] if y_axis_list else None
-                    if color_col:
-                        print(f"Using color column: {color_col}", flush=True)
-                        map_color_args['color'] = color_col
-                        
-                        # 强制更新颜色映射
-                        if pd.api.types.is_numeric_dtype(plot_df[color_col]):
-                            print("Applying continuous color scale", flush=True)
-                            map_color_args['color_continuous_scale'] = selected_color_sequence
-                            map_color_args['color_continuous_midpoint'] = plot_df[color_col].median()
-                        else:
-                            print("Applying discrete color sequence", flush=True)
-                            map_color_args['color_discrete_sequence'] = selected_color_sequence
-                            # 为分类变量创建明确的颜色映射
-                            unique_values = plot_df[color_col].dropna().unique()
-                            color_map = {val: selected_color_sequence[i % len(selected_color_sequence)] 
-                                        for i, val in enumerate(unique_values)}
-                            map_color_args['color_discrete_map'] = color_map
-                    
-                    fig = px.scatter_mapbox(
-                        plot_df,
-                        lat=latitude_col,
-                        lon=longitude_col,
-                        size=size_column if size_column else None,
-                        opacity=scatter_opacity,
-                        zoom=map_zoom if map_zoom else default_zoom,
-                        mapbox_style=map_theme if map_theme else default_style,
-                        height=600,
-                        **map_color_args
-                    )
-                    
-                    # 强制应用颜色主题
-                    if color_col:
-                        print("Verifying color application...", flush=True)
-                        for trace in fig.data:
-                            if hasattr(trace, 'marker'):
-                                if 'color' in map_color_args:
-                                    if pd.api.types.is_numeric_dtype(plot_df[color_col]):
-                                        print("Enforcing continuous color scale", flush=True)
-                                        trace.marker.colorscale = selected_color_sequence
-                                    else:
-                                        print("Enforcing discrete color mapping", flush=True)
-                                        # 对于大量唯一值，使用哈希算法分配颜色确保分布均匀
-                                        unique_values = plot_df[color_col].unique()
-                                        if len(unique_values) > 50:  # 大量唯一值时使用哈希分配
-                                            print(f"Using hash-based color mapping for {len(unique_values)} unique values", flush=True)
-                                            color_map = {
-                                                val: selected_color_sequence[hash(str(val)) % len(selected_color_sequence)]
-                                                for val in unique_values
-                                            }
-                                        else:  # 少量唯一值时顺序分配
-                                            color_map = {
-                                                val: selected_color_sequence[i % len(selected_color_sequence)]
-                                                for i, val in enumerate(unique_values)
-                                            }
-                                        trace.marker.color = plot_df[color_col].map(color_map)
-                        print("Color theme enforcement complete", flush=True)
-                elif chart_type == 'heatmap_map':
-                    if province_col and province_col in plot_df.columns:
-                        # 点密度热力图模式 -- 省市区数据模式
-                        # 准备热力图颜色参数
-                        density_colorscale = []
-                        if color_theme == 'custom' and custom_color_scale:
-                            density_colorscale = custom_color_scale
-                        else:
-                            density_colorscale = selected_color_sequence
-                        
-                        fig = go.Figure(go.Densitymapbox(
-                            lat=plot_df[latitude_col],
-                            lon=plot_df[longitude_col],
-                            radius=heatmap_radius + plot_df[size_column] * 0.01 if size_column else heatmap_radius,
-                            opacity=scatter_opacity,
-                            z=[1]*len(plot_df),  # 使用统一权重
-                            hovertext=plot_df[province_col] if province_col else None,
-                            colorscale=density_colorscale
-                        ))
-                        fig.update_layout(
-                            mapbox_style=map_theme if map_theme else "carto-positron",
-                            mapbox_zoom=map_zoom if map_zoom else 5,
-                            height=800
-                        )
-                    else:
-                        # 点密度热力图模式 -- 经纬度数据模式
-                        # 准备热力图颜色参数
-                        density_colorscale = []
-                        if color_theme == 'custom' and custom_color_scale:
-                            density_colorscale = custom_color_scale
-                        else:
-                            density_colorscale = selected_color_sequence
-                        
-                        fig = go.Figure(go.Densitymapbox(
-                            lat=plot_df[latitude_col],
-                            lon=plot_df[longitude_col],
-                            radius=heatmap_radius + plot_df[size_column] * 0.01 if size_column else heatmap_radius,
-                            opacity=scatter_opacity,
-                            z=[1]*len(plot_df),  # 使用统一权重
-                            hovertext=plot_df[province_col] if province_col else None,
-                            colorscale=density_colorscale
-                        ))
-                        fig.update_layout(
-                            mapbox_style=map_theme if map_theme else "carto-positron",
-                            mapbox_zoom=map_zoom if map_zoom else 5,
-                            height=800
-                        )
-                elif chart_type == 'line_map':
-                    fig = px.line_mapbox(
-                        plot_df,
-                        lat=latitude_col,
-                        lon=longitude_col,
-                        color=color_column if color_column else None,
-                        zoom=map_zoom if map_zoom else default_zoom,
-                        mapbox_style=map_theme if map_theme else default_style,
-                        height=600
-                    )
-                fig.update_layout(mapbox_accesstoken=mapbox_api_key)
-                fig.update_layout(mapbox_center={'lat': plot_df[latitude_col].mean(), 'lon': plot_df[longitude_col].mean()})
-                fig.update_layout(margin={'r': 0, 't': 0, 'l': 0, 'b': 0})
-            else:
-                # 离线模式
-                if chart_type == 'scatter_map':
-                    fig = px.scatter_geo(
-                        plot_df,
-                        lat=latitude_col,
-                        lon=longitude_col,
-                        color=color_column if color_column else y_axis_list[0] if y_axis_list else None,
-                        size=size_column if size_column else None,
-                        opacity=scatter_opacity,
-                        projection="natural earth",
-                        scope="asia"
-                    )
-                elif chart_type == 'heatmap_map':
-                    fig = go.Figure(go.Densitymapbox(
-                        lat=plot_df[latitude_col],
-                        lon=plot_df[longitude_col],
-                        z=plot_df[y_axis_list[0]] if y_axis_list else None,
-                        radius=20
-                    ))
-                    fig.update_geos(
-                        projection_type="natural earth",
-                        scope="asia"
-                    )
-                elif chart_type == 'line_map':
-                    fig = px.line_geo(
-                        plot_df,
-                        lat=latitude_col,
-                        lon=longitude_col,
-                        color=color_column if color_column else None,
-                        projection="natural earth",
-                        scope="asia"
-                    )
+            map_color_args = {}
+            color_col = color_column if color_column else y_axis_list[0] if y_axis_list else None
+            if color_col:
+                print(f"Using color column: {color_col}", flush=True)
+                map_color_args['color'] = color_col
+                
+                # 强制更新颜色映射
+                if pd.api.types.is_numeric_dtype(plot_df[color_col]):
+                    print("Applying continuous color scale", flush=True)
+                    map_color_args['color_continuous_scale'] = selected_color_sequence
+                    map_color_args['color_continuous_midpoint'] = plot_df[color_col].median()
+                else:
+                    print("Applying discrete color sequence", flush=True)
+                    map_color_args['color_discrete_sequence'] = selected_color_sequence
+                    # 为分类变量创建明确的颜色映射
+                    unique_values = plot_df[color_col].dropna().unique()
+                    color_map = {val: selected_color_sequence[i % len(selected_color_sequence)] 
+                                for i, val in enumerate(unique_values)}
+                    map_color_args['color_discrete_map'] = color_map
 
-                fig.update_geos(
-                    center={'lat': plot_df[latitude_col].mean(), 'lon': plot_df[longitude_col].mean()},
-                    showcountries=True,
-                    countrycolor="Black",
-                    showsubunits=True,
-                    subunitcolor="Blue"
+            # 地图模式选择
+            if chart_type == 'scatter_map':
+                fig = px.scatter_geo(
+                    plot_df,
+                    lat=latitude_col,
+                    lon=longitude_col,
+                    size=size_column if size_column else None,
+                    opacity=scatter_opacity,
+                    height=800,
+                    center=dict(lat=plot_df[latitude_col].mean(), lon=plot_df[longitude_col].mean()),
+                    projection=map_projection,
+                    **color_args
                 )
-                fig.update_layout(margin={'r': 0, 't': 0, 'l': 0, 'b': 0})
+            elif chart_type == 'heatmap_map':
+                #! 热力地图🚧
+                ...
+
+            fig.update_geos(
+                center={'lat': plot_df[latitude_col].mean(), 'lon': plot_df[longitude_col].mean()},
+                showcountries=True,
+                countrycolor="Black",
+                showsubunits=True,
+                subunitcolor="Blue"
+            )
+            fig.update_layout(margin={'r': 0, 't': 0, 'l': 0, 'b': 0})
 
         print(f"Figure object created: Type={type(fig)}", flush=True)
 
