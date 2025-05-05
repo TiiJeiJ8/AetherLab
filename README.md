@@ -162,6 +162,17 @@ Access at: `http://127.0.0.1:8050/`
     
 ---
 
+## 🗒️ Future Plans
+- **More Features and Improvements**
+  - Add more chart types (e.g., heatmap maps, line maps, candlestick charts, 3D charts etc.)
+  - Implement data clustering and modeling features
+  - Enhance data preprocessing capabilities
+  - Improve UI/UX for better user experience
+- **Structure Redesign**
+  - Plan to use **Vue3, CSS, JS, Flask** to restructure the application
+
+---
+
 ## 🤝 Contributing
 - Issues and PRs welcome!
 - Contact: [tiijeij8@gmail.com](mailto:tiijeij8@gmail.com)
