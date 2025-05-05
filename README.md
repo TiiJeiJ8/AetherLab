@@ -2,8 +2,6 @@
 
 A Python/Dash web app for rapid data visualization & exploratory analysis. Upload datasets (CSV/Excel/JSON) and create interactive charts with rich customization.
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
 ---
 
 ## 🎥 Demo
