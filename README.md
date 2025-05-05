@@ -177,11 +177,6 @@ Access at: `http://127.0.0.1:8050/`
 
 ---
 
-## 📄 License
-Apache 2.0 - See [LICENSE.md](LICENSE.md)
-
----
-
 ## 🙏 Acknowledgments
 - Dash & Plotly teams
 - Pandas community
