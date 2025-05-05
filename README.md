@@ -186,4 +186,4 @@ Access at: `http://127.0.0.1:8050/`
 
 *Created by TiiJeiJ8*
 
-![Star History Chart](https://api.star-history.com/svg?repos=tiijeij8/Fuck-Charts&type=Date)
+![Star History Chart](https://api.star-history.com/svg?repos=TiiJeiJ8/Fuck-Charts&type=Date)
