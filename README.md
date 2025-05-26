@@ -2,6 +2,8 @@
 
 **❕Adopting a tightly coupled architecture for the front and back end has greatly increased the difficulty of maintenance and development, necessitating a restructuring of the architecture to decouple the front and back end. 💪**
 
+** I'm desperately learning VUE🐝 **
+
 A Python/Dash web app for rapid data visualization & exploratory analysis. Upload datasets (CSV/Excel/JSON) and create interactive charts with rich customization.
 
 ---
