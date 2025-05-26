@@ -1,6 +1,6 @@
 <template>
   <div class="py-5 HomeMain-container">
-    <!-- 标题区 -->
+    <!-- Title -->
     <div class="text-center mb-5 animate__fadeIn">
       <div>
         <h1
@@ -14,9 +14,9 @@
       </div>
     </div>
 
-    <!-- 功能卡片 -->
+    <!-- Feature Cards -->
     <div class="row g-4">
-      <!-- 数据可视化卡片 -->
+      <!-- Data Visualization Card -->
       <div class="col-lg-4">
         <Card
           icon="📈"
@@ -28,7 +28,7 @@
         />
       </div>
 
-      <!-- 数据预处理卡片 -->
+      <!-- Data Preprocessing Card -->
       <div class="col-lg-4">
         <Card
           icon="🔍"
@@ -40,7 +40,7 @@
         />
       </div>
 
-      <!-- 数据聚类卡片 -->
+      <!-- Data Clustering Card -->
       <div class="col-lg-4">
         <Card
           icon="🥜"
@@ -51,7 +51,7 @@
         />
       </div>
 
-      <!-- 数学建模卡片 -->
+      <!-- Mathematical Modeling Card -->
       <div class="col-lg-4">
         <Card
           icon="✏️"
@@ -62,7 +62,7 @@
         />
       </div>
 
-      <!-- 配色网站卡片 -->
+      <!-- Color Palette Card -->
       <div class="col-lg-4">
         <Card
           icon="🎨"
@@ -75,7 +75,7 @@
         />
       </div>
 
-      <!-- About Me卡片 -->
+      <!-- About Me Card -->
       <div class="col-lg-4">
         <Card
           icon="🫣"
@@ -89,7 +89,7 @@
       </div>
     </div>
 
-    <!-- 页脚 -->
+    <!-- Footer -->
     <footer class="text-center text-muted p-3 mt-4 border-top">
       Fuck Charts © {{ year }} - TiiJeiJ8
     </footer>
