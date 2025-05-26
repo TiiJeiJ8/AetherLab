@@ -1,0 +1,42 @@
+/* construction_style.css */
+.construction-icon {
+    position: relative;
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.dynamic-gradient-text-construction {
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+.dynamic-gradient-text-construc-sub {
+    background: linear-gradient(45deg,
+            #3d8bff,
+            /* 深空蓝 */
+            #b36cff,
+            /* 星团紫 */
+            #fb6f92,
+            /* 红玫瑰 */
+            #7d6fff
+            /* 星云紫 */
+        );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
