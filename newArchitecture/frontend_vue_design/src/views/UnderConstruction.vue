@@ -12,16 +12,16 @@
           <h1
             class="dynamic-gradient-text-construction mb-4"
             style="font-size: 3.5rem; user-select: none;"
-          >{{ $t('common.underConstruction') }}</h1>
+          >Under Construction</h1>
           <p class="lead text-muted mb-5" style="font-size: 1.5rem;">
             <span class="d-inline-block dynamic-gradient-text-construc-sub" style="font-size: 2rem;">TiiJeiJ8</span>
-            <span> {{ $t('common.exerting') }} 💪</span>
+            <span> is exerting to his utmost!!!  💪</span>
           </p>
           <router-link
             to="/"
             class="btn btn-primary px-5 py-3 btn-animated hover-button"
             style="border-radius: 2rem;"
-          >{{ $t('common.home') }}</router-link>
+          >Back to Home page</router-link>
           <div class="mt-5">
             <p class="text-uppercase text-muted mb-2" style="letter-spacing: 2px;">Estimated Launch Date</p>
             <div

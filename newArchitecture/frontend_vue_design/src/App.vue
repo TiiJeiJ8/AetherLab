@@ -1,7 +1,7 @@
 <template>
   <div class="min-vh-100 bg-light position-relative">
-    <div id="ball-background"></div>
     <router-view></router-view>
+    <div id="ball-background"></div>
   </div>
 </template>
 
