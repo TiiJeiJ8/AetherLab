@@ -1,5 +1,5 @@
 <template>
-  <div class="min-vh-100 bg-light d-flex align-items-center">
+  <div class="min-vh-100 bg-color d-flex align-items-center">
     <div class="container py-5 text-center animate__animated animate__fadeIn" style="position: relative; z-index: 1;">
       <div class="row justify-content-center mb-4">
         <div class="col-lg-8">
@@ -13,7 +13,7 @@
             class="dynamic-gradient-text-construction mb-4"
             style="font-size: 3.5rem; user-select: none;"
           >Under Construction</h1>
-          <p class="lead text-muted mb-5" style="font-size: 1.5rem;">
+          <p class="lead mb-5" style="font-size: 1.5rem;">
             <span class="d-inline-block dynamic-gradient-text-construc-sub" style="font-size: 2rem;">TiiJeiJ8</span>
             <span> is exerting to his utmost!!!  💪</span>
           </p>
@@ -23,15 +23,15 @@
             style="border-radius: 2rem;"
           >Back to Home page</router-link>
           <div class="mt-5">
-            <p class="text-uppercase text-muted mb-2" style="letter-spacing: 2px;">Estimated Launch Date</p>
+            <p class="text-uppercase mb-2" style="letter-spacing: 2px;">Estimated Launch Date</p>
             <div
-              class="text-muted mb-2"
+              class="mb-2"
               style="font-family: monospace; letter-spacing: 2px;"
               v-html="countdownText"></div>
           </div>
         </div>
       </div>
-      <footer class="text-center text-muted p-3 mt-4 border-top position-absolute bottom-0 start-50 translate-middle-x">
+      <footer class="text-center p-3 mt-4 border-top position-absolute bottom-0 start-50 translate-middle-x">
         Fuck Charts © {{ currentYear }} - TiiJeiJ8
       </footer>
     </div>
@@ -96,7 +96,7 @@ export default {
 }
 
 .dynamic-gradient-text-construc-sub {
-  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  background: linear-gradient(45deg, #a0b462, #6955cf);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -127,5 +127,19 @@ export default {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+:root {
+  --text-color: #333333;
+  --bg-color: #f8f9fa;
+}
+
+[data-theme="dark"] {
+  --text-color: #f8f9fa;
+  --bg-color: #2b303e;
+}
+
+.bg-color {
+  background-color: var(--bg-color);
 }
 </style>

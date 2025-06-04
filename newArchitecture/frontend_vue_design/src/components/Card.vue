@@ -1,5 +1,5 @@
 <template>
-  <div :class="`Main-body border-0 shadow-sm animate__FadeIn_sI hover-card ${animationClass}`">
+  <div :class="`Main-body border-0 shadow-sm animate__FadeIn_sI hover-card ${animationClass}`" style="z-index: var(--z-index-cards);">
     <div class="card-body text-center">
       <div class="text-primary mb-3" style="font-size: 3rem; user-select: none;">
         {{ icon }}
