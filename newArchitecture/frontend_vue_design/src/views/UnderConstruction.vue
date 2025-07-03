@@ -136,7 +136,7 @@ export default {
 
 [data-theme="dark"] {
   --text-color: #f8f9fa;
-  --bg-color: #2b303e;
+  --bg-color: #212121;
 }
 
 .bg-color {

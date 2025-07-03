@@ -1,3 +1,4 @@
+<!--todo Theme Btn-->
 <template>
   <div
     id="g-btn"
@@ -22,6 +23,7 @@ export default {
 
 <style scoped>
 .theme-button {
+  /* Position */
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -31,23 +33,6 @@ export default {
   transform-origin: right bottom;
   transform: scale(1);
   transition: transform 0.3s ease;
-
-  @media (max-width: 2560px) {
-    transform: scale(0.5);
-  }
-  @media (max-width: 1200px) {
-    transform: scale(0.4);
-  }
-  @media (max-width: 768px) {
-    transform: scale(0.35);
-    /* 左上角 */
-    position:absolute;
-    bottom: 91.4%;
-    right: 20px;
-  }
-  @media (max-width: 576px) {
-    transform: scale(0.3);
-  }
   background:
           radial-gradient(circle at 18% 20px, #fff, #fff 6px, transparent 7px, transparent),
           radial-gradient(circle at 35% 45px, #fff, #fff 1px, transparent 2px, transparent),
@@ -71,6 +56,28 @@ export default {
   cursor: pointer;
   overflow: hidden;
   transition: .5s all;
+}
+
+@media (max-width: 2560px) {
+  .theme-button {
+    transform: scale(0.35);
+    position: fixed;
+    bottom: 93%;
+    right: 20px;
+  }
+}
+@media (max-width: 1300px) {
+  .theme-button {
+    transform: scale(0.35);
+    position: fixed;
+    bottom: 4%;
+    right: 10px;
+  }
+}
+@media (max-width: 576px) {
+  .theme-button {
+    transform: scale(0.3);
+  }
 }
 
 .theme-button::before,

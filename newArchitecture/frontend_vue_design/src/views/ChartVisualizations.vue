@@ -1,13 +1,37 @@
 <template>
   <div class="py-5">
-      <h1 class="text-center mb-4">Chart Visualizations</h1>
-      <!-- 这里添加图表可视化的内容 -->
-      <p class="text-center">This is the Chart Visualizations page.</p>
+    <TopBar :actions="[
+      { type: 'button', label: 'Upload Files', onClick: UploadFiles },
+      { type: 'button', label: 'Data Preview', },
+      { type: 'button', label: 'DashBoard', },
+      { type: 'button', label: 'Color Palette', to: 'https://coolors.co/palettes/trending', external: true },
+      { type: 'button', label: 'Instruction', },
+      { type: 'button', label: 'Back2Home', to: '/'},
+    ]"/>
+  </div>
+
+  <SideBar position="left">
+    <button>图表列表</button>
+  </SideBar>
+
+  <SideBar position="right">
+    <button>图表设置</button>
+  </SideBar>
+
+  <!-- 工作区 -->
+  <div>
   </div>
 </template>
 
 <script>
+import TopBar from '../components/TopBar.vue'
+import SideBar from '../components/SideBar.vue'
+
 export default {
-  name: 'ChartVisualizations'
+  name: 'ChartVisualizations',
+  components: {
+    TopBar,
+    SideBar
+  }
 }
 </script>

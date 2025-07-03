@@ -46,7 +46,7 @@
           icon="🥜"
           title="Data Clustering 🚧"
           description="Data clustering and visualization"
-          buttonText="Developing"
+          buttonText="Explore"
           href=""
         />
       </div>
@@ -57,7 +57,7 @@
           icon="✏️"
           title="Mathematical Modeling 🚧"
           description="Data modeling and analysis"
-          buttonText="Developing"
+          buttonText="Explore"
           href=""
         />
       </div>

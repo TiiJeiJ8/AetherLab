@@ -1,8 +1,8 @@
 <template>
   <div class="min-vh-100 bg-color position-relative">
     <router-view></router-view>
-    <ThemeButton />
   </div>
+  <ThemeButton />
 </template>
 
 <script>
@@ -33,8 +33,8 @@ export default {
 
 [data-theme="dark"] {
   /* dark主题颜色 */
-  --bg-color: #2b303e;
-  --text-color: #f0f0f0;
+  --bg-color: #212121;
+  --text-color: #dcd6d6;
   --primary-color: #3a506b;
 }
 
