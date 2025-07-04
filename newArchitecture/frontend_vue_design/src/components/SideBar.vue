@@ -1,37 +1,37 @@
 <template>
     <aside
         :class="[
-        'sidebar',
-        positionClass,
-        { collapsed: isCollapsed, expanded: isExpanded }
+            'sidebar',
+            positionClass,
+            { collapsed: isCollapsed, expanded: isExpanded }
         ]"
+        :style="{ width: sidebarWidth + 'px' }"
         @click="toggleCollapse"
         @mouseenter="handleMouseEnter"
         @mouseleave="handleMouseLeave"
     >
-        <!-- 切换按钮图标（仍保留，但点击全区域都有效） -->
+        <!-- 切换按钮图标 -->
         <span class="SidebarToggleBtn" style="font-size: auto;">
             {{ isCollapsed ? 'III' : '☰' }}
         </span>
-
         <!-- 内容区域过渡动画 -->
         <transition name="fade-slide">
-        <div
-            v-show="isExpanded || !isCollapsed"
-            class="sidebar-content"
-            @click.stop
-        >
-            <slot />
-        </div>
+            <div
+                v-show="isExpanded || !isCollapsed"
+                class="sidebar-content"
+                @click.stop
+            >
+                <slot />
+            </div>
         </transition>
     </aside>
 </template>
 
 <script setup>
 /* eslint-disable */
-    import { ref, watch, computed, onUnmounted } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 
-    const props = defineProps({
+const props = defineProps({
     position: {
         type: String,
         default: 'left',
@@ -43,118 +43,128 @@
     },
     expandedWidth: {
         type: Number,
-        default: 250,
+        default: 200,
     },
     autoCollapseOnMobile: {
         type: Boolean,
         default: true,
     },
-    })
+})
 
-    const isCollapsed = ref(true)
-    const isHovered = ref(false)
-    const isFixed = ref(false)
+const isCollapsed = ref(true)
+const isHovered = ref(false)
+const isFixed = ref(false)
 
-    const isMobile = ref(window.innerWidth < 768)
-    function onResize() {
+const isMobile = ref(window.innerWidth < 768)
+function onResize() {
     isMobile.value = window.innerWidth < 768
     if (props.autoCollapseOnMobile && isMobile.value) {
         isCollapsed.value = true
     }
-    }
-    window.addEventListener('resize', onResize)
+}
+window.addEventListener('resize', onResize)
 
-    function handleMouseEnter() {
-        if (!isFixed.value) {
-            isHovered.value = true
-        }
+function handleMouseEnter() {
+    if (!isFixed.value) {
+        isHovered.value = true
     }
-    function handleMouseLeave() {
+}
+function handleMouseLeave() {
     isHovered.value = false
-    }
+}
 
-    const isExpanded = computed(() => !isCollapsed.value || isHovered.value)
+const isExpanded = computed(() => !isCollapsed.value || isHovered.value)
 
-    const sidebarWidth = computed(() =>
-        isExpanded.value ? props.expandedWidth : props.collapsedWidth
-    )
+// 动态宽度，配合动画
+const sidebarWidth = computed(() =>
+    isExpanded.value ? props.expandedWidth : props.collapsedWidth
+)
 
-    function toggleCollapse() {
+function toggleCollapse() {
     isCollapsed.value = !isCollapsed.value
-    }
+}
 
-    const positionClass = computed(() => {
+const positionClass = computed(() => {
     return props.position === 'left' ? 'sidebar-left' : 'sidebar-right'
-    })
+})
 
-    onUnmounted(() => {
+onUnmounted(() => {
     window.removeEventListener('resize', onResize)
-    })
+})
 </script>
     
 <style scoped>
+.sidebar {
+    position: fixed;
+    top: 100px;
+    bottom: 30px;
+    background-color: var(--bg-color);
+    box-shadow: 0 0 1px var(--text-color);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 9998;
+    user-select: none;
+    cursor: pointer;
+    transition: width 0.4s cubic-bezier(.4,2,.6,1), box-shadow 0.3s, background-color 0.3s;
+}
+
+.sidebar-left {
+    left: 0;
+    border-radius: 0 10px 10px 0;
+}
+
+.sidebar-right {
+    right: 0;
+    border-radius: 10px 0 0 10px;
+}
+
+/* 图标按钮 */
+.SidebarToggleBtn {
+    font-size: 1.2rem;
+    padding: 8px;
+    margin: 6px;
+    align-self: flex-end;
+    pointer-events: none;
+    user-select: none;
+    color: var(--text-color);
+}
+
+/* 内容区域 */
+.sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px 16px;
+    color: var(--text-color);
+    pointer-events: auto;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.sidebar-content::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+}
+
+/* 进入/离开动画 */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+    transition: all 0.3s ease;
+}
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* 小屏自动折叠 */
+@media (max-width: 767px) {
     .sidebar {
-        position: fixed;
-        top: 100px;
-        bottom: 30px;
-        background-color: var(--bg-color);
-        box-shadow: 0 0 15px rgb(0 0 0 / 0.12);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        z-index: 9998;
-        user-select: none;
-        cursor: pointer;
-    }
-
-    .sidebar-left {
-        left: 0;
-        border-radius: 0 10px 10px 0;
-    }
-
-    .sidebar-right {
-        right: 0;
-        border-radius: 10px 0 0 10px;
-    }
-    
-    /* 图标按钮 */
-    .SidebarToggleBtn {
-        font-size: 1.2rem;
-        padding: 8px;
-        margin: 6px;
-        align-self: flex-end;
-        pointer-events: none;
-        user-select: none;
-        color: var(--text-color);
-    }
-    
-    /* 内容区域 */
-    .sidebar-content {
-        flex: 1;
-        overflow-y: auto;
-        padding: 12px 16px;
-        color: var(--text-color);
-        pointer-events: auto;
-        cursor: default;
-    }
-    
-    /* 进入/离开动画 */
-    .fade-slide-enter-active,
-    .fade-slide-leave-active {
-        transition: all 0.3s ease;
-    }
-    .fade-slide-enter-from,
-    .fade-slide-leave-to {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    
-    /* 小屏自动折叠 */
-    @media (max-width: 767px) {
-        .sidebar {
         top: 80px;
         width: var(--collapsed-width) !important;
         height: 30%;
-        }
     }
+}
 </style>

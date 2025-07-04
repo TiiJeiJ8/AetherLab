@@ -70,7 +70,7 @@ export default {
   .theme-button {
     transform: scale(0.35);
     position: fixed;
-    bottom: 4%;
+    bottom: 2%;
     right: 10px;
   }
 }
