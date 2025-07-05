@@ -11,13 +11,15 @@
                     </div>
                 </div>
                 <div class="header-right">
-                    <button class="refresh-btn" @click="refreshFiles" title="刷新文件列表">🔄</button>
+                    <button class="refresh-btn" @click="refreshFiles" title="Refresh file list">
+                        <span v-html="getThemeIcon('refresh')"></span>
+                    </button>
                     <button v-if="stats.notUploadedCount > 0"
                             class="sync-all-btn"
                             @click="syncAllFiles"
                             :disabled="!isBackendConnected"
-                            title="同步所有文件到后端">
-                        同步全部 ({{ stats.notUploadedCount }})
+                            title="Sync all files to backend">
+                        Sync All ({{ stats.notUploadedCount }})
                     </button>
                     <button class="close-btn" @click="onClose">×</button>
                 </div>
@@ -39,8 +41,8 @@
                                 multiple
                                 class="file-input" />
                         <div class="upload-tip">
-                            <i class="upload-icon">📁</i>
-                            <p>Drag files here or <button @click="triggerFileInput">click to select</button></p>
+                            <div class="upload-icon" v-html="getThemeIcon('upload')"></div>
+                            <p>Drag files here or <button @click="triggerFileInput">Click to select</button></p>
                             <p class="sub-tip">Supports CSV、XLSX、XLS formats</p>
                         </div>
                     </div>
@@ -51,15 +53,15 @@
                     <!-- 统计信息 -->
                     <div class="stats-bar" v-if="files.length">
                         <div class="stat-item">
-                            <span class="stat-label">总文件数:</span>
+                            <span class="stat-label">Total Files:</span>
                             <span class="stat-value">{{ stats.totalFiles }}</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">总大小:</span>
+                            <span class="stat-label">Total Size:</span>
                             <span class="stat-value">{{ stats.totalSize }}</span>
                         </div>
                         <div class="stat-item" v-if="stats.notUploadedCount > 0">
-                            <span class="stat-label">未上传:</span>
+                            <span class="stat-label">Not Uploaded:</span>
                             <span class="stat-value">{{ stats.notUploadedCount }}</span>
                         </div>
                     </div>
@@ -74,6 +76,7 @@
                                     <div class="file-name-section">
                                         <span class="file-name"
                                                 :class="{ 'editing': file.isEditing }"
+                                                :title="file.name"
                                                 @dblclick="startRename(idx)">
                                             <template v-if="!file.isEditing">
                                                 {{ file.name }}
@@ -86,8 +89,11 @@
                                                     type="text" />
                                         </span>
                                         <span class="file-status" :class="file.status">
-                                            {{ getStatusIcon(file.status) }} {{ getStatusText(file.status) }}
+                                            <span v-html="getStatusIcon(file.status)"></span>
+                                            {{ getStatusText(file.status) }}
                                         </span>
+                                        <!-- 操作状态标记 -->
+                                        <div v-if="file.status === 'operating'" class="operating-mark" title="File is being operated"></div>
                                     </div>
                                     <div class="file-details">
                                         <span class="file-size">{{ formatFileSize(file.size) }}</span>
@@ -102,31 +108,71 @@
                                 </div>
                             </div>
                             <div class="file-actions">
+                                <button @click="addToWorkspace(idx)"
+                                        title="Add to workspace"
+                                        class="action-btn workspace-btn"
+                                        :disabled="isInWorkspace(file.id)">
+                                    <span v-html="getThemeIcon('folder')"></span>
+                                </button>
                                 <button @click="previewFile(idx)"
-                                        title="预览数据"
+                                        title="Preview data"
                                         class="action-btn preview-btn">
-                                    👁️
+                                    <span v-html="getThemeIcon('preview')"></span>
                                 </button>
                                 <button v-if="file.status === 'local'"
                                         @click="syncFile(idx)"
-                                        title="同步到后端"
+                                        title="Sync to backend"
                                         class="action-btn sync-btn"
                                         :disabled="!isBackendConnected">
-                                    ⬆️
+                                    <span v-html="getThemeIcon('sync')"></span>
                                 </button>
                                 <button @click="unloadFile(idx)"
-                                        title="删除文件"
+                                        title="Delete file"
                                         class="action-btn delete-btn">
-                                    🗑️
+                                    <span v-html="getThemeIcon('delete')"></span>
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div v-else-if="!isLoading" class="no-files">
-                        <p>暂无文件，请在左侧上传文件</p>
+                        <p>No files yet, please upload files on the left</p>
                     </div>
                     <div v-else class="loading">
-                        <p>加载中...</p>
+                        <p>Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 工作区管理区域 -->
+            <div class="workspace-management" v-if="workspaceFiles.length > 0">
+                <div class="workspace-header">
+                    <div class="workspace-title">
+                        <span class="workspace-icon">📁</span>
+                        <span class="workspace-count">{{ workspaceFiles.length }}</span>
+                    </div>
+                    <button class="clear-workspace-btn" @click="clearWorkspace" title="Clear all files">
+                        <span v-html="getThemeIcon('delete')"></span>
+                    </button>
+                </div>
+                <div class="workspace-file-list">
+                    <div v-for="(file, idx) in workspaceFiles"
+                         :key="file.id"
+                         class="workspace-file-item">
+                        <div class="workspace-file-name" :title="file.name">
+                            {{ file.name }}
+                        </div>
+                        <div class="workspace-file-actions">
+                            <button @click="previewWorkspaceFile(idx)"
+                                    title="Preview"
+                                    class="workspace-action-btn">
+                                <span v-html="getThemeIcon('preview')"></span>
+                            </button>
+                            <button @click="removeFromWorkspace(idx)"
+                                    title="Remove"
+                                    class="workspace-action-btn">
+                                <span v-html="getThemeIcon('delete')"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -147,12 +193,13 @@
 
 <script setup>
 /* eslint-disable */
-import { ref, nextTick, onMounted, computed } from 'vue'
+import { ref, nextTick, onMounted, computed, watch } from 'vue'
 import DataPreviewModal from './DataPreviewModal.vue'
-import { 
-    uploadFile, 
-    deleteFile, 
-    renameFile, 
+import { getThemeIcon } from '../assets/JS/icons.js'
+import {
+    uploadFile,
+    deleteFile,
+    renameFile,
     getFilePreview,
     getAllFiles,
     checkBackendConnection,
@@ -161,18 +208,31 @@ import {
 } from '../services/FileServices.js'
 
 const props = defineProps({
-    show: Boolean
+    show: Boolean,
+    workspaceFiles: {
+        type: Array,
+        default: () => []
+    }
 })
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'workspace-updated'])
 
 const isDragging = ref(false)
 const files = ref([])
+const workspaceFiles = ref([])
 const showPreview = ref(false)
 const currentPreviewFile = ref(null)
 const previewData = ref([])
 const isBackendConnected = ref(false)
 const isLoading = ref(false)
+
+// 监听 props 中的工作区文件变化
+watch(() => props.workspaceFiles, (newFiles) => {
+    console.log('FileUploadModal: workspaceFiles prop changed:', newFiles)
+    if (newFiles) {
+        workspaceFiles.value = [...newFiles]
+    }
+}, { immediate: true })
 
 // 计算统计信息
 const stats = computed(() => {
@@ -207,10 +267,9 @@ async function loadFiles() {
             ...file,
             isEditing: false,
             newName: file.name
-        }))
-    } catch (error) {
-        console.error('加载文件列表失败:', error)
-    } finally {
+        }))        } catch (error) {
+            console.error('Load files failed:', error)
+        } finally {
         isLoading.value = false
     }
 }
@@ -261,9 +320,9 @@ async function finishRename(idx) {
             await renameFile(file.id, file.newName)
             file.name = file.newName
         } catch (error) {
-            console.error('重命名失败:', error)
-            alert('重命名失败：' + error.message)
-            file.newName = file.name // 恢复原名
+            console.error('Rename failed:', error)
+            alert('Rename failed: ' + error.message)
+            file.newName = file.name
         }
     }
     file.isEditing = false
@@ -272,13 +331,13 @@ async function finishRename(idx) {
 // 删除文件
 async function unloadFile(idx) {
     const file = files.value[idx]
-    if (confirm(`确定要删除文件 "${file.name}" 吗？`)) {
+    if (confirm(`Are you sure you want to delete file "${file.name}"?`)) {
         try {
             await deleteFile(file.id)
             files.value.splice(idx, 1)
         } catch (error) {
-            console.error('删除失败:', error)
-            alert('删除失败：' + error.message)
+            console.error('Delete failed:', error)
+            alert('Delete failed: ' + error.message)
         }
     }
 }
@@ -295,8 +354,8 @@ async function syncFile(idx) {
             newName: syncedFile.name
         }
     } catch (error) {
-        console.error('同步失败:', error)
-        alert('同步失败：' + error.message)
+        console.error('Sync failed:', error)
+        alert('Sync failed: ' + error.message)
         file.status = 'local'
     }
 }
@@ -324,8 +383,8 @@ async function previewFile(idx) {
         previewData.value = previewResult.data
         showPreview.value = true
     } catch (error) {
-        console.error('预览失败:', error)
-        alert('预览失败：' + error.message)
+        console.error('Preview failed:', error)
+        alert('Preview failed: ' + error.message)
     }
 }
 
@@ -342,23 +401,95 @@ function onClose() {
 // 获取状态文本
 function getStatusText(status) {
     const statusMap = {
-        'local': '本地缓存',
-        'uploading': '上传中',
-        'uploaded': '已上传',
-        'error': '出错'
+        'local': 'Local Cache',
+        'uploading': 'Uploading',
+        'uploaded': 'Uploaded',
+        'operating': 'Operating',
+        'error': 'Error'
     }
-    return statusMap[status] || '未知'
+    return statusMap[status] || 'Unknown'
 }
 
-// 获取状态图标
+// 获取状态图标 (SVG)
 function getStatusIcon(status) {
     const iconMap = {
-        'local': '💾',
-        'uploading': '⏳',
-        'uploaded': '✅',
-        'error': '❌'
+        'local': 'localCache',
+        'uploading': 'uploading',
+        'uploaded': 'uploaded',
+        'operating': 'sync',
+        'error': 'error'
     }
-    return iconMap[status] || '❓'
+    const iconName = iconMap[status] || 'unknown'
+    return getThemeIcon(iconName)
+}
+
+// 工作区相关方法
+function addToWorkspace(idx) {
+    const file = files.value[idx]
+    console.log('Adding file to workspace:', file.name)
+    
+    // 检查是否已在工作区
+    if (isInWorkspace(file.id)) {
+        alert('File is already in workspace')
+        return
+    }
+    
+    // 如果是已上传的文件，设置为操作状态
+    if (file.status === 'uploaded') {
+        file.status = 'operating'
+    }
+    
+    // 添加到工作区
+    workspaceFiles.value.push({ ...file })
+    console.log('Workspace files after adding:', workspaceFiles.value.length)
+    
+    // 通知父组件工作区更新
+    emit('workspace-updated', workspaceFiles.value)
+}
+
+function removeFromWorkspace(idx) {
+    const file = workspaceFiles.value[idx]
+    
+    // 如果是操作状态的文件，恢复为已上传状态
+    if (file.status === 'operating') {
+        const originalFile = files.value.find(f => f.id === file.id)
+        if (originalFile) {
+            originalFile.status = 'uploaded'
+        }
+    }
+    
+    // 从工作区移除
+    workspaceFiles.value.splice(idx, 1)
+    
+    // 通知父组件工作区更新
+    emit('workspace-updated', workspaceFiles.value)
+}
+
+function clearWorkspace() {
+    // 恢复所有操作状态的文件
+    workspaceFiles.value.forEach(workspaceFile => {
+        if (workspaceFile.status === 'operating') {
+            const originalFile = files.value.find(f => f.id === workspaceFile.id)
+            if (originalFile) {
+                originalFile.status = 'uploaded'
+            }
+        }
+    })
+    
+    // 清空工作区
+    workspaceFiles.value = []
+    
+    // 通知父组件工作区更新
+    emit('workspace-updated', workspaceFiles.value)
+}
+
+function isInWorkspace(fileId) {
+    return workspaceFiles.value.some(file => file.id === fileId)
+}
+
+function previewWorkspaceFile(idx) {
+    const file = workspaceFiles.value[idx]
+    previewFile(files.value.findIndex(f => f.id === file.id))
 }
 
 // 批量同步所有本地文件
@@ -366,16 +497,16 @@ async function syncAllFiles() {
     const localFiles = files.value.filter(file => file.status === 'local')
     
     if (localFiles.length === 0) {
-        alert('没有需要同步的文件')
+        alert('No files to sync')
         return
     }
     
     if (!isBackendConnected.value) {
-        alert('后端未连接，无法同步')
+        alert('Backend not connected, unable to sync')
         return
     }
     
-    if (confirm(`确定要同步 ${localFiles.length} 个文件到后端吗？`)) {
+    if (confirm(`Are you sure you want to sync ${localFiles.length} files to the backend?`)) {
         for (let i = 0; i < localFiles.length; i++) {
             const fileIndex = files.value.findIndex(f => f.id === localFiles[i].id)
             if (fileIndex !== -1) {
@@ -399,7 +530,7 @@ async function processFiles(newFiles) {
     })
 
     if (validFiles.length !== newFiles.length) {
-        alert('只支持 CSV、XLSX、XLS 格式的文件')
+        alert('Only CSV, XLSX, XLS format files are supported')
     }
 
     for (const file of validFiles) {
@@ -431,7 +562,7 @@ async function processFiles(newFiles) {
                 }
             }
         } catch (error) {
-            console.error('文件处理失败:', error)
+            console.error('File processing failed:', error)
             // 更新失败状态
             const index = files.value.findIndex(f => f.name === file.name)
             if (index !== -1) {
@@ -443,11 +574,41 @@ async function processFiles(newFiles) {
 </script>
 
 <style scoped>
+/* CSS变量定义 */
+:root {
+    --bg-color: #fff;
+    --text-color: #333;
+    --text-secondary: #666;
+    --border-color: #e5e7eb;
+    --header-bg: linear-gradient(135deg, #f8f9fa 0%, #f1f5f9 100%);
+    --upload-hover-bg: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    --file-hover-bg: #f8f9fa;
+    --stats-bg: linear-gradient(135deg, #f8f9fa 0%, #f1f5f9 100%);
+    --modal-backdrop: rgba(0,0,0,0.5);
+    --input-bg: #fff;
+    --shadow-color: rgba(0,0,0,0.25);
+}
+
+/* 暗黑模式变量 */
+[data-theme="dark"] {
+    --bg-color: #1f2937;
+    --text-color: #f9fafb;
+    --text-secondary: #d1d5db;
+    --border-color: #374151;
+    --header-bg: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+    --upload-hover-bg: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    --file-hover-bg: #374151;
+    --stats-bg: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+    --modal-backdrop: rgba(0,0,0,0.7);
+    --input-bg: #374151;
+    --shadow-color: rgba(0,0,0,0.5);
+}
+
 /* 模态框基础样式 */
 .file-modal {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5);
+    background: var(--modal-backdrop);
     z-index: 9999;
     display: flex;
     align-items: center;
@@ -456,15 +617,16 @@ async function processFiles(newFiles) {
 }
 
 .file-content {
-    background: var(--bg-color, #fff);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    background: var(--bg-color);
+    color: var(--text-color);
+    box-shadow: 0 20px 60px var(--shadow-color);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    width: min(90vw, 900px);
-    height: min(90vh, 800px);
-    max-height: min(90vh, 800px);
+    border: 1px solid var(--border-color);
+    width: min(85vw, 800px);
+    height: min(85vh, 780px);
+    max-height: min(85vh, 780px);
     border-radius: 16px;
     position: relative;
 }
@@ -475,8 +637,8 @@ async function processFiles(newFiles) {
     justify-content: space-between;
     align-items: center;
     padding: 24px;
-    border-bottom: 1px solid #e5e7eb;
-    background: linear-gradient(135deg, #f8f9fa 0%, #f1f5f9 100%);
+    border-bottom: 1px solid var(--border-color);
+    background: var(--header-bg);
     position: relative;
 }
 
@@ -490,11 +652,10 @@ async function processFiles(newFiles) {
     background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
     border-radius: 16px 16px 0 0;
 }
-
 @keyframes slideInHeader {
     from {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(-10px);
     }
     to {
         opacity: 1;
@@ -511,7 +672,7 @@ async function processFiles(newFiles) {
 .header-left span {
     font-size: 20px;
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
 }
 
 .connection-status {
@@ -534,7 +695,7 @@ async function processFiles(newFiles) {
 }
 
 .status-text {
-    color: #666;
+    color: var(--text-secondary);
     font-weight: 500;
 }
 
@@ -553,6 +714,21 @@ async function processFiles(newFiles) {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 500;
     transform: translateY(0);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.refresh-btn span,
+.sync-all-btn span {
+    display: flex;
+    align-items: center;
+}
+
+.refresh-btn svg,
+.sync-all-btn svg {
+    width: 16px;
+    height: 16px;
 }
 
 .refresh-btn {
@@ -588,7 +764,7 @@ async function processFiles(newFiles) {
     border: none;
     font-size: 28px;
     cursor: pointer;
-    color: #6b7280;
+    color: var(--text-secondary);
     padding: 8px;
     border-radius: 8px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -608,22 +784,11 @@ async function processFiles(newFiles) {
     overflow: hidden;
 }
 
-@keyframes slideInContent {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 /* 左侧上传区域 */
 .upload-section {
     width: 300px;
     padding: 20px;
-    border-right: 1px solid #e5e7eb;
+    border-right: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -640,18 +805,19 @@ async function processFiles(newFiles) {
 /* 上传区域样式 */
 .upload-area {
     width: 100%;
-    border: 2px dashed #d1d5db;
+    border: 2px dashed var(--border-color);
     border-radius: 12px;
     padding: 30px 20px;
     text-align: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
+    background: var(--bg-color);
 }
 
 .upload-area:hover,
 .upload-area.dragging {
     border-color: #3b82f6;
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    background: var(--upload-hover-bg);
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
 }
@@ -661,25 +827,29 @@ async function processFiles(newFiles) {
 }
 
 .upload-tip {
-    color: #666;
+    color: var(--text-secondary);
 }
 
+/* 上传图标样式 */
 .upload-icon {
-    font-size: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 16px;
-    display: block;
-    animation: bounceIcon 2s ease-in-out infinite;
+    animation: bounceIcon 3s ease-in-out infinite;
+}
+
+.upload-icon svg {
+    width: 48px;
+    height: 48px;
 }
 
 @keyframes bounceIcon {
-    0%, 20%, 50%, 80%, 100% {
+    0%, 90%, 100% {
         transform: translateY(0);
     }
-    40% {
-        transform: translateY(-8px);
-    }
-    60% {
-        transform: translateY(-4px);
+    45% {
+        transform: translateY(-5px);
     }
 }
 
@@ -696,9 +866,18 @@ async function processFiles(newFiles) {
     font-size: inherit;
 }
 
+/* 暗黑模式下的上传按钮颜色调整 */
+[data-theme="dark"] .upload-tip button {
+    color: #60a5fa;
+}
+
+[data-theme="dark"] .upload-tip button:hover {
+    color: #93c5fd;
+}
+
 .sub-tip {
     font-size: 12px;
-    color: #999;
+    color: var(--text-secondary);
 }
 
 /* 统计信息样式 */
@@ -706,36 +885,43 @@ async function processFiles(newFiles) {
     display: flex;
     gap: 20px;
     padding: 16px 20px;
-    background: linear-gradient(135deg, #f8f9fa 0%, #f1f5f9 100%);
-    border-bottom: 1px solid #e5e7eb;
+    background: var(--stats-bg);
+    border-bottom: 1px solid var(--border-color);
     flex-shrink: 0;
-    animation: slideInStats 0.5s ease-out 1.1s both;
 }
 
-/* 文件列表样式 */
+/* 文件列表动画 */
 .file-list {
     flex: 1;
     overflow-y: auto;
     padding: 0;
 }
 
-.file-list .file-item {
-    animation: slideInFile 0.4s ease-out 1.2s backwards;
+/* 隐藏文件列表滚动条 */
+.file-list::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
-.file-list .file-item:nth-child(1) { animation-delay: 1.2s; }
-.file-list .file-item:nth-child(2) { animation-delay: 1.25s; }
-.file-list .file-item:nth-child(3) { animation-delay: 1.3s; }
-.file-list .file-item:nth-child(4) { animation-delay: 1.35s; }
-.file-list .file-item:nth-child(5) { animation-delay: 1.4s; }
-.file-list .file-item:nth-child(n+6) { animation-delay: 1.45s; }
+.file-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.file-list::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+
+.file-list {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
 
 .no-files, .loading {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
-    color: #666;
+    color: var(--text-secondary);
     font-size: 14px;
 }
 
@@ -747,13 +933,13 @@ async function processFiles(newFiles) {
 
 .stat-label {
     font-size: 14px;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .stat-value {
     font-size: 14px;
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
 }
 
 .file-item {
@@ -761,13 +947,18 @@ async function processFiles(newFiles) {
     justify-content: space-between;
     align-items: center;
     padding: 16px 20px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border-color);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--bg-color);
+    overflow: hidden;
+    min-width: 0;
 }
 
 .file-item:hover {
-    background: #f8f9fa;
-    transform: translateX(4px);
+    background: var(--file-hover-bg);
+    transform: translateY(-2px);
+    border-left: 3px solid var(--header-bg);
+    padding-left: 17px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
@@ -777,32 +968,94 @@ async function processFiles(newFiles) {
 
 .file-info {
     flex: 1;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .file-basic {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .file-name-section {
     display: flex;
     align-items: center;
     gap: 12px;
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+}
+
+.file-name-section .file-name {
+    flex: 1;
+    min-width: 0;
 }
 
 .file-name {
     font-size: 16px;
     font-weight: 500;
-    color: #333;
+    color: var(--text-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 280px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 0;
 }
 
+
+/* 文件项悬停时的详细信息显示优化 */
+.file-item:hover .file-details {
+    flex-wrap: nowrap;
+    max-height: none;
+    overflow: hidden;
+}
+
+.file-item:hover .file-details .file-created {
+    white-space: nowrap;
+    word-break: normal;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 文件名编辑状态优化 */
 .file-name.editing input {
     border: 1px solid #3b82f6;
     border-radius: 4px;
     padding: 4px 8px;
     font-size: 16px;
     outline: none;
+    background: var(--input-bg);
+    color: var(--text-color);
+    width: 100%;
+    max-width: 300px;
+}
+
+/* 添加文件名截断提示 */
+.file-name::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(to right, transparent, var(--bg-color));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.file-name:not(:hover)::after {
+    opacity: 1;
+}
+
+.file-name {
+    position: relative;
 }
 
 .file-status {
@@ -810,6 +1063,14 @@ async function processFiles(newFiles) {
     border-radius: 4px;
     font-size: 12px;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.file-status span {
+    display: flex;
+    align-items: center;
 }
 
 .file-status.local {
@@ -836,18 +1097,50 @@ async function processFiles(newFiles) {
     display: flex;
     gap: 16px;
     font-size: 12px;
-    color: #666;
+    color: var(--text-secondary);
+    flex-wrap: nowrap;
+    overflow: hidden;
+    min-width: 0;
 }
 
 .file-details span {
     display: flex;
     align-items: center;
     gap: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex-shrink: 1;
+}
+
+.file-size {
+    flex-shrink: 0;
+    min-width: 60px;
+}
+
+.file-type {
+    flex-shrink: 0;
+    min-width: 40px;
+}
+
+.file-dimensions {
+    flex-shrink: 1;
+    min-width: 60px;
+}
+
+.file-created {
+    flex-shrink: 2;
+    min-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .file-actions {
     display: flex;
     gap: 8px;
+    flex-shrink: 0;
+    margin-left: 12px;
 }
 
 .action-btn {
@@ -858,6 +1151,20 @@ async function processFiles(newFiles) {
     font-size: 14px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateY(0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn svg {
+    width: 16px;
+    height: 16px;
 }
 
 .action-btn:hover:not(:disabled) {
@@ -870,86 +1177,347 @@ async function processFiles(newFiles) {
 }
 
 .preview-btn {
-    background: #3b82f6;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: white;
+    border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .preview-btn:hover {
-    background: #2563eb;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border-color: rgba(37, 99, 235, 0.5);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 }
 
 .sync-btn {
-    background: #10b981;
+    background: linear-gradient(135deg, #10b981, #059669);
     color: white;
+    border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .sync-btn:hover:not(:disabled) {
-    background: #059669;
+    background: linear-gradient(135deg, #059669, #047857);
+    border-color: rgba(5, 150, 105, 0.5);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
 }
 
 .sync-btn:disabled {
-    background: #d1d5db;
+    background: linear-gradient(135deg, #d1d5db, #e5e7eb);
+    color: #9ca3af;
     cursor: not-allowed;
     transform: none;
+    border: 1px solid rgba(209, 213, 219, 0.5);
 }
 
 .delete-btn {
-    background: #ef4444;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
+    border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .delete-btn:hover {
-    background: #dc2626;
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    border-color: rgba(220, 38, 38, 0.5);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
 }
 
-/* 动画效果 - 从一条线向上下展开 */
+/* 为工作区按钮添加特殊效果 */
+.workspace-btn {
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+    color: white;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.workspace-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.workspace-btn::after {
+    content: '📁';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    font-size: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+}
+
+.workspace-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #7c3aed, #9333ea);
+    border-color: rgba(124, 58, 237, 0.5);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+}
+
+.workspace-btn:hover:not(:disabled)::before {
+    left: 100%;
+}
+
+.workspace-btn:hover:not(:disabled)::after {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.workspace-btn:disabled {
+    background: linear-gradient(135deg, #d1d5db, #e5e7eb);
+    color: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    border: 1px solid rgba(209, 213, 219, 0.5);
+}
+
+.workspace-btn:disabled::before,
+.workspace-btn:disabled::after {
+    display: none;
+}
+
+/* 操作状态标记 */
+.operating-mark {
+    width: 3px;
+    height: 20px;
+    background: linear-gradient(180deg, #8b5cf6, #7c3aed);
+    border-radius: 2px;
+    margin-left: 8px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* 工作区管理区域样式 - 极简版 */
+.workspace-management {
+    border-top: 1px solid var(--border-color);
+    padding: 8px 12px;
+    background: rgba(248, 249, 250, 0.8);
+    backdrop-filter: blur(8px);
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* 工作区滚动条样式 */
+.workspace-management::-webkit-scrollbar {
+    width: 4px;
+}
+
+.workspace-management::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.workspace-management::-webkit-scrollbar-thumb {
+    background: var(--text-secondary);
+    border-radius: 2px;
+}
+
+.workspace-management::-webkit-scrollbar-thumb:hover {
+    background: var(--text-color);
+}
+
+.workspace-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.workspace-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.workspace-icon {
+    font-size: 14px;
+}
+
+.workspace-count {
+    background: rgba(139, 92, 246, 0.9);
+    color: white;
+    padding: 1px 5px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 500;
+    min-width: 16px;
+    text-align: center;
+}
+
+.clear-workspace-btn {
+    background: transparent;
+    border: none;
+    padding: 2px;
+    border-radius: 3px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clear-workspace-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.clear-workspace-btn svg {
+    width: 12px;
+    height: 12px;
+}
+
+.workspace-file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-height: 0;
+}
+
+.workspace-file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(229, 231, 235, 0.5);
+    border-radius: 8px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(4px);
+    overflow: hidden;
+    min-width: 0;
+    min-height: 44px;
+}
+
+.workspace-file-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-color: rgba(139, 92, 246, 0.6);
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.workspace-file-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-color);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+
+
+.workspace-file-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.workspace-action-btn {
+    padding: 6px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    min-height: 28px;
+}
+
+.workspace-action-btn:hover {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+}
+
+.workspace-action-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* SVG图标通用样式 */
+.svg-icon-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.svg-icon-container svg {
+    transition: all 0.3s ease;
+}
+
+/* 状态图标样式适配 */
+.file-status.local svg {
+    filter: none; /* 使用SVG自身颜色 */
+}
+
+.file-status.uploading svg {
+    animation: spin 2s linear infinite;
+}
+
+.file-status.uploaded svg {
+    filter: none;
+}
+
+.file-status.error svg {
+    filter: none;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 简化动画效果 */
 .modal-expand-enter-active {
-    animation: expandModal 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    animation: expandModal 0.3s ease-out forwards;
 }
 
 .modal-expand-enter-active .file-content {
-    animation: expandContent 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    animation: expandContent 0.3s ease-out forwards;
 }
 
 .modal-expand-leave-active {
-    animation: collapseModal 0.5s cubic-bezier(0.4, 0, 1, 1) forwards;
+    animation: collapseModal 0.2s ease-in forwards;
 }
 
 .modal-expand-leave-active .file-content {
-    animation: collapseContent 0.5s cubic-bezier(0.4, 0, 1, 1) forwards;
-}
-
-/* 在动画过程中完全隐藏内部元素 */
-.modal-expand-enter-active .file-header,
-.modal-expand-enter-active .main-content,
-.modal-expand-enter-active .stats-bar,
-.modal-expand-enter-active .file-item,
-.modal-expand-enter-active .upload-area {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    transition: none !important;
-    animation: none !important;
-}
-
-/* 动画完成后显示内部元素 */
-.file-header {
-    animation: fadeInElement 0.4s ease-out 0.8s both;
-}
-
-.main-content {
-    animation: fadeInElement 0.5s ease-out 0.85s both;
-}
-
-.stats-bar {
-    animation: fadeInElement 0.3s ease-out 0.9s both;
-}
-
-.file-list .file-item {
-    animation: fadeInElement 0.3s ease-out 0.95s both;
-}
-
-.upload-area {
-    animation: fadeInElement 0.4s ease-out 0.87s both;
+    animation: collapseContent 0.2s ease-in forwards;
 }
 
 @keyframes fadeInElement {
@@ -970,10 +1538,6 @@ async function processFiles(newFiles) {
         opacity: 0;
         backdrop-filter: blur(0px);
     }
-    20% {
-        opacity: 0.4;
-        backdrop-filter: blur(1px);
-    }
     100% {
         opacity: 1;
         backdrop-filter: blur(3px);
@@ -982,47 +1546,12 @@ async function processFiles(newFiles) {
 
 @keyframes expandContent {
     0% {
-        height: 2px;
-        width: 300px;
-        border-radius: 1px;
-        overflow: hidden;
-        opacity: 0.8;
-        box-shadow: 0 0 15px rgba(59, 130, 246, 0.9);
-        background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-        transform: translateY(0);
-    }
-    25% {
-        height: 60px;
-        width: min(40vw, 400px);
-        border-radius: 6px;
-        opacity: 0.85;
-        background: linear-gradient(135deg, #f8f9fa, var(--bg-color, #fff));
-        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    }
-    50% {
-        height: min(50vh, 400px);
-        width: min(70vw, 700px);
-        border-radius: 12px;
-        opacity: 0.9;
-        background: var(--bg-color, #fff);
-        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-    }
-    75% {
-        height: min(80vh, 700px);
-        width: min(85vw, 850px);
-        border-radius: 14px;
-        opacity: 0.95;
-        background: var(--bg-color, #fff);
-        box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
     }
     100% {
-        height: min(90vh, 800px);
-        width: min(90vw, 900px);
-        border-radius: 16px;
         opacity: 1;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-        background: var(--bg-color, #fff);
-        transform: translateY(0);
+        transform: scale(1) translateY(0);
     }
 }
 
@@ -1030,10 +1559,6 @@ async function processFiles(newFiles) {
     0% {
         opacity: 1;
         backdrop-filter: blur(3px);
-    }
-    80% {
-        opacity: 0.4;
-        backdrop-filter: blur(1px);
     }
     100% {
         opacity: 0;
@@ -1043,75 +1568,210 @@ async function processFiles(newFiles) {
 
 @keyframes collapseContent {
     0% {
-        height: min(90vh, 800px);
-        width: min(90vw, 900px);
-        border-radius: 16px;
         opacity: 1;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    }
-    25% {
-        height: min(60vh, 500px);
-        width: min(70vw, 700px);
-        border-radius: 12px;
-        opacity: 0.8;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    }
-    50% {
-        height: 150px;
-        width: min(50vw, 400px);
-        border-radius: 8px;
-        opacity: 0.6;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    75% {
-        height: 40px;
-        width: min(30vw, 250px);
-        border-radius: 4px;
-        opacity: 0.4;
-        box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+        transform: scale(1) translateY(0);
     }
     100% {
-        height: 1px;
-        width: 150px;
-        border-radius: 0.5px;
-        opacity: 0.2;
-        overflow: hidden;
-        box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
-        background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
     }
 }
 
-@keyframes slideInFile {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+/* 暗黑模式下的特殊调整 */
+[data-theme="dark"] .file-item:hover {
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
 }
 
-@keyframes fadeInUpload {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+[data-theme="dark"] .upload-area:hover,
+[data-theme="dark"] .upload-area.dragging {
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
 }
 
-@keyframes slideInStats {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+[data-theme="dark"] .file-content {
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+[data-theme="dark"] .action-btn:hover:not(:disabled) {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 暗黑模式下的按钮颜色调整 */
+[data-theme="dark"] .refresh-btn {
+    background: #1e40af;
+    color: #e5e7eb;
+}
+
+[data-theme="dark"] .refresh-btn:hover {
+    background: #1e3a8a;
+    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.4);
+}
+
+[data-theme="dark"] .sync-all-btn {
+    background: #047857;
+    color: #e5e7eb;
+}
+
+[data-theme="dark"] .sync-all-btn:hover:not(:disabled) {
+    background: #065f46;
+    box-shadow: 0 4px 12px rgba(4, 120, 87, 0.4);
+}
+
+[data-theme="dark"] .sync-all-btn:disabled {
+    background: #4b5563;
+    color: #9ca3af;
+}
+
+[data-theme="dark"] .preview-btn {
+    background: linear-gradient(135deg, #1e40af, #1d4ed8);
+    color: #f3f4f6;
+    border: 1px solid rgba(30, 64, 175, 0.4);
+    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.3);
+}
+
+[data-theme="dark"] .preview-btn:hover {
+    background: linear-gradient(135deg, #1e3a8a, #1e40af);
+    border-color: rgba(30, 58, 138, 0.6);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.5);
+    color: #ffffff;
+}
+
+[data-theme="dark"] .sync-btn {
+    background: linear-gradient(135deg, #047857, #065f46);
+    color: #f3f4f6;
+    border: 1px solid rgba(4, 120, 87, 0.4);
+    box-shadow: 0 2px 8px rgba(4, 120, 87, 0.3);
+}
+
+[data-theme="dark"] .sync-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #065f46, #064e3b);
+    border-color: rgba(6, 95, 70, 0.6);
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.5);
+    color: #ffffff;
+}
+
+[data-theme="dark"] .sync-btn:disabled {
+    background: linear-gradient(135deg, #4b5563, #6b7280);
+    color: #9ca3af;
+    border: 1px solid rgba(75, 85, 99, 0.5);
+    box-shadow: none;
+}
+
+[data-theme="dark"] .delete-btn {
+    background: linear-gradient(135deg, #b91c1c, #991b1b);
+    color: #f3f4f6;
+    border: 1px solid rgba(185, 28, 28, 0.4);
+    box-shadow: 0 2px 8px rgba(185, 28, 28, 0.3);
+}
+
+[data-theme="dark"] .delete-btn:hover {
+    background: linear-gradient(135deg, #991b1b, #7f1d1d);
+    border-color: rgba(153, 27, 27, 0.6);
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.5);
+    color: #ffffff;
+}
+
+[data-theme="dark"] .close-btn:hover {
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.15);
+}
+
+/* 暗黑模式下的文件状态样式调整 */
+[data-theme="dark"] .file-status.local {
+    background: #451a03;
+    color: #fcd34d;
+}
+
+[data-theme="dark"] .file-status.uploading {
+    background: #1e3a8a;
+    color: #93c5fd;
+}
+
+[data-theme="dark"] .file-status.uploaded {
+    background: #064e3b;
+    color: #6ee7b7;
+}
+
+[data-theme="dark"] .file-status.error {
+    background: #7f1d1d;
+    color: #fca5a5;
+}
+
+[data-theme="dark"] .file-status.operating {
+    background: #4c1d95;
+    color: #c4b5fd;
+}
+
+/* 暗黑模式下的工作区样式 */
+[data-theme="dark"] .workspace-management {
+    background: rgba(31, 41, 55, 0.8);
+    backdrop-filter: blur(8px);
+}
+
+[data-theme="dark"] .workspace-count {
+    background: rgba(124, 58, 237, 0.9);
+    color: #e5e7eb;
+}
+
+[data-theme="dark"] .clear-workspace-btn:hover {
+    background: rgba(248, 113, 113, 0.2);
+    color: #f87171;
+}
+
+[data-theme="dark"] .workspace-file-item {
+    background: rgba(55, 65, 81, 0.6);
+    border-color: rgba(75, 85, 99, 0.5);
+}
+
+[data-theme="dark"] .workspace-file-item:hover {
+    box-shadow: 0 2px 6px rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.6);
+    background: rgba(55, 65, 81, 0.8);
+}
+
+[data-theme="dark"] .workspace-action-btn:hover {
+    background: rgba(96, 165, 250, 0.2);
+    color: #60a5fa;
+}
+
+[data-theme="dark"] .workspace-btn {
+    background: linear-gradient(135deg, #6d28d9, #7c3aed);
+    color: #f3f4f6;
+    border: 1px solid rgba(109, 40, 217, 0.4);
+    box-shadow: 0 2px 8px rgba(109, 40, 217, 0.3);
+}
+
+[data-theme="dark"] .workspace-btn::after {
+    background: rgba(243, 244, 246, 0.9);
+    color: #6d28d9;
+}
+
+[data-theme="dark"] .workspace-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #5b21b6, #6d28d9);
+    border-color: rgba(91, 33, 182, 0.6);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.5);
+    color: #ffffff;
+}
+
+[data-theme="dark"] .workspace-btn:hover:not(:disabled)::after {
+    background: rgba(255, 255, 255, 0.95);
+    color: #5b21b6;
+}
+
+[data-theme="dark"] .workspace-btn:disabled {
+    background: linear-gradient(135deg, #4b5563, #6b7280);
+    color: #9ca3af;
+    border: 1px solid rgba(75, 85, 99, 0.5);
+    box-shadow: none;
+}
+
+/* 深色模式下的文件名截断提示 */
+[data-theme="dark"] .file-name::after {
+    background: linear-gradient(to right, transparent, var(--bg-color));
+}
+
+/* 深色模式下的文件项悬停优化 */
+[data-theme="dark"] .file-item:hover .file-details {
+    color: #e5e7eb;
 }
 
 /* 响应式适配 */
@@ -1128,7 +1788,7 @@ async function processFiles(newFiles) {
     .upload-section {
         width: 100%;
         border-right: none;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--border-color);
         padding: 15px;
     }
     
@@ -1162,6 +1822,60 @@ async function processFiles(newFiles) {
     .file-details {
         flex-wrap: wrap;
         gap: 8px;
+    }
+    
+    .file-details span {
+        min-width: auto;
+        flex-shrink: 0;
+    }
+    
+    .file-name {
+        max-width: 180px;
+        font-size: 14px;
+    }
+    
+    .file-created {
+        min-width: 80px;
+        font-size: 10px;
+        max-width: 120px;
+    }
+    
+    .workspace-management {
+        padding: 6px 8px;
+        max-height: 150px;
+    }
+    
+    .workspace-file-item {
+        padding: 8px 10px;
+        min-height: 36px;
+    }
+    
+    .workspace-file-name {
+        font-size: 12px;
+    }
+    
+    .workspace-action-btn {
+        padding: 3px;
+        min-width: 24px;
+        min-height: 24px;
+    }
+    
+    .workspace-action-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .workspace-title {
+        font-size: 11px;
+    }
+    
+    .workspace-icon {
+        font-size: 12px;
+    }
+    
+    .workspace-count {
+        font-size: 9px;
+        padding: 1px 3px;
     }
 }
 </style>

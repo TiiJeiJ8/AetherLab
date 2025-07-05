@@ -4,7 +4,7 @@
 
 .hover-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 0px 0.3px var(--text-color, rgba(0, 0, 0, 0.15)) !important;
 }
 
 .animate__fadeIn {
@@ -52,7 +52,6 @@
             /* 星云紫 */
         );
     background-size: 400% 400%;
-    /* 新增背景尺寸 */
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -60,7 +59,6 @@
     font-weight: bold;
     animation: gradient 25s ease infinite;
     display: inline-block;
-    /* 新增显示模式 */
 }
 
 @keyframes gradient {

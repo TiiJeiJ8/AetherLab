@@ -9,7 +9,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     border-radius: 16px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.4s;
     background: linear-gradient(to right, #dd2476, #6a11cb);
     opacity: 0.60;
 }

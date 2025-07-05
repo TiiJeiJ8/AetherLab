@@ -11,7 +11,7 @@
                         <h3>{{ currentFile?.name || 'Data Preview' }}</h3>
                         <span class="file-info" v-if="currentFile">
                             {{ formatFileSize(currentFile.size) }} |
-                            {{ currentFile.rows || 0 }} 行 × {{ currentFile.columns || 0 }} 列
+                            {{ currentFile.rows || 0 }} row × {{ currentFile.columns || 0 }} column (Only first 100 rows shown)
                         </span>
                     </div>
                     <button class="close-btn" @click="onClose">×</button>
@@ -89,11 +89,49 @@ function onClose() {
 </script>
 
 <style scoped>
+/* CSS变量定义 */
+:root {
+    --bg-color: #fff;
+    --text-color: #1f2937;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+    --header-bg: linear-gradient(135deg, #f8f9fa 0%, #f1f5f9 100%);
+    --table-bg: #fff;
+    --table-header-bg: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    --table-row-hover: linear-gradient(135deg, #f9fafb 0%, #f0f9ff 100%);
+    --row-number-bg: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    --row-number-header-bg: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+    --scrollbar-track: #f1f5f9;
+    --scrollbar-thumb: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+    --scrollbar-thumb-hover: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+    --modal-backdrop: rgba(0, 0, 0, 0.6);
+    --empty-icon-color: #9ca3af;
+}
+
+/* 暗黑模式变量 */
+[data-theme="dark"] {
+    --bg-color: #1f2937;
+    --text-color: #f9fafb;
+    --text-secondary: #d1d5db;
+    --border-color: #374151;
+    --header-bg: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+    --table-bg: #1f2937;
+    --table-header-bg: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+    --table-row-hover: linear-gradient(135deg, #374151 0%, #1e3a8a 100%);
+    --row-number-bg: linear-gradient(135deg, #4b5563 0%, #6b7280 100%);
+    --row-number-header-bg: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+    --scrollbar-track: #374151;
+    --scrollbar-thumb: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+    --scrollbar-thumb-hover: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%);
+    --modal-backdrop: rgba(0, 0, 0, 0.8);
+    --empty-icon-color: #6b7280;
+}
+
 /* 模态框基础样式 */
 .preview-modal {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: var(--modal-backdrop);
     z-index: 10000;
     display: flex;
     align-items: center;
@@ -105,24 +143,24 @@ function onClose() {
 .preview-content {
     width: min(96vw, 1400px);
     height: min(92vh, 900px);
-    background: var(--bg-color, #fff);
+    background: var(--bg-color);
     border-radius: 20px;
     box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
     margin: auto;
 }
 
 /* 头部样式 */
 .preview-header {
     padding: 28px 32px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(135deg, #f8f9fa 0%, #f1f5f9 100%);
+    background: var(--header-bg);
     flex-shrink: 0;
     position: relative;
 }
@@ -142,13 +180,13 @@ function onClose() {
     margin: 0 0 6px 0;
     font-size: 20px;
     font-weight: 700;
-    color: #1f2937;
+    color: var(--text-color);
     letter-spacing: -0.025em;
 }
 
 .file-info {
     font-size: 14px;
-    color: #6b7280;
+    color: var(--text-secondary);
     font-weight: 500;
 }
 
@@ -157,7 +195,7 @@ function onClose() {
     border: none;
     font-size: 30px;
     cursor: pointer;
-    color: #6b7280;
+    color: var(--text-secondary);
     padding: 10px;
     border-radius: 12px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -176,6 +214,7 @@ function onClose() {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    background: var(--table-bg);
 }
 
 .table-container {
@@ -188,15 +227,16 @@ function onClose() {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
+    background: var(--table-bg);
 }
 
 .preview-table th {
-    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    background: var(--table-header-bg);
     font-weight: 700;
-    color: #374151;
+    color: var(--text-color);
     padding: 16px 20px;
     text-align: left;
-    border-bottom: 2px solid #e5e7eb;
+    border-bottom: 2px solid var(--border-color);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -208,26 +248,27 @@ function onClose() {
 
 .preview-table td {
     padding: 14px 20px;
-    border-bottom: 1px solid #f3f4f6;
-    color: #1f2937;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
     max-width: 220px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 14px;
     transition: all 0.2s ease;
+    background: var(--table-bg);
 }
 
 .preview-table tr:hover {
-    background: linear-gradient(135deg, #f9fafb 0%, #f0f9ff 100%);
+    background: var(--table-row-hover);
     transform: translateX(2px);
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
 }
 
 .row-number {
-    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%) !important;
+    background: var(--row-number-bg) !important;
     font-weight: 600;
-    color: #6b7280 !important;
+    color: var(--text-secondary) !important;
     text-align: center !important;
     width: 70px;
     min-width: 70px;
@@ -236,7 +277,7 @@ function onClose() {
 }
 
 .preview-table th.row-number {
-    background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%) !important;
+    background: var(--row-number-header-bg) !important;
     font-weight: 800;
 }
 
@@ -247,9 +288,10 @@ function onClose() {
     align-items: center;
     justify-content: center;
     height: 100%;
-    color: #9ca3af;
+    color: var(--empty-icon-color);
     padding: 80px 20px;
     animation: fadeInEmpty 0.6s ease-out;
+    background: var(--table-bg);
 }
 
 .empty-icon {
@@ -263,6 +305,7 @@ function onClose() {
     margin: 0;
     font-size: 18px;
     font-weight: 500;
+    color: var(--text-secondary);
 }
 
 @keyframes fadeInEmpty {
@@ -392,21 +435,40 @@ function onClose() {
 }
 
 .table-container::-webkit-scrollbar-track {
-    background: #f1f5f9;
+    background: var(--scrollbar-track);
     border-radius: 5px;
 }
 
 .table-container::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+    background: var(--scrollbar-thumb);
     border-radius: 5px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
 }
 
 .table-container::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+    background: var(--scrollbar-thumb-hover);
 }
 
 .table-container::-webkit-scrollbar-corner {
-    background: #f1f5f9;
+    background: var(--scrollbar-track);
+}
+
+/* 暗黑模式下的特殊调整 */
+[data-theme="dark"] .preview-content {
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(55, 65, 81, 0.3);
+}
+
+[data-theme="dark"] .close-btn:hover {
+    background: rgba(248, 113, 113, 0.15);
+    color: #f87171;
+}
+
+[data-theme="dark"] .preview-table tr:hover {
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+[data-theme="dark"] .preview-table th {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 </style>

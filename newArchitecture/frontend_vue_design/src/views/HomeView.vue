@@ -40,23 +40,23 @@
         />
       </div>
 
-      <!-- Data Clustering Card -->
+      <!-- Mathematical Modeling Card -->
       <div class="col-lg-4">
         <Card
-          icon="🥜"
-          title="Data Clustering 🚧"
+          icon="✏️"
+          title="Mathematical Modeling 🚧"
           description="Data clustering and visualization"
           buttonText="Explore"
           href=""
         />
       </div>
 
-      <!-- Mathematical Modeling Card -->
+      <!-- Instruction Card -->
       <div class="col-lg-4">
         <Card
-          icon="✏️"
-          title="Mathematical Modeling 🚧"
-          description="Data modeling and analysis"
+          icon="📚"
+          title="Instruction 🚧"
+          description="How to use this APP"
           buttonText="Explore"
           href=""
         />

@@ -40,11 +40,13 @@ position="right"
   @delete="deleteChart"
 />
 
-<!-- 文件上传窗口 -->
+<!-- 文件上传弹窗 -->
 <FileUploadModal
   v-if="showFileUpload"
   :show="showFileUpload"
+  :workspaceFiles="workspaceFiles"
   @close="showFileUpload = false"
+  @workspace-updated="handleWorkspaceUpdate"
 />
 
 <!-- 数据预览弹窗 -->
@@ -54,6 +56,14 @@ position="right"
   :current-file="currentDataFile"
   :preview-data="previewData"
   @close="showDataPreview = false"
+/>
+
+<!-- 文件工作区 -->
+<FileWorkspace
+  :files="workspaceFiles"
+  @remove="handleWorkspaceRemove"
+  @preview="handleWorkspacePreview"
+  @clear="handleWorkspaceClear"
 />
 </template>
 
@@ -66,6 +76,8 @@ import ChartDisplay from '../components/ChartDisplay.vue'
 import ChartHistoryModal from '../components/ChartHistoryModal.vue'
 import FileUploadModal from '../components/FileUploadModal.vue'
 import DataPreviewModal from '../components/DataPreviewModal.vue'
+import FileWorkspace from '../components/FileWorkspace.vue'
+import { getFilePreview } from '../services/FileServices.js'
 import {ref, nextTick} from 'vue'
 
 // 文件上传相关
@@ -78,6 +90,9 @@ function UploadFiles() {
 const showDataPreview = ref(false)
 const currentDataFile = ref(null)
 const previewData = ref([])
+
+// 工作区相关
+const workspaceFiles = ref([])
 
 function DataPreview() {
   // 这里可以根据当前图表获取对应的数据文件信息
@@ -161,9 +176,57 @@ function deleteChart(idx) {
 
 // 图表选择
 function onChartTypeSelect(type) {
-    console.log(`Selected chart type: ${type}`);
+    console.log(`Selected chart type: ${type}`)
     // 可添加处理为加载图表类型、切换组件等功能
-  }
+}
+
+// 工作区相关方法
+function handleWorkspaceUpdate(files) {
+    workspaceFiles.value = [...files]
+    console.log('Workspace updated:', workspaceFiles.value.length, 'files')
+}
+
+function handleWorkspaceRemove(file) {
+    console.log('File removed from workspace:', file.name)
+    // 从工作区数组中移除文件
+    const index = workspaceFiles.value.findIndex(f => f.id === file.id)
+    if (index !== -1) {
+        workspaceFiles.value.splice(index, 1)
+    }
+}
+
+function handleWorkspacePreview(file) {
+    // 预览工作区中的文件
+    console.log('Preview workspace file:', file.name)
+    currentDataFile.value = file
+    
+    // 使用与 FileUploadModal 相同的预览逻辑
+    if (file.previewData) {
+        // 如果文件已经有预览数据，直接使用
+        previewData.value = file.previewData
+        showDataPreview.value = true
+    } else {
+        // 否则读取文件内容
+        loadFilePreview(file)
+    }
+}
+
+// 加载文件预览数据
+async function loadFilePreview(file) {
+    try {
+        const previewResult = await getFilePreview(file.id)
+        previewData.value = previewResult.data
+        showDataPreview.value = true
+    } catch (error) {
+        console.error('Preview failed:', error)
+        alert('Preview failed: ' + error.message)
+    }
+}
+
+function handleWorkspaceClear() {
+    console.log('Workspace cleared')
+    workspaceFiles.value = []
+}
 </script>
 
 <style scoped>
