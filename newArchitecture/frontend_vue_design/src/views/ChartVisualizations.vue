@@ -2,14 +2,14 @@
 <div class="py-5">
   <TopBar :actions="[
     { type: 'button', label: 'Files', onClick: UploadFiles },
-    { type: 'button', label: 'Data Preview', onClick: DataPreview},
     { type: 'button', label: 'Chart History', onClick: openHistory},
     { type: 'button', label: 'Dashboard', },
-    { type: 'button', label: 'Instruction', },
+    { type: 'button', label: 'Instruction', to: '/under-construction'},
     { type: 'button', label: 'Back2Home', to: '/'},
   ]"/>
 </div>
 
+<!-- 左侧边栏 -->
 <SideBar
 position="left"
 :collapsedWidth="40"
@@ -17,11 +17,11 @@ position="left"
   <ChartTypeSelector @select="onChartTypeSelect" />
 </SideBar>
 
+<!-- 右侧边栏 -->
 <SideBar
 position="right"
 :collapsedWidth="40"
 :expandedWidth="400">
-<button>aaa</button>
 </SideBar>
 
 <!-- 绘制区 -->
@@ -71,7 +71,7 @@ position="right"
 /* eslint-disable */
 import TopBar from '../components/TopBar.vue'
 import SideBar from '../components/SideBar.vue'
-import ChartTypeSelector from '../components/chartIcons.vue'
+import ChartTypeSelector from '../components/ChartIcon.vue'
 import ChartDisplay from '../components/ChartDisplay.vue'
 import ChartHistoryModal from '../components/ChartHistoryModal.vue'
 import FileUploadModal from '../components/FileUploadModal.vue'
@@ -93,20 +93,6 @@ const previewData = ref([])
 
 // 工作区相关
 const workspaceFiles = ref([])
-
-function DataPreview() {
-  // 这里可以根据当前图表获取对应的数据文件信息
-  currentDataFile.value = {
-    name: 'currentFile.csv'
-  }
-  // 这里可以获取当前图表的数据用于预览
-  previewData.value = [
-    { column1: 'A', column2: 100 },
-    { column1: 'B', column2: 200 },
-    { column1: 'C', column2: 300 }
-  ]
-  showDataPreview.value = true
-}
 
 // 测试图表绘制
 const chartOption = ref({

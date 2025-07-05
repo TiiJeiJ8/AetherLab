@@ -170,7 +170,7 @@ document.removeEventListener('click', handleClickOutside)
 
 .logo {
     font-weight: 900;
-    font-size: 2.27rem;
+    font-size: 2.5rem;
     background: linear-gradient(270deg, #ff416c, #fa83bf, #1f97ff, #12d8fa, #50f6a0, #ff416c);
     background-size: 1200% 1200%;
     -webkit-background-clip: text;

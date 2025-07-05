@@ -156,8 +156,8 @@
                 </div>
                 <div class="workspace-file-list">
                     <div v-for="(file, idx) in workspaceFiles"
-                         :key="file.id"
-                         class="workspace-file-item">
+                            :key="file.id"
+                            class="workspace-file-item">
                         <div class="workspace-file-name" :title="file.name">
                             {{ file.name }}
                         </div>
@@ -651,16 +651,6 @@ async function processFiles(newFiles) {
     height: 3px;
     background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
     border-radius: 16px 16px 0 0;
-}
-@keyframes slideInHeader {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .header-left {
@@ -1225,35 +1215,6 @@ async function processFiles(newFiles) {
     background: linear-gradient(135deg, #8b5cf6, #a855f7);
     color: white;
     border: 1px solid rgba(139, 92, 246, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.workspace-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.workspace-btn::after {
-    content: '📁';
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    font-size: 8px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    width: 12px;
-    height: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.8;
 }
 
 .workspace-btn:hover:not(:disabled) {
@@ -1262,26 +1223,12 @@ async function processFiles(newFiles) {
     box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
 }
 
-.workspace-btn:hover:not(:disabled)::before {
-    left: 100%;
-}
-
-.workspace-btn:hover:not(:disabled)::after {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
 .workspace-btn:disabled {
     background: linear-gradient(135deg, #d1d5db, #e5e7eb);
     color: #9ca3af;
     cursor: not-allowed;
     transform: none;
     border: 1px solid rgba(209, 213, 219, 0.5);
-}
-
-.workspace-btn:disabled::before,
-.workspace-btn:disabled::after {
-    display: none;
 }
 
 /* 操作状态标记 */
@@ -1466,20 +1413,9 @@ async function processFiles(newFiles) {
     height: 16px;
 }
 
-/* SVG图标通用样式 */
-.svg-icon-container {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.svg-icon-container svg {
-    transition: all 0.3s ease;
-}
-
 /* 状态图标样式适配 */
 .file-status.local svg {
-    filter: none; /* 使用SVG自身颜色 */
+    filter: none;
 }
 
 .file-status.uploading svg {
@@ -1503,7 +1439,7 @@ async function processFiles(newFiles) {
     }
 }
 
-/* 简化动画效果 */
+/* 动画效果 */
 .modal-expand-enter-active {
     animation: expandModal 0.3s ease-out forwards;
 }
@@ -1518,19 +1454,6 @@ async function processFiles(newFiles) {
 
 .modal-expand-leave-active .file-content {
     animation: collapseContent 0.2s ease-in forwards;
-}
-
-@keyframes fadeInElement {
-    from {
-        opacity: 0;
-        transform: translateY(15px) scale(0.95);
-        visibility: hidden;
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        visibility: visible;
-    }
 }
 
 @keyframes expandModal {
@@ -1677,7 +1600,7 @@ async function processFiles(newFiles) {
 
 /* 暗黑模式下的文件状态样式调整 */
 [data-theme="dark"] .file-status.local {
-    background: #451a03;
+    background: #a8ad2948;
     color: #fcd34d;
 }
 
@@ -1696,14 +1619,9 @@ async function processFiles(newFiles) {
     color: #fca5a5;
 }
 
-[data-theme="dark"] .file-status.operating {
-    background: #4c1d95;
-    color: #c4b5fd;
-}
-
 /* 暗黑模式下的工作区样式 */
 [data-theme="dark"] .workspace-management {
-    background: rgba(31, 41, 55, 0.8);
+    background: #222222;
     backdrop-filter: blur(8px);
 }
 
@@ -1718,14 +1636,14 @@ async function processFiles(newFiles) {
 }
 
 [data-theme="dark"] .workspace-file-item {
-    background: rgba(55, 65, 81, 0.6);
+    background: var(--bg-color);
     border-color: rgba(75, 85, 99, 0.5);
 }
 
 [data-theme="dark"] .workspace-file-item:hover {
     box-shadow: 0 2px 6px rgba(139, 92, 246, 0.2);
     border-color: rgba(139, 92, 246, 0.6);
-    background: rgba(55, 65, 81, 0.8);
+    background: #212121;
 }
 
 [data-theme="dark"] .workspace-action-btn:hover {
@@ -1740,21 +1658,11 @@ async function processFiles(newFiles) {
     box-shadow: 0 2px 8px rgba(109, 40, 217, 0.3);
 }
 
-[data-theme="dark"] .workspace-btn::after {
-    background: rgba(243, 244, 246, 0.9);
-    color: #6d28d9;
-}
-
 [data-theme="dark"] .workspace-btn:hover:not(:disabled) {
     background: linear-gradient(135deg, #5b21b6, #6d28d9);
     border-color: rgba(91, 33, 182, 0.6);
     box-shadow: 0 4px 20px rgba(139, 92, 246, 0.5);
     color: #ffffff;
-}
-
-[data-theme="dark"] .workspace-btn:hover:not(:disabled)::after {
-    background: rgba(255, 255, 255, 0.95);
-    color: #5b21b6;
 }
 
 [data-theme="dark"] .workspace-btn:disabled {

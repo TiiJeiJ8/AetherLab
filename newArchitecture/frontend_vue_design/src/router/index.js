@@ -1,29 +1,25 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/HomeView.vue'
-import ChartVisualizations from '../views/ChartVisualizations.vue'
-import DataPreprocessing from '../views/DataPreprocessing.vue'
-import UnderConstruction from '../views/UnderConstruction.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import('../views/HomeView.vue')
   },
   {
     path: '/chart-visualizations',
     name: 'ChartVisualizations',
-    component: ChartVisualizations
+    component: () => import('../views/ChartVisualizations.vue')
   },
   {
     path: '/data-preprocessing',
     name: 'DataPreprocessing',
-    component: DataPreprocessing
+    component: () => import('../views/DataPreprocessing.vue')
   },
   {
     path: '/under-construction',
     name: 'UnderConstruction',
-    component: UnderConstruction
+    component: () => import('../views/UnderConstruction.vue')
   }
 ]
 

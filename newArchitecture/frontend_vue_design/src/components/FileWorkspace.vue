@@ -91,7 +91,7 @@ const dragOffset = ref({ x: 0, y: 0 })
 const workspacePosition = ref({
     position: 'fixed',
     top: '10px',
-    left: '260px'
+    left: '200px'
 })
 
 // DOM 引用
@@ -309,7 +309,7 @@ defineExpose({
     backdrop-filter: blur(20px);
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    z-index: 1000;
+    z-index: 10000;
     padding: 6px 10px 10px 10px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -322,6 +322,7 @@ defineExpose({
     background: rgba(255, 255, 255, 0.85);
     transform: translateY(-1px);
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+    opacity: 0.95;
 }
 
 .file-workspace:not(.is-focused) {
@@ -353,12 +354,13 @@ defineExpose({
 
 /* 暗黑模式适配 */
 [data-theme="dark"] .file-workspace {
-    background: rgba(17, 24, 39, 0.4);
+    background: var(--bg-color);
     border: 1px solid rgba(55, 65, 81, 0.4);
 }
 
 [data-theme="dark"] .file-workspace.is-focused {
-    background: rgba(17, 24, 39, 0.85);
+    background: var(--bg-color);
+    opacity: 0.95;
 }
 
 [data-theme="dark"] .file-workspace:not(.is-focused) {

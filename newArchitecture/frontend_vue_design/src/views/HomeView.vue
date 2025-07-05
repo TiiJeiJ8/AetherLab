@@ -58,7 +58,7 @@
           title="Instruction 🚧"
           description="How to use this APP"
           buttonText="Explore"
-          href=""
+          href="/instruction"
         />
       </div>
 
