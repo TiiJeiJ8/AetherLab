@@ -35,17 +35,17 @@ ref="workspaceRef">
     </div>
 
     <div class="workspace-actions">
+        <button
+        class="workspace-action-btn preview-btn"
+        @click="previewCurrentFile"
+        title="Preview file">
+        <span v-html="getThemeIcon('eye')"></span>
+    </button>
     <button
         class="workspace-action-btn remove-btn"
         @click="removeFromWorkspace(currentIndex)"
         title="Remove from workspace">
         <span v-html="getThemeIcon('remove')"></span>
-    </button>
-    <button
-        class="workspace-action-btn preview-btn"
-        @click="previewCurrentFile"
-        title="Preview file">
-        <span v-html="getThemeIcon('eye')"></span>
     </button>
     </div>
 </div>
