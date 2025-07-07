@@ -1,8 +1,10 @@
 <template>
-  <div class="min-vh-100 bg-color position-relative">
-    <router-view></router-view>
+  <div class="app-root">
+    <div class="min-vh-100 bg-color position-relative">
+      <router-view></router-view>
+    </div>
+    <ThemeButton />
   </div>
-  <ThemeButton />
 </template>
 
 <script>
