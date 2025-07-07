@@ -28,7 +28,7 @@ export default {
   --z-index-content: 1;
   --z-index-theme-button: 1000;
   /* 默认light主题颜色 */
-  --bg-color: #f8f9fa;
+  --bg-color: #faf9f8e9;
   --text-color: #333333;
   --primary-color: #5a81b4;
 }

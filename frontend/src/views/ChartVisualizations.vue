@@ -97,7 +97,7 @@ import DataPreviewModal from '../components/DataPreviewModal.vue'
 import FileWorkspace from '../components/FileWorkspace.vue'
 import FileStructurePanel from '../components/FileStructurePanel.vue'
 import ChartConfigPanel from '../components/ChartConfigPanel.vue'
-import { getFilePreview } from '../services/FileServices.js'
+import { getFilePreview } from '../assets/JS/services/FileServices.js'
 import {ref, nextTick} from 'vue'
 
 // 文件上传相关

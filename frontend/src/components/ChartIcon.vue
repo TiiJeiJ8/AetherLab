@@ -50,8 +50,8 @@
 </template>
 <script setup>
 /* eslint-disable */
-import { chartTypes, chartIcons } from '../assets/JS/chartIcons.js'
-import { chartsTooltipConfig } from '../assets/JS/ChartsTooltipConfig.js'
+import { chartTypes, chartIcons } from '../assets/JS/SVG/chartIcons.js'
+import { chartsTooltipConfig } from '../assets/JS/Config/ChartsTooltipConfig.js'
 import { watch, ref, reactive, nextTick } from 'vue'
 
 const props = defineProps({
@@ -372,19 +372,18 @@ watch(() => props.modelValue, (newValue) => {
 }
 
 /* 深色模式下的标签样式 */
-@media (prefers-color-scheme: dark) {
-    .data-tag {
-        background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-        color: #dbeafe;
-        border-color: #60a5fa;
-    }
-    
-    .use-case-tag {
-        background: linear-gradient(135deg, #581c87, #9333ea);
-        color: #f3e8ff;
-        border-color: #c084fc;
-    }
+[data-theme="dark"] .data-tag {
+    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+    color: #dbeafe;
+    border-color: #60a5fa;
 }
+
+[data-theme="dark"] .use-case-tag {
+    background: linear-gradient(135deg, #581c87, #9333ea);
+    color: #f3e8ff;
+    border-color: #c084fc;
+}
+
 
 .tooltip-tag:hover {
     transform: translateY(-1px);

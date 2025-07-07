@@ -1,7 +1,7 @@
 <template>
 <div class="chart-config-panel">
 <!-- 右侧边栏总标题 -->
-<div class="panel-header">
+<div class="panel-header-CCP">
     <h3>Chart Configuration</h3>
 </div>
 
@@ -9,7 +9,9 @@
 <div class="mapping-section">
     <div class="mapping-section-header">
     <h4>Data Mapping</h4>
-    <div class="chart-type-tag">
+    <div class="chart-type-tag"
+         @mouseenter="showTooltip($event, selectedChartType)"
+         @mouseleave="hideTooltip">
         <span class="chart-type-icon" v-html="getChartIcon(selectedChartType)"></span>
         <span class="chart-type-name">{{ selectedChartType }}</span>
     </div>
@@ -197,13 +199,51 @@
 <div v-if="errorMessage" class="error-message">
     <div class="error-text">{{ errorMessage }}</div>
 </div>
+
+<!-- 提示框 -->
+<div
+    v-if="tooltip.visible"
+    class="chart-tooltip"
+    :style="tooltip.style"
+    ref="tooltipRef"
+>
+    <div class="tooltip-header">
+        <span class="tooltip-title">{{ tooltip.type }}</span>
+        <span class="tooltip-description">{{ tooltip.description }}</span>
+    </div>
+    <div class="tooltip-section">
+        <h4>Data Requirements</h4>
+        <div class="tooltip-tags">
+            <span
+                v-for="requirement in tooltip.dataRequirements"
+                :key="requirement"
+                class="tooltip-tag data-tag"
+            >
+                {{ requirement }}
+            </span>
+        </div>
+    </div>
+    <div class="tooltip-section">
+        <h4>Use Cases</h4>
+        <div class="tooltip-tags">
+            <span
+                v-for="useCase in tooltip.useCases"
+                :key="useCase"
+                class="tooltip-tag use-case-tag"
+            >
+                {{ useCase }}
+            </span>
+        </div>
+    </div>
+</div>
 </div>
 </template>
 
 <script setup>
 /* eslint-disable */
-import { ref, computed, watch } from 'vue'
-import { chartIcons } from '../assets/JS/chartIcons.js'
+import { ref, computed, watch, reactive, nextTick } from 'vue'
+import { chartIcons } from '../assets/JS/SVG/chartIcons.js'
+import { chartsTooltipConfig } from '../assets/JS/Config/ChartsTooltipConfig.js'
 
 // Props
 const props = defineProps({
@@ -224,6 +264,19 @@ const emit = defineEmits(['config-change', 'generate-chart'])
 const showDataFilter = ref(false)
 const showAdvancedConfig = ref(false)
 const errorMessage = ref('')
+const tooltipRef = ref(null)
+
+// 提示框状态
+const tooltip = reactive({
+    visible: false,
+    type: '',
+    description: '',
+    dataRequirements: [],
+    useCases: [],
+    style: {}
+})
+
+let tooltipTimeout = null
 
 // 拖拽状态
 const isDragOver = ref({
@@ -273,6 +326,80 @@ function toggleDataFilter() {
 
 function toggleAdvancedConfig() {
     showAdvancedConfig.value = !showAdvancedConfig.value
+}
+
+// 显示提示框
+function showTooltip(event, type) {
+    // 清除之前的定时器
+    if (tooltipTimeout) {
+        clearTimeout(tooltipTimeout)
+    }
+    
+    // 设置1.2秒延迟
+    tooltipTimeout = setTimeout(() => {
+        const config = chartsTooltipConfig[type]
+        if (config) {
+            tooltip.type = type
+            tooltip.description = config.description
+            tooltip.dataRequirements = config.dataRequirements
+            tooltip.useCases = config.useCases
+            tooltip.visible = true
+            
+            // 在下一个tick中计算位置，确保DOM已更新
+            nextTick(() => {
+                positionTooltip(event)
+            })
+        }
+    }, 1200) // 1.2秒延迟
+}
+
+// 隐藏提示框
+function hideTooltip() {
+    if (tooltipTimeout) {
+        clearTimeout(tooltipTimeout)
+        tooltipTimeout = null
+    }
+    tooltip.visible = false
+}
+
+// 计算提示框位置，确保不超出屏幕
+function positionTooltip(event) {
+    if (!tooltipRef.value) return
+    
+    const tooltipEl = tooltipRef.value
+    const rect = tooltipEl.getBoundingClientRect()
+    const viewportWidth = window.innerWidth
+    const viewportHeight = window.innerHeight
+    
+    let left = event.pageX + 10
+    let top = event.pageY + 10
+    
+    // 防止右边超出屏幕
+    if (left + rect.width > viewportWidth) {
+        left = event.pageX - rect.width - 10
+    }
+    
+    // 防止底部超出屏幕
+    if (top + rect.height > viewportHeight) {
+        top = event.pageY - rect.height - 10
+    }
+    
+    // 防止左边超出屏幕
+    if (left < 0) {
+        left = 10
+    }
+    
+    // 防止顶部超出屏幕
+    if (top < 0) {
+        top = 10
+    }
+    
+    tooltip.style = {
+        left: `${left}px`,
+        top: `${top}px`,
+        position: 'fixed',
+        zIndex: 1000
+    }
 }
 
 // 拖拽处理

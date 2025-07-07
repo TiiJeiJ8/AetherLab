@@ -1,42 +1,44 @@
 <template>
+<div>
 <transition name="fade-slide">
     <div v-if="show" class="history-modal" @click.self="onClose">
-        <div class="history-content">
-            <div class="history-header">
-                <span>Charts Storage</span>
-                <button class="close-btn" @click="onClose">×</button>
-            </div>
-            <div v-if="!chartHistory?.length" class="empty-tip">
-                No saved charts available.
-            </div>
-            <div class="history-list">
-                <div
-                    v-for="(item, idx) in chartHistory"
-                    :key="idx"
-                    class="chart-history-item"
-                >
-                    <div class="thumb-title-row">
-                        <ChartThumbnail :option="item.option" @click="onPreview(item)" />
-                        <div class="chart-history-title">{{ item.title }}</div>
-                        <button class="delete-btn" @click.stop="confirmDelete(idx)" title="Delete">❌</button>
-                    </div>
-                </div>
+    <div class="history-content">
+        <div class="history-header">
+        <span>Charts Storage</span>
+        <button class="close-btn" @click="onClose">×</button>
+        </div>
+        <div v-if="!chartHistory?.length" class="empty-tip">
+        No saved charts available.
+        </div>
+        <div class="history-list">
+        <div
+            v-for="(item, idx) in chartHistory"
+            :key="idx"
+            class="chart-history-item"
+        >
+            <div class="thumb-title-row">
+            <ChartThumbnail :option="item.option" @click="onPreview(item)" />
+            <div class="chart-history-title">{{ item.title }}</div>
+            <button class="delete-btn" @click.stop="confirmDelete(idx)" title="Delete">❌</button>
             </div>
         </div>
+        </div>
+    </div>
     </div>
 </transition>
 <transition name="fade">
     <div v-if="showDeleteConfirm" class="confirm-modal" @click.self="cancelDelete">
-        <div class="confirm-content">
-            <h3>Confirmation</h3>
-            <p>Are you sure you want to delete this chart? This operation is irreversible.</p>
-            <div name="confirm-buttons">
-                <button class="cancel-btn" @click="cancelDelete">Cancel</button>
-                <button class="confirm-btn" @click="handleDelete">Confirm</button>
-            </div>
+    <div class="confirm-content">
+        <h3>Confirmation</h3>
+        <p>Are you sure you want to delete this chart? This operation is irreversible.</p>
+        <div name="confirm-buttons">
+        <button class="cancel-btn" @click="cancelDelete">Cancel</button>
+        <button class="confirm-btn" @click="handleDelete">Confirm</button>
         </div>
     </div>
+    </div>
 </transition>
+</div>
 </template>
 
 <script setup>
