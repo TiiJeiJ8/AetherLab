@@ -19,21 +19,25 @@
 
                 <!-- 数据表格预览 -->
                 <div class="preview-table-wrapper">
-                    <div v-if="previewData.length" class="table-container">
+                    <div v-if="dataRows.length" class="table-container">
                         <table class="preview-table">
                             <thead>
                                 <tr>
                                     <th class="row-number">#</th>
-                                    <th v-for="header in tableHeaders"
-                                        :key="header">{{ header }}</th>
+                                    <th v-for="(header, idx) in tableHeaders"
+                                        :key="idx"
+                                        :title="header.length > 12 ? header : ''"
+                                        class="column-header">{{ header }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(row, idx) in previewData"
+                                <tr v-for="(row, idx) in dataRows"
                                     :key="idx">
                                     <td class="row-number">{{ idx + 1 }}</td>
-                                    <td v-for="header in tableHeaders"
-                                        :key="header">{{ row[header] }}</td>
+                                    <td v-for="(header, headerIdx) in tableHeaders"
+                                        :key="headerIdx">
+                                        {{ Array.isArray(row) ? row[headerIdx] : (typeof row === 'object' ? Object.values(row)[headerIdx] : row) }}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -68,10 +72,26 @@ const props = defineProps({
 
 const emit = defineEmits(['close'])
 
-// 表头计算
+// 表头计算 - 使用第一行数据作为标题
 const tableHeaders = computed(() => {
     if (!props.previewData.length) return []
-    return Object.keys(props.previewData[0])
+    
+    // 获取第一行数据作为表头
+    const firstRow = props.previewData[0]
+    if (Array.isArray(firstRow)) {
+        // 如果是数组格式，直接使用数组元素作为标题
+        return firstRow
+    } else if (typeof firstRow === 'object') {
+        // 如果是对象格式，使用对象的值作为标题
+        return Object.values(firstRow)
+    }
+    return []
+})
+
+// 实际数据行（排除标题行）
+const dataRows = computed(() => {
+    if (!props.previewData.length) return []
+    return props.previewData.slice(1) // 跳过第一行（标题行）
 })
 
 // 格式化文件大小
@@ -97,10 +117,10 @@ function onClose() {
     --border-color: #e5e7eb;
     --header-bg: linear-gradient(135deg, #f8f9fa 0%, #f1f5f9 100%);
     --table-bg: #fff;
-    --table-header-bg: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    --table-header-bg: #f3f4f6;
     --table-row-hover: linear-gradient(135deg, #f9fafb 0%, #f0f9ff 100%);
     --row-number-bg: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-    --row-number-header-bg: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+    --row-number-header-bg: #e5e7eb;
     --scrollbar-track: #f1f5f9;
     --scrollbar-thumb: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
     --scrollbar-thumb-hover: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
@@ -116,10 +136,10 @@ function onClose() {
     --border-color: #374151;
     --header-bg: linear-gradient(135deg, #374151 0%, #4b5563 100%);
     --table-bg: #1f2937;
-    --table-header-bg: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+    --table-header-bg: #374151;
     --table-row-hover: linear-gradient(135deg, #374151 0%, #1e3a8a 100%);
     --row-number-bg: linear-gradient(135deg, #4b5563 0%, #6b7280 100%);
-    --row-number-header-bg: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+    --row-number-header-bg: #4b5563;
     --scrollbar-track: #374151;
     --scrollbar-thumb: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
     --scrollbar-thumb-hover: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%);
@@ -239,11 +259,21 @@ function onClose() {
     border-bottom: 2px solid var(--border-color);
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 20;
     font-size: 14px;
     letter-spacing: 0.025em;
     text-transform: uppercase;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    /* 确保背景不透明，防止数据行穿透 */
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* 长标题处理 */
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* 添加标题提示 */
+    position: relative;
 }
 
 .preview-table td {
@@ -279,6 +309,33 @@ function onClose() {
 .preview-table th.row-number {
     background: var(--row-number-header-bg) !important;
     font-weight: 800;
+    /* 确保行号列有不透明背景 */
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 列标题样式 */
+.column-header {
+    cursor: help;
+    transition: all 0.2s ease;
+}
+
+.column-header:hover {
+    background: var(--table-row-hover) !important;
+    transform: translateY(-1px);
+}
+
+/* 暗黑模式下确保标题背景不透明 */
+[data-theme="dark"] .preview-table th {
+    background: var(--table-header-bg) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .preview-table th.row-number {
+    background: var(--row-number-header-bg) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* 空状态 */
@@ -419,6 +476,10 @@ function onClose() {
     .preview-table td {
         padding: 12px 16px;
         font-size: 13px;
+    }
+    
+    .preview-table th {
+        max-width: 120px;
     }
     
     .row-number {

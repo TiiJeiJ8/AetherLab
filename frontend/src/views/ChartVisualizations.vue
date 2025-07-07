@@ -1,80 +1,88 @@
 <template>
-<div class="py-5">
-  <TopBar :actions="[
-    { type: 'button', label: 'Files', onClick: UploadFiles },
-    { type: 'button', label: 'Chart History', onClick: openHistory},
-    { type: 'button', label: 'Dashboard', },
-    { type: 'button', label: 'Instruction', to: '/under-construction'},
-    { type: 'button', label: 'Back2Home', to: '/'},
-  ]"/>
-</div>
+  <div>
+    <div class="py-5">
+      <TopBar :actions="[
+        { type: 'button', label: 'Files', onClick: UploadFiles },
+        { type: 'button', label: 'Chart History', onClick: openHistory},
+        { type: 'button', label: 'Dashboard', },
+        { type: 'button', label: 'Instruction', to: '/under-construction'},
+        { type: 'button', label: 'Back2Home', to: '/'},
+      ]"/>
+    </div>
 
-<!-- 左侧边栏 -->
-<SideBar
-position="left"
-:collapsedWidth="40"
-:expandedWidth="180">
-  <ChartTypeSelector @select="onChartTypeSelect" />
-</SideBar>
+    <!-- 左侧边栏 -->
+    <SideBar
+      position="left"
+      :collapsedWidth="40"
+      :expandedWidth="180">
+      <ChartTypeSelector @select="onChartTypeSelect" />
+    </SideBar>
 
-<!-- 右侧边栏 -->
-<SideBar
-position="right"
-:collapsedWidth="40"
-:expandedWidth="400">
-</SideBar>
+    <!-- 右侧边栏 -->
+    <SideBar
+      position="right"
+      :collapsedWidth="40"
+      :expandedWidth="400">
+      <ChartConfigPanel
+        :selectedChartType="selectedChartType"
+        :currentFile="currentStructureFile"
+        @config-change="handleConfigChange"
+        @generate-chart="handleGenerateChart"
+      />
+    </SideBar>
 
-<!-- 绘制区 -->
-<div class="main-content">
-  <section class="chart-workspace">
-    <ChartDisplay v-if="chartOption" :option="chartOption" />
-  </section>
-</div>
+    <!-- 绘制区 -->
+    <div class="main-content">
+      <section class="chart-workspace">
+        <ChartDisplay v-if="chartOption" :option="chartOption" />
+      </section>
+    </div>
 
-<!-- 图表存储区 -->
-<ChartHistoryModal
-  :show="showHistory"
-  :chartHistory="chartHistory"
-  @close="showHistory = false"
-  @preview="previewChart"
-  @delete="deleteChart"
-/>
+    <!-- 图表存储区 -->
+    <ChartHistoryModal
+      :show="showHistory"
+      :chartHistory="chartHistory"
+      @close="showHistory = false"
+      @preview="previewChart"
+      @delete="deleteChart"
+    />
 
-<!-- 文件上传弹窗 -->
-<FileUploadModal
-  v-if="showFileUpload"
-  :show="showFileUpload"
-  :workspaceFiles="workspaceFiles"
-  @close="showFileUpload = false"
-  @workspace-updated="handleWorkspaceUpdate"
-/>
+    <!-- 文件上传弹窗 -->
+    <FileUploadModal
+      v-if="showFileUpload"
+      :show="showFileUpload"
+      :workspaceFiles="workspaceFiles"
+      @close="showFileUpload = false"
+      @workspace-updated="handleWorkspaceUpdate"
+    />
 
-<!-- 数据预览弹窗 -->
-<DataPreviewModal
-  v-if="showDataPreview"
-  :show="showDataPreview"
-  :current-file="currentDataFile"
-  :preview-data="previewData"
-  @close="showDataPreview = false"
-/>
+    <!-- 数据预览弹窗 -->
+    <DataPreviewModal
+      v-if="showDataPreview"
+      :show="showDataPreview"
+      :current-file="currentDataFile"
+      :preview-data="previewData"
+      @close="showDataPreview = false"
+    />
 
-<!-- 文件工作区 -->
-<FileWorkspace
-  :files="workspaceFiles"
-  @remove="handleWorkspaceRemove"
-  @preview="handleWorkspacePreview"
-  @clear="handleWorkspaceClear"
-  @show-structure="handleShowStructure"
-/>
+    <!-- 文件工作区 -->
+    <FileWorkspace
+      :files="workspaceFiles"
+      @remove="handleWorkspaceRemove"
+      @preview="handleWorkspacePreview"
+      @clear="handleWorkspaceClear"
+      @show-structure="handleShowStructure"
+    />
 
-<!-- 文件结构面板 -->
-<FileStructurePanel
-  :fileInfo="currentStructureFile"
-  :visible="showStructurePanel"
-  @close="showStructurePanel = false"
-  @minimize="handleStructureMinimize"
-  @column-drag="handleColumnDrag"
-/>
+    <!-- 文件结构面板 -->
+    <FileStructurePanel
+      :fileInfo="currentStructureFile"
+      :visible="showStructurePanel"
+      @close="showStructurePanel = false"
+      @minimize="handleStructureMinimize"
+      @column-drag="handleColumnDrag"
+    />
+  </div>
 </template>
 
 <script setup>
@@ -88,6 +96,7 @@ import FileUploadModal from '../components/FileUploadModal.vue'
 import DataPreviewModal from '../components/DataPreviewModal.vue'
 import FileWorkspace from '../components/FileWorkspace.vue'
 import FileStructurePanel from '../components/FileStructurePanel.vue'
+import ChartConfigPanel from '../components/ChartConfigPanel.vue'
 import { getFilePreview } from '../services/FileServices.js'
 import {ref, nextTick} from 'vue'
 
@@ -108,6 +117,10 @@ const workspaceFiles = ref([])
 // 文件结构面板相关
 const showStructurePanel = ref(false)
 const currentStructureFile = ref(null)
+
+// 图表配置相关
+const selectedChartType = ref('Bar') // 使用首字母大写格式与chartIcons.js一致
+const chartConfig = ref(null)
 
 // 测试图表绘制
 const chartOption = ref({
@@ -178,6 +191,7 @@ function deleteChart(idx) {
 // 图表选择
 function onChartTypeSelect(type) {
     console.log(`Selected chart type: ${type}`)
+    selectedChartType.value = type
     // 可添加处理为加载图表类型、切换组件等功能
 }
 
@@ -248,6 +262,135 @@ function handleColumnDrag(dragInfo) {
     } else if (dragInfo.action === 'end') {
         console.log('Finished dragging column')
     }
+}
+
+// 图表配置处理方法
+function handleConfigChange(config) {
+    console.log('Chart config changed:', config)
+    chartConfig.value = config
+}
+
+function handleGenerateChart(config) {
+    console.log('Generating chart with config:', config)
+    
+    if (!currentStructureFile.value || !currentStructureFile.value.parsedData) {
+        alert('请先选择并分析数据文件')
+        return
+    }
+    
+    // 根据配置生成ECharts图表
+    const newChartOption = generateEChartOption(config, currentStructureFile.value.parsedData)
+    
+    if (newChartOption) {
+        chartOption.value = null
+        nextTick(() => {
+            chartOption.value = newChartOption
+        })
+    }
+}
+
+// 生成ECharts配置
+function generateEChartOption(config, data) {
+    const { xAxis, yAxis, series, title, colorScheme, animation } = config
+    
+    if (!data || data.length === 0) {
+        alert('数据为空，无法生成图表')
+        return null
+    }
+    
+    // 提取数据
+    const xData = data.map(row => row[xAxis.field])
+    const yData = data.map(row => parseFloat(row[yAxis.field]) || 0)
+    
+    // 基础配置
+    const option = {
+        title: {
+            text: title || `${yAxis.field} vs ${xAxis.field}`,
+            left: 'center',
+            textStyle: {
+                fontSize: 16,
+                fontWeight: 'bold'
+            }
+        },
+        tooltip: {
+            trigger: 'axis',
+            formatter: function(params) {
+                return `${params[0].axisValue}: ${params[0].value}`
+            }
+        },
+        legend: {
+            data: [yAxis.field],
+            top: 'bottom'
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataView: { show: true, readOnly: false },
+                magicType: { show: true, type: ['line', 'bar'] },
+                restore: { show: true },
+                saveAsImage: { show: true }
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: xData,
+            axisLabel: {
+                interval: 0,
+                rotate: xData.length > 10 ? 45 : 0
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: yAxis.field
+        },
+        series: [{
+            name: yAxis.field,
+            type: selectedChartType.value.toLowerCase(), // 转换为小写供ECharts使用
+            data: yData,
+            animationDuration: animation ? 1500 : 0,
+            itemStyle: {
+                color: getColorByScheme(colorScheme)
+            }
+        }],
+        animation: animation,
+        animationDuration: animation ? 1500 : 0
+    }
+    
+    // 根据图表类型调整配置
+    if (selectedChartType.value === 'Pie' || selectedChartType.value === 'pie') {
+        option.series[0] = {
+            name: yAxis.field,
+            type: 'pie',
+            radius: '60%',
+            data: xData.map((name, index) => ({
+                name,
+                value: yData[index]
+            })),
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+        delete option.xAxis
+        delete option.yAxis
+    }
+    
+    return option
+}
+
+// 根据配色方案获取颜色
+function getColorByScheme(scheme) {
+    const colorSchemes = {
+        default: '#5470c6',
+        blue: '#1890ff',
+        green: '#52c41a',
+        warm: '#fa8c16',
+        cool: '#13c2c2'
+    }
+    return colorSchemes[scheme] || colorSchemes.default
 }
 </script>
 
