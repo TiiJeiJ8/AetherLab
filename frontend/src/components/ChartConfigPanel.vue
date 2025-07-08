@@ -2,184 +2,41 @@
 <div class="chart-config-panel">
 <!-- 右侧边栏总标题 -->
 <div class="panel-header-CCP">
-    <h3>Chart Configuration</h3>
-</div>
-
-<!-- 数据映射配置区域 -->
-<div class="mapping-section">
-    <div class="mapping-section-header">
-    <h4>Data Mapping</h4>
-    <div class="chart-type-tag"
-         @mouseenter="showTooltip($event, selectedChartType)"
-         @mouseleave="hideTooltip">
+    <h3>
+        Chart Configuration
+        <!-- 图表类型及相关提示 -->
+        <div
+            class="chart-type-tag"
+            @mouseenter="showTooltip($event, props.selectedChartType)"
+            @mouseleave="hideTooltip"
+            style="margin-left: 15%; position: absolute;"
+        >
         <span class="chart-type-icon" v-html="getChartIcon(selectedChartType)"></span>
         <span class="chart-type-name">{{ selectedChartType }}</span>
-    </div>
-    </div>
-
-    <!-- X轴配置 -->
-    <div class="mapping-item">
-    <div class="mapping-item-header">
-        <label class="mapping-label">
-        X Axis
-        <span class="required-star">*</span>
-        </label>
-        <div class="mapping-type-tag">category</div>
-    </div>
-    <div
-        class="drop-zone"
-        :class="{
-        'drop-zone-active': isDragOver.xAxis,
-        'drop-zone-filled': chartConfig.xAxis.field,
-        'drop-zone-error': dragError.xAxis
-        }"
-        @drop="handleDrop($event, 'xAxis')"
-        @dragover.prevent="handleDragOver($event, 'xAxis')"
-        @dragenter.prevent="handleDragEnter('xAxis')"
-        @dragleave.prevent="handleDragLeave('xAxis')"
-    >
-        <div v-if="!chartConfig.xAxis.field" class="drop-placeholder">
-        <div class="drop-icon">↓</div>
-        <span class="drop-text">Drag column here</span>
         </div>
-        <div v-else class="mapped-field">
-        <div class="field-info">
-            <span class="field-name">{{ chartConfig.xAxis.field }}</span>
-            <span class="field-type">{{ chartConfig.xAxis.type }}</span>
-        </div>
-        <button class="remove-btn" @click="removeMapping('xAxis')">×</button>
-        </div>
-    </div>
-    </div>
-
-    <!-- Y轴配置 -->
-    <div class="mapping-item">
-    <div class="mapping-item-header">
-        <label class="mapping-label">
-        Y Axis
-        <span class="required-star">*</span>
-    </label>
-        <div class="mapping-type-tag">value</div>
-    </div>
-    <div
-        class="drop-zone"
-        :class="{
-        'drop-zone-active': isDragOver.yAxis,
-        'drop-zone-filled': chartConfig.yAxis.field,
-        'drop-zone-error': dragError.yAxis
-        }"
-        @drop="handleDrop($event, 'yAxis')"
-        @dragover.prevent="handleDragOver($event, 'yAxis')"
-        @dragenter.prevent="handleDragEnter('yAxis')"
-        @dragleave.prevent="handleDragLeave('yAxis')"
-    >
-        <div v-if="!chartConfig.yAxis.field" class="drop-placeholder">
-        <div class="drop-icon">↓</div>
-        <span class="drop-text">Drag column here</span>
-        </div>
-        <div v-else class="mapped-field">
-        <div class="field-info">
-            <span class="field-name">{{ chartConfig.yAxis.field }}</span>
-            <span class="field-type">{{ chartConfig.yAxis.type }}</span>
-        </div>
-        <button class="remove-btn" @click="removeMapping('yAxis')">×</button>
-        </div>
-    </div>
-    </div>
-
-    <!-- 数据系列配置 -->
-    <div class="mapping-item">
-    <div class="mapping-item-header">
-        <label class="mapping-label">Data Series</label>
-        <div class="mapping-type-tag">value</div>
-    </div>
-    <div
-        class="drop-zone"
-        :class="{
-        'drop-zone-active': isDragOver.series,
-        'drop-zone-filled': chartConfig.series.length > 0,
-        'drop-zone-error': dragError.series
-        }"
-        @drop="handleDrop($event, 'series')"
-        @dragover.prevent="handleDragOver($event, 'series')"
-        @dragenter.prevent="handleDragEnter('series')"
-        @dragleave.prevent="handleDragLeave('series')"
-    >
-        <div v-if="chartConfig.series.length === 0" class="drop-placeholder">
-        <div class="drop-icon">↓</div>
-        <span class="drop-text">Drag column here</span>
-        </div>
-        <div v-else class="mapped-series">
-        <div
-            v-for="(serie, index) in chartConfig.series"
-            :key="index"
-            class="mapped-field"
-        >
-            <div class="field-info">
-            <span class="field-name">{{ serie.field }}</span>
-            <span class="field-type">{{ serie.type }}</span>
-            </div>
-            <button class="remove-btn" @click="removeSeriesMapping(index)">×</button>
-        </div>
-        </div>
-    </div>
-    </div>
+    </h3>
 </div>
 
-<!-- 数据过滤 -->
-<div class="filter-section">
-    <div class="section-header" @click="toggleDataFilter">
-    <h4>Data Filtering</h4>
-    <div class="toggle-icon" :class="{ 'toggle-open': showDataFilter }">▼</div>
-    </div>
-    <div v-if="showDataFilter" class="section-content">
-    <div class="filter-item">
-        <label>Data Range</label>
-        <select v-model="chartConfig.dataRange">
-        <option value="all">All Data</option>
-        <option value="first100">First 100 rows</option>
-        <option value="last100">Last 100 rows</option>
-        <option value="sample">Random Sample</option>
-        </select>
-    </div>
-    <div class="filter-item">
-        <label>Null Value Handling</label>
-        <select v-model="chartConfig.nullHandling">
-        <option value="ignore">Ignore null values</option>
-        <option value="zero">Replace with 0</option>
-        <option value="interpolate">Linear interpolation</option>
-        </select>
-    </div>
-    </div>
-</div>
+<!-- 动态数据映射配置区域 -->
+<ChartMappingConfig
+    v-if="currentTypeConfig.mapping"
+    :mappingConfig="currentTypeConfig.mapping"
+    v-model="chartConfig"
+/>
 
-<!-- 高级配置 -->
-<div class="advanced-section">
-    <div class="section-header" @click="toggleAdvancedConfig">
-    <h4>Advanced Settings</h4>
-    <div class="toggle-icon" :class="{ 'toggle-open': showAdvancedConfig }">▼</div>
-    </div>
-    <div v-if="showAdvancedConfig" class="section-content">
-    <div class="config-item">
-        <label>Chart Title</label>
-        <input type="text" v-model="chartConfig.title" placeholder="Enter chart title">
-    </div>
-    <div class="config-item">
-        <label>Color Theme</label>
-        <select v-model="chartConfig.colorScheme">
-        <option value="default">Default</option>
-        <option value="blue">Blue</option>
-        <option value="green">Green</option>
-        <option value="warm">Warm</option>
-        <option value="cool">Cool</option>
-        </select>
-    </div>
-    <div class="config-item">
-        <label>Animation</label>
-        <input type="checkbox" v-model="chartConfig.animation">
-    </div>
-    </div>
-</div>
+<!-- 动态数据过滤配置区域 -->
+<ChartFilterConfig
+    v-if="currentTypeConfig.filter && currentTypeConfig.filter.length"
+    :filterConfig="currentTypeConfig.filter"
+    v-model="chartConfig"
+/>
+
+<!-- 动态高级配置区域 -->
+<ChartAdvancedConfig
+    v-if="currentTypeConfig.advanced && currentTypeConfig.advanced.length"
+    :advancedConfig="currentTypeConfig.advanced"
+    v-model="chartConfig"
+/>
 
 <!-- 操作按钮 -->
 <div class="action-section">
@@ -244,6 +101,16 @@
 import { ref, computed, watch, reactive, nextTick } from 'vue'
 import { chartIcons } from '../assets/JS/SVG/chartIcons.js'
 import { chartsTooltipConfig } from '../assets/JS/Config/ChartsTooltipConfig.js'
+import { chartTypeConfig } from '../assets/JS/Config/ChartTypeConfig.js'
+import ChartMappingConfig from './ChartMappingConfig.vue'
+import ChartFilterConfig from './ChartFilterConfig.vue'
+import ChartAdvancedConfig from './ChartAdvancedConfig.vue'
+
+// 当前类型的配置
+const currentTypeConfig = computed(() => {
+  // 兼容首字母大写/小写
+    return chartTypeConfig[props.selectedChartType] || chartTypeConfig[props.selectedChartType.charAt(0).toUpperCase() + props.selectedChartType.slice(1)] || {}
+})
 
 // Props
 const props = defineProps({

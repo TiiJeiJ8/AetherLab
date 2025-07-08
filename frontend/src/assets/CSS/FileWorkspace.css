@@ -30,7 +30,7 @@
     opacity: 0.6;
 }
 
-/* 拖拽时的样式 - 提高性能 */
+/* 拖拽时的样式 */
 .file-workspace.dragging {
     z-index: 9999;
     transform: scale(1.02);

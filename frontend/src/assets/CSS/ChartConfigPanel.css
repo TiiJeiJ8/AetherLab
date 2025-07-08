@@ -329,9 +329,10 @@
 }
 
 .drop-zone {
-    min-height: 50px;
+    min-height: 80px;
     border: 2px dashed var(--border-color, #e5e5e5);
     border-radius: 8px;
+    padding: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -427,7 +428,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    color: var(--text-secondary, #666666);
+    padding: 16px 0;
+    color: var(--text-secondary, #999);
     transition: all 0.3s ease;
 }
 
@@ -599,7 +601,6 @@
     box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
 }
 
-/* 缺失的CSS样式 */
 .mapped-series {
     display: flex;
     flex-direction: column;
