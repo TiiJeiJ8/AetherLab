@@ -178,8 +178,10 @@ const chartConfig = ref({
 
 // 计算属性
 const isConfigValid = computed(() => {
-    return chartConfig.value.xAxis.field &&
-            (chartConfig.value.yAxis.field || chartConfig.value.series.length > 0)
+  const xValid = chartConfig.value.xAxis && chartConfig.value.xAxis.field;
+  const y = chartConfig.value.yAxis;
+  const yValid = Array.isArray(y) ? y.length > 0 : (y && y.field);
+  return xValid && yValid;
 })
 
 function getChartIcon (type) {
@@ -420,6 +422,11 @@ watch(() => props.selectedChartType, (newType) => {
         chartConfig.value.yAxis = { field: '', type: '' }
     }
 })
+
+// 监听 chartConfig 变化
+watch(chartConfig, (val) => {
+    console.log('Current chartConfig:', JSON.parse(JSON.stringify(val)))
+}, { deep: true })
 </script>
 
 <style scoped>

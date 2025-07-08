@@ -378,21 +378,25 @@ function stopDrag(event) {
 // 列拖拽功能
 function handleDragStart(column, index, event) {
   draggedColumn.value = index
-  
-  // 设置拖拽数据
+
+  // 设置拖拽数据， file 和 index 字段，确保唯一性
   const dragData = {
     type: 'column',
-    column: column,
+    column: {
+      ...column,
+      file: props.fileInfo?.name || '',
+      index // 唯一标识同文件内的同名列
+    },
     source: 'file-structure'
   }
-  
+
   event.dataTransfer.setData('application/json', JSON.stringify(dragData))
   event.dataTransfer.effectAllowed = 'copy'
-  
+
   // 自定义拖拽图像
   const dragImage = createDragImage(column)
   event.dataTransfer.setDragImage(dragImage, 0, 0)
-  
+
   emit('column-drag', { action: 'start', column, index })
 }
 

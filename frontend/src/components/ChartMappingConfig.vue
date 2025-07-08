@@ -85,24 +85,29 @@ function handleDrop(event, key, multiple) {
         let dragDataStr = event.dataTransfer.getData('application/json') || event.dataTransfer.getData('text/plain')
         const dragData = JSON.parse(dragDataStr)
         if (dragData.type === 'column') {
+            // 多选
             if (multiple) {
                 if (!Array.isArray(localConfig.value[key])) {
                     localConfig.value[key] = []
                 }
-                const exists = localConfig.value[key].some(f => f.field === dragData.column.name)
+                // 唯一性判断需包含 index
+                const exists = localConfig.value[key].some(f => f.field === dragData.column.name && f.file === dragData.column.file && f.index === dragData.column.index)
                 if (!exists) {
                     localConfig.value[key].push({
                         field: dragData.column.name,
                         type: dragData.column.type,
-                        file: dragData.column.file || dragData.fileName || dragData.file || ''
+                        file: dragData.column.file || dragData.fileName || dragData.file || '',
+                        index: dragData.column.index
                     })
                     emit('update:modelValue', { ...localConfig.value })
                 }
+            // 单选
             } else {
                 updateField(key, {
                     field: dragData.column.name,
                     type: dragData.column.type,
-                    file: dragData.column.file || dragData.fileName || dragData.file || ''
+                    file: dragData.column.file || dragData.fileName || dragData.file || '',
+                    index: dragData.column.index
                 })
             }
         }

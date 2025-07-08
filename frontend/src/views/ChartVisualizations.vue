@@ -76,8 +76,10 @@
 
     <!-- 文件结构面板 -->
     <FileStructurePanel
+      v-if="currentStructureFile"
       :fileInfo="currentStructureFile"
       :visible="showStructurePanel"
+      :current-file="currentStructureFile.name"
       @close="showStructurePanel = false"
       @minimize="handleStructureMinimize"
       @column-drag="handleColumnDrag"
@@ -98,7 +100,7 @@ import FileWorkspace from '../components/FileWorkspace.vue'
 import FileStructurePanel from '../components/FileStructurePanel.vue'
 import ChartConfigPanel from '../components/ChartConfigPanel.vue'
 import { getFilePreview } from '../assets/JS/services/FileServices.js'
-import {ref, nextTick} from 'vue'
+import { ref, nextTick, computed } from 'vue'
 
 // 文件上传相关
 const showFileUpload = ref(false)
@@ -111,8 +113,25 @@ const showDataPreview = ref(false)
 const currentDataFile = ref(null)
 const previewData = ref([])
 
-// 工作区相关
+// 全局文件数据结构优化
+// workspaceFiles: [{ name, id, size, status, parsedData: [...] }, ...]
 const workspaceFiles = ref([])
+// 构建文件名到数据的映射，自动将 headers+data 组装成对象数组，便于多文件查找
+const fileDataMap = computed(() => {
+  const map = {}
+  workspaceFiles.value.forEach(file => {
+    if (file.data && file.headers) {
+      const rows = file.data
+      if (Array.isArray(rows) && Array.isArray(file.headers)) {
+        map[file.name] = rows.map(row =>
+          Object.fromEntries(file.headers.map((h, i) => [h, row[i]]))
+        )
+      }
+    }
+  })
+  console.log('[fileDataMap computed]', map)
+  return map
+})
 
 // 文件结构面板相关
 const showStructurePanel = ref(false)
@@ -121,15 +140,7 @@ const currentStructureFile = ref(null)
 // 图表配置相关
 const selectedChartType = ref('Bar') // 使用首字母大写格式与chartIcons.js一致
 const chartConfig = ref(null)
-
-// 测试图表绘制
-const chartOption = ref({
-  title: { text: '示例图表' },
-  tooltip: {},
-  xAxis: { data: ['A', 'B', 'C', 'D'] },
-  yAxis: {},
-  series: [{ type: 'line', data: [23, 45, 12, 37] }]
-})
+const chartOption = ref(null)
 
 // 图表存储区（可从后端获取）
 const chartHistory = ref([
@@ -195,10 +206,14 @@ function onChartTypeSelect(type) {
     // 可添加处理为加载图表类型、切换组件等功能
 }
 
+
 // 工作区相关方法
 function handleWorkspaceUpdate(files) {
     workspaceFiles.value = [...files]
     console.log('Workspace updated:', workspaceFiles.value.length, 'files')
+    // 调试：输出全局文件数据结构
+    console.log('workspaceFiles:', JSON.parse(JSON.stringify(workspaceFiles.value)))
+    console.log('fileDataMap:', JSON.parse(JSON.stringify(fileDataMap.value)))
 }
 
 function handleWorkspaceRemove(file) {
@@ -265,120 +280,114 @@ function handleColumnDrag(dragInfo) {
 }
 
 // 图表配置处理方法
+
 function handleConfigChange(config) {
-    console.log('Chart config changed:', config)
+    console.log('Chart config changed:', JSON.parse(JSON.stringify(config)))
     chartConfig.value = config
+    // 调试：输出当前 chartConfig
+    console.log('当前 chartConfig:', JSON.parse(JSON.stringify(chartConfig.value)))
 }
+
+
+
+// 导入数据合并工具函数
+import { hasPrimaryKey, mergeChartData } from '../assets/JS/utils/dataMergeUtils.js';
 
 function handleGenerateChart(config) {
-    console.log('Generating chart with config:', config)
-    
-    if (!currentStructureFile.value || !currentStructureFile.value.parsedData) {
-        alert('请先选择并分析数据文件')
-        return
-    }
-    
-    // 根据配置生成ECharts图表
-    const newChartOption = generateEChartOption(config, currentStructureFile.value.parsedData)
-    
-    if (newChartOption) {
-        chartOption.value = null
-        nextTick(() => {
-            chartOption.value = newChartOption
-        })
-    }
+  console.log('[handleGenerateChart] config:', JSON.parse(JSON.stringify(config)));
+  console.log('[handleGenerateChart] fileDataMap:', JSON.parse(JSON.stringify(fileDataMap.value)));
+  // 检查是否有用到的文件
+  const fields = [];
+  if (config.xAxis) fields.push(config.xAxis);
+  if (Array.isArray(config.yAxis)) {
+    config.yAxis.forEach(y => fields.push(y));
+  } else if (config.yAxis) {
+    fields.push(config.yAxis);
+  }
+  const filesNeeded = Array.from(new Set(fields.map(f => f.file)));
+  // 合并数据
+  const { xData, yDataArr, mergeType } = mergeChartData(config, fileDataMap.value);
+  if (!xData || xData.length === 0) {
+    alert('Main file data is empty, unable to generate chart.');
+    return;
+  }
+  // UI提示
+  if (mergeType === 'rowIndex') {
+    alert('When no primary key is set, data will be aligned by row index and any extra rows will be truncated. It is recommended to set a primary key for more accurate data merging.');
+  }
+  // 生成ECharts配置
+  const newChartOption = generateEChartOption(config, fileDataMap.value, xData, yDataArr);
+  if (newChartOption) {
+    chartOption.value = null;
+    nextTick(() => {
+      chartOption.value = newChartOption;
+    });
+  }
 }
 
-// 生成ECharts配置
-function generateEChartOption(config, data) {
-    const { xAxis, yAxis, series, title, colorScheme, animation } = config
-    
-    if (!data || data.length === 0) {
-        alert('数据为空，无法生成图表')
-        return null
-    }
-    
-    // 提取数据
-    const xData = data.map(row => row[xAxis.field])
-    const yData = data.map(row => parseFloat(row[yAxis.field]) || 0)
-    
-    // 基础配置
-    const option = {
-        title: {
-            text: title || `${yAxis.field} vs ${xAxis.field}`,
-            left: 'center',
-            textStyle: {
-                fontSize: 16,
-                fontWeight: 'bold'
-            }
-        },
-        tooltip: {
-            trigger: 'axis',
-            formatter: function(params) {
-                return `${params[0].axisValue}: ${params[0].value}`
-            }
-        },
-        legend: {
-            data: [yAxis.field],
-            top: 'bottom'
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                dataView: { show: true, readOnly: false },
-                magicType: { show: true, type: ['line', 'bar'] },
-                restore: { show: true },
-                saveAsImage: { show: true }
-            }
-        },
-        xAxis: {
-            type: 'category',
-            data: xData,
-            axisLabel: {
-                interval: 0,
-                rotate: xData.length > 10 ? 45 : 0
-            }
-        },
-        yAxis: {
-            type: 'value',
-            name: yAxis.field
-        },
-        series: [{
-            name: yAxis.field,
-            type: selectedChartType.value.toLowerCase(), // 转换为小写供ECharts使用
-            data: yData,
-            animationDuration: animation ? 1500 : 0,
-            itemStyle: {
-                color: getColorByScheme(colorScheme)
-            }
-        }],
-        animation: animation,
-        animationDuration: animation ? 1500 : 0
-    }
-    
-    // 根据图表类型调整配置
-    if (selectedChartType.value === 'Pie' || selectedChartType.value === 'pie') {
-        option.series[0] = {
-            name: yAxis.field,
-            type: 'pie',
-            radius: '60%',
-            data: xData.map((name, index) => ({
-                name,
-                value: yData[index]
-            })),
-            emphasis: {
-                itemStyle: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
+// 生成ECharts配置，支持多文件数据查找和主键/行号对齐
+function generateEChartOption(config, fileDataMap, xData, yDataArr) {
+  const { yAxis, title, colorScheme, animation } = config;
+  // series配置
+  const yArr = Array.isArray(yAxis) ? yAxis : [yAxis];
+  const seriesArr = yArr.map((y, idx) => ({
+    name: y.field,
+    type: selectedChartType.value.toLowerCase(),
+    data: yDataArr[idx],
+    animationDuration: animation ? 1500 : 0,
+    itemStyle: { color: getColorByScheme(colorScheme) }
+  }));
+  // 基础option
+  const option = {
+    title: {
+      text: title || `${yArr.map(y=>y.field).join(',')} vs ${config.xAxis.field}`,
+      left: 'center',
+      textStyle: { fontSize: 16, fontWeight: 'bold' }
+    },
+    tooltip: { trigger: 'axis' },
+    legend: { data: yArr.map(y=>y.field), top: 'bottom' },
+    toolbox: {
+      show: true,
+      feature: {
+        dataView: { show: true, readOnly: false },
+        magicType: { show: true, type: ['line', 'bar'] },
+        restore: { show: true },
+        saveAsImage: { show: true }
+      }
+    },
+    xAxis: {
+      type: 'category',
+      data: xData,
+      axisLabel: { interval: 0, rotate: xData.length > 10 ? 45 : 0 }
+    },
+    yAxis: { type: 'value', name: yArr.map(y=>y.field).join(',') },
+    series: seriesArr,
+    animation: animation,
+    animationDuration: animation ? 1500 : 0
+  };
+  // 饼图特殊处理
+  if (selectedChartType.value === 'Pie' || selectedChartType.value === 'pie') {
+    option.series = [
+      {
+        name: yArr.map(y=>y.field).join(','),
+        type: 'pie',
+        radius: '60%',
+        data: xData.map((name, i) => ({ name, value: yDataArr[0][i] })),
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
         }
-        delete option.xAxis
-        delete option.yAxis
-    }
-    
-    return option
+      }
+    ];
+    delete option.xAxis;
+    delete option.yAxis;
+  }
+  // 调试输出
+  console.log('[generateEChartOption] option:', option);
+  return option;
 }
 
 // 根据配色方案获取颜色

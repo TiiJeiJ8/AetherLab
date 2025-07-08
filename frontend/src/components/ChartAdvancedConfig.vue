@@ -10,12 +10,13 @@
                 <!-- 组件标题 -->
                 <label>{{ item.label }}</label>
 
-                <!-- 输入select,显示选择框 -->
+                <!-- 输入number,显示数字输入框 -->
                 <input v-if="item.type === 'number'" type="number"
                 :min="item.min" :max="item.max"
                 :value="localConfig[item.key]"
                 @input="updateField(item.key, $event.target.valueAsNumber)" />
-                <!-- 选项列表 -->
+
+                <!-- 输入checkbox,显示复选框 -->
                 <input v-if="item.type === 'checkbox'" type="checkbox"
                 :checked="localConfig[item.key]"
                 @change="updateField(item.key, $event.target.checked)" />
@@ -93,5 +94,18 @@ function toggleCollapse() {
 .collapse-enter-to, .collapse-leave-from {
     max-height: 300px;
     opacity: 1;
+}
+input[type="number"], input[type="text"] {
+    background: var(--bg-secondary);
+    color: var(--text-main);
+    border: 1px solid var(--text-secondary);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+input[type="checkbox"] {
+    accent-color: #3b82f6;
 }
 </style>
