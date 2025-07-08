@@ -5,7 +5,7 @@ export const chartTypeConfig = {
     Line: {
         mapping: [
             { key: 'xAxis', label: 'X Axis', type: 'dimension', required: true },
-            { key: 'yAxis', label: 'Y Axis', type: 'measure', required: true },
+            { key: 'yAxis', label: 'Y Axis', type: 'measure', required: true, multiple: true },
         ],
         filter: [
             { key: 'dataRange', label: 'Data Range', type: 'select', options: ['all', 'first100', 'last100', 'sample'], default: 'all' }
@@ -17,7 +17,7 @@ export const chartTypeConfig = {
     Bar: {
         mapping: [
             { key: 'xAxis', label: 'X Axis', type: 'dimension', required: true },
-            { key: 'yAxis', label: 'Y Axis', type: 'measure', required: true }
+            { key: 'yAxis', label: 'Y Axis', type: 'measure', required: true, multiple: true },
         ],
         filter: [
             { key: 'dataRange', label: 'Data Range', type: 'select', options: ['all', 'first100', 'last100', 'sample'], default: 'all' }
@@ -29,7 +29,7 @@ export const chartTypeConfig = {
     Pie: {
         mapping: [
             { key: 'category', label: 'Category', type: 'dimension', required: true },
-            { key: 'value', label: 'Value', type: 'measure', required: true }
+            { key: 'value', label: 'Value', type: 'measure', required: true },
         ],
         filter: [],
         advanced: [
