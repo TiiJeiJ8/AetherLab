@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import ThemeButton from '@/components/ThemeButton.vue'
+import ThemeButton from './components/Common/ThemeButton.vue'
 
 export default {
   name: 'App',

@@ -218,7 +218,7 @@
 /* eslint-disable */
 import { ref, nextTick, onMounted, computed, watch } from 'vue'
 import DataPreviewModal from './DataPreviewModal.vue'
-import { getThemeIcon } from '../assets/JS/SVG/icons.js'
+import { getThemeIcon } from '../../assets/JS/SVG/icons.js'
 import {
     uploadFile,
     deleteFile,
@@ -229,7 +229,7 @@ import {
     getBackendStatus,
     syncFileToBackend,
     cancelUpload
-} from '../assets/JS/services/FileServices.js'
+} from '../../assets/JS/services/FileServices.js'
 
 const props = defineProps({
     show: Boolean,
@@ -621,5 +621,5 @@ async function checkConnectionStatus() {
 </script>
 
 <style scoped>
-@import '../assets/CSS/FileUploadModal.css';
+@import '../../assets/CSS/FileUploadModal.css';
 </style>

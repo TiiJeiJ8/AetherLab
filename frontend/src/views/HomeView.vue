@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import BaseCard from '../components/Card.vue'
+import BaseCard from '../components/Common/Card.vue'
 
 export default {
   components: {

@@ -56,38 +56,38 @@ import { getThemeIcon } from '../assets/JS/icons.js'
 import { formatFileSize, formatUploadSpeed, formatRemainingTime } from '../utils/uploadConfig.js'
 
 const props = defineProps({
-  show: {
-    type: Boolean,
-    default: false
-  },
-  fileName: {
-    type: String,
-    required: true
-  },
-  fileSize: {
-    type: Number,
-    required: true
-  },
-  progress: {
-    type: Number,
-    default: 0
-  },
-  status: {
-    type: String,
-    default: 'uploading'
-  },
-  speed: {
-    type: Number,
-    default: 0
-  },
-  estimatedTimeLeft: {
-    type: Number,
-    default: 0
-  },
-  chunks: {
-    type: Object,
-    default: null
-  }
+    show: {
+        type: Boolean,
+        default: false
+    },
+    fileName: {
+        type: String,
+        required: true
+    },
+    fileSize: {
+        type: Number,
+        required: true
+    },
+    progress: {
+        type: Number,
+        default: 0
+    },
+    status: {
+        type: String,
+        default: 'uploading'
+    },
+    speed: {
+        type: Number,
+        default: 0
+    },
+    estimatedTimeLeft: {
+        type: Number,
+        default: 0
+    },
+    chunks: {
+        type: Object,
+        default: null
+    }
 })
 
 const emit = defineEmits(['pause', 'resume', 'cancel'])
@@ -97,14 +97,14 @@ const canResume = computed(() => props.status === 'paused')
 const canCancel = computed(() => ['uploading', 'paused', 'error'].includes(props.status))
 
 function getStatusText (status) {
-  const statusMap = {
-    uploading: '上传中',
-    paused: '已暂停',
-    error: '上传失败',
-    completed: '上传完成',
-    cancelled: '已取消'
-  }
-  return statusMap[status] || '未知状态'
+    const statusMap = {
+        uploading: '上传中',
+        paused: '已暂停',
+        error: '上传失败',
+        completed: '上传完成',
+        cancelled: '已取消'
+    }
+    return statusMap[status] || '未知状态'
 }
 </script>
 

@@ -50,8 +50,8 @@
 </template>
 <script setup>
 /* eslint-disable */
-import { chartTypes, chartIcons } from '../assets/JS/SVG/chartIcons.js'
-import { chartsTooltipConfig } from '../assets/JS/Config/ChartsTooltipConfig.js'
+import { chartTypes, chartIcons } from '../../assets/JS/SVG/chartIcons.js'
+import { chartsTooltipConfig } from '../../assets/JS/Config/ChartsTooltipConfig.js'
 import { watch, ref, reactive, nextTick } from 'vue'
 
 const props = defineProps({

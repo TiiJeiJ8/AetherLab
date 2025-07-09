@@ -313,5 +313,5 @@ defineExpose({
 </script>
 
 <style scoped>
-@import '../assets/CSS/FileWorkspace.css';
+@import '../../assets/CSS/FileWorkspace.css';
 </style>

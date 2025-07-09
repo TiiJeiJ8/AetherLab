@@ -472,5 +472,5 @@ function handleGlobalClick(event) {
 </script>
 
 <style scoped>
-@import '../assets/CSS/FileStructurePanel.css';
+@import '../../assets/CSS/FileStructurePanel.css';
 </style>

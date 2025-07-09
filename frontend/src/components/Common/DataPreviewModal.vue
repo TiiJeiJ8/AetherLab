@@ -56,7 +56,7 @@
 
 <script setup>
 /* eslint-disable */
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
     show: Boolean,
@@ -130,5 +130,5 @@ function onClose() {
 </script>
 
 <style scoped>
-@import '../assets/CSS/DataPreviewModal.css';
+@import '../../assets/CSS/DataPreviewModal.css';
 </style>

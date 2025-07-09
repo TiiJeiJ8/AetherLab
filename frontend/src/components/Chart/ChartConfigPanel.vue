@@ -99,9 +99,9 @@
 <script setup>
 /* eslint-disable */
 import { ref, computed, watch, reactive, nextTick } from 'vue'
-import { chartIcons } from '../assets/JS/SVG/chartIcons.js'
-import { chartsTooltipConfig } from '../assets/JS/Config/ChartsTooltipConfig.js'
-import { chartTypeConfig } from '../assets/JS/Config/ChartTypeConfig.js'
+import { chartIcons } from '../../assets/JS/SVG/chartIcons.js'
+import { chartsTooltipConfig } from '../../assets/JS/Config/ChartsTooltipConfig.js'
+import { chartTypeConfig } from '../../assets/JS/Config/ChartTypeConfig.js'
 import ChartMappingConfig from './ChartMappingConfig.vue'
 import ChartFilterConfig from './ChartFilterConfig.vue'
 import ChartAdvancedConfig from './ChartAdvancedConfig.vue'
@@ -431,6 +431,6 @@ watch(chartConfig, (val) => {
 
 <style scoped>
 
-@import '../assets/CSS/ChartConfigPanel.css';
+@import '../../assets/CSS/ChartConfigPanel.css';
 
 </style>

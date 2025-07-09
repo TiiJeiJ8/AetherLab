@@ -135,7 +135,7 @@ export async function parseFileContent(file) {
                 // 过滤空行
                 jsonData = jsonData.filter(row => row.some(cell => cell !== null && cell !== ''))
 
-                // 限制预览行数
+                //! 限制预览行数
                 const previewData = jsonData.slice(0, 100)
 
                 resolve({
