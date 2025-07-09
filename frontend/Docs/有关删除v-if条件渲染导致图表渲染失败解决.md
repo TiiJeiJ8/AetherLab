@@ -52,10 +52,24 @@
    const chartOption = ref(null)
    ```
 的原因是：
-- 这样可以保证 <ChartDisplay :option="chartOption" /> 组件在页面初始时就会被挂载，ECharts 的 DOM 容器会被创建，生命周期钩子（如 onMounted）会被正常触发。
-- 即使没有图表数据，option 也是一个空对象，ChartDisplay 内部的 hasSeries 计算属性会自动判断 series 是否存在，从而显示“没有图表数据”的提示。
-- 当后续有图表数据时，只需给 chartOption.value 赋值，ECharts 实例已初始化，可以直接 setOption，图表能正常渲染。
-- 避免了 option 为 null 时组件 watch 触发但 ECharts 实例未初始化、DOM 未挂载等问题，彻底解决“无数据时无提示，有数据时不渲染”的 bug。
+- 这样可以保证 <ChartDisplay :option="chartOption" /> 组件在页面初始时就会被挂载，ECharts 的 DOM 容器会被创建，生命周期钩子（如 `onMounted`）会被正常触发。
+- 即使没有图表数据，`option` 也是一个空对象，ChartDisplay 内部的 `hasSeries` 计算属性会自动判断 series 是否存在，从而显示“没有图表数据”的提示。
+- 当后续有图表数据时，只需给 chartOption.value 赋值，ECharts 实例已初始化，可以直接 `setOption`，图表能正常渲染。
+- 避免了 `option` 为 `null` 时组件 `watch` 触发但 ECharts 实例未初始化、DOM 未挂载等问题，彻底解决“无数据时无提示，有数据时不渲染”的 bug。
+
+在 Vue 组件和 ECharts 场景下，`null` 和 `{}` 的区别如下：
+
+null 表示“没有值”或“未初始化”。如果 `option` 为 `null`，很多依赖 `option` 的逻辑（如 ECharts 初始化、`series` 判断等）会失效，组件内部的计算属性和渲染流程可能不会触发，ECharts 也不会被初始化。
+{} 是一个空对象，表示“有一个空的配置”。即使没有数据，组件依然会被挂载，ECharts 容器和实例会被正常创建，后续只要给 `option` 赋新值即可直接渲染图表。
+实际效果：
+
+`option: null` 时，ChartDisplay 组件内部的 `hasSeries` 计算属性会返回 `false`，但如果组件依赖 `option` 初始化 ECharts，可能不会执行，导致后续 `setOption` 失效。
+`option: {}` 时，组件生命周期完整，ECharts 能初始化，`hasSeries` 依然为 `false`（`series` 不存在），但后续 `option` 更新时能直接 `setOption`，图表能正常显示。
+总结：
+
+用 `{}` 可以保证组件和 ECharts 实例始终存在，后续数据驱动渲染不会出错。
+用 `null` 容易导致初始化和响应式流程中断，出现“无数据时无提示，有数据时不渲染”的问题。
+所以推荐用 `{}` 而不是 `null`。
 
 ## 总结
 让 `chartOption` 默认是 `{}`，可以保证 ChartDisplay 组件生命周期、ECharts 实例初始化和数据驱动渲染的全流程都不会出错，是响应式和组件复用的最佳实践。
