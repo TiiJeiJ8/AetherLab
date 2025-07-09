@@ -1,6 +1,11 @@
 /* eslint-disable */
 import { ref, computed } from 'vue'
 
+// 数据预览相关
+export const showDataPreview = ref(false)
+export const currentDataFile = ref(null)
+export const previewData = ref([])
+
 // 全局文件数据结构优化
 // workspaceFiles: [{ name, id, size, status, parsedData: [...] }, ...]
 export const workspaceFiles = ref([])

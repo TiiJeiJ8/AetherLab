@@ -104,7 +104,7 @@ import DataPreviewModal from '../components/DataPreviewModal.vue'
 import FileWorkspace from '../components/FileWorkspace.vue'
 import FileStructurePanel from '../components/FileStructurePanel.vue'
 import ChartConfigPanel from '../components/ChartConfigPanel.vue'
-import { workspaceFiles, fileDataMap } from '@/assets/JS/utils/dataStructureOptimize.js'
+import { workspaceFiles, fileDataMap, showDataPreview, currentDataFile, previewData } from '@/assets/JS/utils/dataStructureOptimize.js'
 import { generateEChartOption, getColorByScheme } from '../assets/JS/utils/echartOptionUtils.js'
 import { handleWorkspaceUpdate, handleWorkspaceRemove, handleWorkspacePreview, loadFilePreview, handleWorkspaceClear } from '../assets/JS/utils/workforceUtils.js'
 
@@ -114,10 +114,8 @@ function UploadFiles() {
   showFileUpload.value = true
 }
 
-// 数据预览相关
-const showDataPreview = ref(false)
-const currentDataFile = ref(null)
-const previewData = ref([])
+// 数据预览相关（已全局管理，删除本地定义）
+// showDataPreview、currentDataFile、previewData 已由 dataStructureOptimize.js 提供
 
 // 文件结构面板相关
 const showStructurePanel = ref(false)
@@ -126,7 +124,7 @@ const currentStructureFile = ref(null)
 // 图表配置相关
 const selectedChartType = ref('Line')
 const chartConfig = ref(null)
-const chartOption = ref(null)
+const chartOption = ref({})
 
 // 图表存储区（可从配置面板保存当前的图表配置、也可从后端获取）
 const chartHistory = ref([
@@ -298,9 +296,8 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   gap: 32px;
   margin-left: 7%;
   margin-right: 7%;
-  margin-top: 5%;
+  margin-top: 3.5%;
   min-height: 500px;
-  padding-top: 80px;
 }
 @media (max-width: 767px) {
   .main-content {

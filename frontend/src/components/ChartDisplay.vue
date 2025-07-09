@@ -40,11 +40,12 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .chart-display {
-    width: 90%;
+    width: 100%;
     height: 100%;
     min-height: clamp(300px, 60vh, 600px); /* 响应式高度 */
     background: var(--bg-color, #fff);
     border-radius: clamp(8px, 2vw, 12px);
+    box-shadow: 0 0 1px 1px var(--text-color);
     position: relative;
     display: flex;
     align-items: center;
