@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Top Bar -->
     <div class="py-5">
       <TopBar :actions="[
         { type: 'button', label: 'Files', onClick: UploadFiles },
@@ -12,7 +13,7 @@
 
     <!-- 左侧边栏 -->
     <SideBar
-      position="left"
+    position="left"
       :collapsedWidth="40"
       :expandedWidth="180">
       <ChartTypeSelector @select="onChartTypeSelect" />
@@ -20,16 +21,19 @@
 
     <!-- 右侧边栏 -->
     <SideBar
-      position="right"
-      :collapsedWidth="40"
-      :expandedWidth="400">
-      <ChartConfigPanel
+    position="right"
+    :collapsedWidth="40"
+    :expandedWidth="400">
+    <ChartConfigPanel
         :selectedChartType="selectedChartType"
         :currentFile="currentStructureFile"
         @config-change="handleConfigChange"
         @generate-chart="handleGenerateChart"
-      />
+        />
     </SideBar>
+
+    <!-- Empty Space -->
+    <div class="empty-space"></div>
 
     <!-- 绘制区 -->
     <div class="main-content">
@@ -89,6 +93,7 @@
 
 <script setup>
 /* eslint-disable */
+import { ref, nextTick } from 'vue'
 import TopBar from '../components/TopBar.vue'
 import SideBar from '../components/SideBar.vue'
 import ChartTypeSelector from '../components/ChartIcon.vue'
@@ -99,8 +104,9 @@ import DataPreviewModal from '../components/DataPreviewModal.vue'
 import FileWorkspace from '../components/FileWorkspace.vue'
 import FileStructurePanel from '../components/FileStructurePanel.vue'
 import ChartConfigPanel from '../components/ChartConfigPanel.vue'
-import { getFilePreview } from '../assets/JS/services/FileServices.js'
-import { ref, nextTick, computed } from 'vue'
+import { workspaceFiles, fileDataMap } from '@/assets/JS/utils/dataStructureOptimize.js'
+import { generateEChartOption, getColorByScheme } from '../assets/JS/utils/echartOptionUtils.js'
+import { handleWorkspaceUpdate, handleWorkspaceRemove, handleWorkspacePreview, loadFilePreview, handleWorkspaceClear } from '../assets/JS/utils/workforceUtils.js'
 
 // 文件上传相关
 const showFileUpload = ref(false)
@@ -113,36 +119,16 @@ const showDataPreview = ref(false)
 const currentDataFile = ref(null)
 const previewData = ref([])
 
-// 全局文件数据结构优化
-// workspaceFiles: [{ name, id, size, status, parsedData: [...] }, ...]
-const workspaceFiles = ref([])
-// 构建文件名到数据的映射，自动将 headers+data 组装成对象数组，便于多文件查找
-const fileDataMap = computed(() => {
-  const map = {}
-  workspaceFiles.value.forEach(file => {
-    if (file.data && file.headers) {
-      const rows = file.data
-      if (Array.isArray(rows) && Array.isArray(file.headers)) {
-        map[file.name] = rows.map(row =>
-          Object.fromEntries(file.headers.map((h, i) => [h, row[i]]))
-        )
-      }
-    }
-  })
-  console.log('[fileDataMap computed]', map)
-  return map
-})
-
 // 文件结构面板相关
 const showStructurePanel = ref(false)
 const currentStructureFile = ref(null)
 
 // 图表配置相关
-const selectedChartType = ref('Bar') // 使用首字母大写格式与chartIcons.js一致
+const selectedChartType = ref('Line')
 const chartConfig = ref(null)
 const chartOption = ref(null)
 
-// 图表存储区（可从后端获取）
+// 图表存储区（可从配置面板保存当前的图表配置、也可从后端获取）
 const chartHistory = ref([
   {
     title: '销售柱状图',
@@ -206,58 +192,6 @@ function onChartTypeSelect(type) {
     // 可添加处理为加载图表类型、切换组件等功能
 }
 
-
-// 工作区相关方法
-function handleWorkspaceUpdate(files) {
-    workspaceFiles.value = [...files]
-    console.log('Workspace updated:', workspaceFiles.value.length, 'files')
-    // 调试：输出全局文件数据结构
-    console.log('workspaceFiles:', JSON.parse(JSON.stringify(workspaceFiles.value)))
-    console.log('fileDataMap:', JSON.parse(JSON.stringify(fileDataMap.value)))
-}
-
-function handleWorkspaceRemove(file) {
-    console.log('File removed from workspace:', file.name)
-    // 从工作区数组中移除文件
-    const index = workspaceFiles.value.findIndex(f => f.id === file.id)
-    if (index !== -1) {
-        workspaceFiles.value.splice(index, 1)
-    }
-}
-
-function handleWorkspacePreview(file) {
-    // 预览工作区中的文件
-    console.log('Preview workspace file:', file.name)
-    currentDataFile.value = file
-    
-    // 使用与 FileUploadModal 相同的预览逻辑
-    if (file.previewData) {
-        // 如果文件已经有预览数据，直接使用
-        previewData.value = file.previewData
-        showDataPreview.value = true
-    } else {
-        // 否则读取文件内容
-        loadFilePreview(file)
-    }
-}
-
-// 加载文件预览数据
-async function loadFilePreview(file) {
-    try {
-        const previewResult = await getFilePreview(file.id)
-        previewData.value = previewResult.data
-        showDataPreview.value = true
-    } catch (error) {
-        console.error('Preview failed:', error)
-        alert('Preview failed: ' + error.message)
-    }
-}
-
-function handleWorkspaceClear() {
-    console.log('Workspace cleared')
-    workspaceFiles.value = []
-}
-
 // 文件结构面板处理方法
 function handleShowStructure(file) {
     console.log('Showing structure for file:', file.name)
@@ -280,7 +214,6 @@ function handleColumnDrag(dragInfo) {
 }
 
 // 图表配置处理方法
-
 function handleConfigChange(config) {
     console.log('Chart config changed:', JSON.parse(JSON.stringify(config)))
     chartConfig.value = config
@@ -316,7 +249,7 @@ function handleGenerateChart(config) {
     alert('When no primary key is set, data will be aligned by row index and any extra rows will be truncated. It is recommended to set a primary key for more accurate data merging.');
   }
   // 生成ECharts配置
-  const newChartOption = generateEChartOption(config, fileDataMap.value, xData, yDataArr);
+  const newChartOption = generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType);
   if (newChartOption) {
     chartOption.value = null;
     nextTick(() => {
@@ -324,101 +257,34 @@ function handleGenerateChart(config) {
     });
   }
 }
-
-// 生成ECharts配置，支持多文件数据查找和主键/行号对齐
-function generateEChartOption(config, fileDataMap, xData, yDataArr) {
-  const { yAxis, title, colorScheme, animation } = config;
-  // series配置
-  const yArr = Array.isArray(yAxis) ? yAxis : [yAxis];
-  const seriesArr = yArr.map((y, idx) => ({
-    name: y.field,
-    type: selectedChartType.value.toLowerCase(),
-    data: yDataArr[idx],
-    animationDuration: animation ? 1500 : 0,
-    itemStyle: { color: getColorByScheme(colorScheme) }
-  }));
-  // 基础option
-  const option = {
-    title: {
-      text: title || `${yArr.map(y=>y.field).join(',')} vs ${config.xAxis.field}`,
-      left: 'center',
-      textStyle: { fontSize: 16, fontWeight: 'bold' }
-    },
-    tooltip: { trigger: 'axis' },
-    legend: { data: yArr.map(y=>y.field), top: 'bottom' },
-    toolbox: {
-      show: true,
-      feature: {
-        dataView: { show: true, readOnly: false },
-        magicType: { show: true, type: ['line', 'bar'] },
-        restore: { show: true },
-        saveAsImage: { show: true }
-      }
-    },
-    xAxis: {
-      type: 'category',
-      data: xData,
-      axisLabel: { interval: 0, rotate: xData.length > 10 ? 45 : 0 }
-    },
-    yAxis: { type: 'value', name: yArr.map(y=>y.field).join(',') },
-    series: seriesArr,
-    animation: animation,
-    animationDuration: animation ? 1500 : 0
-  };
-  // 饼图特殊处理
-  if (selectedChartType.value === 'Pie' || selectedChartType.value === 'pie') {
-    option.series = [
-      {
-        name: yArr.map(y=>y.field).join(','),
-        type: 'pie',
-        radius: '60%',
-        data: xData.map((name, i) => ({ name, value: yDataArr[0][i] })),
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }
-    ];
-    delete option.xAxis;
-    delete option.yAxis;
-  }
-  // 调试输出
-  console.log('[generateEChartOption] option:', option);
-  return option;
-}
-
-// 根据配色方案获取颜色
-function getColorByScheme(scheme) {
-    const colorSchemes = {
-        default: '#5470c6',
-        blue: '#1890ff',
-        green: '#52c41a',
-        warm: '#fa8c16',
-        cool: '#13c2c2'
-    }
-    return colorSchemes[scheme] || colorSchemes.default
-}
 </script>
 
 <style scoped>
+/* 顶部空白区 */
+.empty-space {
+  height: clamp(24px, 10vh, 60px); /* 最小24px，最大60px，常规为%视口高 */
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
+/* 侧边栏按钮样式 */
 .sideBar-btn {
-background: transparent;
-border: none;
-font-size: 1.1rem;
-font-weight: 600;
-cursor: pointer;
-color: var(--text-color);
-padding: 6px 14px;
-border-radius: 8px;
-transition:
-    background-color 0.3s cubic-bezier(.4,2,.6,1),
-    transform 0.2s cubic-bezier(.4,2,.6,1),
-    box-shadow 0.2s;
-text-align: center;
-text-decoration: none;
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-color);
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition:
+      background-color 0.3s cubic-bezier(.4,2,.6,1),
+      transform 0.2s cubic-bezier(.4,2,.6,1),
+      box-shadow 0.2s;
+  text-align: center;
+  text-decoration: none;
 }
 .sideBar-btn:hover {
 background-color: rgba(136, 133, 133, 0.1);
@@ -428,10 +294,13 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
 /* 图表绘制区 */
 .main-content {
-display: flex;
-gap: 32px;
-margin: 40px 60px 0 220px;
-min-height: 500px;
+  display: flex;
+  gap: 32px;
+  margin-left: 7%;
+  margin-right: 7%;
+  margin-top: 5%;
+  min-height: 500px;
+  padding-top: 80px;
 }
 @media (max-width: 767px) {
   .main-content {
@@ -441,29 +310,29 @@ min-height: 500px;
   }
 }
 .chart-workspace {
-flex: 1;
-min-width: 0;
-display: flex;
-align-items: center;
-justify-content: center;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 图表缓存区 */
 .chart-history {
-width: 220px;
-background: var(--bg-color, #fff);
-border-radius: 10px;
-box-shadow: 0 0px 1px var(--text-color);
-padding: 16px;
-flex-shrink: 0;
+  width: 220px;
+  background: var(--bg-color, #fff);
+  border-radius: 10px;
+  box-shadow: 0 0px 1px var(--text-color);
+  padding: 16px;
+  flex-shrink: 0;
 }
 .chart-history-item {
-padding: 8px 0;
-cursor: pointer;
-border-bottom: 1px solid #747272;
-transition: background 0.2s;
+  padding: 8px 0;
+  cursor: pointer;
+  border-bottom: 1px solid #747272;
+  transition: background 0.2s;
 }
 .chart-history-item:hover {
-background: rgba(136, 133, 133, 0.1);
+  background: rgba(136, 133, 133, 0.1);
 }
 </style>

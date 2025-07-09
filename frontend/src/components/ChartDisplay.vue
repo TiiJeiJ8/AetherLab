@@ -40,12 +40,11 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .chart-display {
-    width: 100%;
+    width: 90%;
     height: 100%;
     min-height: clamp(300px, 60vh, 600px); /* 响应式高度 */
     background: var(--bg-color, #fff);
     border-radius: clamp(8px, 2vw, 12px);
-    box-shadow: 0 0 1px 1px var(--text-color);
     position: relative;
     display: flex;
     align-items: center;
@@ -54,7 +53,7 @@ onBeforeUnmount(() => {
 }
 
 .chart-container {
-    width: 100% !important; /* 覆盖 inline style */
+    width: 100% !important;
     height: 100% !important;
     min-height: inherit;
 }

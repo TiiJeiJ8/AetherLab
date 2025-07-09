@@ -1,98 +1,98 @@
 <template>
 <div class="chart-config-panel">
-<!-- 右侧边栏总标题 -->
-<div class="panel-header-CCP">
-    <h3>
-        Chart Configuration
+    <!-- 右侧边栏总标题 -->
+    <div class="panel-header-CCP" style="position: relative; display: flex; align-items: center; justify-content: space-between;">
+        <h3 style="margin: 0;">
+            Chart Configuration
+        </h3>
         <!-- 图表类型及相关提示 -->
         <div
             class="chart-type-tag"
             @mouseenter="showTooltip($event, props.selectedChartType)"
             @mouseleave="hideTooltip"
-            style="margin-left: 15%; position: absolute;"
+            style="position: relative; max-width: 50%; white-space: normal; word-break: break-all; text-align: right; right: 0; margin-right: 3%;"
         >
-        <span class="chart-type-icon" v-html="getChartIcon(selectedChartType)"></span>
-        <span class="chart-type-name">{{ selectedChartType }}</span>
+            <span class="chart-type-icon" v-html="getChartIcon(selectedChartType)"></span>
+            <span class="chart-type-name">{{ selectedChartType }}</span>
         </div>
-    </h3>
-</div>
+    </div>
 
-<!-- 动态数据映射配置区域 -->
-<ChartMappingConfig
-    v-if="currentTypeConfig.mapping"
-    :mappingConfig="currentTypeConfig.mapping"
-    v-model="chartConfig"
-/>
+    <!-- 动态数据映射配置区域 -->
+    <ChartMappingConfig
+        v-if="currentTypeConfig.mapping"
+        :mappingConfig="currentTypeConfig.mapping"
+        v-model="chartConfig"
+    />
 
-<!-- 动态数据过滤配置区域 -->
-<ChartFilterConfig
-    v-if="currentTypeConfig.filter && currentTypeConfig.filter.length"
-    :filterConfig="currentTypeConfig.filter"
-    v-model="chartConfig"
-/>
+    <!-- 动态数据过滤配置区域 -->
+    <ChartFilterConfig
+        v-if="currentTypeConfig.filter && currentTypeConfig.filter.length"
+        :filterConfig="currentTypeConfig.filter"
+        v-model="chartConfig"
+    />
 
-<!-- 动态高级配置区域 -->
-<ChartAdvancedConfig
-    v-if="currentTypeConfig.advanced && currentTypeConfig.advanced.length"
-    :advancedConfig="currentTypeConfig.advanced"
-    v-model="chartConfig"
-/>
+    <!-- 动态高级配置区域 -->
+    <ChartAdvancedConfig
+        v-if="currentTypeConfig.advanced && currentTypeConfig.advanced.length"
+        :advancedConfig="currentTypeConfig.advanced"
+        v-model="chartConfig"
+    />
 
-<!-- 操作按钮 -->
-<div class="action-section">
-    <button
-    class="apply-btn"
-    :disabled="!isConfigValid"
-    @click="generateChart"
+    <!-- 操作按钮 -->
+    <div class="action-section">
+        <button
+        class="apply-btn"
+        :disabled="!isConfigValid"
+        @click="generateChart"
+        >
+        Apply Configuration
+        </button>
+        <button class="reset-btn" @click="resetConfig">
+        Reset Configuration
+        </button>
+    </div>
+
+    <!-- 错误提示 -->
+    <div v-if="errorMessage" class="error-message">
+        <div class="error-text">{{ errorMessage }}</div>
+    </div>
+
+    <!-- 提示框 -->
+    <div
+        v-if="tooltip.visible"
+        class="chart-tooltip"
+        :style="tooltip.style"
+        ref="tooltipRef"
     >
-    Apply Configuration
-    </button>
-    <button class="reset-btn" @click="resetConfig">
-    Reset Configuration
-    </button>
-</div>
-
-<!-- 错误提示 -->
-<div v-if="errorMessage" class="error-message">
-    <div class="error-text">{{ errorMessage }}</div>
-</div>
-
-<!-- 提示框 -->
-<div
-    v-if="tooltip.visible"
-    class="chart-tooltip"
-    :style="tooltip.style"
-    ref="tooltipRef"
->
-    <div class="tooltip-header">
-        <span class="tooltip-title">{{ tooltip.type }}</span>
-        <span class="tooltip-description">{{ tooltip.description }}</span>
-    </div>
-    <div class="tooltip-section">
-        <h4>Data Requirements</h4>
-        <div class="tooltip-tags">
-            <span
-                v-for="requirement in tooltip.dataRequirements"
-                :key="requirement"
-                class="tooltip-tag data-tag"
-            >
-                {{ requirement }}
-            </span>
+        <div class="tooltip-header">
+            <span class="tooltip-title">{{ tooltip.type }}</span>
+            <span class="tooltip-description">{{ tooltip.description }}</span>
+        </div>
+        <div class="tooltip-section">
+            <h4>Data Requirements</h4>
+            <div class="tooltip-tags">
+                <span
+                    v-for="requirement in tooltip.dataRequirements"
+                    :key="requirement"
+                    class="tooltip-tag data-tag"
+                >
+                    {{ requirement }}
+                </span>
+            </div>
+        </div>
+        <div class="tooltip-section">
+            <h4>Use Cases</h4>
+            <div class="tooltip-tags">
+                <span
+                    v-for="useCase in tooltip.useCases"
+                    :key="useCase"
+                    class="tooltip-tag use-case-tag"
+                >
+                    {{ useCase }}
+                </span>
+            </div>
         </div>
     </div>
-    <div class="tooltip-section">
-        <h4>Use Cases</h4>
-        <div class="tooltip-tags">
-            <span
-                v-for="useCase in tooltip.useCases"
-                :key="useCase"
-                class="tooltip-tag use-case-tag"
-            >
-                {{ useCase }}
-            </span>
-        </div>
-    </div>
-</div>
 </div>
 </template>
 
@@ -178,10 +178,10 @@ const chartConfig = ref({
 
 // 计算属性
 const isConfigValid = computed(() => {
-  const xValid = chartConfig.value.xAxis && chartConfig.value.xAxis.field;
-  const y = chartConfig.value.yAxis;
-  const yValid = Array.isArray(y) ? y.length > 0 : (y && y.field);
-  return xValid && yValid;
+    const xValid = chartConfig.value.xAxis && chartConfig.value.xAxis.field;
+    const y = chartConfig.value.yAxis;
+    const yValid = Array.isArray(y) ? y.length > 0 : (y && y.field);
+    return xValid && yValid;
 })
 
 function getChartIcon (type) {

@@ -17,10 +17,11 @@
         <!-- 菜单项 -->
         <transition name="menu-fade">
             <div class="nav-actions" v-show="isMenuOpen || isDesktop">
-            <template v-for="(item, idx) in actions" :key="idx">
+            <template v-for="(item, idx) in actions">
                 <!-- 普通按钮 -->
                 <button
                 v-if="item.type === 'button' && !item.to"
+                :key="`button-${idx}`"
                 class="nav-btn"
                 @click="item.onClick"
                 >
@@ -30,6 +31,7 @@
                 <!-- 内部路由跳转 -->
                 <RouterLink
                 v-else-if="item.type === 'button' && item.to && !item.external"
+                :key="`router-${idx}`"
                 :to="item.to"
                 class="nav-btn"
                 @click="isMenuOpen = false"
@@ -40,6 +42,7 @@
                 <!-- 外部链接 -->
                 <a
                 v-else-if="item.type === 'button' && item.to && item.external"
+                :key="`external-${idx}`"
                 :href="item.to"
                 class="nav-btn"
                 target="_blank"
@@ -122,19 +125,21 @@ document.removeEventListener('click', handleClickOutside)
 <style scoped>
 .top-bar {
     position: fixed;
-    top: 2%;
+    top: calc(1.6vw + 6px);
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(var(--topbar-scale, 0.95));
     background-color: var(--bg-color);
     backdrop-filter: saturate(180%) blur(10px);
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    padding: 0 20px;
+    border-radius: calc(0.6vw + 7px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.13);
+    padding: 0 calc(1.2vw + 8px);
     z-index: 9999;
-    width: 90%;
-    max-width: 1100px;
+    width: calc(52vw + 210px);
+    max-width: 1350px;
+    min-width: 260px;
     height: auto;
-    transition: top 0.35s ease, opacity 0.25s;
+    transition: top 0.35s ease, opacity 0.25s, transform 0.3s;
+    will-change: transform;
 }
 
 /* TopBar 出场动画 */
@@ -170,7 +175,7 @@ document.removeEventListener('click', handleClickOutside)
 
 .logo {
     font-weight: 900;
-    font-size: 2.5rem;
+    font-size: calc(1.35rem + 1vw);
     background: linear-gradient(270deg, #ff416c, #fa83bf, #1f97ff, #12d8fa, #50f6a0, #ff416c);
     background-size: 1200% 1200%;
     -webkit-background-clip: text;
@@ -217,12 +222,12 @@ document.removeEventListener('click', handleClickOutside)
 .nav-btn {
     background: transparent;
     border: none;
-    font-size: 1rem;
+    font-size: calc(0.82rem + 0.32vw);
     font-weight: 600;
     cursor: pointer;
     color: var(--text-color);
-    padding: 6px 14px;
-    border-radius: 8px;
+    padding: calc(4px + 0.33vw) calc(10px + 0.55vw);
+    border-radius: calc(6px + 0.38vw);
     transition: background-color 0.3s ease;
     text-align: center;
     text-decoration: none;
@@ -235,24 +240,56 @@ document.removeEventListener('click', handleClickOutside)
 /* 响应式：小屏幕 */
 @media (max-width: 990px) {
     .burger-container {
-    display: block;
+        display: block;
     }
 
     .nav-actions {
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    margin-top: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        margin-top: 12px;
     }
 
     .nav-btn {
-    width: 100%;
-    text-align: left;
-    padding: 10px 12px;
+        width: 100%;
+        text-align: left;
+        padding: 10px 12px;
+        font-size: 1.1rem;
     }
 
     .logo {
-    font-size: 1.5rem;
+        font-size: 1.5rem;
+    }
+
+    .top-bar {
+        width: 98vw;
+        min-width: 0;
+        padding: 0 8px;
+        left: 1vw;
+        transform: none;
+        border-radius: 8px;
+    }
+}
+
+/* 超大屏幕适配（2K、4K、8K） */
+@media (min-width: 1920px) {
+    .top-bar {
+        --topbar-scale: 1.13;
+    }
+}
+@media (min-width: 2560px) {
+    .top-bar {
+        --topbar-scale: 1.28;
+    }
+}
+@media (min-width: 3840px) {
+    .top-bar {
+        --topbar-scale: 1.5;
+    }
+}
+@media (min-width: 7680px) {
+    .top-bar {
+        --topbar-scale: 1.9;
     }
 }
 </style>

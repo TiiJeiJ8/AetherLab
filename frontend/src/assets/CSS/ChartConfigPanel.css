@@ -44,7 +44,7 @@
 .chart-config-panel {
     width: 100%;
     height: 100%;
-    padding: 20px;
+    margin-right: 10%;
     background: var(--bg-color, #ffffff);
     overflow-y: auto;
     transition: all 0.3s ease;
@@ -152,12 +152,21 @@
     font-size: 16px;
     font-weight: 600;
     color: var(--text-color, #333333);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .chart-type-tag {
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    margin-left: 0;
+    max-width: 50%;
+    text-align: right;
+    word-break: break-all;
+    white-space: normal;
     padding: 4px 10px;
     background: var(--primary-color, #5470c6);
     color: white;
@@ -245,6 +254,7 @@
 }
 
 .chart-type-icon {
+    right: auto;
     font-size: 12px;
     display: flex;
     align-items: center;
@@ -912,7 +922,7 @@
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -960,7 +970,7 @@
     color: var(--text-secondary, #666666);
     border: 2px solid var(--border-color, #e5e5e5);
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;

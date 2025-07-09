@@ -76,8 +76,17 @@ function handleMouseLeave() {
 const isExpanded = computed(() => !isCollapsed.value || isHovered.value)
 
 // 动态宽度，配合动画
+
+// 折叠宽度自适应：随分辨率变化，最小40，最大120，2%屏宽
+const adaptiveCollapsedWidth = computed(() => {
+    const min = 40;
+    const max = 120;
+    const percent = 0.02; // 2% 屏幕宽度
+    return Math.round(Math.max(min, Math.min(window.innerWidth * percent, max)));
+});
+
 const sidebarWidth = computed(() =>
-    isExpanded.value ? props.expandedWidth : props.collapsedWidth
+    isExpanded.value ? props.expandedWidth : adaptiveCollapsedWidth.value
 )
 
 function toggleCollapse() {
@@ -92,7 +101,7 @@ onUnmounted(() => {
     window.removeEventListener('resize', onResize)
 })
 </script>
-    
+
 <style scoped>
 .sidebar {
     position: fixed;
