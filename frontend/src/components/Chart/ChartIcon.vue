@@ -1,7 +1,7 @@
 <template>
     <div class="chart-type-panel">
         <button
-        v-for="type in types"
+        v-for="type in types.slice(1)"
         :key="type"
         class="sideBar-btn"
         :class="{ 'selected': selectedType === type }"

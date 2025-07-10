@@ -1,12 +1,13 @@
 // chartIcons.js
 /* eslint-disable */
 export const chartTypes = [
-    "Line", "Bar", "Pie", "Scatter", "GEO/MAP", "Candlestick", "Radar", "Boxplot",
+    "Unknown", "Line", "Bar", "Pie", "Scatter", "GEO/MAP", "Candlestick", "Radar", "Boxplot",
     "Heatmap", "Graph", "Tree", "Treemap", "Sunburst", "Parallel",
     "Sankey", "Funnel", "Gauge", "PictorialBar", "ThemeRiver", "Calendar"
 ]
 
 export const chartIcons = {
+    Unknown: `<svg viewBox="0 0 24 24" class="chart-icon-svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 8a2 2 0 0 1 2 2c0 1.5-2 2-2 4" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg>`,
     Line: `<svg viewBox="0 0 24 24" class="chart-icon-svg"><polyline points="4,16 8,12 12,14 16,8 20,10" stroke="currentColor" stroke-width="2" fill="none"/></svg>`,
     Bar: `<svg viewBox="0 0 24 24" class="chart-icon-svg"><rect x="4" y="10" width="2" height="10" fill="currentColor"/><rect x="9" y="6" width="2" height="14" fill="currentColor"/><rect x="14" y="2" width="2" height="18" fill="currentColor"/><rect x="19" y="8" width="2" height="12" fill="currentColor"/></svg>`,
     Pie: `<svg viewBox="0 0 24 24" class="chart-icon-svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 2 A10 10 0 0 1 22 12 L12 12 Z" fill="currentColor"/></svg>`,

@@ -122,7 +122,7 @@ const showStructurePanel = ref(false)
 const currentStructureFile = ref(null)
 
 // 图表配置相关
-const selectedChartType = ref('Line')
+const selectedChartType = ref('Unknown')
 const chartConfig = ref(null)
 const chartOption = ref({})
 
