@@ -105,6 +105,7 @@ onBeforeUnmount(() => {
 })
 
 function renderChart() {
+    console.log('value of hasSeries:', hasSeries.value)
     if (!hasSeries.value) return
     if (!chartInstance && chartRef.value) {
         chartInstance = echarts.init(chartRef.value)

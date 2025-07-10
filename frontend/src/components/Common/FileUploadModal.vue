@@ -5,22 +5,13 @@
             <div class="file-header">
                 <div class="header-left">
                     <span>File Manager</span>
-                    <div class="connection-status">
-                        <span class="status-dot" :class="{ 'connected': isBackendConnected }"></span>
-                        <span class="status-text">{{ isBackendConnected ? 'Connected' : 'Offline' }}</span>
-                    </div>
+                    <!-- 后端连接状态已移除 -->
                 </div>
                 <div class="header-right">
                     <button class="refresh-btn" @click="refreshFiles" title="Refresh file list">
                         <span v-html="getThemeIcon('refresh')"></span>
                     </button>
-                    <button v-if="stats.notUploadedCount > 0"
-                            class="sync-all-btn"
-                            @click="syncAllFiles"
-                            :disabled="!isBackendConnected"
-                            title="Sync all files to backend">
-                        Sync All ({{ stats.notUploadedCount }})
-                    </button>
+                    <!-- 批量同步按钮已移除 -->
                     <button class="close-btn" @click="onClose">×</button>
                 </div>
             </div>
@@ -134,19 +125,8 @@
                                         :disabled="file.status === 'uploading'">
                                     <span v-html="getThemeIcon('preview')"></span>
                                 </button>
-                                <button v-if="file.status === 'local'"
-                                        @click="syncFile(idx)"
-                                        title="Sync to backend"
-                                        class="action-btn sync-btn"
-                                        :disabled="!isBackendConnected">
-                                    <span v-html="getThemeIcon('sync')"></span>
-                                </button>
-                                <button v-if="file.status === 'uploading'"
-                                        @click="cancelFileUpload(idx)"
-                                        title="Cancel upload"
-                                        class="action-btn cancel-btn">
-                                    <span v-html="getThemeIcon('close')"></span>
-                                </button>
+                                <!-- 单文件同步按钮已移除 -->
+                                <!-- 取消上传按钮已移除 -->
                                 <button v-if="file.status !== 'uploading'"
                                         @click="unloadFile(idx)"
                                         title="Delete file"
@@ -224,12 +204,10 @@ import {
     deleteFile,
     renameFile,
     getFilePreview,
-    getAllFiles,
-    checkBackendConnection,
-    getBackendStatus,
-    syncFileToBackend,
-    cancelUpload
+    getAllFiles
 } from '../../assets/JS/services/FileServices.js'
+
+// 省略的后端相关代码...
 
 const props = defineProps({
     show: Boolean,
@@ -247,7 +225,6 @@ const workspaceFiles = ref([])
 const showPreview = ref(false)
 const currentPreviewFile = ref(null)
 const previewData = ref([])
-const isBackendConnected = ref(false)
 const isLoading = ref(false)
 
 // 监听 props 中的工作区文件变化
@@ -393,16 +370,13 @@ function onClose() {
     emit('close')
 }
 
-// 获取状态文本
+// 获取状态文本（仅本地缓存状态）
 function getStatusText(status) {
     const statusMap = {
         'local': 'Local Cache',
-        'uploading': 'Uploading',
-        'uploaded': 'Uploaded',
-        'operating': 'Operating',
         'error': 'Error'
     }
-    return statusMap[status] || 'Unknown'
+    return statusMap[status] || 'Local Cache'
 }
 
 // 获取状态图标 (SVG)
@@ -418,7 +392,7 @@ function getStatusIcon(status) {
     return getThemeIcon(iconName)
 }
 
-// 工作区相关方法
+// 上传面板的工作区相关方法
 function addToWorkspace(idx) {
     const file = files.value[idx]
     console.log('Adding file to workspace:', file.name)
@@ -487,35 +461,15 @@ function previewWorkspaceFile(idx) {
     previewFile(files.value.findIndex(f => f.id === file.id))
 }
 
-// 批量同步所有本地文件
-async function syncAllFiles() {
-    const localFiles = files.value.filter(file => file.status === 'local')
-
-    if (localFiles.length === 0) {
-        alert('No files to sync')
-        return
-    }
-
-    if (!isBackendConnected.value) {
-        alert('Backend not connected, unable to sync')
-        return
-    }
-
-    if (confirm(`Are you sure you want to sync ${localFiles.length} files to the backend?`)) {
-        for (let i = 0; i < localFiles.length; i++) {
-            const fileIndex = files.value.findIndex(f => f.id === localFiles[i].id)
-            if (fileIndex !== -1) {
-                await syncFile(fileIndex)
-            }
-        }
-    }
-}
-
 // 刷新文件列表
 async function refreshFiles() {
-    await checkConnectionStatus()
     await loadFiles()
 }
+
+// 页面加载时仅加载本地文件
+onMounted(async () => {
+    await loadFiles()
+})
 
 // 处理文件
 async function processFiles(newFiles) {
@@ -574,49 +528,6 @@ async function processFiles(newFiles) {
             }
         }
     }
-}
-
-// 取消文件上传
-function cancelFileUpload(idx) {
-    const file = files.value[idx]
-    if (file.status === 'uploading') {
-        const success = cancelUpload(file.id)
-        if (success) {
-            file.status = 'error'
-            file.uploadProgress = 0
-            console.log(`已取消上传: ${file.name}`)
-        }
-    }
-}
-
-// 同步文件到后端
-async function syncFile(idx) {
-    const file = files.value[idx]
-    try {
-        file.status = 'uploading'
-        const syncedFile = await syncFileToBackend(file.id)
-        files.value[idx] = {
-            ...syncedFile,
-            isEditing: false,
-            newName: syncedFile.name
-        }
-    } catch (error) {
-        console.error('Sync failed:', error)
-        alert('Sync failed: ' + error.message)
-        file.status = 'local'
-    }
-}
-
-
-// 页面加载时检查后端连接并加载文件
-onMounted(async () => {
-    await checkConnectionStatus()
-    await loadFiles()
-})
-
-// 检查后端连接状态
-async function checkConnectionStatus() {
-    isBackendConnected.value = await checkBackendConnection()
 }
 </script>
 

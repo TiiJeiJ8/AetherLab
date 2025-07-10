@@ -1,73 +1,79 @@
 <template>
-<div
-v-if="workspaceFiles.length > 0"
-class="file-workspace"
-:class="{
-    'is-focused': isFocused,
-    'dragging': isDragging
-}"
-:style="workspacePosition"
-@wheel.prevent="handleWheel"
-@mouseenter="handleMouseEnter"
-@mouseleave="handleMouseLeave"
-@mousedown="handleMouseDown"
-ref="workspaceRef">
-<div
-    class="workspace-header"
-    @mousedown.prevent="startDrag">
-    <div class="workspace-title">
-    <span class="workspace-icon" v-html="getThemeIcon('folder')"></span>
-    <span>Workspace</span>
-    <span class="file-counter">{{ currentIndex + 1 }}/{{ workspaceFiles.length }}</span>
-    </div>
-</div>
+    <div
+        v-if="workspaceFiles.length > 0"
+        class="file-workspace"
+        :class="{
+        'is-focused': isFocused,
+        'dragging': isDragging
+        }"
+        :style="workspacePosition"
+        @wheel.prevent="handleWheel"
+        @mouseenter="handleMouseEnter"
+        @mouseleave="handleMouseLeave"
+        @mousedown="handleMouseDown"
+        ref="workspaceRef"
+    >
+        <div
+        class="workspace-header"
+        @mousedown.prevent="startDrag"
+        >
+        <div class="workspace-title">
+            <span class="workspace-icon" v-html="getThemeIcon('folder')"></span>
+            <span>Workspace</span>
+            <span class="file-counter">{{ currentIndex + 1 }}/{{ workspaceFiles.length }}</span>
+        </div>
+        </div>
 
-<div class="workspace-content" v-if="currentFile">
-    <div class="file-info">
-    <div class="file-name">{{ currentFile.name }}</div>
-    <div class="file-meta">
-        <span class="file-size">{{ formatFileSize(currentFile.size) }}</span>
-        <span class="file-type">{{ currentFile.name.split('.').pop().toUpperCase() }}</span>
-        <span class="file-status" :class="currentFile.status">
-        {{ getStatusText(currentFile.status) }}
-        </span>
-    </div>
-    </div>
+        <div class="workspace-content" v-if="currentFile">
+        <div class="file-info">
+            <div class="file-name">{{ currentFile.name }}</div>
+            <div class="file-meta">
+            <span class="file-size">{{ formatFileSize(currentFile.size) }}</span>
+            <span class="file-type">{{ currentFile.name.split('.').pop().toUpperCase() }}</span>
+            <span class="file-status" :class="currentFile.status">
+                {{ getStatusText(currentFile.status) }}
+            </span>
+            </div>
+        </div>
 
-    <div class="workspace-actions">
-        <button
-        class="floating-workspace-action-btn structure-btn"
-        @click="showFileStructure"
-        title="Show file structure">
-        <span v-html="getThemeIcon('structure')"></span>
-        </button>
-        <button
-        class="floating-workspace-action-btn preview-workspace-btn"
-        @click="previewCurrentFile"
-        title="Preview file">
-        <span v-html="getThemeIcon('eye')"></span>
-    </button>
-    <button
-        class="floating-workspace-action-btn remove-workspace-btn"
-        @click="removeFromWorkspace(currentIndex)"
-        title="Remove from workspace">
-        <span v-html="getThemeIcon('remove')"></span>
-    </button>
-    </div>
-</div>
+        <div class="workspace-actions">
+            <button
+            class="floating-workspace-action-btn structure-btn"
+            @click="showFileStructure"
+            title="Show file structure"
+            >
+            <span v-html="getThemeIcon('structure')"></span>
+            </button>
+            <button
+            class="floating-workspace-action-btn preview-workspace-btn"
+            @click="previewCurrentFile"
+            title="Preview file"
+            >
+            <span v-html="getThemeIcon('eye')"></span>
+            </button>
+            <button
+            class="floating-workspace-action-btn remove-workspace-btn"
+            @click="removeFromWorkspace(currentIndex)"
+            title="Remove from workspace"
+            >
+            <span v-html="getThemeIcon('remove')"></span>
+            </button>
+        </div>
+        </div>
 
-<div class="workspace-navigation" v-if="workspaceFiles.length > 1">
-    <div class="nav-dots">
-    <span
-        v-for="(file, index) in workspaceFiles"
-        :key="file.id"
-        class="nav-dot"
-        :class="{ active: index === currentIndex }"
-        @click="currentIndex = index">
-    </span>
+        <div class="workspace-navigation" v-if="workspaceFiles.length > 1">
+        <div class="nav-dots">
+            <span
+            v-for="(file, index) in workspaceFiles"
+            :key="file.id"
+            class="nav-dot"
+            :class="{ active: index === currentIndex }"
+            @click="currentIndex = index"
+            >
+            </span>
+        </div>
+        </div>
     </div>
-</div>
-</div>
 </template>
 
 <script setup>
@@ -96,8 +102,8 @@ const isFocused = ref(true)
 const dragOffset = ref({ x: 0, y: 0 })
 const workspacePosition = ref({
     position: 'fixed',
-    top: '10px',
-    left: '200px'
+    top: '3%',
+    left: '5%',
 })
 
 // DOM 引用
@@ -279,16 +285,13 @@ function formatFileSize (bytes) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
-// 获取状态文本
+// 获取状态文本（仅本地缓存状态）
 function getStatusText (status) {
     const statusMap = {
-        local: 'Local',
-        uploading: 'Uploading',
-        uploaded: 'Uploaded',
-        operating: 'Operating',
+        local: 'Local Cache',
         error: 'Error'
     }
-    return statusMap[status] || 'Unknown'
+    return statusMap[status] || 'Local Cache'
 }
 
 // 暴露方法给父组件

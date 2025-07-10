@@ -125,9 +125,9 @@ const draggedColumn = ref(null)
 const dragOffset = ref({ x: 0, y: 0 })
 const panelPosition = ref({
   position: 'fixed',
-  top: '120px',
-  right: '20px',
-  width: '380px',
+  top: '10%',
+  right: '24%',
+  width: '22.4%',
   maxHeight: '70vh'
 })
 

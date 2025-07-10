@@ -213,10 +213,15 @@ function handleColumnDrag(dragInfo) {
 
 // 图表配置处理方法
 function handleConfigChange(config) {
-    console.log('Chart config changed:', JSON.parse(JSON.stringify(config)))
-    chartConfig.value = config
-    // 调试：输出当前 chartConfig
-    console.log('当前 chartConfig:', JSON.parse(JSON.stringify(chartConfig.value)))
+  console.log('Chart config changed:', JSON.parse(JSON.stringify(config)))
+  chartConfig.value = config
+  if (
+    !config.xAxis.field &&
+    !config.yAxis.field &&
+    (!Array.isArray(config.series) || config.series.length === 0)
+  ) { 
+    chartOption.value = { series: [] }
+  }
 }
 
 // 导入数据合并工具函数
