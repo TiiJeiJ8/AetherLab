@@ -142,8 +142,8 @@ const showAdvancedConfig = ref(false)
 const errorMessage = ref('')
 const tooltipRef = ref(null)
 
-// 自动渲染开关
-const autoRender = ref(true)
+// 自动渲染开关，默认手动渲染
+const autoRender = ref(false)
 
 // 提示框状态
 const tooltip = reactive({
