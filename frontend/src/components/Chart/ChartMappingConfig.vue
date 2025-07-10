@@ -1,7 +1,8 @@
 <template>
 <div class="mapping-section">
-<div class="mapping-section-header">
-    <h4>Data Mapping</h4>
+<div class="mapping-section-header" style="display: flex; align-items: center; justify-content: space-between;">
+    <h4 style="margin: 0;">Data Mapping</h4>
+    <slot name="title-append"></slot>
 </div>
 <div v-for="(item, index) in mappingConfig" :key="item.key" class="mapping-item">
     <div class="mapping-item-header">

@@ -18,11 +18,18 @@
     </div>
 
     <!-- 动态数据映射配置区域 -->
-    <ChartMappingConfig
-        v-if="currentTypeConfig.mapping"
-        :mappingConfig="currentTypeConfig.mapping"
-        v-model="chartConfig"
-    />
+    <div class="mapping-section-toggle-wrapper">
+        <ChartMappingConfig
+            v-if="currentTypeConfig.mapping"
+            :mappingConfig="currentTypeConfig.mapping"
+            v-model="chartConfig"
+        >
+            <template #title-append>
+            <!-- 自动渲染开关 -->
+            <AutoRenderToggle v-model="autoRender" />
+            </template>
+        </ChartMappingConfig>
+    </div>
 
     <!-- 动态数据过滤配置区域 -->
     <ChartFilterConfig
@@ -42,7 +49,7 @@
     <div class="action-section">
         <button
         class="apply-btn"
-        :disabled="!isConfigValid"
+        :disabled="autoRender || !isConfigValid"
         @click="generateChart"
         >
         Apply Configuration
@@ -102,6 +109,8 @@ import { ref, computed, watch, reactive, nextTick } from 'vue'
 import { chartIcons } from '../../assets/JS/SVG/chartIcons.js'
 import { chartsTooltipConfig } from '../../assets/JS/Config/ChartsTooltipConfig.js'
 import { chartTypeConfig } from '../../assets/JS/Config/ChartTypeConfig.js'
+import AutoRenderToggle from '../Common/AutoRenderToggle.vue'
+import { getThemeIcon } from '@/assets/JS/SVG/icons.js'
 import ChartMappingConfig from './ChartMappingConfig.vue'
 import ChartFilterConfig from './ChartFilterConfig.vue'
 import ChartAdvancedConfig from './ChartAdvancedConfig.vue'
@@ -132,6 +141,9 @@ const showDataFilter = ref(false)
 const showAdvancedConfig = ref(false)
 const errorMessage = ref('')
 const tooltipRef = ref(null)
+
+// 自动渲染开关
+const autoRender = ref(true)
 
 // 提示框状态
 const tooltip = reactive({
@@ -182,6 +194,21 @@ const isConfigValid = computed(() => {
     const y = chartConfig.value.yAxis;
     const yValid = Array.isArray(y) ? y.length > 0 : (y && y.field);
     return xValid && yValid;
+})
+
+// 监听 chartConfig 变化，自动渲染
+watch(chartConfig, (val) => {
+    if (autoRender.value && isConfigValid.value) {
+        emit('generate-chart', chartConfig.value)
+    }
+    console.log('Current chartConfig:', JSON.parse(JSON.stringify(val)))
+}, { deep: true })
+
+// 监听自动渲染开关变化，切换为实时时立即渲染
+watch(autoRender, (val) => {
+    if (val && isConfigValid.value) {
+        emit('generate-chart', chartConfig.value)
+    }
 })
 
 function getChartIcon (type) {
@@ -421,12 +448,11 @@ watch(() => props.selectedChartType, (newType) => {
         // 饼图不需要Y轴
         chartConfig.value.yAxis = { field: '', type: '' }
     }
+    // 自动渲染开启时，切换类型后立即触发渲染
+    if (autoRender.value && isConfigValid.value) {
+        emit('generate-chart', chartConfig.value)
+    }
 })
-
-// 监听 chartConfig 变化
-watch(chartConfig, (val) => {
-    console.log('Current chartConfig:', JSON.parse(JSON.stringify(val)))
-}, { deep: true })
 </script>
 
 <style scoped>
