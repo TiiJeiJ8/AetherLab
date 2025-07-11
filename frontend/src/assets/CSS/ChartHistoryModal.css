@@ -9,9 +9,11 @@
     box-sizing: border-box;
     transition: border 0.18s;
 }
+
 .history-title-input:focus {
     border: 1.5px solid #2563eb;
 }
+
 .history-title-text {
     display: inline-block;
     max-width: 7.5em;
@@ -20,14 +22,17 @@
     white-space: nowrap;
     vertical-align: middle;
 }
+
 .title-ellipsis-tooltip {
     display: none;
 }
+
 @media (max-width: 600px) {
     .history-title-input {
         max-width: 90px;
     }
 }
+
 /* 可拖拽浮窗样式 */
 .history-modal-draggable {
     position: fixed;
