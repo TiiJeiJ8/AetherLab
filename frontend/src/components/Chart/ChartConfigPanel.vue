@@ -31,6 +31,9 @@
         </ChartMappingConfig>
     </div>
 
+    <!-- 基础配置区域：所有图表通用配置 -->
+    <ChartBasicConfig v-model="chartConfig" :show-null-handling="showNullHandling" :chart-data="chartData" />
+
     <!-- 动态数据过滤配置区域 -->
     <ChartFilterConfig
         v-if="currentTypeConfig.filter && currentTypeConfig.filter.length"
@@ -110,7 +113,7 @@ import { chartIcons } from '../../assets/JS/SVG/chartIcons.js'
 import { chartsTooltipConfig } from '../../assets/JS/Config/ChartsTooltipConfig.js'
 import { chartTypeConfig } from '../../assets/JS/Config/ChartTypeConfig.js'
 import AutoRenderToggle from '../Common/AutoRenderToggle.vue'
-import { getThemeIcon } from '@/assets/JS/SVG/icons.js'
+import ChartBasicConfig from './ChartBasicConfig.vue'
 import ChartMappingConfig from './ChartMappingConfig.vue'
 import ChartFilterConfig from './ChartFilterConfig.vue'
 import ChartAdvancedConfig from './ChartAdvancedConfig.vue'
@@ -130,7 +133,7 @@ const props = defineProps({
     currentFile: {
         type: Object,
         default: null
-    }
+    },
 })
 
 // Emits
@@ -188,13 +191,38 @@ const chartConfig = ref({
     nullHandling: 'ignore'
 })
 
+// 需要显示 Null Handling 的图表类型
+const showNullHandlingTypes = [
+    'Unknown','Line', 'Lines', 'Scatter', 'Candlestick', 'Radar', 'Boxplot', 'Heatmap',
+    'Parallel', 'Gauge', 'ThemeRiver', 'PictorialBar'
+]
+// 判断当前类型是否需要显示 Null Handling
+const showNullHandling = computed(() => {
+    const type = props.selectedChartType
+    if (!type) return false
+    // 兼容首字母大写/小写
+    const normalized = type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()
+    return showNullHandlingTypes.includes(normalized)
+})
+
+// chartData自动获取当前用于绘图的数据来判断是否具有缺失值
+const chartData = computed(() => props.chartData || [])
+
 // 计算属性
 const isConfigValid = computed(() => {
+    const type = (props.selectedChartType || '').toLowerCase();
+    if (['pie', 'funnel', 'gauge'].includes(type)) {
+        // category/value 结构
+        const cat = chartConfig.value.category;
+        const val = chartConfig.value.value;
+        return cat && cat.field && val && val.field;
+    }
+    // 其他类型
     const xValid = chartConfig.value.xAxis && chartConfig.value.xAxis.field;
     const y = chartConfig.value.yAxis;
     const yValid = Array.isArray(y) ? y.length > 0 : (y && y.field);
     return xValid && yValid;
-})
+});
 
 // 监听 chartConfig 变化，自动渲染
 watch(chartConfig, (val) => {
@@ -434,7 +462,7 @@ function resetConfig () {
         colorScheme: 'default',
         animation: true,
         dataRange: 'all',
-        nullHandling: 'ignore'
+        nullHandling: 'ignoreNull'
     }
 
     errorMessage.value = ''

@@ -52,11 +52,6 @@ export const chartsTooltipConfig = {
         useCases: ["Network Analysis", "Social Networks", "Organizational Structure", "Dependency Mapping"],
         description: "Visualizes relationships and connections"
     },
-    Lines: {
-        dataRequirements: ["Multiple Time Series", "Continuous Data"],
-        useCases: ["Multi-line Comparison", "Trend Comparison", "Performance Benchmarking", "Forecasting"],
-        description: "Compares multiple trends simultaneously"
-    },
     Tree: {
         dataRequirements: ["Hierarchical Data", "Parent-Child Relationships"],
         useCases: ["Organizational Charts", "Decision Trees", "Taxonomy Visualization", "File Systems"],

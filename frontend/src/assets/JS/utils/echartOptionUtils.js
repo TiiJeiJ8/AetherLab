@@ -1,7 +1,9 @@
 /* eslint-disable */
 
+import { computed } from "vue";
+
 // 生成ECharts配置，支持多文件数据查找和主键/行号对齐
-export function generateEChartOption(config, fileDataMap, xData, yDataArr, selectedChartType) {
+export function generateEChartOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData) {
     const { yAxis, title, colorScheme, animation } = config;
     // series配置
     const yArr = Array.isArray(yAxis) ? yAxis : [yAxis];
@@ -40,25 +42,37 @@ export function generateEChartOption(config, fileDataMap, xData, yDataArr, selec
         animation: animation,
         animationDuration: animation ? 1500 : 0
     };
-    // 饼图特殊处理
+    // 饼图特殊处理：优先用 seriesData
     if (selectedChartType.value === 'Pie' || selectedChartType.value === 'pie') {
-        option.series = [
-            {
-                name: yArr.map(y => y.field).join(','),
-                type: 'pie',
-                radius: '60%',
-                data: xData.map((name, i) => ({ name, value: yDataArr[0][i] })),
-                emphasis: {
-                    itemStyle: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
+        const pieSeries = Array.isArray(seriesData) && seriesData.length > 0 ? seriesData : (xData.map((name, i) => ({ name, value: yDataArr[0][i] })));
+        const option = {
+            title: {
+                text: title || '',
+                left: 'center',
+                textStyle: { fontSize: 16, fontWeight: 'bold' }
+            },
+            tooltip: { trigger: 'item' },
+            legend: { top: 'bottom' },
+            series: [
+                {
+                    name: title || '',
+                    type: 'pie',
+                    radius: '60%',
+                    data: pieSeries,
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    },
+                    animation: animation,
+                    animationDuration: animation ? 1500 : 0
                 }
-            }
-        ];
-        delete option.xAxis;
-        delete option.yAxis;
+            ]
+        };
+        console.log('[generateEChartOption] option:', option);
+        return option;
     }
     // 调试输出
     console.log('[generateEChartOption] option:', option);

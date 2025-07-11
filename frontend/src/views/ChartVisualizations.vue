@@ -105,7 +105,7 @@ import FileWorkspace from '../components/Common/FileWorkspace.vue'
 import FileStructurePanel from '../components/Common/FileStructurePanel.vue'
 import ChartConfigPanel from '../components/Chart/ChartConfigPanel.vue'
 import { workspaceFiles, fileDataMap, showDataPreview, currentDataFile, previewData } from '@/assets/JS/utils/dataStructureOptimize.js'
-import { generateEChartOption, getColorByScheme } from '../assets/JS/utils/echartOptionUtils.js'
+import { generateEChartOption } from '../assets/JS/utils/echartOptionUtils.js'
 import { handleWorkspaceUpdate, handleWorkspaceRemove, handleWorkspacePreview, loadFilePreview, handleWorkspaceClear } from '../assets/JS/utils/workforceUtils.js'
 
 // 文件上传相关
@@ -165,7 +165,7 @@ const chartHistory = ref([
         }
       ]
     }
-  }
+  },
 ])
 
 const showHistory = ref(false)
@@ -219,13 +219,13 @@ function handleConfigChange(config) {
     !config.xAxis.field &&
     !config.yAxis.field &&
     (!Array.isArray(config.series) || config.series.length === 0)
-  ) { 
+  ) {
     chartOption.value = { series: [] }
   }
 }
 
 // 导入数据合并工具函数
-import { hasPrimaryKey, mergeChartData } from '../assets/JS/utils/dataMergeUtils.js';
+import { mergeChartData } from '../assets/JS/utils/dataMergeUtils.js';
 
 function handleGenerateChart(config) {
   console.log('[handleGenerateChart] config:', JSON.parse(JSON.stringify(config)));
@@ -238,19 +238,21 @@ function handleGenerateChart(config) {
   } else if (config.yAxis) {
     fields.push(config.yAxis);
   }
-  const filesNeeded = Array.from(new Set(fields.map(f => f.file)));
-  // 合并数据
-  const { xData, yDataArr, mergeType } = mergeChartData(config, fileDataMap.value);
-  if (!xData || xData.length === 0) {
+  // const filesNeeded = Array.from(new Set(fields.map(f => f.file)));
+  // 合并数据，传递nullHandling参数
+  const nullHandlingType = config.nullHandling || 'ignore';
+  const { xData, yDataArr, mergeType, seriesData } = mergeChartData(config, fileDataMap.value, nullHandlingType);
+
+  if ((seriesData && seriesData.length === 0) && (!xData || xData.length === 0)) {
     alert('Main file data is empty, unable to generate chart.');
     return;
   }
   // UI提示
   if (mergeType === 'rowIndex') {
-    alert('When no primary key is set, data will be aligned by row index and any extra rows will be truncated. It is recommended to set a primary key for more accurate data merging.');
+    alert('When no "PRIMARY KEY" is set, data will be aligned by row index and any extra rows will be truncated. It is recommended to set a PRIMARY KEY" for more accurate data merging.');
   }
   // 生成ECharts配置
-  const newChartOption = generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType);
+  const newChartOption = generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType, seriesData);
   if (newChartOption) {
     chartOption.value = null;
     nextTick(() => {

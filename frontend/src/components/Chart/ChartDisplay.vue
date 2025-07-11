@@ -37,7 +37,7 @@ import FunnelChartIcon from '../svg/FunnelChartIcon.vue'
 import GaugeChartIcon from '../svg/GaugeChartIcon.vue'
 import PictorialBarChartIcon from '../svg/PictorialBarChartIcon.vue'
 import ThemeRiverChartIcon from '../svg/ThemeRiverChartIcon.vue'
-import CalendarCahrtIcon from '../svg/CalendarChartIcon.vue'
+import CalendarChartIcon from '../svg/CalendarChartIcon.vue'
 import AnimateIcon from '../Common/AnimateIcon.vue'
 import * as echarts from 'echarts'
 
@@ -73,7 +73,7 @@ const iconList = [
     GaugeChartIcon,
     PictorialBarChartIcon,
     ThemeRiverChartIcon,
-    CalendarCahrtIcon,
+    CalendarChartIcon,
 ]
 const iconIndex = ref(0)
 const iconOpacity = ref(1)
