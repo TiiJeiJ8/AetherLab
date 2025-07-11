@@ -34,7 +34,7 @@
             <option value="fillZero">Fill with 0</option>
             <option value="fillNearest">Nearest Neighbor</option>
             <option value="linearInterpolate">Linear Interpolate</option>
-            <option value="fillSpline">Spline</option>
+            <option value="fillCubicSpline">Cubic Spline</option>
             <option value="fillPolynomial">Polynomial Interpolate</option>
             <option value="fillStepBefore">Step Before</option>
             <option value="fillStepAfter">Step After</option>

@@ -22,7 +22,8 @@
         <ChartMappingConfig
             v-if="currentTypeConfig.mapping"
             :mappingConfig="currentTypeConfig.mapping"
-            v-model="chartConfig"
+            :modelValue="chartConfig"
+            @update:modelValue="onMappingModelUpdate"
         >
             <template #title-append>
             <!-- 自动渲染开关 -->
@@ -188,13 +189,25 @@ const chartConfig = ref({
     colorScheme: 'default',
     animation: true,
     dataRange: 'all',
-    nullHandling: 'ignore'
+    nullHandling: 'ignoreNull'
 })
+
+// 合并mapping字段，保留其它字段
+function onMappingModelUpdate(mapping) {
+    // 只合并mappingConfig中定义的key，其它字段保留
+    const mappingKeys = (currentTypeConfig.value.mapping || []).map(item => item.key)
+    const newConfig = { ...chartConfig.value }
+    mappingKeys.forEach(key => {
+        newConfig[key] = mapping[key]
+    })
+    chartConfig.value = newConfig
+    emit('config-change', chartConfig.value)
+}
 
 // 需要显示 Null Handling 的图表类型
 const showNullHandlingTypes = [
-    'Unknown','Line', 'Lines', 'Scatter', 'Candlestick', 'Radar', 'Boxplot', 'Heatmap',
-    'Parallel', 'Gauge', 'ThemeRiver', 'PictorialBar'
+    'Unknown', 'Line', 'Bar', 'Scatter', 'Candlestick', 'Radar',
+    'Boxplot', 'Heatmap', 'Parallel', 'Gauge', 'ThemeRiver', 'PictorialBar'
 ]
 // 判断当前类型是否需要显示 Null Handling
 const showNullHandling = computed(() => {
@@ -460,7 +473,7 @@ function resetConfig () {
         series: [],
         title: '',
         colorScheme: 'default',
-        animation: true,
+        animation: chartConfig.value.animation,
         dataRange: 'all',
         nullHandling: 'ignoreNull'
     }

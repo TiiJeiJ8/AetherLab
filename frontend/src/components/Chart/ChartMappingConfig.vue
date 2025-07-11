@@ -71,7 +71,7 @@ watch(() => props.modelValue, (val) => {
 
 function updateField (key, value) {
     localConfig.value[key] = value
-    emit('update:modelValue', { ...localConfig.value })
+    emit('update:modelValue', { ...props.modelValue, ...localConfig.value })
 }
 
 function getFieldDisplay(val) {
@@ -100,7 +100,7 @@ function handleDrop(event, key, multiple) {
                         file: dragData.column.file || dragData.fileName || dragData.file || '',
                         index: dragData.column.index
                     })
-                    emit('update:modelValue', { ...localConfig.value })
+                    emit('update:modelValue', { ...props.modelValue, ...localConfig.value })
                 }
             // 单选
             } else {
@@ -124,12 +124,12 @@ function removeField(key, idx) {
         // 多选，移除指定项
         if (Array.isArray(localConfig.value[key])) {
         localConfig.value[key].splice(idx, 1)
-        emit('update:modelValue', { ...localConfig.value })
+        emit('update:modelValue', { ...props.modelValue, ...localConfig.value })
         }
     } else {
         // 单选，直接清空
         localConfig.value[key] = ''
-        emit('update:modelValue', { ...localConfig.value })
+        emit('update:modelValue', { ...props.modelValue, ...localConfig.value })
     }
 }
 </script>

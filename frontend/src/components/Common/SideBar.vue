@@ -112,7 +112,7 @@ onUnmounted(() => {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    z-index: 9998;
+    z-index: 9997;
     user-select: none;
     cursor: pointer;
     transition: width 0.4s cubic-bezier(.4,2,.6,1), box-shadow 0.3s, background-color 0.3s;
