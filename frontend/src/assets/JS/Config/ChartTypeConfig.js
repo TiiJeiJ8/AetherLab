@@ -1,5 +1,5 @@
 // ChartTypeConfig.js
-// 图表类型的动态配置描述，便于模块化和可扩展
+// 图表类型的动态配置项描述，便于模块化和可扩展
 /* eslint-disable */
 export const chartTypeConfig = {
     Line: {

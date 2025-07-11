@@ -49,15 +49,25 @@
         v-model="chartConfig"
     />
 
+    <!-- 保存至图表历史区按钮 -->
+    <button
+        class="save-btn"
+        @click="saveToHistory"
+    >
+        Save to History
+    </button>
+
     <!-- 操作按钮 -->
     <div class="action-section">
+        <!-- 应用配置按钮 -->
         <button
-        class="apply-btn"
-        :disabled="autoRender || !isConfigValid"
-        @click="generateChart"
+            class="apply-btn"
+            :disabled="autoRender || !isConfigValid"
+            @click="generateChart"
         >
         Apply Configuration
         </button>
+        <!-- 重置配置按钮 -->
         <button class="reset-btn" @click="resetConfig">
         Reset Configuration
         </button>
@@ -138,7 +148,14 @@ const props = defineProps({
 })
 
 // Emits
-const emit = defineEmits(['config-change', 'generate-chart'])
+const emit = defineEmits(['config-change', 'generate-chart', 'save-history'])
+// 保存到历史区
+function saveToHistory() {
+    // 触发保存事件，传递当前配置
+    emit('save-history', {
+        config: { ...chartConfig.value },
+    })
+}
 
 // 响应式数据
 const showDataFilter = ref(false)

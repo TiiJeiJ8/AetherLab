@@ -35,7 +35,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 const localConfig = ref({ ...props.modelValue })
-const isCollapsed = ref(false)
+const isCollapsed = ref(true)
 
 watch(() => props.modelValue, (val) => {
     localConfig.value = { ...val }

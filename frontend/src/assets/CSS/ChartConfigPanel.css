@@ -1140,3 +1140,60 @@
         transform: translateY(0) scale(1);
     }
 }
+
+.save-btn {
+    display: block;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto 16px auto;
+    padding: 12px 0;
+    font-size: 1.08rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--save-btn-green, #e6f9ed), var(--save-btn-green-accent, #c2f2d8));
+    color: var(--save-btn-color, #228c4f);
+    box-shadow: 0 2px 8px rgba(52, 199, 89, 0.07);
+    cursor: pointer;
+    outline: none;
+    transition:
+        background 0.25s cubic-bezier(.4, 2, .6, 1),
+        color 0.18s,
+        box-shadow 0.22s,
+        transform 0.13s;
+    position: relative;
+    overflow: hidden;
+}
+
+.save-btn:hover {
+    background: linear-gradient(135deg, var(--save-btn-green-hover, #d2f5e3), var(--save-btn-green-accent-hover, #b0e9c8));
+    color: var(--save-btn-hover-color, #228c4f);
+    box-shadow: 0 4px 16px rgba(52, 199, 89, 0.13);
+    transform: translateY(-2px) scale(1.04);
+}
+
+.save-btn:active {
+    background: linear-gradient(135deg, var(--save-btn-green-active, #c2e9d8), var(--save-btn-green-accent-active, #a3d9bb));
+    color: var(--save-btn-active-color, #228c4f);
+    box-shadow: 0 1px 4px rgba(52, 199, 89, 0.09);
+    transform: scale(0.97);
+}
+
+/* 深色模式适配 */
+[data-theme="dark"] .save-btn {
+    background: linear-gradient(135deg, var(--save-btn-green-dark, #228c4f), var(--save-btn-green-accent-dark, #3a6b3a));
+    color: var(--save-btn-color-dark, #eafff3);
+    box-shadow: 0 2px 8px rgba(52, 199, 89, 0.18);
+}
+
+[data-theme="dark"] .save-btn:hover {
+    background: linear-gradient(135deg, var(--save-btn-green-hover-dark, #1e7e34), var(--save-btn-green-accent-hover-dark, #43d17a));
+    color: var(--save-btn-hover-color-dark, #fff);
+    box-shadow: 0 4px 16px rgba(52, 199, 89, 0.22);
+}
+
+[data-theme="dark"] .save-btn:active {
+    background: linear-gradient(135deg, var(--save-btn-green-active-dark, #145c32), var(--save-btn-green-accent-active-dark, #2ebd59));
+    color: var(--save-btn-active-color-dark, #b3ffd6);
+    box-shadow: 0 1px 4px rgba(52, 199, 89, 0.10);
+}

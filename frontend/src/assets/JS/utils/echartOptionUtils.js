@@ -1,7 +1,5 @@
 /* eslint-disable */
 
-import { computed } from "vue";
-
 // 生成ECharts配置，支持多文件数据查找和主键/行号对齐
 export function generateEChartOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData) {
     const { yAxis, title, colorScheme, animation } = config;

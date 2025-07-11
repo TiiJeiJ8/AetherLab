@@ -29,7 +29,8 @@
         :currentFile="currentStructureFile"
         @config-change="handleConfigChange"
         @generate-chart="handleGenerateChart"
-        />
+        @save-history="handleSaveHistory"
+    />
     </SideBar>
 
     <!-- Empty Space -->
@@ -126,47 +127,8 @@ const selectedChartType = ref('Unknown')
 const chartConfig = ref(null)
 const chartOption = ref({})
 
-// 图表存储区（可从配置面板保存当前的图表配置、也可从后端获取）
-const chartHistory = ref([
-  {
-    title: '销售柱状图',
-    option: {
-      title: { text: '销售柱状图' },
-      tooltip: {},
-      xAxis: { data: ['一季度', '二季度', '三季度', '四季度'] },
-      yAxis: {},
-      series: [{ type: 'bar', data: [120, 200, 150, 80] }]
-    }
-  },
-  {
-    title: '折线趋势',
-    option: {
-      title: { text: '折线趋势' },
-      tooltip: {},
-      xAxis: { data: ['1月', '2月', '3月', '4月'] },
-      yAxis: {},
-      series: [{ type: 'line', data: [30, 50, 80, 65] }]
-    }
-  },
-  {
-    title: '饼图示例',
-    option: {
-      title: { text: '饼图示例' },
-      tooltip: {},
-      series: [
-        {
-          type: 'pie',
-          radius: '60%',
-          data: [
-            { value: 40, name: 'A类' },
-            { value: 32, name: 'B类' },
-            { value: 28, name: 'C类' }
-          ]
-        }
-      ]
-    }
-  },
-])
+// 图表存储区
+const chartHistory = ref([])
 
 const showHistory = ref(false)
 function openHistory() {
@@ -259,6 +221,25 @@ function handleGenerateChart(config) {
       chartOption.value = newChartOption;
     });
   }
+}
+
+// 保存到图表历史区
+function handleSaveHistory({ config }) {
+  // 生成当前option
+  let option = null;
+  try {
+    // 重新合并数据并生成option，保证历史区option和当前一致
+    const nullHandlingType = config.nullHandling || 'ignore';
+    const { xData, yDataArr, mergeType, seriesData } = mergeChartData(config, fileDataMap.value, nullHandlingType);
+    option = generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType, seriesData);
+  } catch (e) {
+    option = null;
+  }
+  chartHistory.value.push({
+    title: config.title || `Chart ${chartHistory.value.length + 1}`,
+    option: option || {},
+    config: { ...config }
+  });
 }
 </script>
 
