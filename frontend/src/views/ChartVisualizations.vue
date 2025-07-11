@@ -50,6 +50,7 @@
       @close="showHistory = false"
       @preview="previewChart"
       @delete="deleteChart"
+      @update:title="handleUpdateTitle"
     />
 
     <!-- 文件上传弹窗 -->
@@ -240,6 +241,29 @@ function handleSaveHistory({ config }) {
     option: option || {},
     config: { ...config }
   });
+}
+
+/* 响应历史区标题编辑 */
+function handleUpdateTitle ({ idx, title }) {
+  const item = chartHistory.value[idx]
+  if (item) {
+    item.title = title
+    if (item.config) item.config.title = title
+    if (item.option && item.option.title) item.option.title.text = title
+
+    // 如果当前绘制区显示的就是这个图，则同步更新 chartOption
+    // 这里通过 option/config 的引用或内容判断
+    if (chartOption.value && (chartOption.value === item.option || (chartOption.value.title && item.option && chartOption.value.title === item.option.title))) {
+      // 直接更新 chartOption 的 title
+      if (chartOption.value.title) {
+        chartOption.value.title.text = title
+      } else {
+        chartOption.value.title = { text: title }
+      }
+      // 触发响应式刷新
+      chartOption.value = JSON.parse(JSON.stringify(chartOption.value))
+    }
+  }
 }
 </script>
 

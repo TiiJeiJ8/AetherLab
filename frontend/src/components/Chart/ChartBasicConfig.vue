@@ -85,6 +85,9 @@ const localConfig = computed({
     margin-bottom: 16px;
     background: #fafbfc;
     transition: background 0.2s, border 0.2s;
+    animation: fadeInUp 0.6s ease;
+    animation-fill-mode: both;
+    animation-delay: 0.35s;
 }
 .basic-config-title {
     font-size: 16px;

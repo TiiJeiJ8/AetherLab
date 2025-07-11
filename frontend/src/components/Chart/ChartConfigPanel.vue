@@ -51,7 +51,7 @@
 
     <!-- 保存至图表历史区按钮 -->
     <button
-        class="save-btn"
+        class="save-history-btn"
         @click="saveToHistory"
     >
         Save to History

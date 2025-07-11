@@ -1,41 +1,70 @@
 <template>
 <div>
 <transition name="fade-slide">
-    <div v-if="show" class="history-modal" @click.self="onClose">
-    <div class="history-content">
-        <div class="history-header">
-        <span>Charts Storage</span>
-        <button class="close-btn" @click="onClose">×</button>
-        </div>
-        <div v-if="!chartHistory?.length" class="empty-tip">
-        No saved charts available.
-        </div>
-        <div class="history-list">
-        <div
-            v-for="(item, idx) in chartHistory"
-            :key="idx"
-            class="chart-history-item"
-        >
-            <div class="thumb-title-row">
-            <ChartThumbnail :option="item.option" @click="onPreview(item)" />
-            <div class="chart-history-title">{{ item.title }}</div>
-            <button class="delete-btn" @click.stop="confirmDelete(idx)" title="Delete">❌</button>
+    <div v-if="show" class="history-modal-draggable" :style="modalStyle" @mousedown.self="startDrag">
+        <div class="history-content-rect">
+            <div class="history-header-rect" @mousedown.stop="startDrag">
+                <span style="margin: 15px;">Charts Storage</span>
+                <button class="close-btn" style="margin: 15px;" @click="onClose">×</button>
+            </div>
+            <div v-if="!chartHistory?.length" class="empty-history-tip">
+                No saved charts available.
+            </div>
+            <div class="history-list-rect">
+            <div
+                v-for="(item, idx) in chartHistory"
+                :key="idx"
+                class="chart-history-item-rect"
+            >
+                <div class="thumb-title-row-rect">
+                <div class="chart-thumb-rect" @click="onPreview(item)">
+                    <ChartThumbnail :option="item.option" />
+                </div>
+                <div class="chart-history-title-rect">
+                    <template v-if="editingIndex !== idx">
+                        <span
+                        class="history-title-text"
+                        :title="item.title"
+                        @click="startEditTitle(idx, item.title)"
+                        style="cursor: pointer; user-select: text;"
+                        >
+                        {{ item.title.length > 7 ? (item.title.slice(0, 7) + '…') : item.title }}
+                        </span>
+                        <span v-if="item.title.length > 7" class="title-ellipsis-tooltip">{{ item.title }}</span>
+                    </template>
+                    <template v-else>
+                        <input
+                        :ref="el => setEditInputRef(el, idx)"
+                        v-model="editTitle"
+                        class="history-title-input"
+                        @blur="saveEditTitle(idx)"
+                        @keydown.enter.prevent="saveEditTitle(idx)"
+                        @keydown.esc="cancelEditTitle"
+                        maxlength="30"
+                        :placeholder="'Enter title'"
+                        style="width: 90%; max-width: 160px; font-size: 1em; border-radius: 5px; border: 1px solid #d0d0d0; padding: 2px 6px;"
+                        :title="editTitle"
+                        autocomplete="off"
+                        />
+                    </template>
+                </div>
+                <button class="delete-btn-rect" @click.stop="confirmDelete(idx)" title="Delete">×</button>
+                </div>
+            </div>
             </div>
         </div>
-        </div>
-    </div>
     </div>
 </transition>
 <transition name="fade">
     <div v-if="showDeleteConfirm" class="confirm-modal" @click.self="cancelDelete">
-    <div class="confirm-content">
-        <h3>Confirmation</h3>
-        <p>Are you sure you want to delete this chart? This operation is irreversible.</p>
-        <div name="confirm-buttons">
-        <button class="cancel-btn" @click="cancelDelete">Cancel</button>
-        <button class="confirm-btn" @click="handleDelete">Confirm</button>
+        <div class="confirm-content">
+            <h3 style="color: var(--text-color);">Confirmation</h3>
+            <p>Are you sure you want to delete this chart? This operation is irreversible.</p>
+            <div name="confirm-buttons">
+            <button class="cancel-history-btn" @click="cancelDelete">Cancel</button>
+            <button class="confirm-history-btn" @click="handleDelete">Confirm</button>
+            </div>
         </div>
-    </div>
     </div>
 </transition>
 </div>
@@ -44,23 +73,67 @@
 <script setup>
 /* eslint-disable */
 import ChartThumbnail from './ChartThumbnail.vue'
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount, defineEmits, defineProps, nextTick } from 'vue'
+// 拖拽浮窗相关
+const modalStyle = ref({ left: '50vw', top: '12vh' })
+const dragOffset = { x: 0, y: 0 }
+let dragging = false
 
+function startDrag (e) {
+    if (e.button !== 0) return
+    dragging = true
+    const modal = document.querySelector('.history-modal-draggable')
+    const rect = modal.getBoundingClientRect()
+    dragOffset.x = e.clientX - rect.left
+    dragOffset.y = e.clientY - rect.top
+    document.addEventListener('mousemove', onDrag)
+    document.addEventListener('mouseup', stopDrag)
+}
+function onDrag (e) {
+    if (!dragging) return
+    let left = e.clientX - dragOffset.x
+    let top = e.clientY - dragOffset.y
+    // 限制在窗口内
+    const minLeft = 20
+    const minTop = 20
+    const maxLeft = window.innerWidth - 480 - 20
+    const maxTop = window.innerHeight - 420 - 20
+    left = Math.max(minLeft, Math.min(left, maxLeft))
+    top = Math.max(minTop, Math.min(top, maxTop))
+    modalStyle.value = { left: left + 'px', top: top + 'px' }
+}
+function stopDrag () {
+    dragging = false
+    document.removeEventListener('mousemove', onDrag)
+    document.removeEventListener('mouseup', stopDrag)
+}
+onMounted(() => {
+    // 初始居中
+    const w = 480
+    const h = 420
+    modalStyle.value = {
+        left: (window.innerWidth - w) / 2 + 'px',
+        top: (window.innerHeight - h) / 3 + 'px'
+    }
+})
+onBeforeUnmount(() => {
+    stopDrag()
+})
 // 删除确认
 const showDeleteConfirm = ref(false)
-let deleteIndex = ref(null)
+const deleteIndex = ref(null)
 
-function confirmDelete(idx) {
+function confirmDelete (idx) {
     deleteIndex.value = idx
     showDeleteConfirm.value = true
 }
 
-function cancelDelete() {
+function cancelDelete () {
     showDeleteConfirm.value = false
     deleteIndex.value = null
 }
 
-function handleDelete() {
+function handleDelete () {
     if (deleteIndex.value !== null) {
         emit('delete', deleteIndex.value)
         showDeleteConfirm.value = false
@@ -74,218 +147,45 @@ const props = defineProps({
     chartHistory: Array
 })
 const emit = defineEmits(['close', 'preview', 'delete'])
-function onClose() { emit('close') }
+function onClose () { emit('close') }
 function onPreview(item) { emit('preview', item) }
-function onDelete(idx) { emit('delete', idx) }
+
+// 编辑标题相关
+const editingIndex = ref(null)
+const editTitle = ref('')
+const editInputRefs = ref({})
+
+function setEditInputRef(el, idx) {
+  if (el) editInputRefs.value[idx] = el
+}
+
+function startEditTitle(idx, title) {
+  editingIndex.value = idx
+  editTitle.value = title
+  nextTick(() => {
+    const el = editInputRefs.value[idx]
+    if (el && typeof el.focus === 'function') el.focus()
+  })
+}
+function saveEditTitle(idx) {
+    const val = editTitle.value.trim()
+    if (!val) {
+        // 非空校验，可加提示
+        editTitle.value = ''
+        editingIndex.value = null
+        return
+    }
+    // 通知父组件更新标题，保持响应式
+    emit('update:title', { idx, title: val })
+    editingIndex.value = null
+}
+function cancelEditTitle() {
+    editingIndex.value = null
+}
 </script>
 
 <style scoped>
-.history-modal {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.18);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.history-content {
-    width: min(90vw, 480px);
-    max-height: min(90vh, 600px);
-    background: var(--bg-color, #fff);
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-    padding: clamp(12px, 2vw, 18px);
-    overflow-y: auto;
-    animation: pop-in 0.4s;
-}
-.history-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: bold;
-    font-size: 1.1em;
-    margin-bottom: 10px;
-}
-.close-btn {
-    background: none;
-    border: none;
-    font-size: 1.5em;
-    cursor: pointer;
-    color: var(--text-color, #333);
-    line-height: 1;
-}
-.history-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: clamp(8px, 1.5vw, 16px);
-    padding: 4px;
-}
-.chart-history-item {
-    background: var(--bg-color);
-    border-radius: 8px;
-    padding: clamp(6px, 1vw, 10px);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-.chart-history-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 1px 1px rgba(58, 57, 57, 0.88);
-}
-.thumb-title-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-}
-.chart-history-title {
-    font-size: clamp(0.8em, 1.5vw, 1em);
-    font-weight: 500;
-    color: var(--text-color);
-    text-align: center;
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.delete-btn {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    background: var(--text-color);
-    border: none;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    font-size: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-.chart-history-item:hover .delete-btn {
-    opacity: 1;
-}
-@media (max-width: 480px) {
-    .history-header {
-        font-size: 1em;
-        padding: 8px 0;
-    }
 
-    .delete-btn {
-        opacity: 1; /* 在移动端始终显示删除按钮 */
-    }
-}
+@import '../../assets/CSS/ChartHistoryModal.css';
 
-.fade-slide-enter-active, .fade-slide-leave-active {
-    transition: opacity 0.3s, transform 0.3s;
-}
-.fade-slide-enter-from, .fade-slide-leave-to {
-    opacity: 0;
-    transform: translateY(-30px);
-}
-@keyframes pop-in {
-    from { opacity: 0; transform: scale(0.95);}
-    to { opacity: 1; transform: scale(1);}
-}
-
-/* 确认弹窗样式 */
-.confirm-modal {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.confirm-content {
-    background: var(--bg-color, #fff);
-    border-radius: 8px;
-    padding: 20px;
-    width: min(90vw, 300px);
-    text-align: center;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-}
-
-.confirm-content h3 {
-    margin: 0 0 12px;
-    color: #333;
-    font-size: 1.2em;
-}
-
-.confirm-content p {
-    margin: 0 0 20px;
-    color: #666;
-    font-size: 0.95em;
-}
-
-.confirm-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-}
-
-.confirm-btn, .cancel-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: opacity 0.2s;
-}
-
-.cancel-btn {
-    background: #f0f0f0;
-    color: #666;
-}
-
-.confirm-btn {
-    background: #dc3545;
-    color: white;
-}
-
-.confirm-btn:hover, .cancel-btn:hover {
-    opacity: 0.8;
-}
-
-/* 淡入淡出动画 */
-.fade-enter-active, .fade-leave-active {
-    transition: opacity 0.2s;
-}
-
-.fade-enter-from, .fade-leave-to {
-    opacity: 0;
-}
-
-.empty-tip {
-    text-align: center;
-    color: #999;
-    padding: 40px 20px;
-    font-size: 1.1em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 200px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    margin: 10px 0;
-    user-select: none;
-}
-
-@media (max-width: 480px) {
-    .empty-tip {
-        min-height: 150px;
-        padding: 20px;
-        font-size: 1em;
-    }
-}
 </style>
