@@ -43,6 +43,22 @@
             <option value="fillAkima">Akima</option>
         </select>
     </div>
+    <!-- Legend 开关 -->
+    <div class="basic-config-item">
+        <label for="legend-toggle">Legend</label>
+        <label class="switch">
+            <input id="legend-toggle" type="checkbox" v-model="localConfig.legendVisible" />
+            <span class="slider"></span>
+        </label>
+        <span style="margin-left:8px;min-width:32px;">{{ localConfig.legendVisible ? 'On' : 'Off' }}</span>
+    </div>
+    <!-- Legend 位置选择 -->
+    <div class="basic-config-item" v-if="localConfig.legendVisible">
+        <label for="legend-position">Legend Position</label>
+        <select id="legend-position" v-model="localConfig.legendPosition">
+            <option v-for="pos in legendPositions" :key="pos.value" :value="pos.value">{{ pos.label }}</option>
+        </select>
+    </div>
 </div>
 </template>
 
@@ -85,7 +101,7 @@ onMounted(async () => {
         const res = await fetch('/api/themes')
         if (res.ok) {
             const arr = await res.json()
-            themeList.value = ['default', ...arr]
+            themeList.value = arr
             return
         }
     } catch (e) {}
@@ -94,10 +110,18 @@ onMounted(async () => {
         const res = await fetch('/themes/themes.json')
         if (res.ok) {
             const arr = await res.json()
-            themeList.value = ['default', ...arr]
+            themeList.value = arr
         }
     } catch (e) {}
 })
+
+//TODO 在localConfig中增加legendVisible和legendPosition
+const legendPositions = [
+    { value: 'bottom', label: 'Bottom' },
+    { value: 'top', label: 'Top' },
+    { value: 'left', label: 'Left' },
+    { value: 'right', label: 'Right' }
+]
 </script>
 
 <style scoped>

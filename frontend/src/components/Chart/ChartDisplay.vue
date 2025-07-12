@@ -41,19 +41,20 @@ import CalendarChartIcon from '../svg/CalendarChartIcon.vue'
 import AnimateIcon from '../Common/AnimateIcon.vue'
 import * as echarts from 'echarts'
 
+// 主题缓存, 避免污染echarts对象
+const themeCache = {}
+
 // 动态加载并注册主题
 async function loadAndRegisterTheme(themeName) {
-    if (themeName === 'default') return
-    if (echarts._themeRegistered && echarts._themeRegistered[themeName]) return
+    if (themeCache[themeName]) return
     try {
         const res = await fetch(`/themes/${themeName}.json`)
-        if (!res.ok) throw new Error('主题文件加载失败')
+        if (!res.ok) throw new Error('Theme file loads failed')
         const obj = await res.json()
         echarts.registerTheme(themeName, obj)
-        if (!echarts._themeRegistered) echarts._themeRegistered = {}
-        echarts._themeRegistered[themeName] = true
+        themeCache[themeName] = { themeObj: obj }
     } catch (e) {
-        console.warn('主题加载失败:', themeName, e)
+        console.warn('Theme load failed:', themeName, e)
     }
 }
 
@@ -112,6 +113,46 @@ function startIconLoop() {
     }, 3500)
 }
 
+// 获取对比色函数
+function getContrastColor(bg) {
+    let r, g, b
+    if (!bg) return '#333'
+    if (bg.startsWith('#')) {
+        if (bg.length === 4) {
+        r = parseInt(bg[1] + bg[1], 16)
+        g = parseInt(bg[2] + bg[2], 16)
+        b = parseInt(bg[3] + bg[3], 16)
+        } else if (bg.length === 7) {
+        r = parseInt(bg.slice(1, 3), 16)
+        g = parseInt(bg.slice(3, 5), 16)
+        b = parseInt(bg.slice(5, 7), 16)
+        }
+    } else if (bg.startsWith('rgb')) {
+        const arr = bg.match(/\d+/g)
+        if (arr && arr.length >= 3) {
+        r = parseInt(arr[0])
+        g = parseInt(arr[1])
+        b = parseInt(arr[2])
+        }
+    }
+    if (r === undefined || g === undefined || b === undefined) return '#333'
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b)
+    return luminance > 180 ? '#222' : '#eee'
+}
+
+function getCssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+}
+function isTransparent(bg) {
+    if (!bg) return true
+    if (bg === 'transparent') return true
+    if (bg.startsWith('rgba')) {
+        const arr = bg.match(/\d+(\.\d+)?/g)
+        if (arr && arr.length === 4 && parseFloat(arr[3]) === 0) return true
+    }
+    return false
+}
+
 async function renderChart() {
     console.log('Start rendering chart')
     console.log('value of hasSeries:', hasSeries.value)
@@ -129,13 +170,46 @@ async function renderChart() {
     if (props.option) {
         // 动态处理x轴标签过长和过密
         const option = JSON.parse(JSON.stringify(props.option))
+        // 自动适配标签颜色
+        let bgColor = option.backgroundColor
+        if (!bgColor && props.colorTheme && props.colorTheme !== 'default') {
+            const themeObj = themeCache[props.colorTheme] && themeCache[props.colorTheme].themeObj
+            if (themeObj && themeObj.backgroundColor) bgColor = themeObj.backgroundColor
+        }
+        if (!bgColor || isTransparent(bgColor)) {
+            bgColor = getCssVar('--bg-color') || '#fff'
+        }
+        let axisLabelColor = getContrastColor(bgColor)
+        let textColor = getCssVar('--text-color') || axisLabelColor
+        // 轴标签
+        if (option.xAxis) {
+            if (!option.xAxis.axisLabel) option.xAxis.axisLabel = {}
+            option.xAxis.axisLabel.color = axisLabelColor
+        }
+        if (option.yAxis) {
+            if (!option.yAxis.axisLabel) option.yAxis.axisLabel = {}
+            option.yAxis.axisLabel.color = axisLabelColor
+        }
+        // 图表标题
+        if (option.title) {
+            if (!option.title.textStyle) option.title.textStyle = {}
+            option.title.textStyle.color = textColor
+            if (!option.title.subtextStyle) option.title.subtextStyle = {}
+            option.title.subtextStyle.color = textColor
+        }
+        // 图例
+        if (option.legend) {
+            if (!option.legend.textStyle) option.legend.textStyle = {}
+            option.legend.textStyle.color = textColor
+        }
+        // x轴标签过长处理
         if (option.xAxis && option.xAxis.data && Array.isArray(option.xAxis.data)) {
             const labelCount = option.xAxis.data.length
             if (!option.xAxis.axisLabel) option.xAxis.axisLabel = {}
             if (labelCount > 12) {
                 option.xAxis.axisLabel.rotate = 45
             }
-            if (labelCount > 20) {
+            if (labelCount > 40) {
                 option.xAxis.axisLabel.interval = Math.ceil(labelCount / 20)
             } else {
                 option.xAxis.axisLabel.interval = 0
@@ -145,7 +219,7 @@ async function renderChart() {
             option.xAxis.axisLabel.ellipsis = '...'
         }
         console.log('[Rendering Theme]Setting chart option:', option)
-        chartInstance.setOption(option, true)
+        chartInstance.setOption(option, { notMerge: true, replaceMerge: ['series'] })
     }
 }
 
