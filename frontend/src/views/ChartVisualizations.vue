@@ -39,7 +39,7 @@
     <!-- 绘制区 -->
     <div class="main-content">
       <section class="chart-workspace">
-        <ChartDisplay v-if="chartOption" :option="chartOption" />
+        <ChartDisplay v-if="chartOption" :option="chartOption" :colorTheme="chartConfig?.colorScheme || 'default'" />
       </section>
     </div>
 
@@ -252,7 +252,7 @@ function handleUpdateTitle ({ idx, title }) {
     if (item.option && item.option.title) item.option.title.text = title
 
     // 如果当前绘制区显示的就是这个图，则同步更新 chartOption
-    // 这里通过 option/config 的引用或内容判断
+    // 通过 option/config 的引用或内容判断
     if (chartOption.value && (chartOption.value === item.option || (chartOption.value.title && item.option && chartOption.value.title === item.option.title))) {
       // 直接更新 chartOption 的 title
       if (chartOption.value.title) {

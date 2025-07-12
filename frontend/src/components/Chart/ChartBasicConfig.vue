@@ -6,15 +6,14 @@
         <label for="chart-title">Title</label>
         <input id="chart-title" v-model="localConfig.title"/>
     </div>
-    <!-- Theme -->
+        <!-- Theme -->
     <div class="basic-config-item">
-        <label for="color-scheme">Color Scheme</label>
+        <label for="color-scheme">Theme</label>
         <select id="color-scheme" v-model="localConfig.colorScheme">
-        <option value="default">Default</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-        <option value="custom">Custom</option>
-        <!-- Can add more themes here -->
+            <!-- 动态跟随文件夹中主题文件增加 -->
+            <option v-for="theme in themeList" :key="theme" :value="theme">
+                {{ theme.charAt(0).toUpperCase() + theme.slice(1) }}
+            </option>
         </select>
     </div>
     <!-- Animation -->
@@ -51,7 +50,8 @@
 /* eslint-disable */
 // This component is for basic configuration shared by all chart types
 // 该组件用于所有图表的通用基础配置
-import { computed, defineProps, defineEmits } from 'vue'
+import { ref, onMounted, computed, defineProps, defineEmits } from 'vue'
+
 const props = defineProps({
     modelValue: {
         type: Object,
@@ -74,6 +74,29 @@ const emit = defineEmits(['update:modelValue'])
 const localConfig = computed({
     get: () => props.modelValue,
     set: (val) => emit('update:modelValue', val)
+})
+
+// 主题列表（可手动维护或通过接口/fetch获取）
+const themeList = ref(['default'])
+
+onMounted(async () => {
+    // 先尝试后端接口
+    try {
+        const res = await fetch('/api/themes')
+        if (res.ok) {
+            const arr = await res.json()
+            themeList.value = ['default', ...arr]
+            return
+        }
+    } catch (e) {}
+    // 后端接口不可用时，降级为静态 themes.json
+    try {
+        const res = await fetch('/themes/themes.json')
+        if (res.ok) {
+            const arr = await res.json()
+            themeList.value = ['default', ...arr]
+        }
+    } catch (e) {}
 })
 </script>
 

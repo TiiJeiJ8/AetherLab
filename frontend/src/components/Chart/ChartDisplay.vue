@@ -41,12 +41,30 @@ import CalendarChartIcon from '../svg/CalendarChartIcon.vue'
 import AnimateIcon from '../Common/AnimateIcon.vue'
 import * as echarts from 'echarts'
 
+// 动态加载并注册主题
+async function loadAndRegisterTheme(themeName) {
+    if (themeName === 'default') return
+    if (echarts._themeRegistered && echarts._themeRegistered[themeName]) return
+    try {
+        const res = await fetch(`/themes/${themeName}.json`)
+        if (!res.ok) throw new Error('主题文件加载失败')
+        const obj = await res.json()
+        echarts.registerTheme(themeName, obj)
+        if (!echarts._themeRegistered) echarts._themeRegistered = {}
+        echarts._themeRegistered[themeName] = true
+    } catch (e) {
+        console.warn('主题加载失败:', themeName, e)
+    }
+}
+
 const props = defineProps({
-    option: { type: Object, required: true }
+    option: { type: Object, required: true },
+    colorTheme: { type: String, default: 'default' }
 })
 
 const chartRef = ref(null)
 let chartInstance = null
+let resizeObserver = null
 
 const hasSeries = computed(() => {
     return props.option && Array.isArray(props.option.series) && props.option.series.length > 0
@@ -94,28 +112,67 @@ function startIconLoop() {
     }, 3500)
 }
 
+async function renderChart() {
+    console.log('Start rendering chart')
+    console.log('value of hasSeries:', hasSeries.value)
+    if (!hasSeries.value) return
+    if (chartInstance) {
+        chartInstance.dispose()
+        chartInstance = null
+    }
+    const themeName = props.colorTheme === 'default' ? null : props.colorTheme
+    if (props.colorTheme !== 'default') {
+        await loadAndRegisterTheme(props.colorTheme)
+    }
+    console.log('Rendering chart with theme:', themeName)
+    chartInstance = echarts.init(chartRef.value, themeName)
+    if (props.option) {
+        // 动态处理x轴标签过长和过密
+        const option = JSON.parse(JSON.stringify(props.option))
+        if (option.xAxis && option.xAxis.data && Array.isArray(option.xAxis.data)) {
+            const labelCount = option.xAxis.data.length
+            if (!option.xAxis.axisLabel) option.xAxis.axisLabel = {}
+            if (labelCount > 12) {
+                option.xAxis.axisLabel.rotate = 45
+            }
+            if (labelCount > 20) {
+                option.xAxis.axisLabel.interval = Math.ceil(labelCount / 20)
+            } else {
+                option.xAxis.axisLabel.interval = 0
+            }
+            option.xAxis.axisLabel.overflow = 'truncate'
+            option.xAxis.axisLabel.width = 80
+            option.xAxis.axisLabel.ellipsis = '...'
+        }
+        console.log('[Rendering Theme]Setting chart option:', option)
+        chartInstance.setOption(option, true)
+    }
+}
+
 onMounted(() => {
     startIconLoop()
     renderChart()
+    // 监听容器大小变化，自适应图表
+    if (window.ResizeObserver) {
+        resizeObserver = new ResizeObserver(() => {
+            if (chartInstance) chartInstance.resize()
+        })
+        if (chartRef.value) resizeObserver.observe(chartRef.value)
+    } else {
+        window.addEventListener('resize', () => {
+            if (chartInstance) chartInstance.resize()
+        })
+    }
 })
+
 onBeforeUnmount(() => {
     if (chartInstance) chartInstance.dispose()
     clearInterval(iconTimer)
     clearTimeout(fadeTimer)
+    if (resizeObserver && chartRef.value) resizeObserver.unobserve(chartRef.value)
 })
 
-function renderChart() {
-    console.log('value of hasSeries:', hasSeries.value)
-    if (!hasSeries.value) return
-    if (!chartInstance && chartRef.value) {
-        chartInstance = echarts.init(chartRef.value)
-    }
-    if (chartInstance && props.option) {
-        chartInstance.setOption(props.option, true)
-    }
-}
-
-watch(() => props.option, renderChart, { deep: true })
+watch([() => props.option, () => props.colorTheme], renderChart, { deep: true })
 onMounted(renderChart)
 onBeforeUnmount(() => {
     if (chartInstance) chartInstance.dispose()
@@ -126,7 +183,9 @@ onBeforeUnmount(() => {
 .chart-display {
     width: 100%;
     height: 100%;
-    min-height: clamp(300px, 60vh, 600px);
+    min-height: clamp(300px, 40vh, 600px);
+    max-width: 100vw;
+    max-height: 80vh;
     background: var(--bg-color, #fff);
     border-radius: clamp(8px, 2vw, 12px);
     box-shadow: 0 0 1px 1px var(--text-color);
@@ -135,12 +194,20 @@ onBeforeUnmount(() => {
     align-items: center;
     justify-content: center;
     padding: clamp(10px, 2vw, 20px);
+    overflow: auto;
 }
 
 .chart-container {
     width: 100% !important;
     height: 100% !important;
-    min-height: inherit;
+    min-height: 320px;
+    min-width: 0;
+    max-width: 100vw;
+    max-height: 80vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .empty-tip {
