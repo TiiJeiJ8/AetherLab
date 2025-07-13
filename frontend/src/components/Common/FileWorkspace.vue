@@ -1,17 +1,18 @@
 <template>
+  <transition name="fade-panel">
     <div
-        v-if="workspaceFiles.length > 0"
-        class="file-workspace"
-        :class="{
+      v-show="workspaceFiles.length > 0"
+      class="file-workspace"
+      :class="{
         'is-focused': isFocused,
         'dragging': isDragging
-        }"
-        :style="workspacePosition"
-        @wheel.prevent="handleWheel"
-        @mouseenter="handleMouseEnter"
-        @mouseleave="handleMouseLeave"
-        @mousedown="handleMouseDown"
-        ref="workspaceRef"
+      }"
+      :style="workspacePosition"
+      @wheel.prevent="handleWheel"
+      @mouseenter="handleMouseEnter"
+      @mouseleave="handleMouseLeave"
+      @mousedown="handleMouseDown"
+      ref="workspaceRef"
     >
         <div
         class="workspace-header"
@@ -74,6 +75,7 @@
         </div>
         </div>
     </div>
+  </transition>
 </template>
 
 <script setup>

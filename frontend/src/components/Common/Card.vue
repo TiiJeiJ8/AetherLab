@@ -17,58 +17,33 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'BaseCard',
-  props: {
-    icon: {
-      type: String,
-      required: true
-    },
-    title: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    buttonText: {
-      type: String,
-      required: true
-    },
-    href: {
-      type: String,
-      required: true
-    },
-    isDeveloping: {
-      type: Boolean,
-      default: true
-    },
-    isExternal: {
-      type: Boolean,
-      default: false
-    }
-  },
-  computed: {
-    buttonColor () {
-      return this.isDeveloping ? 'btn-secondary' : 'btn-primary'
-    },
-    animationClass () {
-      return 'animate__animated'
-    }
-  },
-  methods: {
-    handleClick () {
-      if (this.isExternal) {
-        window.open(this.href, '_blank')
-      } else if (!this.isDeveloping) {
-        this.$router.push(this.href)
-      } else {
-        this.$router.push('/under-construction')
-      }
-    }
-  }
+<script setup>
+/* eslint-disable */
+import { computed, defineProps } from 'vue'
+import { useRouter } from 'vue-router'
+import { handleCardClick } from '@/assets/JS/utils/cardUtils.js'
+
+const props = defineProps({
+  icon: { type: String, required: true },
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  buttonText: { type: String, required: true },
+  href: { type: String, required: true },
+  isDeveloping: { type: Boolean, default: true },
+  isExternal: { type: Boolean, default: false }
+})
+
+const router = useRouter()
+
+const buttonColor = computed(() => props.isDeveloping ? 'btn-secondary' : 'btn-primary')
+const animationClass = computed(() => 'animate__animated')
+
+function handleClick() {
+  handleCardClick({
+    href: props.href,
+    isExternal: props.isExternal,
+    isDeveloping: props.isDeveloping
+  }, router)
 }
 </script>
 

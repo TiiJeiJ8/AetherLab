@@ -32,57 +32,47 @@
         </div>
       </div>
       <footer class="text-center p-3 mt-4 border-top position-absolute bottom-0 start-50 translate-middle-x">
-        Fuck Charts © {{ currentYear }} - TiiJeiJ8
+        Fuck Charts © {{ new Date().getFullYear() }} - TiiJeiJ8
       </footer>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'UnderConstruction',
-  data () {
-    return {
-      countdownText: '',
-      currentYear: new Date().getFullYear(),
-      targetDate: new Date('2099-12-29'),
-      interval: null
-    }
-  },
-  mounted () {
-    this.updateCountdown()
-    this.interval = setInterval(this.updateCountdown, 1000)
-  },
-  beforeUnmount () {
-    clearInterval(this.interval)
-  },
-  methods: {
-    updateCountdown () {
-      const now = new Date()
-      const remaining = this.targetDate - now
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
 
-      if (remaining <= 0) {
-        this.countdownText = 'Go go go !!🎉'
-        return
-      }
+const countdownText = ref('')
+const targetDate = new Date('2099-12-29')
+let interval = null
 
-      const seconds = Math.floor(remaining / 1000)
-      const minutes = Math.floor(seconds / 60)
-      const hours = Math.floor(minutes / 60)
-      const days = Math.floor(hours / 24)
-      const years = Math.floor(days / 365)
-      const remainingDays = days % 365
-
-      const formattedDate = this.targetDate.toLocaleDateString('en-US', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric'
-      })
-
-      this.countdownText = `${formattedDate}<br>${years} Years ${remainingDays} Days ${hours % 24} Hours ${minutes % 60} Minutes ${seconds % 60} Seconds`
-    }
+function updateCountdown () {
+  const now = new Date()
+  const remaining = targetDate - now
+  if (remaining <= 0) {
+    countdownText.value = 'Go go go !!🎉'
+    return
   }
+  const seconds = Math.floor(remaining / 1000)
+  const minutes = Math.floor(seconds / 60)
+  const hours = Math.floor(minutes / 60)
+  const days = Math.floor(hours / 24)
+  const years = Math.floor(days / 365)
+  const remainingDays = days % 365
+  const formattedDate = targetDate.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  })
+  countdownText.value = `${formattedDate}<br>${years} Years ${remainingDays} Days ${hours % 24} Hours ${minutes % 60} Minutes ${seconds % 60} Seconds`
 }
+
+onMounted(() => {
+  updateCountdown()
+  interval = setInterval(updateCountdown, 1000)
+})
+onUnmounted(() => {
+  clearInterval(interval)
+})
 </script>
 
 <style scoped>

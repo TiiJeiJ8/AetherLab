@@ -57,6 +57,7 @@
 <script setup>
 /* eslint-disable */
 import { computed } from 'vue'
+import { getCellValue, formatFileSize } from '@/assets/JS/utils/dataPreviewUtils.js'
 
 const props = defineProps({
     show: Boolean,
@@ -76,14 +77,10 @@ const emit = defineEmits(['close'])
 // 表头计算 - 修复数据类型处理逻辑
 const tableHeaders = computed(() => {
     if (!props.previewData.length) return []
-    
-    // 获取第一行数据作为表头
     const firstRow = props.previewData[0]
     if (Array.isArray(firstRow)) {
-        // 如果是数组格式，直接使用数组元素作为标题
         return firstRow
     } else if (typeof firstRow === 'object' && firstRow !== null) {
-        // 如果是对象格式，使用对象的键名作为标题
         return Object.keys(firstRow)
     }
     return []
@@ -92,37 +89,14 @@ const tableHeaders = computed(() => {
 // 实际数据行（根据数据类型决定是否排除标题行）
 const dataRows = computed(() => {
     if (!props.previewData.length) return []
-    
     const firstRow = props.previewData[0]
     if (Array.isArray(firstRow)) {
-        // 数组格式：第一行是表头，跳过它
         return props.previewData.slice(1)
     } else if (typeof firstRow === 'object' && firstRow !== null) {
-        // 对象格式：所有行都是数据行
         return props.previewData
     }
     return props.previewData
 })
-
-// 获取单元格值的方法
-function getCellValue(row, header, index) {
-    if (Array.isArray(row)) {
-        return row[index] || ''
-    } else if (typeof row === 'object' && row !== null) {
-        // 对于对象，优先使用表头作为键来获取值
-        return row[header] !== undefined ? row[header] : ''
-    }
-    return row || ''
-}
-
-// 格式化文件大小
-function formatFileSize(bytes) {
-    if (!bytes) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-}
 
 function onClose() {
     emit('close')

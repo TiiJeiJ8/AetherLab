@@ -1,3 +1,23 @@
+:root {
+    --drag-bg-color: rgba(59, 130, 246, 0.1);
+    --drag-border-color: rgba(59, 130, 246, 0.4);
+    --drag-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    --drag-panel-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+    --drag-handle-hover: #3b82f6;
+    --drag-preview-bg: rgba(59, 130, 246, 0.9);
+    --drag-preview-color: #fff;
+}
+
+[data-theme="dark"] {
+    --drag-bg-color: rgba(59, 130, 246, 0.2);
+    --drag-border-color: rgba(59, 130, 246, 0.5);
+    --drag-shadow: 0 8px 24px rgba(59, 130, 246, 0.18);
+    --drag-panel-shadow: 0 16px 48px rgba(59, 130, 246, 0.25);
+    --drag-handle-hover: #60a5fa;
+    --drag-preview-bg: rgba(59, 130, 246, 0.95);
+    --drag-preview-color: #fff;
+}
+
 .file-structure-panel {
     position: fixed;
     background: rgba(255, 255, 255, 0.95);
@@ -8,10 +28,28 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     z-index: 10001;
     overflow: hidden;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s, transform 0.25s;
     -webkit-user-select: none;
     user-select: none;
     will-change: transform, opacity;
+}
+
+/* 面板淡入淡出动画 */
+.fade-panel-enter-active,
+.fade-panel-leave-active {
+    transition: opacity 0.25s, transform 0.25s;
+}
+
+.fade-panel-enter-from,
+.fade-panel-leave-to {
+    opacity: 0;
+    transform: scale(0.98) translateY(20px);
+}
+
+.fade-panel-enter-to,
+.fade-panel-leave-from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
 }
 
 .file-structure-panel.is-focused {
@@ -26,7 +64,7 @@
 .file-structure-panel.dragging {
     z-index: 10002;
     transform: scale(1.02);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--drag-panel-shadow);
     transition: none !important;
 }
 
@@ -233,9 +271,9 @@
 .column-item.dragging {
     cursor: grabbing;
     transform: scale(1.02);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    background: rgba(59, 130, 246, 0.1);
-    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: var(--drag-shadow);
+    background: var(--drag-bg-color);
+    border-color: var(--drag-border-color);
 }
 
 [data-theme="dark"] .column-item {
@@ -250,8 +288,8 @@
 
 [data-theme="dark"] .column-item:active,
 [data-theme="dark"] .column-item.dragging {
-    background: rgba(59, 130, 246, 0.2);
-    border-color: rgba(59, 130, 246, 0.5);
+    background: var(--drag-bg-color);
+    border-color: var(--drag-border-color);
 }
 
 .column-info {
@@ -414,7 +452,7 @@
 
 .column-item:hover .drag-handle {
     opacity: 1;
-    color: #3b82f6;
+    color: var(--drag-handle-hover);
 }
 
 .drag-handle svg {
@@ -425,6 +463,8 @@
 /* 拖拽预览样式 */
 .drag-preview {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--drag-preview-bg) !important;
+    color: var(--drag-preview-color) !important;
 }
 
 .drag-preview-content {

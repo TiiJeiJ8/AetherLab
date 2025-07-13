@@ -2,13 +2,7 @@
   <div>
     <!-- Top Bar -->
     <div class="py-5">
-      <TopBar :actions="[
-        { type: 'button', label: 'Files', onClick: UploadFiles },
-        { type: 'button', label: 'Chart History', onClick: openHistory},
-        { type: 'button', label: 'Dashboard', },
-        { type: 'button', label: 'Instruction', to: '/under-construction'},
-        { type: 'button', label: 'Back2Home', to: '/'},
-      ]"/>
+      <TopBar :actions="topBarActions"/>
     </div>
 
     <!-- 左侧边栏 -->
@@ -95,7 +89,7 @@
 
 <script setup>
 /* eslint-disable */
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import TopBar from '../components/Common/TopBar.vue'
 import SideBar from '../components/Common/SideBar.vue'
 import ChartTypeSelector from '../components/Chart/ChartIcon.vue'
@@ -110,9 +104,34 @@ import { workspaceFiles, fileDataMap, showDataPreview, currentDataFile, previewD
 import { generateEChartOption } from '../assets/JS/utils/echartOptionUtils.js'
 import { handleWorkspaceUpdate, handleWorkspaceRemove, handleWorkspacePreview, loadFilePreview, handleWorkspaceClear } from '../assets/JS/utils/workforceUtils.js'
 
+// 定义TopBar中按钮
+const topBarActions = [
+  { type: 'button', label: 'Files', onClick: uploadFiles },
+  { type: 'button', label: 'Chart History', onClick: openHistory },
+  { type: 'button', label: 'Dashboard' },
+  { type: 'button', label: 'Instruction', to: '/under-construction' },
+  { type: 'button', label: 'Back2Home', to: '/' }
+]
+
+// esc键关闭所有弹窗
+function handleEscKey(e) {
+  if (e.key === 'Escape') {
+    if (showFileUpload.value) showFileUpload.value = false
+    if (showDataPreview.value) showDataPreview.value = false
+    if (showHistory.value) showHistory.value = false
+    if (showStructurePanel.value) showStructurePanel.value = false
+  }
+}
+onMounted(() => {
+  window.addEventListener('keydown', handleEscKey)
+})
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleEscKey)
+})
+
 // 文件上传相关
 const showFileUpload = ref(false)
-function UploadFiles() {
+function uploadFiles() {
   showFileUpload.value = true
 }
 

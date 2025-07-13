@@ -3,22 +3,57 @@
   <div
     id="g-btn"
     class="theme-button"
+    :class="{ active: isActive }"
     @click="toggleTheme"
   ></div>
 </template>
 
-<script>
-export default {
-  name: 'ThemeButton',
-  methods: {
-    toggleTheme () {
-      const btn = document.getElementById('g-btn')
-      const isActive = btn.classList.contains('active')
-      btn.classList.toggle('active', !isActive)
-      document.documentElement.setAttribute('data-theme', !isActive ? 'dark' : 'light')
-    }
+<script setup>
+/* eslint-disable */
+import { ref, watch, onMounted } from 'vue'
+
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    default: undefined
+  },
+  theme: {
+    type: String,
+    default: undefined // 'dark' | 'light' | undefined
   }
+})
+const emit = defineEmits(['update:modelValue', 'change'])
+
+const isActive = ref(false)
+
+// 外部受控优先
+watch(() => props.modelValue, (val) => {
+  if (typeof val === 'boolean') {
+    isActive.value = val
+    document.documentElement.setAttribute('data-theme', val ? 'dark' : 'light')
+  }
+})
+watch(() => props.theme, (val) => {
+  if (val === 'dark' || val === 'light') {
+    isActive.value = val === 'dark'
+    document.documentElement.setAttribute('data-theme', val)
+  }
+})
+
+function toggleTheme() {
+  isActive.value = !isActive.value
+  const theme = isActive.value ? 'dark' : 'light'
+  document.documentElement.setAttribute('data-theme', theme)
+  emit('update:modelValue', isActive.value)
+  emit('change', theme)
 }
+
+onMounted(() => {
+  // 优先受控，否则根据html属性同步按钮状态
+  if (props.modelValue === undefined && props.theme === undefined) {
+    isActive.value = document.documentElement.getAttribute('data-theme') === 'dark'
+  }
+})
 </script>
 
 <style scoped>

@@ -1,16 +1,17 @@
 <template>
-  <div
-    v-if="isVisible"
-    class="file-structure-panel"
-    :class="{
-      'is-focused': isFocused,
-      'dragging': isDragging
-    }"
-    :style="panelPosition"
-    @mouseenter="handleMouseEnter"
-    @mouseleave="handleMouseLeave"
-    @mousedown="handleMouseDown"
-    ref="panelRef">
+  <transition name="fade-panel">
+    <div
+      v-show="isVisible"
+      class="file-structure-panel"
+      :class="{
+        'is-focused': isFocused,
+        'dragging': isDragging
+      }"
+      :style="panelPosition"
+      @mouseenter="handleMouseEnter"
+      @mouseleave="handleMouseLeave"
+      @mousedown="handleMouseDown"
+      ref="panelRef">
     <!-- 面板头部 -->
     <div
       class="panel-header"
@@ -91,13 +92,15 @@
         </div>
       </div>
     </div>
-  </div>
+    </div>
+  </transition>
 </template>
 
 <script setup>
 /* eslint-disable */
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { getThemeIcon } from '@/assets/JS/SVG/icons.js'
+import { inferDataType, calculateColumnStats, getColumnTypeClass } from '@/assets/JS/utils/columnAnalyzeUtils.js'
 
 // Props
 const props = defineProps({
@@ -170,127 +173,47 @@ async function analyzeFileStructure() {
     console.warn('No file data available for structure analysis')
     return
   }
-
   const data = props.fileInfo.data
   if (!Array.isArray(data) || data.length === 0) {
     console.warn('Invalid data format for structure analysis')
     return
   }
-
-  // 使用第一行作为列名（如果是表头）
   const headers = props.fileInfo.headers || Object.keys(data[0])
-  
-  // 分析每列的数据类型和样本
-  const analyzedColumns = headers.map((header, index) => {
-    const columnData = data.slice(1).map(row => { // 跳过第一行（标题行）
-      if (Array.isArray(row)) {
-        return row[index]
-      } else if (typeof row === 'object') {
-        return row[header]
-      }
-      return null
-    }).filter(val => val !== null && val !== undefined && val !== '')
-
-    // 推断数据类型
-    const type = inferDataType(columnData)
-    
-    // 获取样本数据（跳过标题行）
-    const sample = columnData.slice(0, 3).join(', ') || 'No data'
-    
-    // 统计信息（总行数需要减去标题行）
-    const stats = calculateColumnStats(columnData, data.length - 1)
-
-    return {
-      name: header,
-      type: type,
-      sample: sample,
-      stats: stats,
-      index: index
+  const analyzedColumns = []
+  const chunkSize = 5 // 每次处理5列，防止主线程阻塞
+  let i = 0
+  function processChunk() {
+    const end = Math.min(i + chunkSize, headers.length)
+    for (; i < end; i++) {
+      const header = headers[i]
+      const columnData = data.slice(1).map(row => {
+        if (Array.isArray(row)) {
+          return row[i]
+        } else if (typeof row === 'object') {
+          return row[header]
+        }
+        return null
+      }).filter(val => val !== null && val !== undefined && val !== '')
+      // 推断数据类型
+      const type = inferDataType(columnData)
+      // 获取样本数据（跳过标题行）
+      const sample = columnData.slice(0, 3).join(', ') || 'No data'
+      // 统计信息 (总行数需要减去标题行)
+      const stats = calculateColumnStats(columnData, data.length - 1)
+      analyzedColumns.push({
+        name: header,
+        type,
+        sample,
+        stats,
+        index: i
+      })
     }
-  })
-
-  columns.value = analyzedColumns
-}
-
-// 推断数据类型
-function inferDataType(columnData) {
-  if (columnData.length === 0) return 'unknown'
-  
-  const sample = columnData.slice(0, Math.min(20, columnData.length)) // 取更多样本进行分析
-  const uniqueValues = [...new Set(sample)]
-  const uniqueCount = uniqueValues.length
-  
-  // 检查是否为明确的布尔值（true/false字符串）
-  const isTrueFalseBool = sample.every(val => {
-    const str = String(val).toLowerCase()
-    return str === 'true' || str === 'false' || val === true || val === false
-  })
-  
-  if (isTrueFalseBool && uniqueCount <= 2) {
-    return 'boolean'
-  }
-  
-  // 检查是否为数字
-  const isNumeric = sample.every(val => !isNaN(val) && !isNaN(parseFloat(val)))
-  
-  if (isNumeric) {
-    const isInteger = sample.every(val => Number.isInteger(parseFloat(val)))
-    
-    if (isInteger) {
-      // 对于整数，需要智能判断是布尔值、类别值还是普通整数
-      if (uniqueCount === 2 && uniqueValues.every(val => val === 0 || val === 1 || val === '0' || val === '1')) {
-        // 只有两个唯一值且都是0/1，可能是布尔值
-        // 但需要考虑数据的语义上下文，这里倾向于认为是布尔值
-        return 'boolean'
-      } else if (uniqueCount <= 10 && uniqueCount < sample.length * 0.5) {
-        // 唯一值较少且明显少于样本数量的一半，可能是类别值
-        return 'category'
-      } else {
-        return 'integer'
-      }
-    } else {
-      return 'number'
+    columns.value = [...analyzedColumns]
+    if (i < headers.length) {
+      setTimeout(processChunk, 0)
     }
   }
-  
-  // 检查是否为日期
-  const isDate = sample.some(val => !isNaN(Date.parse(val)))
-  if (isDate) return 'date'
-  
-  // 检查是否为类别值（字符串类型的类别）
-  if (uniqueCount <= 10 && uniqueCount < sample.length * 0.5) {
-    return 'category'
-  }
-  
-  // 默认为字符串
-  return 'string'
-}
-
-// 计算列统计信息
-function calculateColumnStats(columnData, totalRows) {
-  const nonEmptyCount = columnData.length
-  const nullCount = totalRows - nonEmptyCount
-  const uniqueCount = new Set(columnData).size
-  
-  return {
-    nullCount,
-    uniqueCount,
-    fillRate: Math.round((nonEmptyCount / totalRows) * 100)
-  }
-}
-
-// 获取列类型样式类
-function getColumnTypeClass(type) {
-  const typeClasses = {
-    'string': 'type-string',
-    'number': 'type-number',
-    'integer': 'type-integer',
-    'date': 'type-date',
-    'boolean': 'type-boolean',
-    'category': 'type-category',
-    'unknown': 'type-unknown'
-  }
-  return typeClasses[type] || 'type-unknown'
+  processChunk()
 }
 
 // 格式化文件大小
@@ -321,34 +244,30 @@ function handleMouseDown() {
 function startDrag(event) {
   isDragging.value = true
   isFocused.value = true
-  
   const rect = panelRef.value.getBoundingClientRect()
   dragOffset.value = {
     x: event.clientX - rect.left,
     y: event.clientY - rect.top
   }
-  
   document.addEventListener('mousemove', handlePanelDrag, { passive: false })
   document.addEventListener('mouseup', stopDrag, { passive: false })
-  
   event.preventDefault()
   event.stopPropagation()
 }
 
+let lastDragRAF = null
 function handlePanelDrag(event) {
   if (!isDragging.value) return
-  
-  requestAnimationFrame(() => {
+  if (lastDragRAF) return // 节流
+  lastDragRAF = requestAnimationFrame(() => {
+    lastDragRAF = null
     const newX = event.clientX - dragOffset.value.x
     const newY = event.clientY - dragOffset.value.y
-    
     // 确保面板不会拖拽到屏幕外
     const maxX = window.innerWidth - 400
     const maxY = window.innerHeight - 300
-    
     const clampedX = Math.max(0, Math.min(newX, maxX))
     const clampedY = Math.max(0, Math.min(newY, maxY))
-    
     panelPosition.value = {
       ...panelPosition.value,
       top: `${clampedY}px`,
@@ -356,7 +275,6 @@ function handlePanelDrag(event) {
       right: 'auto'
     }
   })
-  
   event.preventDefault()
 }
 
@@ -384,6 +302,7 @@ function handleDragStart(column, index, event) {
     type: 'column',
     column: {
       ...column,
+      type: column.type, // 明确携带类型
       file: props.fileInfo?.name || '',
       index // 唯一标识同文件内的同名列
     },

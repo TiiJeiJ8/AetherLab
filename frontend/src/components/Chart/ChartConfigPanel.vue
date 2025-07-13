@@ -40,6 +40,7 @@
         v-if="currentTypeConfig.filter && currentTypeConfig.filter.length"
         :filterConfig="currentTypeConfig.filter"
         v-model="chartConfig"
+        :rawData="mainRawData"
     />
 
     <!-- 动态高级配置区域 -->
@@ -499,6 +500,16 @@ function resetConfig () {
     errorMessage.value = ''
     emit('config-change', chartConfig.value)
 }
+
+import { fileDataMap } from '@/assets/JS/utils/dataStructureOptimize.js'
+
+const mainRawData = computed(() => {
+    // 以当前结构文件为主
+    if (props.currentFile && props.currentFile.name && fileDataMap.value[props.currentFile.name]) {
+        return fileDataMap.value[props.currentFile.name]
+    }
+    return []
+})
 
 // 监听图表类型变化
 watch(() => props.selectedChartType, (newType) => {

@@ -86,6 +86,8 @@ function handleDrop(event, key, multiple) {
         let dragDataStr = event.dataTransfer.getData('application/json') || event.dataTransfer.getData('text/plain')
         const dragData = JSON.parse(dragDataStr)
         if (dragData.type === 'column') {
+            // 调试：输出拖入字段的全部信息
+            console.log('[MappingConfig] drop column:', dragData.column)
             // 多选
             if (multiple) {
                 if (!Array.isArray(localConfig.value[key])) {

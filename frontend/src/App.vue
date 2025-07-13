@@ -52,7 +52,7 @@ export default {
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 1.3s, color 1.3s;
 }
 
 a {

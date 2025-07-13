@@ -1,3 +1,37 @@
+/* 工作区淡入淡出动画 */
+.fade-panel-enter-active,
+.fade-panel-leave-active {
+    transition: opacity 0.25s, transform 0.25s;
+}
+
+.fade-panel-enter-from,
+.fade-panel-leave-to {
+    opacity: 0;
+    transform: scale(0.98) translateY(20px);
+}
+
+.fade-panel-enter-to,
+.fade-panel-leave-from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+:root {
+    --fw-drag-bg: rgba(59, 130, 246, 0.15);
+    --fw-drag-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    --fw-drag-header-bg: rgba(59, 130, 246, 0.15);
+    --fw-drag-header-hover: rgba(59, 130, 246, 0.05);
+    --fw-drag-header-active: rgba(59, 130, 246, 0.1);
+}
+
+[data-theme="dark"] {
+    --fw-drag-bg: rgba(96, 165, 250, 0.2);
+    --fw-drag-shadow: 0 8px 32px rgba(59, 130, 246, 0.25);
+    --fw-drag-header-bg: rgba(96, 165, 250, 0.2);
+    --fw-drag-header-hover: rgba(96, 165, 250, 0.1);
+    --fw-drag-header-active: rgba(96, 165, 250, 0.15);
+}
+
 .file-workspace {
     position: fixed;
     top: 10px;
@@ -34,7 +68,7 @@
 .file-workspace.dragging {
     z-index: 9999;
     transform: scale(1.02);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--fw-drag-shadow);
     transition: none !important;
     will-change: transform;
 }
@@ -44,12 +78,12 @@
 }
 
 .file-workspace.dragging .workspace-header {
-    background: rgba(59, 130, 246, 0.15) !important;
+    background: var(--fw-drag-header-bg) !important;
     cursor: grabbing !important;
 }
 
 [data-theme="dark"] .file-workspace.dragging .workspace-header {
-    background: rgba(96, 165, 250, 0.2) !important;
+    background: var(--fw-drag-header-bg) !important;
 }
 
 /* 暗黑模式适配 */
@@ -92,6 +126,15 @@
 
 [data-theme="dark"] .workspace-header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    .workspace-header:hover {
+        background: var(--fw-drag-header-hover);
+    }
+
+    .workspace-header:active {
+        background: var(--fw-drag-header-active);
+        cursor: grabbing;
+    }
 }
 
 [data-theme="dark"] .workspace-header:hover {
@@ -100,6 +143,14 @@
 
 [data-theme="dark"] .workspace-header:active {
     background: rgba(96, 165, 250, 0.15);
+}
+
+[data-theme="dark"] .workspace-header:hover {
+    background: var(--fw-drag-header-hover);
+}
+
+[data-theme="dark"] .workspace-header:active {
+    background: var(--fw-drag-header-active);
 }
 
 .workspace-title {

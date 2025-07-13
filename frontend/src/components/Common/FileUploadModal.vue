@@ -5,13 +5,11 @@
             <div class="file-header">
                 <div class="header-left">
                     <span>File Manager</span>
-                    <!-- 后端连接状态已移除 -->
                 </div>
                 <div class="header-right">
                     <button class="refresh-btn" @click="refreshFiles" title="Refresh file list">
                         <span v-html="getThemeIcon('refresh')"></span>
                     </button>
-                    <!-- 批量同步按钮已移除 -->
                     <button class="close-btn" @click="onClose">×</button>
                 </div>
             </div>
@@ -125,8 +123,6 @@
                                         :disabled="file.status === 'uploading'">
                                     <span v-html="getThemeIcon('preview')"></span>
                                 </button>
-                                <!-- 单文件同步按钮已移除 -->
-                                <!-- 取消上传按钮已移除 -->
                                 <button v-if="file.status !== 'uploading'"
                                         @click="unloadFile(idx)"
                                         title="Delete file"
@@ -206,8 +202,6 @@ import {
     getFilePreview,
     getAllFiles
 } from '../../assets/JS/services/FileServices.js'
-
-// 省略的后端相关代码...
 
 const props = defineProps({
     show: Boolean,
