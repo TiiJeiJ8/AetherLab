@@ -132,7 +132,7 @@ onMounted(async () => {
     } catch (e) {}
 })
 
-//TODO 控制legend 位置
+// 控制legend 位置
 const legendPositions = [
     { value: 'bottom', label: 'Bottom' },
     { value: 'top', label: 'Top' },

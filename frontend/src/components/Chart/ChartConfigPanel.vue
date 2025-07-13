@@ -49,14 +49,6 @@
         v-model="chartConfig"
     />
 
-    <!-- 保存至图表历史区按钮 -->
-    <button
-        class="save-history-btn"
-        @click="saveToHistory"
-    >
-        Save to History
-    </button>
-
     <!-- 操作按钮 -->
     <div class="action-section">
         <!-- 应用配置按钮 -->
@@ -72,6 +64,14 @@
         Reset Configuration
         </button>
     </div>
+
+    <!-- 保存至图表历史区按钮 -->
+    <button
+        class="save-history-btn"
+        @click="saveToHistory"
+    >
+        Save to History
+    </button>
 
     <!-- 错误提示 -->
     <div v-if="errorMessage" class="error-message">
