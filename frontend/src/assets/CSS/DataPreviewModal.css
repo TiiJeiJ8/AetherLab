@@ -20,7 +20,7 @@
 /* 暗黑模式变量 */
 [data-theme="dark"] {
     --bg-color: #1f2937;
-    --text-color: #f9fafb;
+    --text-color: #dee2e6;
     --text-secondary: #d1d5db;
     --border-color: #252c38;
     --header-bg: linear-gradient(135deg, #374151 0%, #4b5563 100%);

@@ -129,13 +129,23 @@ onMounted(async () => {
     } catch (e) {}
 })
 
-//TODO 在localConfig中增加legendVisible和legendPosition
+//TODO 控制legend 位置
 const legendPositions = [
     { value: 'bottom', label: 'Bottom' },
     { value: 'top', label: 'Top' },
     { value: 'left', label: 'Left' },
     { value: 'right', label: 'Right' }
 ]
+
+// legendPosition 默认值 bottom
+onMounted(() => {
+    if (localConfig.value && localConfig.value.legendVisible === undefined) {
+        localConfig.value.legendVisible = true
+    }
+    if (localConfig.value && !localConfig.value.legendPosition) {
+        localConfig.value.legendPosition = 'bottom'
+    }
+})
 
 const showThemeTip = ref(false)
 </script>
@@ -248,21 +258,21 @@ const showThemeTip = ref(false)
     background: var(--bg-secondary);
 }
 [data-theme="dark"] .basic-config-title {
-    color: #e6e6e6;
+    color: #dee2e6;
 }
 [data-theme="dark"] .basic-config-item label {
-    color: #e6e6e6;
+    color: #dee2e6;
 }
 [data-theme="dark"] #chart-title {
-    background: #23272e !important;
-    color: #e6e6e6 !important;
+    background: #333333ff !important;
+    color: #dee2e6 !important;
     border: 1px solid #444 !important;
-    caret-color: #e6e6e6;
+    caret-color: #dee2e6;
 }
 [data-theme="dark"] .basic-config-item input[type="text"],
 [data-theme="dark"] .basic-config-item select {
     background: var(--bg-secondary);
-    color: #e6e6e6;
+    color: #dee2e6;
     border: 1px solid #444;
 }
 </style>

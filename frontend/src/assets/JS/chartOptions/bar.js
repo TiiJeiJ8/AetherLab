@@ -17,7 +17,11 @@ export default function barOption(config, fileDataMap, xData, yDataArr, selected
             textStyle: { fontSize: 16, fontWeight: 'bold' }
         },
         tooltip: { trigger: 'axis' },
-        legend: { data: yArr.map(y => y.field), top: 'bottom' },
+        legend: {
+            show: config.legendVisible !== false,
+            data: yArr.map(y => y.field),
+            top: config.legendPosition || 'bottom',
+        },
         toolbox: {
             show: true,
             feature: {

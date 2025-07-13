@@ -22,10 +22,10 @@
 /* 暗黑主题CSS变量 */
 :root.dark,
 [data-theme="dark"] {
-    --bg-color: #1e1e1e;
-    --bg-secondary: #2d2d2d;
+    --bg-color: #333333ff;
+    --bg-secondary: rgb(49, 49, 49);
     --bg-tertiary: #3d3d3d;
-    --text-color: #e0e0e0;
+    --text-color: #dee2e6;
     --text-secondary: #b0b0b0;
     --border-color: #404040;
     --primary-color: #4e72b5d8;

@@ -11,7 +11,10 @@ export default function pieOption(config, fileDataMap, xData, yDataArr, selected
             textStyle: { fontSize: 16, fontWeight: 'bold' }
         },
         tooltip: { trigger: 'item' },
-        legend: { top: 'bottom' },
+        legend: {
+            show: config.legendVisible !== false,
+            top: config.legendPosition || 'bottom',
+        },
         series: [
             {
                 name: title || '',

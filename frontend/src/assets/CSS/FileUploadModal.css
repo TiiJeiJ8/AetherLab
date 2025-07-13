@@ -15,7 +15,7 @@
 
 /* 暗黑模式变量 */
 [data-theme="dark"] {
-    --bg-color: #1f2937;
+    --bg-color: #333333ff;
     --text-color: #f9fafb;
     --text-secondary: #d1d5db;
     --border-color: #374151;

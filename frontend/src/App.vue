@@ -35,8 +35,8 @@ export default {
 
 [data-theme="dark"] {
   /* dark主题颜色 */
-  --bg-color: #212121;
-  --text-color: #dcd6d6;
+  --bg-color: #333333ff;
+  --text-color: #dee2e6;
   --primary-color: #3a506b;
 }
 

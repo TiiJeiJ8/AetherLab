@@ -166,8 +166,32 @@ async function renderChart() {
     console.log('Rendering chart with theme:', themeName)
     chartInstance = echarts.init(chartRef.value, themeName)
     if (props.option) {
-        // 动态处理x轴标签过长和过密
         const option = JSON.parse(JSON.stringify(props.option))
+        // legend位置自适应处理
+        if (option.legend && option.legend.top) {
+            const pos = option.legend.top
+            if (pos === 'left' || pos === 'right') {
+                option.legend.orient = 'vertical'
+                option.legend.top = 40
+                option.legend.left = pos === 'left' ? 0 : undefined
+                option.legend.right = pos === 'right' ? 0 : undefined
+                option.legend.width = 80
+            } else if (pos === 'top') {
+                option.legend.orient = 'horizontal'
+                option.legend.top = option.title ? 36 : 16 // 避免与标题重叠
+                option.legend.left = 'center'
+                option.legend.right = undefined
+                option.legend.width = undefined
+            } else if (pos === 'bottom') {
+                option.legend.orient = 'horizontal'
+                option.legend.top = undefined
+                option.legend.left = 'center'
+                option.legend.right = undefined
+                option.legend.bottom = 0
+                option.legend.width = undefined
+            }
+        }
+        // 动态处理x轴标签过长和过密
         // x轴标签过长处理
         if (option.xAxis && option.xAxis.data && Array.isArray(option.xAxis.data)) {
             const labelCount = option.xAxis.data.length
@@ -233,8 +257,9 @@ onBeforeUnmount(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(10px, 2vw, 20px);
-    overflow: auto;
+    padding: clamp(10px, 2vw, 20px) clamp(32px, 4vw, 48px); /* 增大左右内边距 */
+    overflow-x: auto; /* 横向可滚动，防止legend溢出 */
+    overflow-y: auto;
 }
 
 .chart-container {
@@ -244,7 +269,7 @@ onBeforeUnmount(() => {
     min-width: 0;
     max-width: 100vw;
     max-height: 80vh;
-    overflow: hidden;
+    overflow: visible; /* 允许legend溢出显示 */
     display: flex;
     align-items: center;
     justify-content: center;
