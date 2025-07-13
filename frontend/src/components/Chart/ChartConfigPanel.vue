@@ -154,6 +154,7 @@ function saveToHistory() {
     // 触发保存事件，传递当前配置
     emit('save-history', {
         config: { ...chartConfig.value },
+        colorTheme: chartConfig.value.colorScheme || 'default',
     })
 }
 

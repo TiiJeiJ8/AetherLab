@@ -135,9 +135,9 @@ function getContrastColor(bg) {
         b = parseInt(arr[2])
         }
     }
-    if (r === undefined || g === undefined || b === undefined) return '#333'
+    if (r === undefined || g === undefined || b === undefined) return '#eee'
     const luminance = (0.299 * r + 0.587 * g + 0.114 * b)
-    return luminance > 180 ? '#222' : '#eee'
+    return luminance > 180 ? '#222' : '#333'
 }
 
 function getCssVar(name) {
@@ -161,47 +161,13 @@ async function renderChart() {
         chartInstance.dispose()
         chartInstance = null
     }
-    const themeName = props.colorTheme === 'default' ? null : props.colorTheme
-    if (props.colorTheme !== 'default') {
-        await loadAndRegisterTheme(props.colorTheme)
-    }
+    const themeName = props.colorTheme
+    await loadAndRegisterTheme(props.colorTheme)
     console.log('Rendering chart with theme:', themeName)
     chartInstance = echarts.init(chartRef.value, themeName)
     if (props.option) {
         // 动态处理x轴标签过长和过密
         const option = JSON.parse(JSON.stringify(props.option))
-        // 自动适配标签颜色
-        let bgColor = option.backgroundColor
-        if (!bgColor && props.colorTheme && props.colorTheme !== 'default') {
-            const themeObj = themeCache[props.colorTheme] && themeCache[props.colorTheme].themeObj
-            if (themeObj && themeObj.backgroundColor) bgColor = themeObj.backgroundColor
-        }
-        if (!bgColor || isTransparent(bgColor)) {
-            bgColor = getCssVar('--bg-color') || '#fff'
-        }
-        let axisLabelColor = getContrastColor(bgColor)
-        let textColor = getCssVar('--text-color') || axisLabelColor
-        // 轴标签
-        if (option.xAxis) {
-            if (!option.xAxis.axisLabel) option.xAxis.axisLabel = {}
-            option.xAxis.axisLabel.color = axisLabelColor
-        }
-        if (option.yAxis) {
-            if (!option.yAxis.axisLabel) option.yAxis.axisLabel = {}
-            option.yAxis.axisLabel.color = axisLabelColor
-        }
-        // 图表标题
-        if (option.title) {
-            if (!option.title.textStyle) option.title.textStyle = {}
-            option.title.textStyle.color = textColor
-            if (!option.title.subtextStyle) option.title.subtextStyle = {}
-            option.title.subtextStyle.color = textColor
-        }
-        // 图例
-        if (option.legend) {
-            if (!option.legend.textStyle) option.legend.textStyle = {}
-            option.legend.textStyle.color = textColor
-        }
         // x轴标签过长处理
         if (option.xAxis && option.xAxis.data && Array.isArray(option.xAxis.data)) {
             const labelCount = option.xAxis.data.length

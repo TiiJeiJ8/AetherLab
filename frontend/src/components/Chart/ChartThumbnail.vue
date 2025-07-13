@@ -8,11 +8,26 @@ import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import * as echarts from 'echarts'
 
 const props = defineProps({
-    option: { type: Object, required: true }
+    option: { type: Object, required: true },
+    colorTheme: { type: String, default: 'default' }
 })
 
 const thumbRef = ref(null)
 let chart = null
+const themeCache = {}
+
+async function loadAndRegisterTheme(themeName) {
+    if (themeCache[themeName]) return
+    try {
+        const res = await fetch(`/themes/${themeName}.json`)
+        if (!res.ok) throw new Error('Theme file loads failed')
+        const obj = await res.json()
+        echarts.registerTheme(themeName, obj)
+        themeCache[themeName] = { themeObj: obj }
+    } catch (e) {
+        // 静默失败
+    }
+}
 
 function getOptionWithoutTitle(option) {
     const opt = JSON.parse(JSON.stringify(option))
@@ -20,16 +35,18 @@ function getOptionWithoutTitle(option) {
     return opt
 }
 
-function render() {
-    if (!chart && thumbRef.value) {
-        chart = echarts.init(thumbRef.value)
+async function render() {
+    if (!thumbRef.value) return
+    await loadAndRegisterTheme(props.colorTheme)
+    if (!chart) {
+        chart = echarts.init(thumbRef.value, props.colorTheme)
     }
     if (chart && props.option) {
         chart.setOption(getOptionWithoutTitle(props.option), true)
     }
 }
 
-watch(() => props.option, render, { deep: true })
+watch(() => [props.option, props.colorTheme], render, { deep: true })
 onMounted(render)
 onBeforeUnmount(() => {
     if (chart) chart.dispose()

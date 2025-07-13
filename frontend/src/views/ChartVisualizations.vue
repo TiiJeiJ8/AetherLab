@@ -39,7 +39,7 @@
     <!-- 绘制区 -->
     <div class="main-content">
       <section class="chart-workspace">
-        <ChartDisplay v-if="chartOption" :option="chartOption" :colorTheme="chartConfig?.colorScheme || 'default'" />
+        <ChartDisplay v-if="chartOption" :option="chartOption" :colorTheme="chartConfig?.colorScheme || chartConfig?.colorTheme || 'default'" />
       </section>
     </div>
 
@@ -139,6 +139,11 @@ function previewChart(item) {
   chartOption.value = null
   nextTick(() => {
     chartOption.value = JSON.parse(JSON.stringify(item.option))
+    // 兼容主题字段
+    if (item.colorTheme) {
+      if (!chartConfig.value) chartConfig.value = {}
+      chartConfig.value.colorScheme = item.colorTheme
+    }
     showHistory.value = false
   })
 }
@@ -239,7 +244,8 @@ function handleSaveHistory({ config }) {
   chartHistory.value.push({
     title: config.title || `Chart ${chartHistory.value.length + 1}`,
     option: option || {},
-    config: { ...config }
+    config: { ...config },
+    colorTheme: config.colorScheme || 'default',
   });
 }
 

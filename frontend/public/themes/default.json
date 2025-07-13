@@ -9,5 +9,42 @@
         "#fc8452",
         "#9a60b4",
         "#ea7ccc"
-    ]
+    ],
+    "backgroundColor": "#ffff",
+    "textStyle": {
+        "color": "#333"
+    },
+    "title": {
+        "textStyle": {
+            "color": "#333"
+        },
+        "subtextStyle": {
+            "color": "#666"
+        }
+    },
+    "legend": {
+        "textStyle": {
+            "color": "#333"
+        }
+    },
+    "xAxis": {
+        "axisLine": {
+            "lineStyle": {
+                "color": "#333"
+            }
+        },
+        "axisLabel": {
+            "color": "#333"
+        }
+    },
+    "yAxis": {
+        "axisLine": {
+            "lineStyle": {
+                "color": "#333"
+            }
+        },
+        "axisLabel": {
+            "color": "#333"
+        }
+    }
 }

@@ -7,7 +7,7 @@
         <input id="chart-title" v-model="localConfig.title"/>
     </div>
         <!-- Theme -->
-    <div class="basic-config-item">
+    <div class="basic-config-item" style="position: relative;">
         <label for="color-scheme">Theme</label>
         <select id="color-scheme" v-model="localConfig.colorScheme">
             <!-- 动态跟随文件夹中主题文件增加 -->
@@ -15,6 +15,20 @@
                 {{ theme.charAt(0).toUpperCase() + theme.slice(1) }}
             </option>
         </select>
+        <span class="theme-help-icon"
+            @mouseenter="showThemeTip = true"
+            @mouseleave="showThemeTip = false"
+        >❓</span>
+        <transition name="fade">
+            <div v-if="showThemeTip" class="theme-tip-bubble"
+                @mouseenter="showThemeTip = true"
+                @mouseleave="showThemeTip = false"
+            >
+                <a href="https://echarts.apache.org/zh/theme-builder.html" target="_blank" style="color: #409EFF; text-decoration: underline;">
+                    🎨 ECharts Theme Builder(Online)
+                </a>
+            </div>
+        </transition>
     </div>
     <!-- Animation -->
     <div class="basic-config-item">
@@ -122,6 +136,8 @@ const legendPositions = [
     { value: 'left', label: 'Left' },
     { value: 'right', label: 'Right' }
 ]
+
+const showThemeTip = ref(false)
 </script>
 
 <style scoped>
@@ -191,6 +207,39 @@ const legendPositions = [
 }
 .switch input:checked + .slider {
     background-color: #2fcb51be;
+}
+.theme-help-icon {
+    display: inline-block;
+    margin-left: 8px;
+    cursor: pointer;
+    color: #409EFF;
+    font-size: 1.1em;
+    vertical-align: middle;
+    user-select: none;
+}
+.theme-tip-bubble {
+    position: absolute;
+    left: auto;
+    right: 0;
+    top: 32px;
+    z-index: 10;
+    background: var(--bg-secondary, #fff);
+    border: 1px solid #d3d3d37e;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    padding: 10px 16px;
+    min-width: 180px;
+    max-width: 320px;
+    font-size: 0.97em;
+    white-space: normal;
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.18s;
+}
+.fade-enter-from, .fade-leave-to {
+    opacity: 0;
 }
 
 /* 深色模式适配 */

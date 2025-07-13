@@ -156,16 +156,16 @@ const editTitle = ref('')
 const editInputRefs = ref({})
 
 function setEditInputRef(el, idx) {
-  if (el) editInputRefs.value[idx] = el
+    if (el) editInputRefs.value[idx] = el
 }
 
 function startEditTitle(idx, title) {
-  editingIndex.value = idx
-  editTitle.value = title
-  nextTick(() => {
-    const el = editInputRefs.value[idx]
-    if (el && typeof el.focus === 'function') el.focus()
-  })
+    editingIndex.value = idx
+    editTitle.value = title
+    nextTick(() => {
+        const el = editInputRefs.value[idx]
+        if (el && typeof el.focus === 'function') el.focus()
+    })
 }
 function saveEditTitle(idx) {
     const val = editTitle.value.trim()
