@@ -12,6 +12,7 @@ export default function pieOption(config, fileDataMap, xData, yDataArr, selected
         },
         tooltip: { trigger: 'item' },
         legend: {
+            type: 'scroll',
             show: config.legendVisible !== false,
             top: config.legendPosition || 'bottom',
         },

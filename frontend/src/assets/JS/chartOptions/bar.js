@@ -18,6 +18,7 @@ export default function barOption(config, fileDataMap, xData, yDataArr, selected
         },
         tooltip: { trigger: 'axis' },
         legend: {
+            type: 'scroll',
             show: config.legendVisible !== false,
             data: yArr.map(y => y.field),
             top: config.legendPosition || 'bottom',

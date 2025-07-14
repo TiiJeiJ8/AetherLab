@@ -28,7 +28,7 @@
     </SideBar>
 
     <!-- Empty Space -->
-    <div class="empty-space"></div>
+    <!-- <div class="empty-space"></div> -->
 
     <!-- 绘制区 -->
     <div class="main-content">
@@ -351,6 +351,7 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-right: 7%;
   margin-top: 3.5%;
   min-height: 500px;
+  height: 775px;
 }
 @media (max-width: 767px) {
   .main-content {

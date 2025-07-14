@@ -160,6 +160,8 @@ function isTransparent(bg) {
 
 // 串行锁 promise
 let renderChartLock = Promise.resolve()
+
+// 渲染图表函数
 async function renderChart() {
     renderChartLock = renderChartLock.then(async () => {
         console.log('Start rendering chart')
@@ -180,23 +182,54 @@ async function renderChart() {
                 const pos = option.legend.top
                 if (pos === 'left' || pos === 'right') {
                     option.legend.orient = 'vertical'
-                    option.legend.top = 40
+                    option.legend.top = 80
                     option.legend.left = pos === 'left' ? 0 : undefined
-                    option.legend.right = pos === 'right' ? 0 : undefined
-                    option.legend.width = 80
+                    option.legend.right = pos === 'right' ? 50 : undefined
+                    option.legend.width = 60
+
+                    // grid自适应收缩
+                    if (!option.grid) option.grid = {}
+                    if (pos === 'left') {
+                        option.grid.left = 223 // 给左侧legend留空间
+                    } else {
+                        option.grid.right = 180 // 给右侧legend留空间
+                    }
+
+                    // x轴标签宽度自适应
+                    if (option.xAxis && option.xAxis.axisLabel) {
+                        option.xAxis.axisLabel.width = 90 // 左右legend时标签宽度小些
+                    }
                 } else if (pos === 'top') {
                     option.legend.orient = 'horizontal'
                     option.legend.top = option.title ? 36 : 16 // 避免与标题重叠
                     option.legend.left = 'center'
                     option.legend.right = undefined
                     option.legend.width = undefined
+
+                    // grid自适应收缩
+                    if (!option.grid) option.grid = {}
+                    option.grid.top = (option.title ? 120 : 36) // 给顶部legend留空间
+
+                    // x轴标签宽度自适应
+                    if (option.xAxis && option.xAxis.axisLabel) {
+                        option.xAxis.axisLabel.width = 90 // 顶部legend时标签宽度大些
+                    }
                 } else if (pos === 'bottom') {
                     option.legend.orient = 'horizontal'
                     option.legend.top = undefined
                     option.legend.left = 'center'
                     option.legend.right = undefined
-                    option.legend.bottom = 0
+                    option.legend.bottom = -2
                     option.legend.width = undefined
+
+                    // grid自适应收缩
+                    if (!option.grid) option.grid = {}
+                    option.grid.bottom = 150 // 给底部legend留空间
+
+                    // x轴标签宽度自适应
+                    if (option.xAxis && option.xAxis.axisLabel) {
+                        option.xAxis.axisLabel.width = 120 // 底部legend时标签宽度大些
+                    }
                 }
             }
             // 动态处理x轴标签过长和过密
@@ -204,16 +237,16 @@ async function renderChart() {
             if (option.xAxis && option.xAxis.data && Array.isArray(option.xAxis.data)) {
                 const labelCount = option.xAxis.data.length
                 if (!option.xAxis.axisLabel) option.xAxis.axisLabel = {}
-                if (labelCount > 12) {
+                if (labelCount > 24) {
                     option.xAxis.axisLabel.rotate = 45
                 }
-                if (labelCount > 40) {
-                    option.xAxis.axisLabel.interval = Math.ceil(labelCount / 20)
+                if (labelCount > 80) {
+                    option.xAxis.axisLabel.interval = Math.ceil(labelCount / 40)
                 } else {
                     option.xAxis.axisLabel.interval = 0
                 }
                 option.xAxis.axisLabel.overflow = 'truncate'
-                option.xAxis.axisLabel.width = 80
+                // 标签长度相关调节跟随Legend位置变化
                 option.xAxis.axisLabel.ellipsis = '...'
             }
             console.log('[Rendering Theme]Setting chart option:', option)
