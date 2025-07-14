@@ -7,9 +7,6 @@ export const chartTypeConfig = {
             { key: 'xAxis', label: 'X Axis', type: 'dimension', required: true },
             { key: 'yAxis', label: 'Y Axis', type: 'measure', required: true, multiple: true },
         ],
-        filter: [
-            { key: 'dataRange', label: 'Data Range', type: 'select', options: ['all', 'first100', 'last100', 'sample'], default: 'all' }
-        ],
         advanced: [
             { key: 'lineWidth', label: 'Line Width', type: 'number', min: 1, max: 10, default: 2 }
         ]
@@ -18,9 +15,6 @@ export const chartTypeConfig = {
         mapping: [
             { key: 'xAxis', label: 'X Axis', type: 'dimension', required: true },
             { key: 'yAxis', label: 'Y Axis', type: 'measure', required: true, multiple: true },
-        ],
-        filter: [
-            { key: 'dataRange', label: 'Data Range', type: 'select', options: ['all', 'first100', 'last100', 'sample'], default: 'all' }
         ],
         advanced: [
             { key: 'barWidth', label: 'Bar Width', type: 'number', min: 1, max: 50, default: 10 }
@@ -31,7 +25,6 @@ export const chartTypeConfig = {
             { key: 'category', label: 'Category', type: 'dimension', required: true },
             { key: 'value', label: 'Value', type: 'measure', required: true },
         ],
-        filter: [],
         advanced: [
             { key: 'donut', label: 'Donut Mode', type: 'checkbox', default: false }
         ]

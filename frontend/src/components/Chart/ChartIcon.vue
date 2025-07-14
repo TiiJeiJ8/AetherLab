@@ -54,16 +54,25 @@ import { chartTypes, chartIcons } from '../../assets/JS/SVG/chartIcons.js'
 import { chartsTooltipConfig } from '../../assets/JS/Config/ChartsTooltipConfig.js'
 import { watch, ref, reactive, nextTick } from 'vue'
 
-const props = defineProps({
-    types: {
-        type: Array,
-        default: () => chartTypes
-    },
 
-    modelValue: {
-        type: String,
-        default: ''
-    }
+/**
+ * Props
+ * @prop {Array} types - 可选图表类型数组，默认全部类型
+ * @prop {String} modelValue - 当前选中类型（v-model）
+ *
+ * Emits
+ * @event select - 选中类型时触发，参数为类型字符串
+ * @event update:modelValue - v-model 双向绑定
+ */
+const props = defineProps({
+  types: {
+    type: Array,
+    default: () => chartTypes
+  },
+  modelValue: {
+    type: String,
+    default: ''
+  }
 })
 
 const emit = defineEmits(['select', 'update:modelValue'])

@@ -141,12 +141,22 @@ function handleDelete () {
     }
 }
 
-// props
+/**
+ * Props
+ * @prop {Boolean} show - 是否显示历史弹窗
+ * @prop {Array} chartHistory - 图表历史记录数组，元素结构为{option, title, ...}
+ *
+ * Emits
+ * @event close - 关闭弹窗
+ * @event preview - 预览某个历史项，参数为item对象
+ * @event delete - 删除某个历史项，参数为索引（number）
+ * @event update:title - 编辑标题，参数为{idx, title}
+ */
 const props = defineProps({
-    show: Boolean,
-    chartHistory: Array
+    show: { type: Boolean, required: true },
+    chartHistory: { type: Array, required: true }
 })
-const emit = defineEmits(['close', 'preview', 'delete'])
+const emit = defineEmits(['close', 'preview', 'delete', 'update:title'])
 function onClose () { emit('close') }
 function onPreview(item) { emit('preview', item) }
 

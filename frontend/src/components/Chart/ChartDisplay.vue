@@ -58,6 +58,11 @@ async function loadAndRegisterTheme(themeName) {
     }
 }
 
+/**
+ * Props
+ * @prop {Object} option - ECharts 配置对象，必填
+ * @prop {String} colorTheme - 主题名，默认 'default'
+ */
 const props = defineProps({
     option: { type: Object, required: true },
     colorTheme: { type: String, default: 'default' }
@@ -153,64 +158,68 @@ function isTransparent(bg) {
     return false
 }
 
+// 串行锁 promise
+let renderChartLock = Promise.resolve()
 async function renderChart() {
-    console.log('Start rendering chart')
-    console.log('value of hasSeries:', hasSeries.value)
-    if (!hasSeries.value) return
-    if (chartInstance) {
-        chartInstance.dispose()
-        chartInstance = null
-    }
-    const themeName = props.colorTheme
-    await loadAndRegisterTheme(props.colorTheme)
-    console.log('Rendering chart with theme:', themeName)
-    chartInstance = echarts.init(chartRef.value, themeName)
-    if (props.option) {
-        const option = JSON.parse(JSON.stringify(props.option))
-        // legend位置自适应处理
-        if (option.legend && option.legend.top) {
-            const pos = option.legend.top
-            if (pos === 'left' || pos === 'right') {
-                option.legend.orient = 'vertical'
-                option.legend.top = 40
-                option.legend.left = pos === 'left' ? 0 : undefined
-                option.legend.right = pos === 'right' ? 0 : undefined
-                option.legend.width = 80
-            } else if (pos === 'top') {
-                option.legend.orient = 'horizontal'
-                option.legend.top = option.title ? 36 : 16 // 避免与标题重叠
-                option.legend.left = 'center'
-                option.legend.right = undefined
-                option.legend.width = undefined
-            } else if (pos === 'bottom') {
-                option.legend.orient = 'horizontal'
-                option.legend.top = undefined
-                option.legend.left = 'center'
-                option.legend.right = undefined
-                option.legend.bottom = 0
-                option.legend.width = undefined
-            }
+    renderChartLock = renderChartLock.then(async () => {
+        console.log('Start rendering chart')
+        console.log('value of hasSeries:', hasSeries.value)
+        if (!hasSeries.value) return
+        if (chartInstance) {
+            chartInstance.dispose()
+            chartInstance = null
         }
-        // 动态处理x轴标签过长和过密
-        // x轴标签过长处理
-        if (option.xAxis && option.xAxis.data && Array.isArray(option.xAxis.data)) {
-            const labelCount = option.xAxis.data.length
-            if (!option.xAxis.axisLabel) option.xAxis.axisLabel = {}
-            if (labelCount > 12) {
-                option.xAxis.axisLabel.rotate = 45
+        const themeName = props.colorTheme
+        await loadAndRegisterTheme(props.colorTheme)
+        console.log('Rendering chart with theme:', themeName)
+        chartInstance = echarts.init(chartRef.value, themeName)
+        if (props.option) {
+            const option = JSON.parse(JSON.stringify(props.option))
+            // legend位置自适应处理
+            if (option.legend && option.legend.top) {
+                const pos = option.legend.top
+                if (pos === 'left' || pos === 'right') {
+                    option.legend.orient = 'vertical'
+                    option.legend.top = 40
+                    option.legend.left = pos === 'left' ? 0 : undefined
+                    option.legend.right = pos === 'right' ? 0 : undefined
+                    option.legend.width = 80
+                } else if (pos === 'top') {
+                    option.legend.orient = 'horizontal'
+                    option.legend.top = option.title ? 36 : 16 // 避免与标题重叠
+                    option.legend.left = 'center'
+                    option.legend.right = undefined
+                    option.legend.width = undefined
+                } else if (pos === 'bottom') {
+                    option.legend.orient = 'horizontal'
+                    option.legend.top = undefined
+                    option.legend.left = 'center'
+                    option.legend.right = undefined
+                    option.legend.bottom = 0
+                    option.legend.width = undefined
+                }
             }
-            if (labelCount > 40) {
-                option.xAxis.axisLabel.interval = Math.ceil(labelCount / 20)
-            } else {
-                option.xAxis.axisLabel.interval = 0
+            // 动态处理x轴标签过长和过密
+            // x轴标签过长处理
+            if (option.xAxis && option.xAxis.data && Array.isArray(option.xAxis.data)) {
+                const labelCount = option.xAxis.data.length
+                if (!option.xAxis.axisLabel) option.xAxis.axisLabel = {}
+                if (labelCount > 12) {
+                    option.xAxis.axisLabel.rotate = 45
+                }
+                if (labelCount > 40) {
+                    option.xAxis.axisLabel.interval = Math.ceil(labelCount / 20)
+                } else {
+                    option.xAxis.axisLabel.interval = 0
+                }
+                option.xAxis.axisLabel.overflow = 'truncate'
+                option.xAxis.axisLabel.width = 80
+                option.xAxis.axisLabel.ellipsis = '...'
             }
-            option.xAxis.axisLabel.overflow = 'truncate'
-            option.xAxis.axisLabel.width = 80
-            option.xAxis.axisLabel.ellipsis = '...'
+            console.log('[Rendering Theme]Setting chart option:', option)
+            chartInstance.setOption(option, { notMerge: true, replaceMerge: ['series'] })
         }
-        console.log('[Rendering Theme]Setting chart option:', option)
-        chartInstance.setOption(option, { notMerge: true, replaceMerge: ['series'] })
-    }
+    })
 }
 
 onMounted(() => {

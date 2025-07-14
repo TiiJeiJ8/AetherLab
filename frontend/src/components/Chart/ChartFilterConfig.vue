@@ -12,18 +12,14 @@
         <div v-show="!collapsed">
             <div v-for="(filter, idx) in filters" :key="filter.id" class="filter-row">
             <select v-model="filter.field" @change="onFieldChange(filter)">
-                <option value="" disabled>字段</option>
+                <option value="" disabled>Field</option>
                 <option v-for="f in availableFields" :key="f.name" :value="f.name">{{ f.label || f.name }}</option>
             </select>
             <select v-model="filter.operator">
                 <option v-for="op in getOperators(filter.type)" :key="op.value" :value="op.value">{{ op.label }}</option>
             </select>
-            <template v-if="filter.type==='number'">
-                <input v-if="filter.operator!=='range'" type="number" v-model="filter.value" placeholder="数值" />
-                <span v-else>
-                <input type="number" v-model="filter.valueMin" placeholder="最小值" style="width:60px;" /> -
-                <input type="number" v-model="filter.valueMax" placeholder="最大值" style="width:60px;" />
-                </span>
+            <template v-if="filter.type==='number' || filter.type==='integer'">
+                <input type="number" v-model="filter.value" placeholder="Value" />
             </template>
             <template v-else-if="filter.type==='category'">
                 <select v-if="filter.operator==='in'" v-model="filter.value" multiple style="min-width:80px;">
@@ -33,11 +29,11 @@
                 <option v-for="v in getCategoryValues(filter.field)" :key="v" :value="v">{{ v }}</option>
                 </select>
             </template>
-            <input v-else v-model="filter.value" placeholder="值" />
+            <input v-else v-model="filter.value" placeholder="Value" />
             <button class="remove-btn" @click="removeFilter(idx)">×</button>
             </div>
             <div class="filter-panel-actions">
-            <button @click="addFilter">+ 添加条件</button>
+            <button @click="addFilter">+ Add Condition</button>
             </div>
             <div v-if="errorMsg" class="filter-error">{{ errorMsg }}</div>
         </div>
@@ -48,12 +44,20 @@
 <script setup>
 /* eslint-disable */
 import { ref, computed, defineProps, defineEmits, watch } from 'vue'
+/**
+ * Props
+ * @prop {Object} modelValue - v-model 绑定的配置对象，必填
+ * @prop {Array} rawData - 原始数据数组，默认 []
+ *
+ * Emits
+ * @event update:modelValue - 过滤条件变更时自动触发，参数为新配置对象
+ */
 const props = defineProps({
-    // 传入当前映射区配置对象（如 { xAxis, yAxis, series... }）
+    // 传入当前映射区的配置对象
     modelValue: { type: Object, required: true },
-    rawData: { type: Array, default: () => [] } // 新增
+    rawData: { type: Array, default: () => [] }
 })
-const emit = defineEmits(['apply-filter'])
+const emit = defineEmits(['update:modelValue'])
 
 const filters = ref([])
 const logic = ref('AND')
@@ -102,6 +106,7 @@ const availableFields = computed(() => {
     return fields
 })
 
+// 初始化过滤器
 function addFilter () {
     // 默认选第一个字段并自动推断类型
     const firstField = availableFields.value[0]
@@ -118,58 +123,64 @@ function addFilter () {
 function removeFilter (idx) {
     filters.value.splice(idx, 1)
 }
+
+// 获取操作符列表
 function getOperators (type) {
-  switch (type) {
-    case 'number':
-    case 'integer':
-      return [
-        { value: 'eq', label: '=' },
-        { value: 'ne', label: '≠' },
-        { value: 'gt', label: '>' },
-        { value: 'ge', label: '≥' },
-        { value: 'lt', label: '<' },
-        { value: 'le', label: '≤' }
-      ]
-    case 'string':
-      return [
-        { value: 'eq', label: '等于' },
-        { value: 'ne', label: '不等于' },
-        { value: 'contains', label: '包含' },
-        { value: 'notcontains', label: '不包含' },
-        { value: 'startsWith', label: '开头是' },
-        { value: 'endsWith', label: '结尾是' }
-      ]
-    case 'category':
-      return [
-        { value: 'eq', label: '=' },
-        { value: 'ne', label: '≠' },
-        { value: 'in', label: '包含于' },
-        { value: 'notin', label: '不包含于' }
-      ]
-    case 'boolean':
-      return [
-        { value: 'eq', label: '等于' },
-        { value: 'ne', label: '不等于' }
-      ]
-    case 'date':
-      return [
-        { value: 'eq', label: '=' },
-        { value: 'ne', label: '≠' },
-        { value: 'before', label: '早于' },
-        { value: 'after', label: '晚于' }
-      ]
-    default:
-      return [
-        { value: 'eq', label: '=' },
-        { value: 'ne', label: '≠' }
-      ]
-  }
+    switch (type) {
+        case 'number':
+        case 'integer':
+        return [
+            { value: 'eq', label: 'Equals' },
+            { value: 'ne', label: 'Not Equals' },
+            { value: 'gt', label: 'Greater Than' },
+            { value: 'ge', label: 'Greater Than Or Equal' },
+            { value: 'lt', label: 'Less Than' },
+            { value: 'le', label: 'Less Than Or Equal' }
+        ]
+        case 'string':
+        return [
+            { value: 'eq', label: 'Equals' },
+            { value: 'ne', label: 'Not Equals' },
+            { value: 'contains', label: 'Contains' },
+            { value: 'notcontains', label: 'Not Contains' },
+            { value: 'startsWith', label: 'Starts With' },
+            { value: 'endsWith', label: 'Ends With' }
+        ]
+        case 'category':
+        return [
+            { value: 'eq', label: 'Equals' },
+            { value: 'ne', label: 'Not Equals' },
+            { value: 'in', label: 'In' },
+            { value: 'notin', label: 'Not In' }
+        ]
+        case 'boolean':
+        return [
+            { value: 'eq', label: 'Equals' },
+            { value: 'ne', label: 'Not Equals' }
+        ]
+        case 'date':
+        return [
+            { value: 'eq', label: 'Equals' },
+            { value: 'ne', label: 'Not Equals' },
+            { value: 'before', label: 'Before' },
+            { value: 'after', label: 'After' }
+        ]
+        default:
+        return [
+            { value: 'eq', label: 'Equals' },
+            { value: 'ne', label: 'Not Equals' }
+        ]
+    }
 }
+
+// 获取分类值
 function getCategoryValues (field) {
     const f = availableFields.value.find(f => f.name === field)
     console.log('[FilterPanel] getCategoryValues for field:', field, 'Values:', f ? f.values : '[]')
     return f && f.values ? f.values : []
 }
+
+// 监听 modelValue 的变化，初始化过滤器
 function onFieldChange (filter) {
     const f = availableFields.value.find(fld => fld.name === filter.field)
     filter.type = f ? f.type : ''
@@ -180,13 +191,12 @@ function onFieldChange (filter) {
     // 调试：输出当前选中字段的详细信息
     console.log('[FilterPanel] selected field:', f)
 }
+
+// 校验过滤器
 function validate () {
     for (const f of filters.value) {
-        if (!f.field || !f.operator || (f.operator !== 'range' && (f.value === '' || f.value === undefined))) {
-        errorMsg.value = '请完整填写所有筛选条件'; return false
-        }
-        if (f.type === 'number' && f.operator === 'range' && (f.valueMin === '' || f.valueMax === '')) {
-        errorMsg.value = '区间筛选需填写最小值和最大值'; return false
+        if (!f.field || !f.operator || f.value === '' || f.value === undefined) {
+            errorMsg.value = 'Please complete all filter conditions'; return false
         }
     }
     errorMsg.value = ''

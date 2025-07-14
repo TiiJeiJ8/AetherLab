@@ -7,6 +7,11 @@
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import * as echarts from 'echarts'
 
+/**
+ * Props
+ * @prop {Object} option - ECharts 配置对象，必填
+ * @prop {String} colorTheme - 主题名，默认 'default'
+ */
 const props = defineProps({
     option: { type: Object, required: true },
     colorTheme: { type: String, default: 'default' }

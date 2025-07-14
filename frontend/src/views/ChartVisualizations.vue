@@ -201,6 +201,9 @@ function handleColumnDrag(dragInfo) {
 // 图表配置处理方法
 function handleConfigChange(config) {
   console.log('Chart config changed:', JSON.parse(JSON.stringify(config)))
+  // 检查主题是否变化
+  const prevTheme = chartConfig.value?.colorScheme || chartConfig.value?.colorTheme || 'default';
+  const nextTheme = config.colorScheme || config.colorTheme || 'default';
   chartConfig.value = config
   if (
     !config.xAxis.field &&
@@ -208,6 +211,14 @@ function handleConfigChange(config) {
     (!Array.isArray(config.series) || config.series.length === 0)
   ) {
     chartOption.value = { series: [] }
+  }
+  // 如果主题变化，强制刷新 option
+  if (prevTheme !== nextTheme && chartOption.value) {
+    const tmp = JSON.parse(JSON.stringify(chartOption.value));
+    chartOption.value = null;
+    nextTick(() => {
+      chartOption.value = tmp;
+    });
   }
 }
 
@@ -217,6 +228,8 @@ import { mergeChartData } from '../assets/JS/utils/dataMergeUtils.js';
 function handleGenerateChart(config) {
   console.log('[handleGenerateChart] config:', JSON.parse(JSON.stringify(config)));
   console.log('[handleGenerateChart] fileDataMap:', JSON.parse(JSON.stringify(fileDataMap.value)));
+  // 保留当前主题字段，防止被 config 覆盖
+  const prevTheme = chartConfig.value?.colorScheme || chartConfig.value?.colorTheme || 'default';
   // 检查是否有用到的文件
   const fields = [];
   if (config.xAxis) fields.push(config.xAxis);
@@ -225,7 +238,6 @@ function handleGenerateChart(config) {
   } else if (config.yAxis) {
     fields.push(config.yAxis);
   }
-  // const filesNeeded = Array.from(new Set(fields.map(f => f.file)));
   // 合并数据，传递nullHandling参数
   const nullHandlingType = config.nullHandling || 'ignore';
   const { xData, yDataArr, mergeType, seriesData } = mergeChartData(config, fileDataMap.value, nullHandlingType);
@@ -240,6 +252,12 @@ function handleGenerateChart(config) {
   }
   // 生成ECharts配置
   const newChartOption = generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType, seriesData);
+  // 恢复主题字段到 chartConfig，防止被 config 覆盖
+  if (!config.colorScheme && !config.colorTheme) {
+    if (!config) config = {};
+    config.colorScheme = prevTheme;
+  }
+  chartConfig.value = { ...config };
   if (newChartOption) {
     chartOption.value = null;
     nextTick(() => {

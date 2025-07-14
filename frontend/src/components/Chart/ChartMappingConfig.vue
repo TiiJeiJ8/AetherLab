@@ -56,10 +56,19 @@
 /* no-undef */
 /* eslint-disable */
 import { ref, watch } from 'vue'
+/**
+ * Props:
+ * @prop {Object} modelValue - v-model绑定的映射配置对象，必填
+ * @prop {Array} mappingConfig - 映射配置项数组，必填
+ */
 const props = defineProps({
-    mappingConfig: Array,
-    modelValue: Object
+  modelValue: { type: Object, required: true },
+  mappingConfig: { type: Array, required: true }
 })
+/**
+ * Emits:
+ * @event update:modelValue - 配置变更时触发，参数为新的配置对象
+ */
 const emit = defineEmits(['update:modelValue'])
 
 const localConfig = ref({ ...props.modelValue })
@@ -75,10 +84,10 @@ function updateField (key, value) {
 }
 
 function getFieldDisplay(val) {
-    if (typeof val === 'object' && val !== null) {
-        return val.field || ''
-    }
-    return val ?? ''
+  if (typeof val === 'object' && val !== null) {
+    return val.field || ''
+  }
+  return val ?? ''
 }
 
 function handleDrop(event, key, multiple) {

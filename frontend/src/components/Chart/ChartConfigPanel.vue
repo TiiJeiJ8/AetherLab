@@ -37,8 +37,6 @@
 
     <!-- 动态数据过滤配置区域 -->
     <ChartFilterConfig
-        v-if="currentTypeConfig.filter && currentTypeConfig.filter.length"
-        :filterConfig="currentTypeConfig.filter"
         v-model="chartConfig"
         :rawData="mainRawData"
     />
