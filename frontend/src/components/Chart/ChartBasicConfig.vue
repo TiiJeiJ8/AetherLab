@@ -146,7 +146,6 @@ onMounted(() => {
         if (localConfig.value.legendVisible === undefined) {
             localConfig.value.legendVisible = true
         }
-        // 兼容父组件传入false的情况，若为null/undefined才设为true
         if (localConfig.value.legendVisible === null) {
             localConfig.value.legendVisible = true
         }
