@@ -1,15 +1,21 @@
 <template>
-<div class="filter-panel" :class="{ collapsed }">
+<div class="filter-panel filter-section" :class="{ collapsed }">
     <div class="filter-panel-header">
         <span>Data Filtering</span>
-        <div class="logic-toggle">
-            <label :class="{active: logic==='AND'}" @click="logic='AND'">AND</label>
-            <label :class="{active: logic==='OR'}" @click="logic='OR'">OR</label>
+        <div class="logic-toggle-block">
+            <div class="block-toggle-group" style="margin:0;">
+                <div class="block-toggle" :class="{ 'checked': logic==='AND' }">
+                    <div class="block-toggle-slider" :class="{ 'right': logic==='OR' }"></div>
+                    <div class="block-toggle-option left" :class="{ active: logic==='AND' }"
+                        @click="logic='AND'" tabindex="0">AND</div>
+                    <div class="block-toggle-option right" :class="{ active: logic==='OR' }"
+                        @click="logic='OR'" tabindex="0">OR</div>
+                </div>
+            </div>
         </div>
-        <button class="collapse-btn" @click="collapsed=!collapsed">{{ collapsed ? '▼' : '▲' }}</button>
+        <!-- Removed collapse button -->
     </div>
-    <transition name="fade">
-        <div v-show="!collapsed">
+    <div class="filter-panel-content">
             <div v-for="(filter, idx) in filters" :key="filter.id" class="filter-row">
             <select v-model="filter.field" @change="onFieldChange(filter)">
                 <option value="" disabled>Field</option>
@@ -33,11 +39,10 @@
             <button class="remove-btn" @click="removeFilter(idx)">×</button>
             </div>
             <div class="filter-panel-actions">
-            <button @click="addFilter">+ Add Condition</button>
+                <button class="add-condition-btn" @click="addFilter">+ Add Condition</button>
             </div>
             <div v-if="errorMsg" class="filter-error">{{ errorMsg }}</div>
-        </div>
-    </transition>
+    </div>
 </div>
 </template>
 
@@ -61,7 +66,7 @@ const emit = defineEmits(['update:modelValue'])
 
 const filters = ref([])
 const logic = ref('AND')
-const collapsed = ref(false)
+// 已移除折叠栏
 const errorMsg = ref('')
 
 // 移除 guessType 函数，availableFields 只用 type
@@ -224,38 +229,7 @@ watch([filters, logic], () => {
 </script>
 
 <style scoped>
-.filter-panel {
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    background: #fafbfc;
-    padding: 10px 12px 8px 12px;
-    margin-bottom: 12px;
-    min-width: 260px;
-    max-width: 420px;
-    font-size: 14px;
-}
-.filter-panel.collapsed { min-height: 0; max-height: 36px; overflow: hidden; padding-bottom: 0; }
-.filter-panel-header {
-    display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;
-}
-.logic-toggle label {
-    margin: 0 4px; padding: 2px 10px; border-radius: 4px; cursor: pointer; background: #f3f3f3; color: #666;
-}
-.logic-toggle label.active { background: #409EFF; color: #fff; }
-.collapse-btn { background: none; border: none; color: #888; cursor: pointer; font-size: 1.1em; margin-left: 8px; }
-.filter-row {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 6px; background: #fff; border-radius: 5px; padding: 6px 4px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-}
-.filter-row select, .filter-row input {
-    font-size: 13px; padding: 2px 6px; border-radius: 4px; border: 1px solid #ccc;
-    min-width: 100px;
-    z-index: 10;
-}
-.remove-btn { background: none; border: none; color: #c72d4e; font-size: 1.2em; cursor: pointer; margin-left: 2px; }
-.filter-panel-actions { display: flex; gap: 12px; margin-top: 10px; }
-.apply-btn { background: #409EFF; color: #fff; border: none; border-radius: 4px; padding: 4px 18px; cursor: pointer; }
-.filter-error { color: #c72d4e; margin-top: 6px; font-size: 13px; }
-.fade-enter-active, .fade-leave-active { transition: opacity 0.18s; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
+
+@import '../../assets/CSS/ChartFilterPanel.css'
+
 </style>

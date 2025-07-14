@@ -142,11 +142,17 @@ const legendPositions = [
 
 // legendPosition 默认值 bottom
 onMounted(() => {
-    if (localConfig.value && localConfig.value.legendVisible === undefined) {
-        localConfig.value.legendVisible = true
-    }
-    if (localConfig.value && !localConfig.value.legendPosition) {
-        localConfig.value.legendPosition = 'bottom'
+    if (localConfig.value) {
+        if (localConfig.value.legendVisible === undefined) {
+            localConfig.value.legendVisible = true
+        }
+        // 兼容父组件传入false的情况，若为null/undefined才设为true
+        if (localConfig.value.legendVisible === null) {
+            localConfig.value.legendVisible = true
+        }
+        if (!localConfig.value.legendPosition) {
+            localConfig.value.legendPosition = 'bottom'
+        }
     }
 })
 
