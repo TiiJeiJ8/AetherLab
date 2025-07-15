@@ -1,7 +1,7 @@
 // chartIcons.js
 /* eslint-disable */
 export const chartTypes = [
-    "Unknown", "Line", "Bar", "Pie", "Scatter", "GEO/MAP", "Candlestick", "Radar", "Boxplot",
+    "Unknown", "Line", "Bar", "Pie", "Scatter", "GEO_MAP", "Candlestick", "Radar", "Boxplot",
     "Heatmap", "Graph", "Tree", "Treemap", "Sunburst", "Parallel",
     "Sankey", "Funnel", "Gauge", "PictorialBar", "ThemeRiver", "Calendar"
 ]
@@ -12,7 +12,7 @@ export const chartIcons = {
     Bar: `<svg viewBox="0 0 24 24" class="chart-icon-svg"><rect x="4" y="10" width="2" height="10" fill="currentColor"/><rect x="9" y="6" width="2" height="14" fill="currentColor"/><rect x="14" y="2" width="2" height="18" fill="currentColor"/><rect x="19" y="8" width="2" height="12" fill="currentColor"/></svg>`,
     Pie: `<svg viewBox="0 0 24 24" class="chart-icon-svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 2 A10 10 0 0 1 22 12 L12 12 Z" fill="currentColor"/></svg>`,
     Scatter: `<svg viewBox="0 0 24 24" class="chart-icon-svg"><circle cx="6" cy="18" r="2" fill="currentColor"/><circle cx="10" cy="10" r="2" fill="currentColor"/><circle cx="15" cy="6" r="2" fill="currentColor"/><circle cx="19" cy="14" r="2" fill="currentColor"/></svg>`,
-    "GEO/MAP": `<svg viewBox="0 0 24 24" class="chart-icon-svg"><path d="M12 2C7 2 4 7 4 11c0 5 8 11 8 11s8-6 8-11c0-4-3-9-8-9z" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="11" r="3" fill="currentColor"/></svg>`,
+    GEO_MAP: `<svg viewBox="0 0 24 24" class="chart-icon-svg"><path d="M12 2C7 2 4 7 4 11c0 5 8 11 8 11s8-6 8-11c0-4-3-9-8-9z" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="11" r="3" fill="currentColor"/></svg>`,
     Candlestick: `<svg viewBox="0 0 24 24" class="chart-icon-svg"><rect x="6" y="7" width="3" height="10" fill="currentColor"/><rect x="15" y="5" width="3" height="14" fill="currentColor"/><line x1="7.5" y1="4" x2="7.5" y2="7" stroke="currentColor" stroke-width="2"/><line x1="7.5" y1="17" x2="7.5" y2="20" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="2" x2="16.5" y2="5" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="19" x2="16.5" y2="22" stroke="currentColor" stroke-width="2"/></svg>`,
     Radar: `<svg viewBox="0 0 24 24" class="chart-icon-svg"><polygon points="12,4 20,8 17,20 7,20 4,8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>`,
     Boxplot: `<svg viewBox="0 0 24 24" class="chart-icon-svg"><rect x="7" y="7" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="2" x2="12" y2="7" stroke="currentColor" stroke-width="2"/><line x1="12" y1="17" x2="12" y2="22" stroke="currentColor" stroke-width="2"/></svg>`,

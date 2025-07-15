@@ -65,14 +65,14 @@ import { watch, ref, reactive, nextTick } from 'vue'
  * @event update:modelValue - v-model 双向绑定
  */
 const props = defineProps({
-  types: {
-    type: Array,
-    default: () => chartTypes
-  },
-  modelValue: {
-    type: String,
-    default: ''
-  }
+    types: {
+        type: Array,
+        default: () => chartTypes
+    },
+    modelValue: {
+        type: String,
+        default: ''
+    }
 })
 
 const emit = defineEmits(['select', 'update:modelValue'])

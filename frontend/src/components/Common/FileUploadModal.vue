@@ -126,7 +126,7 @@
                                 <button v-if="file.status !== 'uploading'"
                                         @click="unloadFile(idx)"
                                         title="Delete file"
-                                        class="action-btn delete-btn">
+                                        class="action-btn delete-file-btn">
                                     <span v-html="getThemeIcon('delete')"></span>
                                 </button>
                             </div>

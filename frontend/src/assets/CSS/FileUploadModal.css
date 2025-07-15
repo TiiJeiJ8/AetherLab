@@ -691,13 +691,13 @@
     border: 1px solid rgba(209, 213, 219, 0.5);
 }
 
-.delete-btn {
+.delete-file-btn {
     background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
     border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
-.delete-btn:hover {
+.delete-file-btn:hover {
     background: linear-gradient(135deg, #dc2626, #b91c1c);
     border-color: rgba(220, 38, 38, 0.5);
     box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
@@ -1088,14 +1088,14 @@
     box-shadow: none;
 }
 
-[data-theme="dark"] .delete-btn {
+[data-theme="dark"] .delete-file-btn {
     background: linear-gradient(135deg, #b91c1c, #991b1b);
     color: #f3f4f6;
     border: 1px solid rgba(185, 28, 28, 0.4);
     box-shadow: 0 2px 8px rgba(185, 28, 28, 0.3);
 }
 
-[data-theme="dark"] .delete-btn:hover {
+[data-theme="dark"] .delete-file-btn:hover {
     background: linear-gradient(135deg, #991b1b, #7f1d1d);
     border-color: rgba(153, 27, 27, 0.6);
     box-shadow: 0 4px 20px rgba(239, 68, 68, 0.5);
