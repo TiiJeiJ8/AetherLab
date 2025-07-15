@@ -16,10 +16,10 @@ export function registerChartOptionGenerator(type, generatorFn) {
 }
 
 // 注册模块化生成器
-registerChartOptionGenerator('bar', barOption)
-registerChartOptionGenerator('scatter', scatterOption)
 registerChartOptionGenerator('line', lineOption)
+registerChartOptionGenerator('bar', barOption)
 registerChartOptionGenerator('pie', pieOption)
+registerChartOptionGenerator('scatter', scatterOption)
 
 
 // 主入口：根据类型分发

@@ -62,8 +62,8 @@ import { ref, watch } from 'vue'
  * @prop {Array} mappingConfig - 映射配置项数组，必填
  */
 const props = defineProps({
-  modelValue: { type: Object, required: true },
-  mappingConfig: { type: Array, required: true }
+    modelValue: { type: Object, required: true },
+    mappingConfig: { type: Array, required: true }
 })
 /**
  * Emits:
@@ -84,10 +84,10 @@ function updateField (key, value) {
 }
 
 function getFieldDisplay(val) {
-  if (typeof val === 'object' && val !== null) {
-    return val.field || ''
-  }
-  return val ?? ''
+    if (typeof val === 'object' && val !== null) {
+        return val.field || ''
+    }
+    return val ?? ''
 }
 
 function handleDrop(event, key, multiple) {
