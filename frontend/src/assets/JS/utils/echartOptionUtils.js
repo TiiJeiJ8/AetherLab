@@ -1,3 +1,6 @@
+// echartOptionUtils.js
+// 利用Option分发器, 根据图表类型生成不同的ECharts Option
+
 /* eslint-disable */
 
 // 模块化导入各类图表 option 生成器

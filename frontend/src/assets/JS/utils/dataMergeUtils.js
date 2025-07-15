@@ -1,5 +1,19 @@
 // dataMergeUtils.js
 // 多文件数据合并与主键处理工具函数
+// 根据不同图表类型，主函数分发到对应的处理器进行数据处理，生成能够绘制图表的数据
+
+/*
+关键函数 mergeChartData(config, fileDataMap, nullHandlingType, options)
+    参数校验 validateParams
+    类型推断 根据 chartConfig 自动推断类型
+    图表类型分发器 chartTypeHandlers[type]
+    数据提取 getDataRows
+    过滤器插件 options.filterPlugin 或 defaultFilterPlugin
+    缺失值处理插件 handleNulls (调用 nullHandlingModule 中的具体方法)
+    主键合并 如有多文件/多字段，合并主键
+    组装seriesData 生成最终用于图表的数据结构
+    返回 {xData, yDataArr, mergeType, seriesData}
+*/
 
 /* eslint-disable */
 

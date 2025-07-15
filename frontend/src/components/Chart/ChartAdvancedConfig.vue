@@ -20,6 +20,16 @@
                 <input v-if="item.type === 'checkbox'" type="checkbox"
                 :checked="localConfig[item.key]"
                 @change="updateField(item.key, $event.target.checked)" />
+
+                <!-- 输入text，显示文本输入框 -->
+                <input v-if="item.type === 'text'" type="text"
+                :value="localConfig[item.key]"
+                @input="updateField(item.key, $event.target.value)" />
+
+                <!-- 输入select，显示下拉选择框 -->
+                <select v-if="item.type === 'select'" :value="localConfig[item.key]" @change="updateField(item.key, $event.target.value)">
+                    <option v-for="option in item.options" :key="option.value" :value="option.value">{{ option.label }}</option>
+                </select>
                 <!-- 其他类型可扩展 -->
             </div>
         </div>

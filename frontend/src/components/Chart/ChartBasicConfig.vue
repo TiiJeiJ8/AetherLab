@@ -1,12 +1,53 @@
 <template>
 <div class="chart-basic-config">
     <h4 class="basic-config-title">Basic Configuration</h4>
+
+    <!-- 动态basic配置项渲染 -->
+    <div
+    v-for="item in basicConfigList"
+    :key="item.key"
+    class="basic-config-item"
+    >
+        <label :for="'basic-' + item.key">{{ item.label }}</label>
+        <!-- select -->
+        <template v-if="item.type === 'select' && item.options">
+            <select
+            :id="'basic-' + item.key"
+            v-model="localConfig[item.key]"
+            >
+                <option v-for="opt in item.options" :key="opt.value" :value="opt.value">
+                    {{ opt.label }}
+                </option>
+            </select>
+        </template>
+        <!-- boolean -->
+        <template v-else-if="item.type === 'boolean'">
+            <label class="switch">
+            <input
+                :id="'basic-' + item.key"
+                type="checkbox"
+                v-model="localConfig[item.key]"
+            />
+            <span class="slider"></span>
+            </label>
+            <span style="margin-left:8px;">{{ localConfig[item.key] ? 'On' : 'Off' }}</span>
+        </template>
+        <template v-else>
+            <input
+            :id="'basic-' + item.key"
+            v-model="localConfig[item.key]"
+            :type="item.inputType || (item.type === 'number' ? 'number' : 'text')"
+            :placeholder="item.placeholder || ''"
+            />
+        </template>
+    </div>
+
     <!-- Title -->
     <div class="basic-config-item">
         <label for="chart-title">Title</label>
         <input id="chart-title" v-model="localConfig.title"/>
     </div>
-        <!-- Theme -->
+    <!-- Theme -->
     <div class="basic-config-item" style="position: relative;">
         <label for="color-scheme">Theme</label>
         <select id="color-scheme" v-model="localConfig.colorScheme">
@@ -83,7 +124,8 @@
 /* eslint-disable */
 // This component is for basic configuration shared by all chart types
 // 该组件用于所有图表的通用基础配置
-import { ref, onMounted, computed, defineProps, defineEmits } from 'vue'
+import { ref, onMounted, computed, defineProps, defineEmits, watchEffect } from 'vue'
+import { chartTypeConfig } from '../../assets/JS/Config/ChartTypeConfig'
 
 const props = defineProps({
     modelValue: {
@@ -94,6 +136,11 @@ const props = defineProps({
         type: Boolean,
         default: true
     },
+    // 传入当前选择的图表类型
+    chartType: {
+        type: String,
+        required: true
+    },
     // 传入当前用于绘图的数据
     chartData: {
         type: Array,
@@ -101,6 +148,16 @@ const props = defineProps({
     }
 })
 const emit = defineEmits(['update:modelValue'])
+
+// 获取当前类型的basic配置
+const basicConfigList = computed(() => {
+    const type = props.chartType
+    console.log('chartType:', type, 'chartTypeConfig:', chartTypeConfig[type])
+    if (type && chartTypeConfig[type] && Array.isArray(chartTypeConfig[type].basic)) {
+        return chartTypeConfig[type].basic
+    }
+    return []
+})
 
 // Use a computed property for two-way binding with parent
 // 本地副本，避免直接修改父组件数据

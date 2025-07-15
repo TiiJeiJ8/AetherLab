@@ -33,7 +33,12 @@
     </div>
 
     <!-- 基础配置区域：所有图表通用配置 -->
-    <ChartBasicConfig v-model="chartConfig" :show-null-handling="showNullHandling" :chart-data="chartData" />
+    <ChartBasicConfig
+        v-model="chartConfig"
+        :show-null-handling="showNullHandling"
+        :chart-data="chartData"
+        :chart-type="selectedChartType"
+    />
 
     <!-- 动态数据过滤配置区域 -->
     <ChartFilterConfig
