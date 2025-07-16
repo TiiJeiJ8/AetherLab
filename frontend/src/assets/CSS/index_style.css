@@ -27,6 +27,20 @@
     animation: FadeIn_sI 0.5s ease-out;
 }
 
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
 @keyframes FadeIn_sI {
     from {
         opacity: 0;
