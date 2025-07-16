@@ -174,6 +174,8 @@ function deleteChart(idx) {
 function onChartTypeSelect(type) {
     console.log(`Selected chart type: ${type}`)
     selectedChartType.value = type
+    // 保证chartConfig.value.type始终同步
+    if (chartConfig.value) chartConfig.value.type = type
     // 可添加处理为加载图表类型、切换组件等功能
 }
 
@@ -228,6 +230,8 @@ import { mergeChartData } from '../assets/JS/utils/dataMergeUtils.js';
 function handleGenerateChart(config) {
   console.log('[handleGenerateChart] config:', JSON.parse(JSON.stringify(config)));
   console.log('[handleGenerateChart] fileDataMap:', JSON.parse(JSON.stringify(fileDataMap.value)));
+  // 保证config.type始终同步
+  if (selectedChartType.value) config.type = selectedChartType.value
   // 保留当前主题字段，防止被 config 覆盖
   const prevTheme = chartConfig.value?.colorScheme || chartConfig.value?.colorTheme || 'default';
   // 检查是否有用到的文件
@@ -242,10 +246,10 @@ function handleGenerateChart(config) {
   const nullHandlingType = config.nullHandling || 'ignore';
   const { xData, yDataArr, mergeType, seriesData } = mergeChartData(config, fileDataMap.value, nullHandlingType);
 
-  if ((seriesData && seriesData.length === 0) && (!xData || xData.length === 0)) {
-    alert('Main file data is empty, unable to generate chart.');
-    return;
-  }
+  // if ((seriesData && seriesData.length === 0) && (!xData || xData.length === 0)) {
+  //   alert('Main file data is empty, unable to generate chart.');
+  //   return;
+  // }
   // UI提示
   if (mergeType === 'rowIndex') {
     alert('When no "PRIMARY KEY" is set, data will be aligned by row index and any extra rows will be truncated. It is recommended to set a PRIMARY KEY" for more accurate data merging.');

@@ -59,8 +59,18 @@ import { ref, computed, defineProps, defineEmits, watch } from 'vue'
  */
 const props = defineProps({
     // 传入当前映射区的配置对象
-    modelValue: { type: Object, required: true },
-    rawData: { type: Array, default: () => [] }
+    modelValue: {
+        type: Object,
+        required: true
+    },
+    rawData: {
+        type: Array,
+        default: () => []
+    },
+    collapsed: {
+        type: Boolean,
+        default: false
+    },
 })
 const emit = defineEmits(['update:modelValue'])
 

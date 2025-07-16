@@ -236,18 +236,25 @@ async function renderChart() {
             // x轴标签过长处理
             if (option.xAxis && option.xAxis.data && Array.isArray(option.xAxis.data)) {
                 const labelCount = option.xAxis.data.length
+                const maxLabelLength = Math.max(...option.xAxis.data.map(v => String(v).length))
                 if (!option.xAxis.axisLabel) option.xAxis.axisLabel = {}
+
+                // 标签数量过多时旋转
                 if (labelCount > 24) {
                     option.xAxis.axisLabel.rotate = 45
                 }
+                // 标签数量极多时间隔显示
                 if (labelCount > 80) {
                     option.xAxis.axisLabel.interval = Math.ceil(labelCount / 40)
                 } else {
                     option.xAxis.axisLabel.interval = 0
                 }
-                option.xAxis.axisLabel.overflow = 'truncate'
-                // 标签长度相关调节跟随Legend位置变化
-                option.xAxis.axisLabel.ellipsis = '...'
+                // 标签内容过长时截断
+                if (maxLabelLength > 10) {
+                    option.xAxis.axisLabel.overflow = 'truncate'
+                    option.xAxis.axisLabel.ellipsis = '...'
+                    option.xAxis.axisLabel.width = 100 // 可根据maxLabelLength动态调整
+                }
             }
             console.log('[Rendering Theme]Setting chart option:', option)
             chartInstance.setOption(option, { notMerge: true, replaceMerge: ['series'] })

@@ -5,7 +5,7 @@
 /*
 关键函数 mergeChartData(config, fileDataMap, nullHandlingType, options)
     参数校验 validateParams
-    类型推断 根据 chartConfig 自动推断类型
+    类型
     图表类型分发器 chartTypeHandlers[type]
     数据提取 getDataRows
     过滤器插件 options.filterPlugin 或 defaultFilterPlugin
@@ -260,12 +260,49 @@ function pieChartHandler(config, fileDataMap, options) {
     return { xData: [], yDataArr: [], mergeType: 'pie', seriesData: result };
 }
 
+/**
+ * K线图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function candlestickChartHandler(config, fileDataMap, options) {
+    const { nullHandlingType = 'ignore', nullHandlingModule = nullHandling, filterPlugin = defaultFilterPlugin } = options;
+    const { time, open, close, high, low, filter } = config;
+    // 提取主文件数据
+    let mainData = getDataRows(fileDataMap, time.file);
+    if (filter && filter.filters && filter.filters.length) {
+        mainData = filterPlugin(mainData, filter);
+    }
+    // 按时间字段排序（可选）
+    mainData.sort((a, b) => {
+        if (a[time.field] < b[time.field]) return -1;
+        if (a[time.field] > b[time.field]) return 1;
+        return 0;
+    });
+    // 组装 xData 和 seriesData
+    const xData = mainData.map(row => row[time.field]);
+    const seriesData = mainData.map(row => {
+        const o = parseFloat(row[open.field]);
+        const c = parseFloat(row[close.field]);
+        const h = parseFloat(row[high.field]);
+        const l = parseFloat(row[low.field]);
+        // 缺失值处理
+        const arr = [o, c, l, h].map(v => (v === null || v === undefined || v === '' || Number.isNaN(v)) ? null : v);
+        return handleNulls(nullHandlingType, arr, nullHandlingModule);
+    });
+    return { xData, yDataArr: [seriesData], mergeType: 'candlestick', seriesData };
+}
+
 // ---------------- 图表类型分发器 ----------------
 
 const chartTypeHandlers = {
-    pie: pieChartHandler,
-    line: xyChartHandler,
-    bar: xyChartHandler,
+    Line: xyChartHandler,
+    Bar: xyChartHandler,
+    Pie: pieChartHandler,
+    Scatter: xyChartHandler,
+    Candlestick: candlestickChartHandler,
     // 其他类型可继续扩展
 };
 
@@ -279,13 +316,10 @@ const chartTypeHandlers = {
  */
 export function mergeChartData(config, fileDataMap, nullHandlingType = 'ignore', options = {}) {
     validateParams(config, fileDataMap);
-    // 自动推断类型
     let chartType = config.type;
-    if (!chartType) {
-        if (config.category && config.value) chartType = 'pie';
-        else chartType = 'line'; // 默认
-    }
+    console.log('[mergeChartData] Inferred chart type:', chartType);
     const handler = chartTypeHandlers[chartType] || xyChartHandler;
+    console.log('[mergeChartData] Handler:', handler);
     return handler(config, fileDataMap, { ...options, nullHandlingType });
 }
 

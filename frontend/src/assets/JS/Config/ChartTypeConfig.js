@@ -308,7 +308,7 @@ export const chartTypeConfig = {
             // 时间字段
             { key: 'date', label: 'Date', type: 'dimension', required: true },
             // 类别字段
-            { key: 'category', label: 'Category', type: 'dimension', required: true },
+            { key: 'category', label: 'Category', type: 'dimension', required: false },
             // 值字段
             { key: 'value', label: 'Value', type: 'measure', required: true },
         ],

@@ -8,6 +8,7 @@ import barOption from '../../JS/chartOptions/bar'
 import scatterOption from '../../JS/chartOptions/scatter'
 import lineOption from '../../JS/chartOptions/line'
 import pieOption from '../../JS/chartOptions/pie'
+import candlestickOption from '../chartOptions/candlestick'
 // ...可继续导入更多类型
 
 // 图表类型注册表
@@ -19,21 +20,34 @@ export function registerChartOptionGenerator(type, generatorFn) {
 }
 
 // 注册模块化生成器
-registerChartOptionGenerator('line', lineOption)
-registerChartOptionGenerator('bar', barOption)
-registerChartOptionGenerator('pie', pieOption)
-registerChartOptionGenerator('scatter', scatterOption)
+registerChartOptionGenerator('Line', lineOption)
+registerChartOptionGenerator('Bar', barOption)
+registerChartOptionGenerator('Pie', pieOption)
+registerChartOptionGenerator('Scatter', scatterOption)
+registerChartOptionGenerator('Candlestick', candlestickOption)
+// ...可继续注册更多类型
 
 
 // 主入口：根据类型分发
 export function generateEChartOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
+    // 控制台显示传入的所有字段
+    console.log('[generateEChartOption] config:', config);
+    console.log('[generateEChartOption] fileDataMap:', fileDataMap);
+    console.log('[generateEChartOption] xData:', xData);
+    console.log('[generateEChartOption] yDataArr:', yDataArr);
+    console.log('[generateEChartOption] selectedChartType:', selectedChartType);
+    console.log('[generateEChartOption] seriesData:', seriesData);
+    console.log('[generateEChartOption] customOption:', customOption);
+
     const type = selectedChartType.value.toLowerCase();
     const generator = chartOptionGenerators[type];
+    console.log('[generator]', type, generator);
     if (!generator) {
         throw new Error(`No chart option generator registered for type: ${type}`);
     }
     const option = generator(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption);
     // 调试输出
-    console.log('[generateEChartOption]', type, option);
+    console.log('[generateEChartOption] Type:', type);
+    console.log('[generateEChartOption] Generated option:', option);
     return option;
 }

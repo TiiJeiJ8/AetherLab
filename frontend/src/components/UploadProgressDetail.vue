@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, defineProps, defineEmits } from 'vue'
 import { getThemeIcon } from '../assets/JS/icons.js'
 import { formatFileSize, formatUploadSpeed, formatRemainingTime } from '../utils/uploadConfig.js'
 

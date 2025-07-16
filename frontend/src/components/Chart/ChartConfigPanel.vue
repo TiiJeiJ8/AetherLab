@@ -246,17 +246,26 @@ const chartData = computed(() => props.chartData || [])
 // 计算属性
 const isConfigValid = computed(() => {
     const type = (props.selectedChartType || '').toLowerCase();
-    if (['pie', 'funnel', 'gauge'].includes(type)) {
+    if (['line', 'bar', 'scatter'].includes(type)) {
+        const xValid = chartConfig.value.xAxis && chartConfig.value.xAxis.field;
+        const y = chartConfig.value.yAxis;
+        const yValid = Array.isArray(y) ? y.length > 0 : (y && y.field);
+        return xValid && yValid;
+    }
+    if (['pie'].includes(type)) {
         // category/value 结构
         const cat = chartConfig.value.category;
         const val = chartConfig.value.value;
         return cat && cat.field && val && val.field;
     }
-    // 其他类型
-    const xValid = chartConfig.value.xAxis && chartConfig.value.xAxis.field;
-    const y = chartConfig.value.yAxis;
-    const yValid = Array.isArray(y) ? y.length > 0 : (y && y.field);
-    return xValid && yValid;
+    if (['candlestick'].includes(type)) {
+        const cfg = chartConfig.value;
+        return  cfg.time && cfg.time.field &&
+            cfg.open && cfg.open.field &&
+            cfg.close && cfg.close.field &&
+            cfg.high && cfg.high.field &&
+            cfg.low && cfg.low.field;
+    }
 });
 
 // 监听 chartConfig 变化，自动渲染
@@ -484,7 +493,6 @@ function generateChart () {
         errorMessage.value = 'Please complete the required data mapping configuration'
         return
     }
-
     emit('generate-chart', chartConfig.value)
 }
 
