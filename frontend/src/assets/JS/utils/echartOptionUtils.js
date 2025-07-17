@@ -10,6 +10,7 @@ import lineOption from '../../JS/chartOptions/line'
 import pieOption from '../../JS/chartOptions/pie'
 import candlestickOption from '../chartOptions/candlestick'
 import heatmapOption from '../chartOptions/heatmap'
+import radarOption from '../chartOptions/radar'
 // ...可继续导入更多类型
 
 // 图表类型注册表
@@ -27,12 +28,13 @@ registerChartOptionGenerator('Pie', pieOption)
 registerChartOptionGenerator('Scatter', scatterOption)
 registerChartOptionGenerator('Candlestick', candlestickOption)
 registerChartOptionGenerator('heatmap', heatmapOption)
+registerChartOptionGenerator('Radar', radarOption)
 // ...可继续注册更多类型
 
 
 // 主入口：根据类型分发
 export function generateEChartOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
-    // 控制台显示传入的所有字段
+    //! 控制台显示传入的所有字段
     console.log('[generateEChartOption] config:', config);
     console.log('[generateEChartOption] fileDataMap:', fileDataMap);
     console.log('[generateEChartOption] xData:', xData);
@@ -48,7 +50,8 @@ export function generateEChartOption(config, fileDataMap, xData, yDataArr, selec
         throw new Error(`No chart option generator registered for type: ${type}`);
     }
     const option = generator(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption);
-    // 调试输出
+
+    //! 调试输出
     console.log('[generateEChartOption] Type:', type);
     console.log('[generateEChartOption] Generated option:', option);
     return option;

@@ -48,6 +48,11 @@ export default function heatmapOption(config, fileDataMap, xData, yDataArr, sele
     }
     return {
         // ECharts 热力图配置
+        title: {
+            text: config.title || `Chart of Heatmap`,
+            left: 'center',
+            textStyle: { fontSize: 16, fontWeight: 'bold' }
+        },
         tooltip: {
             position: 'top'
         },

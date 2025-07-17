@@ -172,6 +172,8 @@ const basicConfigList = computed(() => {
     return []
 })
 
+// 需要将basic配置传入config中
+
 // Use a computed property for two-way binding with parent
 // 本地副本，避免直接修改父组件数据
 const localConfig = computed({

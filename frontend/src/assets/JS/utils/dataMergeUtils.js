@@ -172,6 +172,13 @@ import * as nullHandling from './nullHandling.js';
 
 // ---------------- 图表类型处理器 ----------------
 
+// 调试输入函数
+function debugInput(config, fileDataMap, options) {
+    console.log('[--debugInput {Chart Type Processor}--] config:', config);
+    console.log('[--debugInput {Chart Type Processor}--] fileDataMap:', fileDataMap);
+    console.log('[--debugInput {Chart Type Processor}--] options:', options);
+}
+
 /**
  * 通用 x/y 图表（如折线、柱状等）数据处理器
  * @param {ChartConfig} config
@@ -304,42 +311,80 @@ function candlestickChartHandler(config, fileDataMap, options) {
  */
 function heatmapChartHandler(config, fileDataMap, options) {
     const { xAxis, yAxis, value } = config;
-    // 获取所有数据行（假设三者文件一致，或用主文件名）
-    const mainFile = xAxis.file || yAxis.file || value.file;
-    const rows = getDataRows(fileDataMap, mainFile);
+    // 获取所有数据行
+    const xRows = getDataRows(fileDataMap, xAxis.file);
+    const yRows = getDataRows(fileDataMap, yAxis.file);
+    const valRows = getDataRows(fileDataMap, value.file);
 
-    // 收集所有x、y
-    const xSet = new Set();
-    const ySet = new Set();
-    rows.forEach(row => {
-        xSet.add(row[xAxis.field]);
-        ySet.add(row[yAxis.field]);
-    });
+    // 收集所有x、y的取值（类别）
+    const xSet = new Set(xRows.map(row => row[xAxis.field]));
+    const ySet = new Set(yRows.map(row => row[yAxis.field]));
     const xData = Array.from(xSet);
     const yData = Array.from(ySet);
 
-    // 构建主键映射
+    // 构建value映射
     const valueMap = new Map();
-    rows.forEach(row => {
-        const key = `${row[xAxis.field]}|${row[yAxis.field]}`;
-        valueMap.set(key, row[value.field]);
+    valRows.forEach(row => {
+        // 优先用valRows里的x/y字段，否则用xRows/yRows索引补齐
+        const x = row[xAxis.field] !== undefined ? row[xAxis.field] : null;
+        const y = row[yAxis.field] !== undefined ? row[yAxis.field] : null;
+        if (x !== null && y !== null) {
+            const key = `${x}|${y}`;
+            valueMap.set(key, row[value.field]);
+        }
     });
 
-    // 生成 seriesData，按 xData/yData 顺序一一对应
+    // 生成 seriesData，补齐所有 (x, y) 组合
     const seriesData = [];
     yData.forEach(y => {
         xData.forEach(x => {
             const key = `${x}|${y}`;
-            const v = valueMap.has(key) ? valueMap.get(key) : null; // 缺失补null
+            const v = valueMap.has(key) ? valueMap.get(key) : null;
             seriesData.push([x, y, v]);
         });
     });
+    return { xData, yData, mergeType: 'heatmap', seriesData };
+}
 
-    console.log('[heatmapChartHandler] xData:', xData);
-    console.log('[heatmapChartHandler] yData:', yData);
-    console.log('[heatmapChartHandler] seriesData:', seriesData);
 
-    return { xData, yData: [], mergeType: 'heatmap', seriesData };
+/**
+ * 雷达图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function radarChartHandler(config, fileDataMap, options) {
+    debugInput(config, fileDataMap, options);
+    const { indicator, value, name } = config;
+
+    // 维度配置
+    const indicators = indicator.map(item => {
+        const rows = getDataRows(fileDataMap, item.file);
+        const values = rows.map(row => row[item.field]).filter(v => v !== undefined && v !== null);
+        const max = Math.ceil(Math.max(...values.map(v => Number(v))) * 1.2); // 乘以安全系数
+        return {
+            name: item.field,
+            max: max || 100
+        };
+    });
+
+    // 系列数据
+    const nameRows = getDataRows(fileDataMap, name.file);
+    const seriesData = nameRows.map(row => {
+        const values = value.map(item => row[item.field]);
+        return {
+            name: row[name.field],
+            value: values
+        };
+    });
+
+    // 先封装传输
+    const RadarPack = {
+        indicator: indicators,
+        seriesData_radar: seriesData,
+    }
+    return { xData: [], yData: [], mergeType: 'radar', seriesData: RadarPack };
 }
 
 // ---------------- 图表类型分发器 ----------------
@@ -351,6 +396,7 @@ const chartTypeHandlers = {
     Scatter: xyChartHandler,
     Candlestick: candlestickChartHandler,
     Heatmap: heatmapChartHandler,
+    Radar: radarChartHandler,
     // 其他类型可继续扩展
 };
 
@@ -365,9 +411,13 @@ const chartTypeHandlers = {
 export function mergeChartData(config, fileDataMap, nullHandlingType = 'ignore', options = {}) {
     validateParams(config, fileDataMap);
     let chartType = config.type;
+
     console.log('[mergeChartData] Inferred chart type:', chartType);
+
     const handler = chartTypeHandlers[chartType] || xyChartHandler;
+
     console.log('[mergeChartData] Handler:', handler);
+
     return handler(config, fileDataMap, { ...options, nullHandlingType });
 }
 

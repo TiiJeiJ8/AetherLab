@@ -135,7 +135,7 @@ import ChartAdvancedConfig from './ChartAdvancedConfig.vue'
 
 // 当前类型的配置
 const currentTypeConfig = computed(() => {
-  // 兼容首字母大写/小写
+    // 兼容首字母大写/小写
     return chartTypeConfig[props.selectedChartType] || chartTypeConfig[props.selectedChartType.charAt(0).toUpperCase() + props.selectedChartType.slice(1)] || {}
 })
 
@@ -246,31 +246,36 @@ const chartData = computed(() => props.chartData || [])
 // 计算属性
 const isConfigValid = computed(() => {
     const type = (props.selectedChartType || '').toLowerCase();
+    const cfg = chartConfig.value;
+    console.log('Current chart type:', type, 'with config:', JSON.parse(JSON.stringify(cfg)));
     if (['line', 'bar', 'scatter'].includes(type)) {
-        const xValid = chartConfig.value.xAxis && chartConfig.value.xAxis.field;
-        const y = chartConfig.value.yAxis;
+        const xValid = cfg.xAxis && cfg.xAxis.field;
+        const y = cfg.yAxis;
         const yValid = Array.isArray(y) ? y.length > 0 : (y && y.field);
         return xValid && yValid;
     }
     if (['pie'].includes(type)) {
         // category/value 结构
-        const cat = chartConfig.value.category;
-        const val = chartConfig.value.value;
+        const cat = cfg.category;
+        const val = cfg.value;
         return cat && cat.field && val && val.field;
     }
     if (['candlestick'].includes(type)) {
-        const cfg = chartConfig.value;
         return  cfg.time && cfg.time.field &&
             cfg.open && cfg.open.field &&
             cfg.close && cfg.close.field &&
             cfg.high && cfg.high.field &&
             cfg.low && cfg.low.field;
     }
-    if (['heatmap'.includes(type)]) {
-        const cfg = chartConfig.value;
+    if (['heatmap'].includes(type)) {
         return cfg.xAxis && cfg.xAxis.field &&
             cfg.yAxis && cfg.yAxis.field &&
             cfg.value && cfg.value.field;
+    }
+    if (['radar'].includes(type)) {
+        return Array.isArray(cfg.indicator) && cfg.indicator.length > 0 &&
+        Array.isArray(cfg.value) && cfg.value.length > 0 &&
+        cfg.name && cfg.name.field;
     }
 });
 

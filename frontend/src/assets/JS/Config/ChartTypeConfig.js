@@ -91,11 +91,11 @@ export const chartTypeConfig = {
     Radar: {
         mapping: [
             // 维度名称
-            { key: 'indicator', label: 'Indicator', type: 'dimension', required: true, multiple: true },
-            // 系列名称
-            { key: 'name', label: 'Name', type: 'tag', required: false },
+            { key: 'indicator', label: 'Indicator', type: 'dimension', required: true, multiple: true, description: 'Radar chart indicators, e.g. ["Sales", "Marketing", "Development"]' },
             // 数据值
-            { key: 'value', label: 'Value', type: 'measure', required: true, multiple: true },
+            { key: 'value', label: 'Value', type: 'measure', required: true, multiple: true, description: 'Values corresponding to each indicator, e.g. [120, 200, 150]' },
+            // 系列名称
+            { key: 'name', label: 'Name', type: 'tag', required: false, description: 'Series name for the radar chart' },
         ],
         basic: [
         ],
@@ -134,6 +134,10 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 热力图单元格中的标签显示
+            { key: 'label', label: 'Label', type: 'boolean', required: false, default: true, description: 'Whether to show labels on heatmap cells' },
+            // 热力图单元格标签内容：默认显示value
+            { key: 'labelFormatter', label: 'Label Formatter', type: 'text', required: false, default: '{c}', description: 'Custom label format, e.g. "{b}: {c}"' },
         ]
     },
     // 关系图
