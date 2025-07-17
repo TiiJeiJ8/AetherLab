@@ -93,7 +93,20 @@
     </div>
     <!-- Legend 位置选择 -->
     <div class="basic-config-item" v-if="localConfig.legendVisible">
-        <label for="legend-position">Legend Position</label>
+        <!-- 根据所选择的图表显示图例/映射条 -->
+        <label
+            v-if="chartType === 'Heatmap'"
+            for="legend-position"
+        >
+            Visualmap Position
+        </label>
+        <label
+            v-else
+            for="legend-position"
+        >
+            Legend Position
+        </label>
+
         <select id="legend-position" v-model="localConfig.legendPosition">
             <option v-for="pos in legendPositions" :key="pos.value" :value="pos.value">{{ pos.label }}</option>
         </select>

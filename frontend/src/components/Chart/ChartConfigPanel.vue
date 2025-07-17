@@ -266,6 +266,12 @@ const isConfigValid = computed(() => {
             cfg.high && cfg.high.field &&
             cfg.low && cfg.low.field;
     }
+    if (['heatmap'.includes(type)]) {
+        const cfg = chartConfig.value;
+        return cfg.xAxis && cfg.xAxis.field &&
+            cfg.yAxis && cfg.yAxis.field &&
+            cfg.value && cfg.value.field;
+    }
 });
 
 // 监听 chartConfig 变化，自动渲染

@@ -9,6 +9,7 @@ import scatterOption from '../../JS/chartOptions/scatter'
 import lineOption from '../../JS/chartOptions/line'
 import pieOption from '../../JS/chartOptions/pie'
 import candlestickOption from '../chartOptions/candlestick'
+import heatmapOption from '../chartOptions/heatmap'
 // ...可继续导入更多类型
 
 // 图表类型注册表
@@ -25,6 +26,7 @@ registerChartOptionGenerator('Bar', barOption)
 registerChartOptionGenerator('Pie', pieOption)
 registerChartOptionGenerator('Scatter', scatterOption)
 registerChartOptionGenerator('Candlestick', candlestickOption)
+registerChartOptionGenerator('heatmap', heatmapOption)
 // ...可继续注册更多类型
 
 

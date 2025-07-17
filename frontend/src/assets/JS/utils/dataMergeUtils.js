@@ -275,7 +275,7 @@ function candlestickChartHandler(config, fileDataMap, options) {
     if (filter && filter.filters && filter.filters.length) {
         mainData = filterPlugin(mainData, filter);
     }
-    // 按时间字段排序（可选）
+    // 按时间字段排序
     mainData.sort((a, b) => {
         if (a[time.field] < b[time.field]) return -1;
         if (a[time.field] > b[time.field]) return 1;
@@ -295,6 +295,53 @@ function candlestickChartHandler(config, fileDataMap, options) {
     return { xData, yDataArr: [seriesData], mergeType: 'candlestick', seriesData };
 }
 
+/**
+ * 热力图数据处理器（主键合并，一一对应）
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function heatmapChartHandler(config, fileDataMap, options) {
+    const { xAxis, yAxis, value } = config;
+    // 获取所有数据行（假设三者文件一致，或用主文件名）
+    const mainFile = xAxis.file || yAxis.file || value.file;
+    const rows = getDataRows(fileDataMap, mainFile);
+
+    // 收集所有x、y
+    const xSet = new Set();
+    const ySet = new Set();
+    rows.forEach(row => {
+        xSet.add(row[xAxis.field]);
+        ySet.add(row[yAxis.field]);
+    });
+    const xData = Array.from(xSet);
+    const yData = Array.from(ySet);
+
+    // 构建主键映射
+    const valueMap = new Map();
+    rows.forEach(row => {
+        const key = `${row[xAxis.field]}|${row[yAxis.field]}`;
+        valueMap.set(key, row[value.field]);
+    });
+
+    // 生成 seriesData，按 xData/yData 顺序一一对应
+    const seriesData = [];
+    yData.forEach(y => {
+        xData.forEach(x => {
+            const key = `${x}|${y}`;
+            const v = valueMap.has(key) ? valueMap.get(key) : null; // 缺失补null
+            seriesData.push([x, y, v]);
+        });
+    });
+
+    console.log('[heatmapChartHandler] xData:', xData);
+    console.log('[heatmapChartHandler] yData:', yData);
+    console.log('[heatmapChartHandler] seriesData:', seriesData);
+
+    return { xData, yData: [], mergeType: 'heatmap', seriesData };
+}
+
 // ---------------- 图表类型分发器 ----------------
 
 const chartTypeHandlers = {
@@ -303,6 +350,7 @@ const chartTypeHandlers = {
     Pie: pieChartHandler,
     Scatter: xyChartHandler,
     Candlestick: candlestickChartHandler,
+    Heatmap: heatmapChartHandler,
     // 其他类型可继续扩展
 };
 

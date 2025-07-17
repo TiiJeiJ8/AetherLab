@@ -246,10 +246,10 @@ function handleGenerateChart(config) {
   const nullHandlingType = config.nullHandling || 'ignore';
   const { xData, yDataArr, mergeType, seriesData } = mergeChartData(config, fileDataMap.value, nullHandlingType);
 
-  // if ((seriesData && seriesData.length === 0) && (!xData || xData.length === 0)) {
-  //   alert('Main file data is empty, unable to generate chart.');
-  //   return;
-  // }
+  if ((seriesData && seriesData.length === 0) && (!xData || xData.length === 0)) {
+    alert('Main file data is empty, unable to generate chart.');
+    return;
+  }
   // UI提示
   if (mergeType === 'rowIndex') {
     alert('When no "PRIMARY KEY" is set, data will be aligned by row index and any extra rows will be truncated. It is recommended to set a PRIMARY KEY" for more accurate data merging.');
