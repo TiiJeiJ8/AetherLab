@@ -3,7 +3,17 @@
 // 饼图 option 生成器
 export default function pieOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
     const { title, animation } = config;
-    const pieSeries = Array.isArray(seriesData) && seriesData.length > 0 ? seriesData : (xData.map((name, i) => ({ name, value: yDataArr[0][i] })));
+    const rawSeries = Array.isArray(seriesData) && seriesData.length > 0 ? seriesData : (xData.map((name, i) => ({ name, value: yDataArr[0][i] })));
+
+    const pieSeries = Object.values(
+        rawSeries.reduce((acc, cur) => {
+            acc[cur.name] = acc[cur.name] || { name: cur.name, value: 0 };
+            acc[cur.name].value += Number(cur.value) || 0;
+            return acc;
+        }, {})
+    );
+    console.log('[pieOption] pieSeries:', pieSeries);
+
     return {
         title: {
             text: title || '',
