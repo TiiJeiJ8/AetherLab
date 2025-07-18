@@ -280,8 +280,13 @@ const isConfigValid = computed(() => {
 	if (['boxplot'].includes(type)) {
 		return cfg.category && cfg.category.field
 	}
-	if (['graph'].includes(type)) {
-	}
+    if (['graph'].includes(type)) {
+        return cfg.nodeID && cfg.nodeID.field &&
+            cfg.edgeSource && cfg.edgeSource.field &&
+            cfg.edgeTarget && cfg.edgeTarget.field;
+    }
+    if (['tree'].includes(type)) {
+    }
 });
 
 // 监听 chartConfig 变化，自动渲染

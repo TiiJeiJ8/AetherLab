@@ -116,10 +116,7 @@
             "#93b7e3",
             "#a5e7f0",
             "#cbb0e3"
-        ],
-        "label": {
-            "color": "#eeeeee"
-        }
+        ]
     },
     "map": {
         "itemStyle": {

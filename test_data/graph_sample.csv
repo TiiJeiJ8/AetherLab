@@ -1,0 +1,11 @@
+nodeID,nodeName,nodeValue,nodeCategory,edgeSource,edgeTarget,edgeWeight
+A,北京,100,城市,A,B,1.2
+B,上海,80,城市,B,C,2.1
+C,广州,60,城市,C,D,1.5
+D,深圳,90,城市,D,A,2.0
+E,杭州,70,城市,E,B,1.8
+F,成都,50,城市,F,C,1.1
+A,北京,100,城市,A,E,2.3
+B,上海,80,城市,B,F,1.7
+C,广州,60,城市,C,E,1.4
+D,深圳,90,城市,D,F,2.2

@@ -134,10 +134,7 @@
             "#f4e001",
             "#f0805a",
             "#26c0c0"
-        ],
-        "label": {
-            "color": "#eeeeee"
-        }
+        ]
     },
     "map": {
         "itemStyle": {

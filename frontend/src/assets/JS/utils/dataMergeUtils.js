@@ -528,7 +528,7 @@ function boxplotChartHandler(config, fileDataMap, options) {
     };
 }
 
-/** 
+/**
  * 关系图数据处理器
  * @param {ChartConfig} config
  * @param {FileDataMap} fileDataMap
@@ -537,6 +537,66 @@ function boxplotChartHandler(config, fileDataMap, options) {
  */
 function graphChartHandler(config, fileDataMap, options) {
     debugInput(config, fileDataMap, options);
+    const { nodeID, nodeName, nodeValue, nodeCategory, edgeSource, edgeTarget, edgeWeight } = config;
+
+    // 必填字段校验
+    if (!nodeID || !nodeID.file || !nodeID.field) throw new Error('nodeID为必填项');
+    if (!edgeSource || !edgeSource.file || !edgeSource.field) throw new Error('edgeSource为必填项');
+    if (!edgeTarget || !edgeTarget.file || !edgeTarget.field) throw new Error('edgeTarget为必填项');
+
+    //获取数据行
+    const nodeIDRows = getDataRows(fileDataMap, nodeID.file);
+    const nodeNameRows = nodeName && nodeName.file ? getDataRows(fileDataMap, nodeName.file) : [];
+    const nodeValueRows = nodeValue && nodeValue.file ? getDataRows(fileDataMap, nodeValue.file) : [];
+    const nodeCategoryRows = nodeCategory && nodeCategory.file ? getDataRows(fileDataMap, nodeCategory.file) : [];
+    const edgeSourceRows = getDataRows(fileDataMap, edgeSource.file);
+    const edgeTargetRows = getDataRows(fileDataMap, edgeTarget.file);
+    const edgeWeightRows = edgeWeight && edgeWeight.file ? getDataRows(fileDataMap, edgeWeight.file) : [];
+
+    // 节点去重，只保留每个id的第一个节点
+    const nodes = [];
+    const nodeSet = new Set();
+    nodeIDRows.forEach((row, idx) => {
+        const id = row[nodeID.field];
+        if (id !== undefined && id !== null && id !== '' && !nodeSet.has(id)) {
+            const name = (nodeNameRows[idx] && nodeName && nodeName.field) ? nodeNameRows[idx][nodeName.field] : id;
+            const value = (nodeValueRows[idx] && nodeValue && nodeValue.field) ? parseFloat(nodeValueRows[idx][nodeValue.field]) : 1;
+            const category = (nodeCategoryRows[idx] && nodeCategory && nodeCategory.field) ? nodeCategoryRows[idx][nodeCategory.field] : '';
+            const node = { id };
+            if (name !== undefined) node.name = name;
+            if (value !== undefined) node.value = value;
+            if (category !== undefined) node.category = category;
+            nodes.push(node);
+            nodeSet.add(id);
+        }
+    });
+
+    // 生成边数据，source/target直接用id字符串
+    const edges = [];
+    edgeSourceRows.forEach((row, idx) => {
+        const source = row[edgeSource.field];
+        const target = edgeTargetRows[idx] ? edgeTargetRows[idx][edgeTarget.field] : undefined;
+        const weight = (edgeWeightRows[idx] && edgeWeight && edgeWeight.field) ? parseFloat(edgeWeightRows[idx][edgeWeight.field]) : 1;
+        if (source !== undefined && source !== null && source !== '' &&
+            target !== undefined && target !== null && target !== '') {
+            const edge = { source: String(source), target: String(target) };
+            if (!isNaN(weight)) edge.weight = weight;
+            edges.push(edge);
+        }
+    });
+
+    // 打包
+    const graphPack = {
+        nodes: nodes,
+        edges: edges
+    };
+
+    return {
+        xData: [],
+        yDataArr: [],
+        mergeType: 'graph',
+        seriesData: graphPack,
+    };
 }
 
 /**

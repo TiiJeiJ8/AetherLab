@@ -49,10 +49,10 @@
                             <span class="stat-label">Total Size:</span>
                             <span class="stat-value">{{ stats.totalSize }}</span>
                         </div>
-                        <div class="stat-item" v-if="stats.notUploadedCount > 0">
+                        <!-- <div class="stat-item" v-if="stats.notUploadedCount > 0">
                             <span class="stat-label">Not Uploaded:</span>
                             <span class="stat-value">{{ stats.notUploadedCount }}</span>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- 文件列表 -->

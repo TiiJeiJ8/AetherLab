@@ -120,10 +120,7 @@
             "#339ca8",
             "#cda819",
             "#32a487"
-        ],
-        "label": {
-            "color": "#eeeeee"
-        }
+        ]
     },
     "map": {
         "itemStyle": {

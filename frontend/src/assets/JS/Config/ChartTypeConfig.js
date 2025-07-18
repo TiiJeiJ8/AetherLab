@@ -146,19 +146,19 @@ export const chartTypeConfig = {
     Graph: {
         mapping: [
             // 节点ID
-            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: true },
+            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: true, description: 'Unique identifier for each node' },
             // 节点名称
-            { key: 'nodeName', label: 'Node Name', type: 'tag', required: false },
+            { key: 'nodeName', label: 'Node Name', type: 'tag', required: false, description: 'Optional name for each node, used for display' },
             // 节点数值
-            { key: 'nodeValue', label: 'Node Value', type: 'measure', required: false },
+            { key: 'nodeValue', label: 'Node Value', type: 'measure', required: false, description: 'Optional value for each node, used for size or color' },
             // 节点分组
-            { key: 'nodeCategory', label: 'Node Category', type: 'dimension', required: false },
+            { key: 'nodeCategory', label: 'Node Category', type: 'dimension', required: false, description: 'Optional category for each node, used for grouping' },
             // 边起点
-            { key: 'edgeSource', label: 'Edge Source', type: 'dimension', required: true },
+            { key: 'edgeSource', label: 'Edge Source', type: 'dimension', required: true, description: 'Source node ID for the edge' },
             // 边终点
-            { key: 'edgeTarget', label: 'Edge Target', type: 'dimension', required: true },
+            { key: 'edgeTarget', label: 'Edge Target', type: 'dimension', required: true, description: 'Target node ID for the edge' },
             // 边权重
-            { key: 'edgeWeight', label: 'Edge Weight', type: 'measure', required: false },
+            { key: 'edgeWeight', label: 'Edge Weight', type: 'measure', required: false, description: 'Weight of the edge, used for size or color' },
         ],
         basic: [
         ],
