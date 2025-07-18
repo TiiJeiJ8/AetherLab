@@ -2,12 +2,6 @@
 
 // 热力图生成器
 export default function heatmapOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
-    console.log('[heatmapOption] config:', config);
-    console.log('[heatmapOption] fileDataMap:', fileDataMap);
-    console.log('[heatmapOption] xData:', xData);
-    console.log('[heatmapOption] yData:', yDataArr);
-    console.log('[heatmapOption] seriesData:', seriesData);
-
     // 动态调整 visualMap
     let visualMapOption = {};
     switch (config.legendPosition) {

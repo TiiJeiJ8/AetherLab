@@ -11,6 +11,9 @@ import pieOption from '../../JS/chartOptions/pie'
 import candlestickOption from '../chartOptions/candlestick'
 import heatmapOption from '../chartOptions/heatmap'
 import radarOption from '../chartOptions/radar'
+import boxplotOption from '../chartOptions/boxplot'
+import graphOption from '../chartOptions/graph'
+import treeOption from '../chartOptions/tree'
 // ...可继续导入更多类型
 
 // 图表类型注册表
@@ -29,6 +32,9 @@ registerChartOptionGenerator('Scatter', scatterOption)
 registerChartOptionGenerator('Candlestick', candlestickOption)
 registerChartOptionGenerator('heatmap', heatmapOption)
 registerChartOptionGenerator('Radar', radarOption)
+registerChartOptionGenerator('Boxplot', boxplotOption)
+registerChartOptionGenerator('Graph', graphOption)
+registerChartOptionGenerator('Tree', treeOption)
 // ...可继续注册更多类型
 
 

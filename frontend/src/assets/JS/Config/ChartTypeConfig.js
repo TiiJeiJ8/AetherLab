@@ -107,8 +107,10 @@ export const chartTypeConfig = {
         mapping: [
             // 类目
             { key: 'category', label: 'Category', type: 'dimension', required: true },
+            // 系列
+            { key: 'series', label: 'Series', type: 'tag', required: false, description: 'Optional series name for the boxplot' },
             // 值列(自动计算Min、Q1、Q2、Q3、Max)
-            { key: 'value', label: 'Value', type: 'measure', required: false, multiple: true, description: 'This field will be automatically used to calculate the boxplot statistics' },
+            { key: 'value', label: 'Value', type: 'measure', required: false, multiple: false, description: 'This field will be automatically used to calculate the boxplot statistics' },
             // 最小值、Q1、Q2（中位数）、Q3、最大值
             { key: 'min', label: 'Min', type: 'measure', required: false },
             { key: 'q1', label: 'Q1', type: 'measure', required: false },

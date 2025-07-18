@@ -63,8 +63,9 @@
     },
     "boxplot": {
         "itemStyle": {
-            "borderWidth": 0,
-            "borderColor": "#ccc"
+            "color": "none",
+            "borderWidth": 1.3,
+            "borderColor": "auto"
         }
     },
     "parallel": {

@@ -26,6 +26,7 @@ export default function lineOption(config, fileDataMap, xData, yDataArr, selecte
         toolbox: {
             show: true,
             feature: {
+                dataZoom: { show: true },
                 dataView: { show: true, readOnly: false },
                 magicType: { show: true, type: ['line', 'bar'] },
                 restore: { show: true },

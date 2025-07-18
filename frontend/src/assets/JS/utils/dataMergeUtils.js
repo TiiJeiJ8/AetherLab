@@ -161,6 +161,7 @@ export function defaultFilterPlugin(rows, filters) {
     });
 }
 
+import BoxplotChartIcon from '../../../components/svg/BoxplotChartIcon.vue';
 /**
  * 合并多文件数据，返回 { xData, yDataArr, mergeType, seriesData }
  * @param {Object} config - chartConfig
@@ -190,51 +191,49 @@ function xyChartHandler(config, fileDataMap, options) {
     const { nullHandlingType = 'ignore', nullHandlingModule = nullHandling, filterPlugin = defaultFilterPlugin } = options;
     const { xAxis, yAxis } = config;
     let mainData = getDataRows(fileDataMap, xAxis.file);
+    const { isAggregate = true, aggregateFn } = options;
     // 应用过滤
     if (config.filter && config.filter.filters && config.filter.filters.length) {
         mainData = filterPlugin(mainData, config.filter);
     }
-    const xData = mainData.map(row => row[xAxis.field]);
+    // 只过滤空行，不去重
+    mainData = mainData.filter(row => {
+        const key = row[xAxis.field];
+        return key !== undefined && key !== null && key !== '';
+    });
     const yArr = Array.isArray(yAxis) ? yAxis : [yAxis];
-    const usePrimaryKey = hasPrimaryKey(xAxis, yAxis, fileDataMap);
-    let yDataArr = [];
-    if (usePrimaryKey) {
-        // 主键合并
-        const mainIndexMap = new Map();
+    if (isAggregate) {
+        // 按 name 分组聚合，可自定义聚合方式
+        const groupMap = new Map(); // key: name, value: [ [y1, y2, ...], [y1, y2, ...], ... ]
         for (const row of mainData) {
-            mainIndexMap.set(row[xAxis.field], row);
-        }
-        yDataArr = yArr.map(y => {
-            const yFileData = getDataRows(fileDataMap, y.file);
-            const yMap = new Map();
-            for (const row of yFileData) {
-                yMap.set(row[xAxis.field], row);
+            const key = row[xAxis.field];
+            if (!groupMap.has(key)) {
+                groupMap.set(key, yArr.map(() => []));
             }
-            let arr = mainData.map(row => {
-                const match = yMap.get(row[xAxis.field]);
-                if (!match) return null;
-                const rawVal = match[y.field];
-                const parsedVal = parseFloat(rawVal);
-                return (rawVal === null || rawVal === undefined || rawVal === '' || Number.isNaN(parsedVal)) ? null : parsedVal;
-            });
-            arr = handleNulls(nullHandlingType, arr, nullHandlingModule);
-            return arr;
-        });
-    } else {
-        yDataArr = yArr.map(y => {
-            const yFileData = getDataRows(fileDataMap, y.file);
-            let arr = yFileData.filter((row, idx) => mainData[idx]).map(row => {
+            yArr.forEach((y, idx) => {
                 const rawVal = row[y.field];
                 const parsedVal = parseFloat(rawVal);
-                return (rawVal === null || rawVal === undefined || rawVal === '' || Number.isNaN(parsedVal)) ? null : parsedVal;
+                if (rawVal !== null && rawVal !== undefined && rawVal !== '' && !Number.isNaN(parsedVal)) {
+                    groupMap.get(key)[idx].push(parsedVal);
+                }
             });
-            if (arr.length > xData.length) arr = arr.slice(0, xData.length);
-            while (arr.length < xData.length) arr.push(null);
-            arr = handleNulls(nullHandlingType, arr, nullHandlingModule);
-            return arr;
-        });
+        }
+        const xData = Array.from(groupMap.keys());
+        // 默认聚合函数为累加
+        const defaultAggregate = arr => arr.reduce((a, b) => a + b, 0);
+        const aggFn = typeof aggregateFn === 'function' ? aggregateFn : defaultAggregate;
+        const yDataArr = yArr.map((y, idx) => xData.map(name => aggFn(groupMap.get(name)[idx])));
+        return { xData, yDataArr, mergeType: 'groupByName', seriesData: [] };
+    } else {
+        // 返回原始未聚合数据
+        const xData = mainData.map(row => row[xAxis.field]);
+        const yDataArr = yArr.map(y => mainData.map(row => {
+            const rawVal = row[y.field];
+            const parsedVal = parseFloat(rawVal);
+            return (rawVal === null || rawVal === undefined || rawVal === '' || Number.isNaN(parsedVal)) ? null : parsedVal;
+        }));
+        return { xData, yDataArr, mergeType: 'raw', seriesData: [] };
     }
-    return { xData, yDataArr, mergeType: usePrimaryKey ? 'primaryKey' : 'rowIndex', seriesData: [] };
 }
 
 /**
@@ -355,7 +354,6 @@ function heatmapChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function radarChartHandler(config, fileDataMap, options) {
-    debugInput(config, fileDataMap, options);
     const { indicator, value, name } = config;
 
     // 维度配置
@@ -387,6 +385,170 @@ function radarChartHandler(config, fileDataMap, options) {
     return { xData: [], yData: [], mergeType: 'radar', seriesData: RadarPack };
 }
 
+/**
+ * 箱线图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function boxplotChartHandler(config, fileDataMap, options) {
+    // 解析配置
+    const { category, series, value, min, q1, median, q3, max } = config;
+    // 获取数据行
+    const catRows = getDataRows(fileDataMap, category.file);
+    const seriesRows = series ? getDataRows(fileDataMap, series.file) : null;
+    // 收集所有分组和系列
+    const xData = Array.from(new Set(catRows.map(row => row[category.field])));
+    let seriesList = seriesRows ? Array.from(new Set(seriesRows.map(row => row[series.field]))) : null;
+    if (!seriesList || seriesList.length === 0) seriesList = ['default'];
+
+    let useValue = !!value;
+    let valArrs = [];
+    if (useValue) {
+        if (Array.isArray(value)) {
+            valArrs = value.map(v => getDataRows(fileDataMap, v.file).map(row => parseFloat(row[v.field])));
+        } else {
+            valArrs = [getDataRows(fileDataMap, value.file).map(row => parseFloat(row[value.field]))];
+        }
+    }
+
+    // 构建分组：series -> category -> [values]
+    const groupMap = new Map(); // key: series, value: Map(category, [values])
+    catRows.forEach((row, idx) => {
+        const cat = row[category.field];
+        const ser = (seriesRows && seriesRows[idx] && series.field) ? seriesRows[idx][series.field] : 'default';
+        if (!groupMap.has(ser)) groupMap.set(ser, new Map());
+        const catMap = groupMap.get(ser);
+        if (!catMap.has(cat)) catMap.set(cat, []);
+        if (useValue) {
+            valArrs.forEach(arr => {
+                if (arr[idx] !== undefined && !Number.isNaN(arr[idx])) {
+                    catMap.get(cat).push(arr[idx]);
+                }
+            });
+        }
+    });
+
+    // 计算统计量
+    function calcBoxStats(arr) {
+        if (!arr || arr.length === 0) return [null, null, null, null, null];
+        const sorted = arr.slice().sort((a, b) => a - b);
+        const minV = sorted[0];
+        const maxV = sorted[sorted.length - 1];
+        const medianV = quantile(sorted, 0.5);
+        const q1V = quantile(sorted, 0.25);
+        const q3V = quantile(sorted, 0.75);
+        return [minV, q1V, medianV, q3V, maxV];
+    }
+    function quantile(arr, q) {
+        const pos = (arr.length - 1) * q;
+        const base = Math.floor(pos);
+        const rest = pos - base;
+        if (arr[base + 1] !== undefined) {
+            return arr[base] + rest * (arr[base + 1] - arr[base]);
+        } else {
+            return arr[base];
+        }
+    }
+
+    // 计算异常值（outlier）
+    function calcOutliers(arr, stats) {
+        if (!arr || arr.length === 0) return [];
+        const [min, q1, median, q3, max] = stats;
+        // 1.5倍四分位距法
+        const IQR = q3 - q1;
+        const lower = q1 - 1.5 * IQR;
+        const upper = q3 + 1.5 * IQR;
+        return arr.filter(v => v < lower || v > upper);
+    }
+
+    // 组装 seriesData: 每个系列一个数组，数组顺序与 xData一致
+    let seriesData, outlierData;
+    if (useValue) {
+        // 自动计算五数和异常值
+        seriesData = seriesList.map(ser => {
+            const catMap = groupMap.get(ser) || new Map();
+            return xData.map(cat => calcBoxStats(catMap.get(cat) || []));
+        });
+        // 计算异常值
+        outlierData = seriesList.map(ser => {
+            const catMap = groupMap.get(ser) || new Map();
+            return xData.flatMap((cat, catIdx) => {
+                const arr = catMap.get(cat) || [];
+                const stats = seriesData[seriesList.indexOf(ser)][catIdx];
+                const outliers = calcOutliers(arr, stats);
+                // 返回 [x轴索引, 异常值]，ECharts scatter 需要这种格式
+                return outliers.map(v => [catIdx, v]);
+            });
+        });
+    } else {
+        // 直接读取五数
+        const minRows = min ? getDataRows(fileDataMap, min.file) : null;
+        const q1Rows = q1 ? getDataRows(fileDataMap, q1.file) : null;
+        const medianRows = median ? getDataRows(fileDataMap, median.file) : null;
+        const q3Rows = q3 ? getDataRows(fileDataMap, q3.file) : null;
+        const maxRows = max ? getDataRows(fileDataMap, max.file) : null;
+        seriesData = seriesList.map(ser => {
+            return xData.map((cat, idx) => {
+                let rowIdx = -1;
+                for (let i = 0; i < catRows.length; i++) {
+                    const catVal = catRows[i][category.field];
+                    const serVal = seriesRows ? seriesRows[i][series.field] : 'default';
+                    if (catVal === cat && serVal === ser) {
+                        rowIdx = i;
+                        break;
+                    }
+                }
+                if (rowIdx === -1) return [null, null, null, null, null];
+                return [
+                    minRows ? parseFloat(minRows[rowIdx][min.field]) : null,
+                    q1Rows ? parseFloat(q1Rows[rowIdx][q1.field]) : null,
+                    medianRows ? parseFloat(medianRows[rowIdx][median.field]) : null,
+                    q3Rows ? parseFloat(q3Rows[rowIdx][q3.field]) : null,
+                    maxRows ? parseFloat(maxRows[rowIdx][max.field]) : null
+                ];
+            });
+        });
+        // 无法自动计算异常值
+        outlierData = seriesList.map(() => []);
+    }
+
+    const boxplotPack = {
+        seriesList: seriesList,
+        seriesData_boxplot: seriesData,
+        outlierData: outlierData
+    }
+
+    return {
+        xData,
+        yDataArr: [],
+        mergeType: 'boxplot',
+        seriesData: boxplotPack
+    };
+}
+
+/** 
+ * 关系图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function graphChartHandler(config, fileDataMap, options) {
+    debugInput(config, fileDataMap, options);
+}
+
+/**
+ * 树图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function treeChartHandler(config, fileDataMap, options) {
+}
+
 // ---------------- 图表类型分发器 ----------------
 
 const chartTypeHandlers = {
@@ -397,6 +559,9 @@ const chartTypeHandlers = {
     Candlestick: candlestickChartHandler,
     Heatmap: heatmapChartHandler,
     Radar: radarChartHandler,
+    Boxplot: boxplotChartHandler,
+    Graph: graphChartHandler,
+    Tree: treeChartHandler,
     // 其他类型可继续扩展
 };
 
