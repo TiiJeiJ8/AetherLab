@@ -107,7 +107,7 @@
             "color": "#cccccc"
         },
         "symbolSize": "8",
-        "symbol": "emptyCircle",
+        "symbol": "circle",
         "smooth": false,
         "color": [
             "#4ea397",

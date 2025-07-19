@@ -607,6 +607,62 @@ function graphChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function treeChartHandler(config, fileDataMap, options) {
+    const { nodeID, nodeName, parentID, parentName, nodeValue, path } = config;
+    // 合理判定：有 nodeID 和 parentID 字段
+    const isValid = nodeID && nodeID.file && nodeID.field && parentID && parentID.file && parentID.field;
+
+    // 平铺模式处理
+    if (isValid) {
+        const nodeIDRows = getDataRows(fileDataMap, nodeID.file);
+        const nodeNameRows = nodeName && nodeName.file ? getDataRows(fileDataMap, nodeName.file) : [];
+        const parentIDRows = getDataRows(fileDataMap, parentID.file);
+        const parentNameRows = parentName && parentName.file ? getDataRows(fileDataMap, parentName.file) : [];
+        const nodeValueRows = nodeValue && nodeValue.file ? getDataRows(fileDataMap, nodeValue.file) : [];
+
+        // 构建节点映射
+        const nodeMap = new Map();
+        nodeIDRows.forEach((row, idx) => {
+            const id = row[nodeID.field];
+            if (!id) return;
+            const name = nodeNameRows[idx] && nodeName && nodeName.field ? nodeNameRows[idx][nodeName.field] : id;
+            const value = nodeValueRows[idx] && nodeValue && nodeValue.field ? parseFloat(nodeValueRows[idx][nodeValue.field]) : undefined;
+            nodeMap.set(id, {
+                id,
+                name,
+                value,
+                children: []
+            });
+        });
+
+        // 构建树结构
+        let rootNodes = [];
+        nodeIDRows.forEach((row, idx) => {
+            const id = row[nodeID.field];
+            const parentId = parentIDRows[idx] ? parentIDRows[idx][parentID.field] : undefined;
+            if (!parentId || !nodeMap.has(parentId)) {
+                // 没有父节点，认为是根节点
+                rootNodes.push(nodeMap.get(id));
+            } else {
+                nodeMap.get(parentId).children.push(nodeMap.get(id));
+            }
+        });
+
+        // 只返回根节点数组
+        return {
+            xData: [],
+            yDataArr: [],
+            mergeType: 'tree',
+            seriesData: rootNodes
+        };
+    }
+
+    // 兜底
+    return {
+        xData: [],
+        yDataArr: [],
+        mergeType: 'tree',
+        seriesData: []
+    };
 }
 
 // ---------------- 图表类型分发器 ----------------

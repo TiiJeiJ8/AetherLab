@@ -179,9 +179,6 @@ export const chartTypeConfig = {
             { key: 'parentName', label: 'Parent Name', type: 'tag', required: false },
             // 节点数值
             { key: 'nodeValue', label: 'Node Value', type: 'measure', required: false },
-
-            // 路径模式
-            { key: 'path', label: 'Path', type: 'dimension', required: false, multiple: true, description: 'If your data format is path based, you can use this mapping item to render the chart\n(What is path based? -> Data with relationship hierarchy in one row, eg."A/B/C")' },
         ],
         basic: [
         ],

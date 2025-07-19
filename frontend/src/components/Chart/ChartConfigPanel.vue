@@ -286,6 +286,7 @@ const isConfigValid = computed(() => {
             cfg.edgeTarget && cfg.edgeTarget.field;
     }
     if (['tree'].includes(type)) {
+        return ( cfg.nodeID && cfg.nodeID.field && cfg.parentID && cfg.parentID.field )
     }
 });
 

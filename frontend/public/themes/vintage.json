@@ -111,7 +111,7 @@
             "color": "#aaaaaa"
         },
         "symbolSize": 4,
-        "symbol": "emptyCircle",
+        "symbol": "circle",
         "smooth": false,
         "color": [
             "#d87c7c",
