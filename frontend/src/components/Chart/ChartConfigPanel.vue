@@ -288,6 +288,9 @@ const isConfigValid = computed(() => {
     if (['tree'].includes(type)) {
         return ( cfg.nodeID && cfg.nodeID.field && cfg.parentID && cfg.parentID.field )
     }
+    if (['treemap', 'sunburst'].includes(type)) {
+        return;
+    }
 });
 
 // 监听 chartConfig 变化，自动渲染

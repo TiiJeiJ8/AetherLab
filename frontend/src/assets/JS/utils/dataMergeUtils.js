@@ -665,6 +665,26 @@ function treeChartHandler(config, fileDataMap, options) {
     };
 }
 
+/**
+ * 矩形树图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function treemapChartHandler(config, fileDataMap, options) {
+}
+
+/**
+ * 旭日图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function sunburstChartHandler(config, fileDataMap, options) {
+}
+
 // ---------------- 图表类型分发器 ----------------
 
 const chartTypeHandlers = {
@@ -678,6 +698,8 @@ const chartTypeHandlers = {
     Boxplot: boxplotChartHandler,
     Graph: graphChartHandler,
     Tree: treeChartHandler,
+    Treemap: treemapChartHandler,
+    Sunburst: sunburstChartHandler,
     // 其他类型可继续扩展
 };
 

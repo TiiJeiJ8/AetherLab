@@ -14,6 +14,8 @@ import radarOption from '../chartOptions/radar'
 import boxplotOption from '../chartOptions/boxplot'
 import graphOption from '../chartOptions/graph'
 import treeOption from '../chartOptions/tree'
+import treemapOption from '../chartOptions/treemap'
+import sunburstOption from '../chartOptions/sunburst'
 // ...可继续导入更多类型
 
 // 图表类型注册表
@@ -35,6 +37,8 @@ registerChartOptionGenerator('Radar', radarOption)
 registerChartOptionGenerator('Boxplot', boxplotOption)
 registerChartOptionGenerator('Graph', graphOption)
 registerChartOptionGenerator('Tree', treeOption)
+registerChartOptionGenerator('Treemap', treemapOption)
+registerChartOptionGenerator('Sunburst', sunburstOption)
 // ...可继续注册更多类型
 
 
