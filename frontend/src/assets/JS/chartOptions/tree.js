@@ -16,9 +16,20 @@
 
 // 树状图生成器
 export default function treeOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
-    console.log('[TreeOption Gen] seriesData: ', seriesData);
-
     return {
+        title: {
+            text: config.title || 'Chart of Tree',
+            subtext: config.subtext || '',
+            left: 'center',
+            top: 'top',
+            textStyle: {
+                fontSize: 16,
+                fontWeight: 'bold',
+            },
+            subtextStyle: {
+                fontSize: 12,
+            },
+        },
         toolbox: {
             show: true,
             feature: {

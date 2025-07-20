@@ -41,7 +41,6 @@ registerChartOptionGenerator('Treemap', treemapOption)
 registerChartOptionGenerator('Sunburst', sunburstOption)
 // ...可继续注册更多类型
 
-
 // 主入口：根据类型分发
 export function generateEChartOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
     //! 控制台显示传入的所有字段

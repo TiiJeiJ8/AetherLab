@@ -289,7 +289,8 @@ const isConfigValid = computed(() => {
         return ( cfg.nodeID && cfg.nodeID.field && cfg.parentID && cfg.parentID.field )
     }
     if (['treemap', 'sunburst'].includes(type)) {
-        return;
+        return ( cfg.nodeID && cfg.nodeID.field &&
+            cfg.parentID && cfg.parentID.field )
     }
 });
 

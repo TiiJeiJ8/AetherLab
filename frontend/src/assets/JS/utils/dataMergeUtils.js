@@ -188,6 +188,7 @@ function debugInput(config, fileDataMap, options) {
  * @returns {Object}
  */
 function xyChartHandler(config, fileDataMap, options) {
+    // debugInput(config, fileDataMap, options)
     const { nullHandlingType = 'ignore', nullHandlingModule = nullHandling, filterPlugin = defaultFilterPlugin } = options;
     const { xAxis, yAxis } = config;
     let mainData = getDataRows(fileDataMap, xAxis.file);
@@ -244,6 +245,7 @@ function xyChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function pieChartHandler(config, fileDataMap, options) {
+    // debugInput(config, fileDataMap, options)
     const { filterPlugin = defaultFilterPlugin } = options;
     let catData = getDataRows(fileDataMap, config.category.file);
     let valData = getDataRows(fileDataMap, config.value.file);
@@ -274,6 +276,7 @@ function pieChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function candlestickChartHandler(config, fileDataMap, options) {
+    // debugInput(config, fileDataMap, options)
     const { nullHandlingType = 'ignore', nullHandlingModule = nullHandling, filterPlugin = defaultFilterPlugin } = options;
     const { time, open, close, high, low, filter } = config;
     // 提取主文件数据
@@ -309,6 +312,7 @@ function candlestickChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function heatmapChartHandler(config, fileDataMap, options) {
+    // debugInput(config, fileDataMap, options)
     const { xAxis, yAxis, value } = config;
     // 获取所有数据行
     const xRows = getDataRows(fileDataMap, xAxis.file);
@@ -354,6 +358,7 @@ function heatmapChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function radarChartHandler(config, fileDataMap, options) {
+    // debugInput(config, fileDataMap, options)
     const { indicator, value, name } = config;
 
     // 维度配置
@@ -393,6 +398,7 @@ function radarChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function boxplotChartHandler(config, fileDataMap, options) {
+    // debugInput(config, fileDataMap, options)
     // 解析配置
     const { category, series, value, min, q1, median, q3, max } = config;
     // 获取数据行
@@ -536,7 +542,7 @@ function boxplotChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function graphChartHandler(config, fileDataMap, options) {
-    debugInput(config, fileDataMap, options);
+    // debugInput(config, fileDataMap, options);
     const { nodeID, nodeName, nodeValue, nodeCategory, edgeSource, edgeTarget, edgeWeight } = config;
 
     // 必填字段校验
@@ -607,6 +613,7 @@ function graphChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function treeChartHandler(config, fileDataMap, options) {
+    // debugInput(config, fileDataMap, options)
     const { nodeID, nodeName, parentID, parentName, nodeValue, path } = config;
     // 合理判定：有 nodeID 和 parentID 字段
     const isValid = nodeID && nodeID.file && nodeID.field && parentID && parentID.file && parentID.field;
@@ -673,6 +680,135 @@ function treeChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function treemapChartHandler(config, fileDataMap, options) {
+    // debugInput(config, fileDataMap, options)
+    const { nodeID, nodeName, parentID, parentName, nodeValue } = config;
+    // 判定数据是否有效
+    const isValid = nodeID && nodeID.file && nodeID.field && parentID && parentID.file && parentID.field;
+
+    if (isValid) {
+        const nodeIDRows = getDataRows(fileDataMap, nodeID.file);
+        const nodeNameRows = nodeName && nodeName.file ? getDataRows(fileDataMap, nodeName.file) : [];
+        const parentIDRows = getDataRows(fileDataMap, parentID.file);
+        const parentNameRows = parentName && parentName.file ? getDataRows(fileDataMap, parentName.file) : [];
+        const nodeValueRows = nodeValue && nodeValue.file ? getDataRows(fileDataMap, nodeValue.file) : [];
+
+        // 构建节点映射
+        const nodeMap = new Map();
+        // 先收集所有 parentId，便于后续层级计算
+        const parentIdSet = new Set();
+        parentIDRows.forEach(row => {
+            if (row && parentID && parentID.field) {
+                const pid = row[parentID.field];
+                if (pid) parentIdSet.add(pid);
+            }
+        });
+
+        // 计算每个节点的层级（根节点为1，子节点依次+1）
+        function getLevel(id, cache = {}) {
+            if (cache[id]) return cache[id];
+            let level = 1;
+            let currentId = id;
+            let idx = nodeIDRows.findIndex(row => row[nodeID.field] === currentId);
+            while (idx !== -1) {
+                const parentId = parentIDRows[idx] ? parentIDRows[idx][parentID.field] : undefined;
+                if (!parentId || !nodeMap.has(parentId)) break;
+                level++;
+                currentId = parentId;
+                idx = nodeIDRows.findIndex(row => row[nodeID.field] === currentId);
+            }
+            cache[id] = level;
+            return level;
+        }
+
+        // 统计最大层级
+        let maxLevel = 1;
+        nodeIDRows.forEach((row, idx) => {
+            const id = row[nodeID.field];
+            const level = getLevel(id);
+            if (level > maxLevel) maxLevel = level;
+        });
+
+        // 构建节点，value 按层级递减（根节点最大，叶子最小）
+        nodeIDRows.forEach((row, idx) => {
+            const id = row[nodeID.field];
+            if (!id) return;
+            const name = nodeNameRows[idx] && nodeName && nodeName.field ? nodeNameRows[idx][nodeName.field] : id;
+            let value = nodeValueRows[idx] && nodeValue && nodeValue.field ? parseFloat(nodeValueRows[idx][nodeValue.field]) : undefined;
+            // 层级递减赋值，根节点 value = maxLevel，下一层 maxLevel-1，依次类推
+            if (value === undefined || value === null || isNaN(value)) {
+                const level = getLevel(id);
+                value = Math.max(1, maxLevel - level + 1);
+            }
+            nodeMap.set(id, {
+                id,
+                name,
+                value,
+                children: []
+            });
+        });
+
+        // 构建树结构
+        let rootNodes = [];
+        nodeIDRows.forEach((row, idx) => {
+            const id = row[nodeID.field];
+            const parentId = parentIDRows[idx] ? parentIDRows[idx][parentID.field] : undefined;
+            if (!parentId || !nodeMap.has(parentId)) {
+                // 没有父节点，认为是根节点
+                rootNodes.push(nodeMap.get(id));
+            } else {
+                nodeMap.get(parentId).children.push(nodeMap.get(id));
+            }
+        });
+
+        // 递归获取最大层级
+        function getMaxDepth(nodes, depth) {
+            if (!nodes || nodes.length === 0) return depth;
+            let max = depth;
+            for (let i = 0; i < nodes.length; i++) {
+                max = Math.max(max, getMaxDepth(nodes[i].children, depth + 1));
+            }
+            return max;
+        }
+        const maxDepth = getMaxDepth(rootNodes, 1);
+
+        // 递归分配 value：有原始 value 则保留，无则自动分配
+        function assignValue(nodes) {
+            if (!nodes) return 0;
+            for (let i = 0; i < nodes.length; i++) {
+                if (!nodes[i].children || nodes[i].children.length === 0) {
+                    if (nodes[i].value === undefined || nodes[i].value === null || isNaN(nodes[i].value)) {
+                        nodes[i].value = 1;
+                    }
+                } else {
+                    if (nodes[i].value === undefined || nodes[i].value === null || isNaN(nodes[i].value)) {
+                        nodes[i].value = assignValue(nodes[i].children);
+                    } else {
+                        // 有 value 时，仍需递归处理子节点
+                        assignValue(nodes[i].children);
+                    }
+                }
+            }
+            // 返回所有节点 value 之和
+            return nodes.reduce((sum, node) => sum + (node.value || 0), 0);
+        }
+        assignValue(rootNodes);
+
+        // Treemap 要求每个节点有 value, 非叶子节点 value 可为 undefined
+        return {
+            xData: [],
+            yDataArr: [],
+            mergeType: 'treemap',
+            seriesData: rootNodes
+        };
+    }
+
+    // 兜底
+    return {
+        xData: [],
+        yDataArr: [],
+        mergeType: 'treemap',
+        seriesData: []
+    };
 }
 
 /**
@@ -683,6 +819,135 @@ function treemapChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function sunburstChartHandler(config, fileDataMap, options) {
+    // debugInput(config, fileDataMap, options)
+    const { nodeID, nodeName, parentID, parentName, nodeValue } = config;
+    // 判定数据是否有效
+    const isValid = nodeID && nodeID.file && nodeID.field && parentID && parentID.file && parentID.field;
+
+    if (isValid) {
+        const nodeIDRows = getDataRows(fileDataMap, nodeID.file);
+        const nodeNameRows = nodeName && nodeName.file ? getDataRows(fileDataMap, nodeName.file) : [];
+        const parentIDRows = getDataRows(fileDataMap, parentID.file);
+        const parentNameRows = parentName && parentName.file ? getDataRows(fileDataMap, parentName.file) : [];
+        const nodeValueRows = nodeValue && nodeValue.file ? getDataRows(fileDataMap, nodeValue.file) : [];
+
+        // 构建节点映射
+        const nodeMap = new Map();
+        // 先收集所有 parentId，便于后续层级计算
+        const parentIdSet = new Set();
+        parentIDRows.forEach(row => {
+            if (row && parentID && parentID.field) {
+                const pid = row[parentID.field];
+                if (pid) parentIdSet.add(pid);
+            }
+        });
+
+        // 计算每个节点的层级（根节点为1，子节点依次+1）
+        function getLevel(id, cache = {}) {
+            if (cache[id]) return cache[id];
+            let level = 1;
+            let currentId = id;
+            let idx = nodeIDRows.findIndex(row => row[nodeID.field] === currentId);
+            while (idx !== -1) {
+                const parentId = parentIDRows[idx] ? parentIDRows[idx][parentID.field] : undefined;
+                if (!parentId || !nodeMap.has(parentId)) break;
+                level++;
+                currentId = parentId;
+                idx = nodeIDRows.findIndex(row => row[nodeID.field] === currentId);
+            }
+            cache[id] = level;
+            return level;
+        }
+
+        // 统计最大层级
+        let maxLevel = 1;
+        nodeIDRows.forEach((row, idx) => {
+            const id = row[nodeID.field];
+            const level = getLevel(id);
+            if (level > maxLevel) maxLevel = level;
+        });
+
+        // 构建节点，value 按层级递减（根节点最大，叶子最小）
+        nodeIDRows.forEach((row, idx) => {
+            const id = row[nodeID.field];
+            if (!id) return;
+            const name = nodeNameRows[idx] && nodeName && nodeName.field ? nodeNameRows[idx][nodeName.field] : id;
+            let value = nodeValueRows[idx] && nodeValue && nodeValue.field ? parseFloat(nodeValueRows[idx][nodeValue.field]) : undefined;
+            // 层级递减赋值，根节点 value = maxLevel，下一层 maxLevel-1，依次类推
+            if (value === undefined || value === null || isNaN(value)) {
+                const level = getLevel(id);
+                value = Math.max(1, maxLevel - level + 1);
+            }
+            nodeMap.set(id, {
+                id,
+                name,
+                value,
+                children: []
+            });
+        });
+
+        // 构建树结构
+        let rootNodes = [];
+        nodeIDRows.forEach((row, idx) => {
+            const id = row[nodeID.field];
+            const parentId = parentIDRows[idx] ? parentIDRows[idx][parentID.field] : undefined;
+            if (!parentId || !nodeMap.has(parentId)) {
+                // 没有父节点，认为是根节点
+                rootNodes.push(nodeMap.get(id));
+            } else {
+                nodeMap.get(parentId).children.push(nodeMap.get(id));
+            }
+        });
+
+        // 递归获取最大层级
+        function getMaxDepth(nodes, depth) {
+            if (!nodes || nodes.length === 0) return depth;
+            let max = depth;
+            for (let i = 0; i < nodes.length; i++) {
+                max = Math.max(max, getMaxDepth(nodes[i].children, depth + 1));
+            }
+            return max;
+        }
+        const maxDepth = getMaxDepth(rootNodes, 1);
+
+        // 递归分配 value：有原始 value 则保留，无则自动分配
+        function assignValue(nodes) {
+            if (!nodes) return 0;
+            for (let i = 0; i < nodes.length; i++) {
+                if (!nodes[i].children || nodes[i].children.length === 0) {
+                    if (nodes[i].value === undefined || nodes[i].value === null || isNaN(nodes[i].value)) {
+                        nodes[i].value = 1;
+                    }
+                } else {
+                    if (nodes[i].value === undefined || nodes[i].value === null || isNaN(nodes[i].value)) {
+                        nodes[i].value = assignValue(nodes[i].children);
+                    } else {
+                        // 有 value 时，仍需递归处理子节点
+                        assignValue(nodes[i].children);
+                    }
+                }
+            }
+            // 返回所有节点 value 之和
+            return nodes.reduce((sum, node) => sum + (node.value || 0), 0);
+        }
+        assignValue(rootNodes);
+
+        // Sunburst 要求每个节点有 value, 非叶子节点 value 可为 undefined
+        return {
+            xData: [],
+            yDataArr: [],
+            mergeType: 'sunburst',
+            seriesData: rootNodes
+        };
+    }
+
+    // 兜底
+    return {
+        xData: [],
+        yDataArr: [],
+        mergeType: 'sunburst',
+        seriesData: []
+    };
 }
 
 // ---------------- 图表类型分发器 ----------------

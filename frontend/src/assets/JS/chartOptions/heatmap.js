@@ -1,7 +1,14 @@
 /* eslint-disable */
 
+import { getVisualMapInRangeColor } from "../utils/themeDispatcher";
+
+// 引入主题视觉编码分发器
+
 // 热力图生成器
 export default function heatmapOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
+    // 获取视觉编码色
+    let visualColors = getVisualMapInRangeColor(config.colorScheme);
+
     // 动态调整 visualMap
     let visualMapOption = {};
     switch (config.legendPosition) {
@@ -44,8 +51,10 @@ export default function heatmapOption(config, fileDataMap, xData, yDataArr, sele
         // ECharts 热力图配置
         title: {
             text: config.title || `Chart of Heatmap`,
+            subtext: config.subtext || '',
             left: 'center',
-            textStyle: { fontSize: 16, fontWeight: 'bold' }
+            textStyle: { fontSize: 16, fontWeight: 'bold' },
+            subtextStyle: { fontSize: 12 }
         },
         tooltip: {
             position: 'top'
@@ -62,6 +71,9 @@ export default function heatmapOption(config, fileDataMap, xData, yDataArr, sele
             min: seriesData.reduce((min, item) => Math.min(min, item[2]), Infinity),
             max: seriesData.reduce((max, item) => Math.max(max, item[2]), -Infinity),
             calculable: true,
+            inRange: {
+                color: visualColors
+            },
             ...visualMapOption
         },
         series: [{

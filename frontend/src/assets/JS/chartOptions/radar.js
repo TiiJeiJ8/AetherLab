@@ -9,8 +9,10 @@ export default function radarOption(config, fileDataMap, xData, yDataArr, select
         // Echarts 雷达图配置
         title: {
             text: config.title || `Chart of Radar`,
+            subtext: config.subtext || '',
             left: 'center',
-            textStyle: { fontSize: 16, fontWeight: 'bold' }
+            textStyle: { fontSize: 16, fontWeight: 'bold' },
+            subtextStyle: { fontSize: 12 }
         },
         legend: {
             type: 'scroll',

@@ -17,8 +17,10 @@ export default function pieOption(config, fileDataMap, xData, yDataArr, selected
     return {
         title: {
             text: title || '',
+            subtext: config.subtext || '',
             left: 'center',
-            textStyle: { fontSize: 16, fontWeight: 'bold' }
+            textStyle: { fontSize: 16, fontWeight: 'bold' },
+            subtextStyle: { fontSize: 12 }
         },
         tooltip: { trigger: 'item' },
         legend: {

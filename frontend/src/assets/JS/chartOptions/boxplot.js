@@ -45,10 +45,14 @@ export default function boxplotOption(config, fileDataMap, xData, yDataArr, sele
     const option = {
         title: {
             text: 'Boxplot Chart',
+            subtext: config.subtext || '',
             left: 'center',
             textStyle: {
                 fontSize: 16,
                 fontWeight: 'bold',
+            },
+            subtextStyle: {
+                fontSize: 12,
             }
         },
         legend: {

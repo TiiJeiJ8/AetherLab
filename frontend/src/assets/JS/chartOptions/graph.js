@@ -50,6 +50,19 @@ export default function graphOption(config, fileDataMap, xData, yDataArr, select
     }
 
     return {
+        title: {
+            text: config.title || 'Chart of Graph',
+            subtext: config.subtext || '',
+            left: 'center',
+            top: 'top',
+            textStyle: {
+                fontSize: 16,
+                fontWeight: 'bold',
+            },
+            subtextStyle: {
+                fontSize: 12,
+            },
+        },
         toolbox: {
             show: true,
             feature: {

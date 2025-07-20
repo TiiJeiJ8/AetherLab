@@ -255,6 +255,7 @@ function handleGenerateChart(config) {
     alert('When no "PRIMARY KEY" is set, data will be aligned by row index and any extra rows will be truncated. It is recommended to set a PRIMARY KEY" for more accurate data merging.');
   }
   // 生成ECharts配置
+  if (chartConfig.colorScheme) config.theme = chartConfig.colorScheme;
   const newChartOption = generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType, seriesData);
   // 恢复主题字段到 chartConfig，防止被 config 覆盖
   if (!config.colorScheme && !config.colorTheme) {
@@ -278,6 +279,7 @@ function handleSaveHistory({ config }) {
     // 重新合并数据并生成option，保证历史区option和当前一致
     const nullHandlingType = config.nullHandling || 'ignore';
     const { xData, yDataArr, mergeType, seriesData } = mergeChartData(config, fileDataMap.value, nullHandlingType);
+    if (currentTheme) config.theme = currentTheme;
     option = generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType, seriesData);
   } catch (e) {
     option = null;

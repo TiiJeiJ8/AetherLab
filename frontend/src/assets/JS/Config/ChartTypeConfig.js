@@ -170,15 +170,15 @@ export const chartTypeConfig = {
         mapping: [
             // 平铺模式
             // 节点ID
-            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: false },
+            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: true },
             // 节点名称
             { key: 'nodeName', label: 'Node Name', type: 'tag', required: false },
             // 父节点ID
-            { key: 'parentID', label: 'Parent ID', type: 'dimension', required: false },
+            { key: 'parentID', label: 'Parent ID', type: 'dimension', required: true },
             // 父节点名称
             { key: 'parentName', label: 'Parent Name', type: 'tag', required: false },
             // 节点数值
-            { key: 'nodeValue', label: 'Node Value', type: 'measure', required: false },
+            { key: 'nodeValue', label: 'Node Value', type: 'measure', required: true },
         ],
         basic: [
         ],
@@ -188,22 +188,16 @@ export const chartTypeConfig = {
     // 矩形树图
     Treemap: {
         mapping: [
-            // 平铺模式
             // 节点ID
-            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: false },
+            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: true },
             // 节点名称
             { key: 'nodeName', label: 'Node Name', type: 'tag', required: false },
             // 父节点ID
-            { key: 'parentID', label: 'Parent ID', type: 'dimension', required: false },
+            { key: 'parentID', label: 'Parent ID', type: 'dimension', required: true },
             // 父节点名称
             { key: 'parentName', label: 'Parent Name', type: 'tag', required: false },
             // 节点数值
-            { key: 'nodeValue', label: 'Node Value', type: 'measure', required: false },
-
-            // 路径模式
-            { key: 'path', label: 'Path', type: 'dimension', required: false, multiple: true, description: 'If your data format is path based, you can use this mapping item to render the chart\n(What is path based? -> Data with relationship hierarchy in one row, eg."A/B/C")' },
-            // 路径节点值
-            { key: 'pathValue', label: 'Node Value(path)', type: 'measure', required: false, multiple: true, description: 'Note that the value column must strictly correspond to the path node above' },
+            { key: 'nodeValue', label: 'Node Value', type: 'measure', required: true },
         ],
         basic: [
         ],
@@ -213,22 +207,16 @@ export const chartTypeConfig = {
     // 旭日图
     Sunburst: {
         mapping: [
-            // 平铺模式
             // 节点ID
-            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: false },
+            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: true },
             // 节点名称
             { key: 'nodeName', label: 'Node Name', type: 'tag', required: false },
             // 父节点ID
-            { key: 'parentID', label: 'Parent ID', type: 'dimension', required: false },
+            { key: 'parentID', label: 'Parent ID', type: 'dimension', required: true },
             // 父节点名称
             { key: 'parentName', label: 'Parent Name', type: 'tag', required: false },
             // 节点数值
             { key: 'nodeValue', label: 'Node Value', type: 'measure', required: false },
-
-            // 路径模式
-            { key: 'path', label: 'Path', type: 'dimension', required: false, multiple: true, description: 'If your data format is path based, you can use this mapping item to render the chart\n(What is path based? -> Data with relationship hierarchy in one row, eg."A/B/C")' },
-            // 路径节点值
-            { key: 'pathValue', label: 'Node Value(path)', type: 'measure', required: false, multiple: true, description: 'Note that the value column must strictly correspond to the path node above' },
         ],
         basic: [
         ],

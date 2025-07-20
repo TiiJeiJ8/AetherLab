@@ -13,8 +13,10 @@ export default function scatterOption(config, fileDataMap, xData, yDataArr, sele
     return {
         title: {
             text: title || `${yArr.map(y => y.field).join(',')} vs ${config.xAxis.field}`,
+            subtext: config.subtext || '',
             left: 'center',
-            textStyle: { fontSize: 16, fontWeight: 'bold' }
+            textStyle: { fontSize: 16, fontWeight: 'bold' },
+            subtextStyle: { fontSize: 12 }
         },
         tooltip: { trigger: 'axis' },
         legend: {

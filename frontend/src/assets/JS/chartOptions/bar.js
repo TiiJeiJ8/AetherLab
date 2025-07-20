@@ -13,8 +13,10 @@ export default function barOption(config, fileDataMap, xData, yDataArr, selected
     return {
         title: {
             text: title || `${yArr.map(y => y.field).join(',')} vs ${config.xAxis.field}`,
+            subtext: config.subtext || '',
             left: 'center',
-            textStyle: { fontSize: 16, fontWeight: 'bold' }
+            textStyle: { fontSize: 16, fontWeight: 'bold' },
+            subtextStyle: { fontSize: 12 }
         },
         tooltip: { trigger: 'axis' },
         legend: {

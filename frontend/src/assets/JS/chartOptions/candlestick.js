@@ -15,8 +15,10 @@ export default function candlestickOption(config, fileDataMap, xData, yDataArr, 
     return {
         title: {
             text: title || `Candlestick Chart`,
+            subtext: config.subtext || '',
             left: 'center',
-            textStyle: { fontSize: 16, fontWeight: 'bold' }
+            textStyle: { fontSize: 16, fontWeight: 'bold' },
+            subtextStyle: { fontSize: 12 }
         },
         tooltip: {
             trigger: 'axis',
