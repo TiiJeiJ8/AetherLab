@@ -292,6 +292,33 @@ const isConfigValid = computed(() => {
         return ( cfg.nodeID && cfg.nodeID.field &&
             cfg.parentID && cfg.parentID.field )
     }
+    if (['parallel'].includes(type)) {
+        return cfg.dimensions && Array.isArray(cfg.dimensions) && cfg.dimensions.length > 0 &&
+            cfg.parallelAxis && Array.isArray(cfg.parallelAxis) && cfg.parallelAxis.length > 0;
+    }
+    if (['sankey'].includes(type)) {
+        return cfg.source && cfg.source.field &&
+            cfg.target && cfg.target.field &&
+            cfg.value && cfg.value.field;
+    }
+    if (['funnel'].includes(type)) {
+        return cfg.stage && cfg.stage.field &&
+            cfg.value && cfg.value.field;
+    }
+    if (['gauge'].includes(type)) {
+        return cfg.value && cfg.value.field;
+    }
+    if (['pictorialbar'].includes(type)) {
+        return cfg.category && cfg.category.field &&
+            cfg.value && cfg.value.field;
+    }
+    if (['themeriver'].includes(type)) {
+        return cfg.time && cfg.time.field &&
+            cfg.value && cfg.value.field;
+    }
+    if (['calendar'].includes(type)) {
+        return cfg.date && cfg.date.field;
+    }
 });
 
 // 监听 chartConfig 变化，自动渲染

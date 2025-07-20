@@ -255,9 +255,9 @@ export const chartTypeConfig = {
     Funnel: {
         mapping: [
             // 阶段名称
-            { key: 'stage', label: 'Stage', type: 'dimension', required: true },
+            { key: 'stage', label: 'Stage', type: 'dimension', required: true, description: 'The name of the stage in the funnel' },
             // 阶段值
-            { key: 'value', label: 'Value', type: 'measure', required: true },
+            { key: 'value', label: 'Value', type: 'measure', required: true, description: 'The value of the stage in the funnel' },
         ],
         basic: [
             { key: 'sort', label: 'Sort', type: 'select', options: [{ label: 'Descending', value: 'desc' }, { label: 'Ascending', value: 'asc' }] },
@@ -314,7 +314,7 @@ export const chartTypeConfig = {
             // 日期字段
             { key: 'date', label: 'Date', type: 'dimension', required: true },
             // 数值字段
-            { key: 'value', label: 'Value', type: 'measure', required: true },
+            { key: 'value', label: 'Value', type: 'measure', required: false },
         ],
         basic: [
         ],

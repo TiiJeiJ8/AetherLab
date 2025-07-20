@@ -950,6 +950,90 @@ function sunburstChartHandler(config, fileDataMap, options) {
     };
 }
 
+/**
+ * 平行坐标系图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function parallelChartHandler(config, fileDataMap, options) {
+    debugInput(config, fileDataMap, options);
+    return {};
+}
+
+/**
+ * 桑基图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function sankeyChartHandler(config, fileDataMap, options) {
+    debugInput(config, fileDataMap, options);
+    return {};
+}
+
+/**
+ * 漏斗图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function funnelChartHandler(config, fileDataMap, options) {
+    debugInput(config, fileDataMap, options);
+    return {};
+}
+
+/**
+ * 仪表盘图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function gaugeChartHandler(config, fileDataMap, options) {
+    debugInput(config, fileDataMap, options);
+    return {};
+}
+
+/**
+ * 象形柱图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function pictorialBarChartHandler(config, fileDataMap, options) {
+    debugInput(config, fileDataMap, options);
+    return {};
+}
+
+/**
+ * 主题河流图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function themeRiverChartHandler(config, fileDataMap, options) {
+    debugInput(config, fileDataMap, options);
+    return {};
+}
+
+/**
+ * 日历图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function calendarChartHandler(config, fileDataMap, options) {
+    debugInput(config, fileDataMap, options);
+    return {};
+}
+
 // ---------------- 图表类型分发器 ----------------
 
 const chartTypeHandlers = {
@@ -965,6 +1049,13 @@ const chartTypeHandlers = {
     Tree: treeChartHandler,
     Treemap: treemapChartHandler,
     Sunburst: sunburstChartHandler,
+    Parallel: parallelChartHandler,
+    Sankey: sankeyChartHandler,
+    Funnel: funnelChartHandler,
+    Gauge: gaugeChartHandler,
+    PictorialBar: pictorialBarChartHandler,
+    ThemeRiver: themeRiverChartHandler,
+    Calendar: calendarChartHandler,
     // 其他类型可继续扩展
 };
 

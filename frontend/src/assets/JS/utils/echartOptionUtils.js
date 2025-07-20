@@ -16,6 +16,13 @@ import graphOption from '../chartOptions/graph'
 import treeOption from '../chartOptions/tree'
 import treemapOption from '../chartOptions/treemap'
 import sunburstOption from '../chartOptions/sunburst'
+import parallelOption from '../chartOptions/parallel'
+import sankeyOption from '../chartOptions/sankey'
+import funnelOption from '../chartOptions/funnel'
+import gaugeOption from '../chartOptions/gauge'
+import pictorialBarOption from '../chartOptions/pictorialBar'
+import themeRiverOption from '../chartOptions/themeRiver'
+import calendarOption from '../chartOptions/calendar'
 // ...可继续导入更多类型
 
 // 图表类型注册表
@@ -39,6 +46,13 @@ registerChartOptionGenerator('Graph', graphOption)
 registerChartOptionGenerator('Tree', treeOption)
 registerChartOptionGenerator('Treemap', treemapOption)
 registerChartOptionGenerator('Sunburst', sunburstOption)
+registerChartOptionGenerator('Parallel', parallelOption)
+registerChartOptionGenerator('Sankey', sankeyOption)
+registerChartOptionGenerator('Funnel', funnelOption)
+registerChartOptionGenerator('Gauge', gaugeOption)
+registerChartOptionGenerator('PictorialBar', pictorialBarOption)
+registerChartOptionGenerator('ThemeRiver', themeRiverOption)
+registerChartOptionGenerator('Calendar', calendarOption)
 // ...可继续注册更多类型
 
 // 主入口：根据类型分发
