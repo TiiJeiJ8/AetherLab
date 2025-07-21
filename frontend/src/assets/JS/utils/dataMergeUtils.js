@@ -958,8 +958,23 @@ function sunburstChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function parallelChartHandler(config, fileDataMap, options) {
-    debugInput(config, fileDataMap, options);
-    return {};
+    const { dimensions, nameField } = config;
+
+    // 获取数据
+    const dimensionsRows = dimensions.map(dim => getDataRows(fileDataMap, dim.file));
+    const nameRows = nameField ? getDataRows(fileDataMap, nameField.file) : [];
+
+    const seriesData = {
+        dimensions: dimensionsRows,
+        name: nameRows
+    };
+
+    return {
+        xData: [],
+        yDataArr: [],
+        mergeType: 'parallel',
+        seriesData,
+    };
 }
 
 /**

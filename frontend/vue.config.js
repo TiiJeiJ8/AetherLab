@@ -2,6 +2,9 @@ const { defineConfig } = require('@vue/cli-service');
 const port = 8080; // 端口配置
 
 module.exports = defineConfig({
+  devServer: {
+    historyApiFallback: true, // 解决前端路由刷新404问题
+  },
   transpileDependencies: true,
   devServer: {
     port, // 设置端口

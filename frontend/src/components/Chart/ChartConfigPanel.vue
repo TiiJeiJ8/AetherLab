@@ -293,8 +293,8 @@ const isConfigValid = computed(() => {
             cfg.parentID && cfg.parentID.field )
     }
     if (['parallel'].includes(type)) {
-        return cfg.dimensions && Array.isArray(cfg.dimensions) && cfg.dimensions.length > 0 &&
-            cfg.parallelAxis && Array.isArray(cfg.parallelAxis) && cfg.parallelAxis.length > 0;
+        return Array.isArray(cfg.dimensions) && cfg.dimensions.length > 0 &&
+            cfg.dimensions.every(dim => dim.field);
     }
     if (['sankey'].includes(type)) {
         return cfg.source && cfg.source.field &&
