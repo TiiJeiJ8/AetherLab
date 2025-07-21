@@ -87,12 +87,11 @@ export default function parallelOption(config, fileDataMap, xData, yDataArr, sel
             },
         },
         legend: {
-            show: true,
+            show: config.legendVisible !== false,
             type: 'scroll',
             orient,
             top: config.legendPosition || 'top',
             left: 'center',
-            // 可根据需要自定义更多 legend 配置
         },
         toolbox: {
             show: true,
