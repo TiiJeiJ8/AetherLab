@@ -6,6 +6,7 @@ import { readonly } from "vue";
  * 平行坐标系图高级配置项：
  * 线条宽度 LineWidth
  * 副标题 subtext
+ * 线条平滑性 isSmooth
  */
 
 // 平行坐标系图配置生成器
@@ -39,8 +40,8 @@ export default function parallelOption(config, fileDataMap, xData, yDataArr, sel
         if (isNumber) {
             const values = allData.map(item => item[dim]).filter(v => typeof v === 'number' && !isNaN(v));
             if (values.length) {
-                axis.min = Math.ceil(Math.min(...values) * 0.75);
-                axis.max = Math.ceil(Math.max(...values) * 1.25);
+                axis.min = Math.ceil(Math.min(...values) * 0.85);
+                axis.max = Math.ceil(Math.max(...values) * 1.15);
             }
         }
         return axis;
@@ -60,6 +61,7 @@ export default function parallelOption(config, fileDataMap, xData, yDataArr, sel
         lineStyle: {
             width: config.lineWidth || 2
         },
+        smooth: config.isSmooth || false,
         data: arr.map(item => dimensionNames.map(dim => item[dim]))
     }));
 
