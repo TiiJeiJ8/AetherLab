@@ -8,6 +8,7 @@ export default function lineOption(config, fileDataMap, xData, yDataArr, selecte
         name: y.field,
         type: 'line',
         data: yDataArr[idx],
+        smooth: config.isSmooth || false,
         animationDuration: animation ? 1500 : 0
     }));
     return {
