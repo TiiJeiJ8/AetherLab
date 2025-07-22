@@ -1040,7 +1040,18 @@ function sankeyChartHandler(config, fileDataMap, options) {
  */
 function funnelChartHandler(config, fileDataMap, options) {
     debugInput(config, fileDataMap, options);
-    return {};
+
+    const { stage, value } = config;
+
+    // 获取数据行
+    const dataRows = getDataRows(fileDataMap, stage.file);
+
+    const funnelData = dataRows.map((row) => ({
+        name: row[stage.field],
+        value: row[value.field],
+    }));
+
+    return { xData: [], yDataArr: [], mergeType: 'funnel', seriesData: funnelData, };
 }
 
 /**
@@ -1051,8 +1062,22 @@ function funnelChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function gaugeChartHandler(config, fileDataMap, options) {
-    debugInput(config, fileDataMap, options);
-    return {};
+    // debugInput(config, fileDataMap, options);
+
+    const { name, value } = config;
+
+    // 获取数据行
+    const dataRows = getDataRows(fileDataMap, name.file);
+
+    const nameData = dataRows.map(row => row[name.field]);
+    const valueData = dataRows.map(row => parseFloat(row[value.field]));
+
+    const gaugeData = {
+        name: nameData,
+        value: valueData,
+    }
+
+    return { mergeType: 'gauge', seriesData: gaugeData };
 }
 
 /**

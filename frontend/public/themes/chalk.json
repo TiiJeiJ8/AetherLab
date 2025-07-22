@@ -88,6 +88,15 @@
         "itemStyle": {
             "borderWidth": 0,
             "borderColor": "#ccc"
+        },
+        "detail": {
+            "color": "#eeeeee"
+        },
+        "title": {
+            "color": "#eeeeee"
+        },
+        "axisLabel": {
+            "color": "#eeeeee"
         }
     },
     "candlestick": {
