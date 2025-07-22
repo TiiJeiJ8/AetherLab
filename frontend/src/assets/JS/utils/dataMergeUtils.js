@@ -180,6 +180,14 @@ function debugInput(config, fileDataMap, options) {
     console.log('[--debugInput {Chart Type Processor}--] options:', options);
 }
 
+// 调试输出函数
+function debugOutput(series) {
+    // 遍历 series 中的所有项目
+    series.forEach((item, index) => {
+        console.log(`[--debugOutput {Chart Type Processor}--] ${index}:`, item);
+    });
+}
+
 /**
  * 通用 x/y 图表（如折线、柱状等）数据处理器
  * @param {ChartConfig} config
@@ -985,8 +993,42 @@ function parallelChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function sankeyChartHandler(config, fileDataMap, options) {
-    debugInput(config, fileDataMap, options);
-    return {};
+    // debugInput(config, fileDataMap, options);
+    const { source, target, value } = config;
+
+    // 支持直接传入数组或文件字段
+    let sourceArr = Array.isArray(source) ? source : getDataRows(fileDataMap, source.file).map(row => row[source.field]);
+    let targetArr = Array.isArray(target) ? target : getDataRows(fileDataMap, target.file).map(row => row[target.field]);
+    let valueArr = Array.isArray(value) ? value : (value ? getDataRows(fileDataMap, value.file).map(row => row[value.field]) : []);
+
+    // 合并为原始数组 [{Source, Target, Value}]
+    const raw = sourceArr.map((s, i) => ({
+        Source: s,
+        Target: targetArr[i],
+        Value: valueArr[i],
+    }));
+
+    // nodes: 所有唯一 Source/Target
+    const nodeSet = new Set();
+    raw.forEach(row => {
+        if (row.Source !== undefined && row.Source !== null && row.Source !== '') nodeSet.add(row.Source);
+        if (row.Target !== undefined && row.Target !== null && row.Target !== '') nodeSet.add(row.Target);
+    });
+    const nodes = Array.from(nodeSet).map(name => ({ name }));
+
+    // links: { source, target, value }
+    const links = raw.map(row => ({
+        source: row.Source,
+        target: row.Target,
+        value: row.Value
+    }));
+
+    const seriesData = {
+        data: nodes,
+        links: links,
+    };
+
+    return { mergeType: 'sankey', seriesData };
 }
 
 /**
