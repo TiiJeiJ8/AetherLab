@@ -47,6 +47,11 @@
         <label for="chart-title">Title</label>
         <input id="chart-title" v-model="localConfig.title"/>
     </div>
+    <!-- Subtitle -->
+    <div class="basic-config-item">
+        <label for="chart-subtitle">Subtitle</label>
+        <input id="chart-subtitle" v-model="localConfig.subtext"/>
+    </div>
     <!-- Theme -->
     <div class="basic-config-item" style="position: relative;">
         <label for="color-scheme">Theme</label>
@@ -344,6 +349,12 @@ const showThemeTip = ref(false)
     color: #dee2e6;
 }
 [data-theme="dark"] #chart-title {
+    background: #333333ff !important;
+    color: #dee2e6 !important;
+    border: 1px solid #444 !important;
+    caret-color: #dee2e6;
+}
+[data-theme="dark"] #chart-subtitle {
     background: #333333ff !important;
     color: #dee2e6 !important;
     border: 1px solid #444 !important;

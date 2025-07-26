@@ -3,7 +3,6 @@
 /**
  * 漏斗图高级配置项：
  * 副标题 subtext
- * 图例布局 legendOrient
  * 数据排序 sort
  * 标签位置 labelPosition
  * 标签字体大小 labelFontSize
@@ -14,8 +13,6 @@
 // 漏斗图配置生成器
 export default function funnelOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
     const funnelData = seriesData;
-
-    let legendOrient = config.orient || 'horizontal';
 
     return {
         title: {
@@ -33,7 +30,6 @@ export default function funnelOption(config, fileDataMap, xData, yDataArr, selec
         },
         legend: {
             type: 'scroll',
-            orient: legendOrient,
             show: config.legendVisible !== false,
             top: config.legendPosition || 'bottom',
             data: funnelData ? funnelData.map(item => item.name) : [],

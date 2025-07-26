@@ -163,6 +163,28 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 布局设置
+            { key: 'layout', label: 'Layout', type: 'select', options: [{ label: 'Circular', value: 'circular' }, { label: 'Force', value: 'force' }], default: 'Force' },
+            // 力引导布局的配置
+            // 节点间斥力
+            { key: 'forceRepulsion', label: '[Force] Repulsion', type: 'number', default: 100, min: 0, description: 'Repulsion force for the force layout' },
+            // 理想边长
+            { key: 'forceEdgeLength', label: '[Force] Edge Length', type: 'number', default: 100, min: 0, description: 'Ideal edge length for the force layout' },
+            // 节点受到中心引力因子
+            { key: 'forceGravity', label: '[Force] Gravity', type: 'number', default: 0.1, min: 0, description: 'Gravity factor for the force layout' },
+            // 防止重叠
+            { key: 'forcePreventOverlap', label: '[Force] Prevent Overlap', type: 'checkbox', default: false, description: 'Whether to prevent node overlap in the force layout' },
+            // 动画布局
+            { key: 'forceLayoutAnimation', label: '[Force] Layout Animation', type: 'checkbox', default: false, description: 'Whether to enable animation for the force layout' },
+            // 节点大小配置
+            { key: 'minNodeSize', label: 'Min Node Size', type: 'number', default: 3, min: 1, max: 100, description: 'Minimum size of nodes' },
+            { key: 'maxNodeSize', label: 'Max Node Size', type: 'number', default: 43, min: 1, max: 100, description: 'Maximum size of nodes' },
+            // 边宽度配置
+            { key: 'isSizedEdges', label: 'Sized Edges', type: 'checkbox', default: true, description: 'Whether to automatically size edges based on weight' },
+            { key: 'minEdgeWidth', label: 'Min Edge Width', type: 'number', default: 1.5, min: 0.1, max: 10, description: 'Minimum width of edges' },
+            { key: 'maxEdgeWidth', label: 'Max Edge Width', type: 'number', default: 5, min: 0.1, max: 10, description: 'Maximum width of edges' },
+            // 边弧度
+            { key: 'curveness', label: 'Edge Curveness', type: 'number', default: 0.3, min: 0, max: 1, description: 'Curveness of edges' },
         ]
     },
     // 树图
@@ -249,6 +271,18 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 图表布局
+            { key: 'orient', label: 'Layout Orientation', type: 'select', options: [{ label: 'Horizontal', value: 'horizontal' }, { label: 'Vertical', value: 'vertical' }], default: 'horizontal' },
+            // 连接是否为渐变色
+            { key: 'isGradient', label: 'Link Gradient', type: 'checkbox', default: true, description: 'Whether to use gradient color for links' },
+            // 连接透明度
+            { key: 'lineOpacity', label: 'Link Opacity', type: 'number', default: 0.5, min: 0, max: 1 },
+            // 连接曲度
+            { key: 'lineCurveness', label: 'Link Curveness', type: 'number', default: 0.5, min: 0, max: 1 },
+            // 标签位置
+            { key: 'labelPosition', label: 'Label Position', type: 'select', options: [{ label: 'Inside', value: 'inside' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }], default: 'inside' },
+            // 左/右对齐布局
+            { key: 'nodeAlign', label: 'Node Alignment', type: 'select', options: [{ label: 'Justify', value: 'justify' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }], default: 'justify' },
         ]
     },
     // 漏斗图
@@ -260,9 +294,18 @@ export const chartTypeConfig = {
             { key: 'value', label: 'Value', type: 'measure', required: true, description: 'The value of the stage in the funnel' },
         ],
         basic: [
-            { key: 'sort', label: 'Sort', type: 'select', options: [{ label: 'Descending', value: 'desc' }, { label: 'Ascending', value: 'asc' }] },
         ],
         advanced: [
+            // 排序
+            { key: 'sort', label: 'Sort', type: 'select', options: [{ label: 'Descending', value: 'descending' }, { label: 'Ascending', value: 'ascending' }] },
+            // 标签位置
+            { key: 'labelPosition', label: 'Label Position', type: 'select', options: [{ label: 'Inside', value: 'inside' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }] },
+            // 标签字体大小
+            { key: 'labelFontSize', label: 'Label Font Size', type: 'number', default: 12, min: 8, max: 24 },
+            // 标签字体粗细
+            { key: 'labelFontWeight', label: 'Label Font Weight', type: 'select', options: [{ label: 'Normal', value: 'normal' }, { label: 'Bold', value: 'bold' }, { label: 'Lighter', value: 'lighter' }] },
+            // 标签引导线长度
+            { key: 'labelLineLength', label: 'Label Line Length', type: 'number', default: 40, min: 0, max: 100 },
         ]
     },
     // 仪表盘
@@ -290,7 +333,7 @@ export const chartTypeConfig = {
         ],
         advanced: [
             // 图形符号（可选）
-            { key: 'symbol', label: 'Symbol', type: 'select', required: false, options: [{ label: 'Circle', value: 'circle' }, { label: 'Rect', value: 'rect' }, { label: 'Image', value: 'image' }], default: 'circle' },
+            { key: 'symbol', label: 'Symbol', type: 'select', options: [{ label: 'Circle', value: 'circle' }, { label: 'Rect', value: 'rect' }, { label: 'Image', value: 'image' }], default: 'circle' },
         ]
     },
     // 主题河流图
