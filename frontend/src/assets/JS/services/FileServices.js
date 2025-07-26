@@ -95,6 +95,31 @@ export async function parseFileContent(file) {
                 // 过滤空行
                 jsonData = jsonData.filter(row => row.some(cell => cell !== null && cell !== ''))
 
+                // 自动将疑似日期/时间列的数字转为字符串
+                const headers = jsonData[0] || [];
+                const dateColIndexes = headers
+                    .map((h, i) => /date|日期|时间/i.test(h) ? i : -1)
+                    .filter(i => i !== -1);
+
+                function excelDateToString(excelDate) {
+                    if (typeof excelDate === 'number') {
+                        const date = new Date(Math.round((excelDate - 25569) * 86400 * 1000));
+                        // 判断是否为整天
+                        if (date.getUTCHours() === 0 && date.getUTCMinutes() === 0 && date.getUTCSeconds() === 0) {
+                            return date.toISOString().slice(0, 10); // 只要日期
+                        }
+                        return date.toISOString().replace('T', ' ').slice(0, 19); // 日期+时间
+                    }
+                    return excelDate;
+                }
+
+                // 跳过header行，对每一行的日期/时间列做转换
+                for (let r = 1; r < jsonData.length; r++) {
+                    dateColIndexes.forEach(idx => {
+                        jsonData[r][idx] = excelDateToString(jsonData[r][idx]);
+                    });
+                }
+
                 //! 限制预览行数
                 const previewData = jsonData.slice(0, 100)
 
