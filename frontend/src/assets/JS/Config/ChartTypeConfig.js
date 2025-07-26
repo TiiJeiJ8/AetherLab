@@ -62,7 +62,7 @@ export const chartTypeConfig = {
         ],
         basic: [
             // 地图类型选择
-            { key: 'mapName', label: 'Map Name', type: 'select', required: true, options: [{ label: 'World', value: 'world' }, { label: 'China', value: 'china' }], default: 'World' },
+            { key: 'mapName', label: 'Map Name', type: 'select', required: true, options: [{ label: 'World', value: 'world' }, { label: 'China', value: 'china' }] },
             // 地图数据源URL
             { key: 'mapUrl', label: 'GeoJSON URL', type: 'text', placeholder: "https://xxx/china.json", required: false },
             // 地图系列类型
@@ -137,9 +137,9 @@ export const chartTypeConfig = {
         ],
         advanced: [
             // 热力图单元格中的标签显示
-            { key: 'label', label: 'Label', type: 'boolean', required: false, default: true, description: 'Whether to show labels on heatmap cells' },
+            { key: 'label', label: 'Label', type: 'boolean', required: false, description: 'Whether to show labels on heatmap cells' },
             // 热力图单元格标签内容：默认显示value
-            { key: 'labelFormatter', label: 'Label Formatter', type: 'text', required: false, default: '{c}', description: 'Custom label format, e.g. "{b}: {c}"' },
+            { key: 'labelFormatter', label: 'Label Formatter', type: 'text', description: 'Custom label format, e.g. "{b}: {c}"' },
         ]
     },
     // 关系图
@@ -164,27 +164,27 @@ export const chartTypeConfig = {
         ],
         advanced: [
             // 布局设置
-            { key: 'layout', label: 'Layout', type: 'select', options: [{ label: 'Circular', value: 'circular' }, { label: 'Force', value: 'force' }], default: 'Force' },
+            { key: 'layout', label: 'Layout', type: 'select', options: [{ label: 'Circular', value: 'circular' }, { label: 'Force', value: 'force' }] },
             // 力引导布局的配置
             // 节点间斥力
-            { key: 'forceRepulsion', label: '[Force] Repulsion', type: 'number', default: 100, min: 0, description: 'Repulsion force for the force layout' },
+            { key: 'forceRepulsion', label: '[Force] Repulsion', type: 'number', min: 0, description: 'Repulsion force for the force layout' },
             // 理想边长
-            { key: 'forceEdgeLength', label: '[Force] Edge Length', type: 'number', default: 100, min: 0, description: 'Ideal edge length for the force layout' },
+            { key: 'forceEdgeLength', label: '[Force] Edge Length', type: 'number', min: 0, description: 'Ideal edge length for the force layout' },
             // 节点受到中心引力因子
-            { key: 'forceGravity', label: '[Force] Gravity', type: 'number', default: 0.1, min: 0, description: 'Gravity factor for the force layout' },
+            { key: 'forceGravity', label: '[Force] Gravity', type: 'number', min: 0, description: 'Gravity factor for the force layout' },
             // 防止重叠
-            { key: 'forcePreventOverlap', label: '[Force] Prevent Overlap', type: 'checkbox', default: false, description: 'Whether to prevent node overlap in the force layout' },
+            { key: 'forcePreventOverlap', label: '[Force] Prevent Overlap', type: 'checkbox', description: 'Whether to prevent node overlap in the force layout' },
             // 动画布局
-            { key: 'forceLayoutAnimation', label: '[Force] Layout Animation', type: 'checkbox', default: false, description: 'Whether to enable animation for the force layout' },
+            { key: 'forceLayoutAnimation', label: '[Force] Layout Animation', type: 'checkbox', description: 'Whether to enable animation for the force layout' },
             // 节点大小配置
-            { key: 'minNodeSize', label: 'Min Node Size', type: 'number', default: 3, min: 1, max: 100, description: 'Minimum size of nodes' },
-            { key: 'maxNodeSize', label: 'Max Node Size', type: 'number', default: 43, min: 1, max: 100, description: 'Maximum size of nodes' },
+            { key: 'minNodeSize', label: 'Min Node Size', type: 'number', min: 1, max: 100, description: 'Minimum size of nodes' },
+            { key: 'maxNodeSize', label: 'Max Node Size', type: 'number', min: 1, max: 100, description: 'Maximum size of nodes' },
             // 边宽度配置
-            { key: 'isSizedEdges', label: 'Sized Edges', type: 'checkbox', default: true, description: 'Whether to automatically size edges based on weight' },
-            { key: 'minEdgeWidth', label: 'Min Edge Width', type: 'number', default: 1.5, min: 0.1, max: 10, description: 'Minimum width of edges' },
-            { key: 'maxEdgeWidth', label: 'Max Edge Width', type: 'number', default: 5, min: 0.1, max: 10, description: 'Maximum width of edges' },
+            { key: 'isSizedEdges', label: 'Sized Edges', type: 'checkbox', description: 'Whether to automatically size edges based on weight' },
+            { key: 'minEdgeWidth', label: 'Min Edge Width', type: 'number', min: 0.1, max: 10, description: 'Minimum width of edges' },
+            { key: 'maxEdgeWidth', label: 'Max Edge Width', type: 'number', min: 0.1, max: 10, description: 'Maximum width of edges' },
             // 边弧度
-            { key: 'curveness', label: 'Edge Curveness', type: 'number', default: 0.3, min: 0, max: 1, description: 'Curveness of edges' },
+            { key: 'curveness', label: 'Edge Curveness', type: 'number', min: 0, max: 1, description: 'Curveness of edges' },
         ]
     },
     // 树图
@@ -272,17 +272,17 @@ export const chartTypeConfig = {
         ],
         advanced: [
             // 图表布局
-            { key: 'orient', label: 'Layout Orientation', type: 'select', options: [{ label: 'Horizontal', value: 'horizontal' }, { label: 'Vertical', value: 'vertical' }], default: 'horizontal' },
+            { key: 'orient', label: 'Layout Orientation', type: 'select', options: [{ label: 'Horizontal', value: 'horizontal' }, { label: 'Vertical', value: 'vertical' }] },
             // 连接是否为渐变色
-            { key: 'isGradient', label: 'Link Gradient', type: 'checkbox', default: true, description: 'Whether to use gradient color for links' },
+            { key: 'isGradient', label: 'Link Gradient', type: 'checkbox', description: 'Whether to use gradient color for links' },
             // 连接透明度
-            { key: 'lineOpacity', label: 'Link Opacity', type: 'number', default: 0.5, min: 0, max: 1 },
+            { key: 'lineOpacity', label: 'Link Opacity', type: 'number', min: 0, max: 1 },
             // 连接曲度
-            { key: 'lineCurveness', label: 'Link Curveness', type: 'number', default: 0.5, min: 0, max: 1 },
+            { key: 'lineCurveness', label: 'Link Curveness', type: 'number', min: 0, max: 1 },
             // 标签位置
-            { key: 'labelPosition', label: 'Label Position', type: 'select', options: [{ label: 'Inside', value: 'inside' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }], default: 'inside' },
+            { key: 'labelPosition', label: 'Label Position', type: 'select', options: [{ label: 'Inside', value: 'inside' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }] },
             // 左/右对齐布局
-            { key: 'nodeAlign', label: 'Node Alignment', type: 'select', options: [{ label: 'Justify', value: 'justify' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }], default: 'justify' },
+            { key: 'nodeAlign', label: 'Node Alignment', type: 'select', options: [{ label: 'Justify', value: 'justify' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }] },
         ]
     },
     // 漏斗图
@@ -301,11 +301,11 @@ export const chartTypeConfig = {
             // 标签位置
             { key: 'labelPosition', label: 'Label Position', type: 'select', options: [{ label: 'Inside', value: 'inside' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }] },
             // 标签字体大小
-            { key: 'labelFontSize', label: 'Label Font Size', type: 'number', default: 12, min: 8, max: 24 },
+            { key: 'labelFontSize', label: 'Label Font Size', type: 'number', min: 8, max: 24 },
             // 标签字体粗细
             { key: 'labelFontWeight', label: 'Label Font Weight', type: 'select', options: [{ label: 'Normal', value: 'normal' }, { label: 'Bold', value: 'bold' }, { label: 'Lighter', value: 'lighter' }] },
             // 标签引导线长度
-            { key: 'labelLineLength', label: 'Label Line Length', type: 'number', default: 40, min: 0, max: 100 },
+            { key: 'labelLineLength', label: 'Label Line Length', type: 'number', min: 0, max: 100 },
         ]
     },
     // 仪表盘
@@ -333,7 +333,7 @@ export const chartTypeConfig = {
         ],
         advanced: [
             // 图形符号（可选）
-            { key: 'symbol', label: 'Symbol', type: 'select', options: [{ label: 'Circle', value: 'circle' }, { label: 'Rect', value: 'rect' }, { label: 'Image', value: 'image' }], default: 'circle' },
+            { key: 'symbol', label: 'Symbol', type: 'select', options: [{ label: 'Circle', value: 'circle' }, { label: 'Rect', value: 'rect' }, { label: 'Image', value: 'image' }] },
         ]
     },
     // 主题河流图

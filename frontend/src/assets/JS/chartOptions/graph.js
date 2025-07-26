@@ -104,15 +104,15 @@ export default function graphOption(config, fileDataMap, xData, yDataArr, select
                 force: {
                     // 力引导布局配置
                     // 节点间斥力
-                    repulsion: config.forceRepulsion || 100, // 默认 100
+                    repulsion: config.forceRepulsion || 100,
                     // 节点受到中心引力因子
-                    gravity: config.forceGravity || 0.1, // 默认 0.1
+                    gravity: config.forceGravity || 0.1,
                     // 边的理想长度
-                    edgeLength: config.forceEdgeLength || 100, // 默认 100
+                    edgeLength: config.forceEdgeLength || 100,
                     // 动画布局
-                    layoutAnimation: config.forceLayoutAnimation !== false, // 默认 true
+                    layoutAnimation: config.forceLayoutAnimation !== false,
                     // 防止重叠
-                    preventOverlap: config.forcePreventOverlap !== false, // 默认 true
+                    preventOverlap: config.forcePreventOverlap !== false,
                 },
                 lineStyle: {
                     color: 'source',
