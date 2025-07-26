@@ -1100,8 +1100,21 @@ function pictorialBarChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function themeRiverChartHandler(config, fileDataMap, options) {
-    debugInput(config, fileDataMap, options);
-    return {};
+    // debugInput(config, fileDataMap, options);
+
+    const { date, value, category } = config;
+
+    // 获取数据行
+    const dataRows = getDataRows(fileDataMap, date.file);
+
+    // 按顺序组合(date, value, category)
+    const seriesData = dataRows.map(row => [
+        row[date.field],
+        parseFloat(row[value.field]),
+        row[category.field]
+    ]);
+
+    return { mergeType: 'themeRiver', seriesData };
 }
 
 /**
