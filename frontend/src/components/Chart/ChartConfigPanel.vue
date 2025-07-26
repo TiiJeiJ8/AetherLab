@@ -313,7 +313,7 @@ const isConfigValid = computed(() => {
             cfg.value && cfg.value.field;
     }
     if (['themeriver'].includes(type)) {
-        return cfg.time && cfg.time.field &&
+        return cfg.date && cfg.date.field &&
             cfg.value && cfg.value.field;
     }
     if (['calendar'].includes(type)) {
