@@ -256,6 +256,16 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 图例显示方式( VisualMap or Legend )
+            { key: 'legendType', label: 'Legend Type', type: 'select', options: [{ label: 'VisualMap', value: 'visualMap' }, { label: 'Legend', value: 'legend' }] },
+            // 是否显示Category维度
+            { key: 'isCategoryDim', label: 'Show Category Dimension', type: 'checkbox', description: 'Whether to add a category dimension to the parallel chart' },
+            // Category维度位置
+            { key: 'positionCategoryDim', label: 'Category Dimension Position', type: 'select', options: [{ label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }] },
+            // 线条宽度
+            { key: 'lineWidth', label: 'Line Width', type: 'number', min: 1, max: 100 },
+            // 是否平滑
+            { key: 'isSmooth', label: 'Smooth Lines', type: 'checkbox', description: 'Whether to use smooth lines for the parallel chart' },
         ]
     },
     // 桑基图
