@@ -52,6 +52,16 @@
         <label for="chart-subtitle">Subtitle</label>
         <input id="chart-subtitle" v-model="localConfig.subtext"/>
     </div>
+    <!-- Title position -->
+    <div class="basic-config-item">
+        <label for="chart-title-position">Title Position</label>
+        <select id="chart-title-position" v-model="localConfig.titlePosition">
+            <option value="left">Top left</option>
+            <option value="center">Top center</option>
+            <option value="right">Top right</option>
+            <option value="bottom">Bottom center</option>
+        </select>
+    </div>
     <!-- Theme -->
     <div class="basic-config-item" style="position: relative;">
         <label for="color-scheme">Theme</label>
