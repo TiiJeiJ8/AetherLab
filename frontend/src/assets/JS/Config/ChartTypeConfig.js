@@ -85,6 +85,16 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // MA5
+            { key: 'ma5', label: 'MA5', type: 'checkbox', description: 'Whether to show the 5-day moving average line' },
+            // MA10
+            { key: 'ma10', label: 'MA10', type: 'checkbox', description: 'Whether to show the 10-day moving average line' },
+            // MA20
+            { key: 'ma20', label: 'MA20', type: 'checkbox', description: 'Whether to show the 20-day moving average line' },
+            // MA30
+            { key: 'ma30', label: 'MA30', type: 'checkbox', description: 'Whether to show the 30-day moving average line' },
+            // 最大/最小值标记
+            { key: 'showMaxMin', label: 'Show Max/Min', type: 'checkbox', description: 'Whether to show maximum and minimum values on the radar chart' },
         ]
     },
     // 雷达图
@@ -100,16 +110,6 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
-            // MA5
-            { key: 'ma5', label: 'MA5', type: 'checkbox', description: 'Whether to show the 5-day moving average line' },
-            // MA10
-            { key: 'ma10', label: 'MA10', type: 'checkbox', description: 'Whether to show the 10-day moving average line' },
-            // MA20
-            { key: 'ma20', label: 'MA20', type: 'checkbox', description: 'Whether to show the 20-day moving average line' },
-            // MA30
-            { key: 'ma30', label: 'MA30', type: 'checkbox', description: 'Whether to show the 30-day moving average line' },
-            // 最大/最小值标记
-            { key: 'showMaxMin', label: 'Show Max/Min', type: 'checkbox', description: 'Whether to show maximum and minimum values on the radar chart' },
         ]
     },
     // 箱线图
