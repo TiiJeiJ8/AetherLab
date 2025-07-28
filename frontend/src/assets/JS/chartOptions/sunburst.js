@@ -108,12 +108,14 @@ export default function sunburstOption(config, fileDataMap, xData, yDataArr, sel
     const baseOption = {
         title: {
             text: config.title || 'Chart of Sunburst',
-            subtext: config.subtext || '',
-            textStyle: {
-                fontSize: 16,
-            },
-            left: 'center',
-            top: 'top',
+            subtext: subtext,
+            left: config.titlePosition === 'left' ? 'left'
+                : config.titlePosition === 'center' ? 'center'
+                    : config.titlePosition === 'right' ? 'right'
+                        : 'center', // bottom 也用 center
+            top: config.titlePosition === 'bottom' ? 'bottom' : 'top',
+            textStyle: { fontSize: 16, fontWeight: 'bold' },
+            subtextStyle: { fontSize: 12 }
         },
         tooltip: {
             trigger: 'item',

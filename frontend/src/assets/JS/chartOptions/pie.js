@@ -16,9 +16,13 @@ export default function pieOption(config, fileDataMap, xData, yDataArr, selected
 
     return {
         title: {
-            text: title || '',
-            subtext: config.subtext || '',
-            left: 'center',
+            text: config.title || 'Chart of Pie',
+            subtext: subtext,
+            left: config.titlePosition === 'left' ? 'left'
+                : config.titlePosition === 'center' ? 'center'
+                    : config.titlePosition === 'right' ? 'right'
+                        : 'center', // bottom 也用 center
+            top: config.titlePosition === 'bottom' ? 'bottom' : 'top',
             textStyle: { fontSize: 16, fontWeight: 'bold' },
             subtextStyle: { fontSize: 12 }
         },

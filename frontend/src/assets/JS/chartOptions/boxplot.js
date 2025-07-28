@@ -44,16 +44,15 @@ export default function boxplotOption(config, fileDataMap, xData, yDataArr, sele
 
     const option = {
         title: {
-            text: 'Boxplot Chart',
-            subtext: config.subtext || '',
-            left: 'center',
-            textStyle: {
-                fontSize: 16,
-                fontWeight: 'bold',
-            },
-            subtextStyle: {
-                fontSize: 12,
-            }
+            text: config.title || 'Chart of Boxplot',
+            subtext: subtext,
+            left: config.titlePosition === 'left' ? 'left'
+                : config.titlePosition === 'center' ? 'center'
+                    : config.titlePosition === 'right' ? 'right'
+                        : 'center', // bottom 也用 center
+            top: config.titlePosition === 'bottom' ? 'bottom' : 'top',
+            textStyle: { fontSize: 16, fontWeight: 'bold' },
+            subtextStyle: { fontSize: 12 }
         },
         legend: {
             type: 'scroll',

@@ -14,9 +14,13 @@ export default function candlestickOption(config, fileDataMap, xData, yDataArr, 
 
     return {
         title: {
-            text: title || `Candlestick Chart`,
-            subtext: config.subtext || '',
-            left: 'center',
+            text: config.title || 'Chart of Candlestick',
+            subtext: subtext,
+            left: config.titlePosition === 'left' ? 'left'
+                : config.titlePosition === 'center' ? 'center'
+                    : config.titlePosition === 'right' ? 'right'
+                        : 'center', // bottom 也用 center
+            top: config.titlePosition === 'bottom' ? 'bottom' : 'top',
             textStyle: { fontSize: 16, fontWeight: 'bold' },
             subtextStyle: { fontSize: 12 }
         },

@@ -19,16 +19,14 @@ export default function treeOption(config, fileDataMap, xData, yDataArr, selecte
     return {
         title: {
             text: config.title || 'Chart of Tree',
-            subtext: config.subtext || '',
-            left: 'center',
-            top: 'top',
-            textStyle: {
-                fontSize: 16,
-                fontWeight: 'bold',
-            },
-            subtextStyle: {
-                fontSize: 12,
-            },
+            subtext: subtext,
+            left: config.titlePosition === 'left' ? 'left'
+                : config.titlePosition === 'center' ? 'center'
+                    : config.titlePosition === 'right' ? 'right'
+                        : 'center', // bottom 也用 center
+            top: config.titlePosition === 'bottom' ? 'bottom' : 'top',
+            textStyle: { fontSize: 16, fontWeight: 'bold' },
+            subtextStyle: { fontSize: 12 }
         },
         toolbox: {
             show: true,

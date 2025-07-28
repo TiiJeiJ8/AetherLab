@@ -8,9 +8,13 @@ export default function radarOption(config, fileDataMap, xData, yDataArr, select
     return {
         // Echarts 雷达图配置
         title: {
-            text: config.title || `Chart of Radar`,
-            subtext: config.subtext || '',
-            left: 'center',
+            text: config.title || 'Chart of Radar',
+            subtext: subtext,
+            left: config.titlePosition === 'left' ? 'left'
+                : config.titlePosition === 'center' ? 'center'
+                    : config.titlePosition === 'right' ? 'right'
+                        : 'center', // bottom 也用 center
+            top: config.titlePosition === 'bottom' ? 'bottom' : 'top',
             textStyle: { fontSize: 16, fontWeight: 'bold' },
             subtextStyle: { fontSize: 12 }
         },

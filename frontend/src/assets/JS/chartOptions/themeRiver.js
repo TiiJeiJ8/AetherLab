@@ -4,6 +4,17 @@
 export default function themeRiverOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
     console.log('seriesData for themeRiver chart:', seriesData);
     return {
+        title: {
+            text: config.title || 'Chart of Theme River',
+            subtext: subtext,
+            left: config.titlePosition === 'left' ? 'left'
+                : config.titlePosition === 'center' ? 'center'
+                    : config.titlePosition === 'right' ? 'right'
+                        : 'center', // bottom 也用 center
+            top: config.titlePosition === 'bottom' ? 'bottom' : 'top',
+            textStyle: { fontSize: 16, fontWeight: 'bold' },
+            subtextStyle: { fontSize: 12 }
+        },
         tooltip: {
             trigger: 'axis',
             axisPointer: {

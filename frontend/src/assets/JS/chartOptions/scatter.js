@@ -12,9 +12,13 @@ export default function scatterOption(config, fileDataMap, xData, yDataArr, sele
     }));
     return {
         title: {
-            text: title || `${yArr.map(y => y.field).join(',')} vs ${config.xAxis.field}`,
-            subtext: config.subtext || '',
-            left: 'center',
+            text: config.title || 'Chart of Scatter',
+            subtext: subtext,
+            left: config.titlePosition === 'left' ? 'left'
+                : config.titlePosition === 'center' ? 'center'
+                    : config.titlePosition === 'right' ? 'right'
+                        : 'center', // bottom 也用 center
+            top: config.titlePosition === 'bottom' ? 'bottom' : 'top',
             textStyle: { fontSize: 16, fontWeight: 'bold' },
             subtextStyle: { fontSize: 12 }
         },
