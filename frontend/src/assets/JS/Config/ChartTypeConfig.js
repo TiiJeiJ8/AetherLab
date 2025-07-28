@@ -205,6 +205,24 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 树状图朝向
+            { key: 'orient', label: 'Orientation', type: 'select', options: [{ label: 'Left to Right', value: 'LR' }, { label: 'Right to Left', value: 'RL' }, { label: 'Top to Bottom', value: 'TB' }, { label: 'Bottom to Top', value: 'BT' }] },
+            // 树状图显示样式
+            { key: 'layout', label: 'Layout', type: 'select', options: [{ label: 'Orthogonal', value: 'orthogonal' }, { label: 'Radial', value: 'radial' }] },
+            // 树状图多树排列形式
+            { key: 'position_tree', label: 'Multiple Trees Position', type: 'select', options: [{ label: 'Left and Right', value: 'left and right' }, { label: 'Top and Bottom', value: 'top and bottom' }] },
+            // 默认展开层级
+            { key: 'initialTreeDepth', label: 'Initial Depth', type: 'number', min: 1, description: 'Initial depth of the tree to display' },
+            // 连线形状
+            { key: 'edgeShape', label: 'Edge Shape', type: 'select', options: [{ label: 'Polyline', value: 'polyline' }, { label: 'Curve', value: 'curve' }] },
+            // 连线分叉位置
+            { key: 'edgeForkPosition', label: 'Edge Fork Position', type: 'number', min: 0, max: 1, description: 'Position of edge forks' },
+            // 节点原点半径
+            { key: 'symbolSize', label: 'Node Size', type: 'number', min: 1, max: 100, description: 'Size of the tree nodes' },
+            // 线宽
+            { key: 'width', label: 'Line Width', type: 'number', min: 1, description: 'Width of the connecting lines' },
+            // 曲线度
+            { key: 'curveness', label: 'Curveness', type: 'number', min: 0, max: 1, description: 'Curveness of the connecting lines' },
         ]
     },
     // 矩形树图

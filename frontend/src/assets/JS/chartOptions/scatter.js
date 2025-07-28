@@ -13,7 +13,7 @@ export default function scatterOption(config, fileDataMap, xData, yDataArr, sele
     return {
         title: {
             text: config.title || 'Chart of Scatter',
-            subtext: subtext,
+            subtext: config.subtext,
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

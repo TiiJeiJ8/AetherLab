@@ -24,7 +24,7 @@ export default function sankeyOption(config, fileDataMap, xData, yDataArr, selec
     return {
         title: {
             text: config.title || 'Chart of Sankey',
-            subtext: subtext,
+            subtext: config.subtext,
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

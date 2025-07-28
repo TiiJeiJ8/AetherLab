@@ -17,7 +17,7 @@ export default function pieOption(config, fileDataMap, xData, yDataArr, selected
     return {
         title: {
             text: config.title || 'Chart of Pie',
-            subtext: subtext,
+            subtext: config.subtext,
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

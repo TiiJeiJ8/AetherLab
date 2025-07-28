@@ -1,13 +1,5 @@
 /* eslint-disable */
 
-/**
- * 高级配置项：
- * 节点大小设置
- * 边宽度设置 links
- * 图表布局设置(none, force, circular)
- * 连接曲率 curveness
- */
-
 // 关系图生成器
 export default function graphOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
     const { nodes, edges } = seriesData;
@@ -62,7 +54,7 @@ export default function graphOption(config, fileDataMap, xData, yDataArr, select
     return {
         title: {
             text: config.title || 'Chart of Graph',
-            subtext: subtext,
+            subtext: config.subtext,
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

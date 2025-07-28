@@ -15,7 +15,7 @@ export default function candlestickOption(config, fileDataMap, xData, yDataArr, 
     return {
         title: {
             text: config.title || 'Chart of Candlestick',
-            subtext: subtext,
+            subtext: config.subtext,
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

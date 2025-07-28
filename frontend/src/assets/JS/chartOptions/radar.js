@@ -9,7 +9,7 @@ export default function radarOption(config, fileDataMap, xData, yDataArr, select
         // Echarts 雷达图配置
         title: {
             text: config.title || 'Chart of Radar',
-            subtext: subtext,
+            subtext: config.subtext,
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

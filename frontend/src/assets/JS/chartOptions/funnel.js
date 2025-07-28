@@ -1,15 +1,5 @@
 /* eslint-disable */
 
-/**
- * 漏斗图高级配置项：
- * 副标题 subtext
- * 数据排序 sort
- * 标签位置 labelPosition
- * 标签字体大小 labelFontSize
- * 标签字体粗细 labelFontWeight
- * 标签引导线长度 labelLineLength
- */
-
 // 漏斗图配置生成器
 export default function funnelOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
     const funnelData = seriesData;
@@ -17,7 +7,7 @@ export default function funnelOption(config, fileDataMap, xData, yDataArr, selec
     return {
         title: {
             text: config.title || 'Chart of Funnel',
-            subtext: subtext,
+            subtext: config.subtext,
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

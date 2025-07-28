@@ -109,7 +109,7 @@ export default function parallelOption(config, fileDataMap, xData, yDataArr, sel
     let option = {
         title: {
             text: config.title || 'Chart of Parallel',
-            subtext: subtext,
+            subtext: config.subtext,
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

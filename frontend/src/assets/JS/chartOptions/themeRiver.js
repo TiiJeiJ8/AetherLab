@@ -6,7 +6,7 @@ export default function themeRiverOption(config, fileDataMap, xData, yDataArr, s
     return {
         title: {
             text: config.title || 'Chart of Theme River',
-            subtext: subtext,
+            subtext: config.subtext,
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

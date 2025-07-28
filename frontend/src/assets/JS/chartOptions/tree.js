@@ -19,7 +19,7 @@ export default function treeOption(config, fileDataMap, xData, yDataArr, selecte
     return {
         title: {
             text: config.title || 'Chart of Tree',
-            subtext: subtext,
+            subtext: config.subtext,
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'
