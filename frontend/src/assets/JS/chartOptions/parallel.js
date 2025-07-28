@@ -144,15 +144,52 @@ export default function parallelOption(config, fileDataMap, xData, yDataArr, sel
     } else if (legendType === 'visualMap') {
         // 默认用第一个数值型维度做visualMap
         const visualDimIdx = isCategoryDim && positionCategoryDim === 'left' ? 1 : 0;
+        // 动态调整 visualMap
+        let visualMapOption = {};
+        switch (config.legendPosition) {
+            case 'bottom':
+                visualMapOption = {
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: 0
+                };
+                break;
+            case 'top':
+                visualMapOption = {
+                    orient: 'horizontal',
+                    left: 'center',
+                    top: 0
+                };
+                break;
+            case 'right':
+                visualMapOption = {
+                    orient: 'vertical',
+                    right: 0,
+                    top: 'center'
+                };
+                break;
+            case 'left':
+                visualMapOption = {
+                    orient: 'vertical',
+                    left: -10,
+                    top: 'center'
+                };
+                break;
+            default:
+                visualMapOption = {
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: 0
+                };
+        }
         option.visualMap = {
             show: config.legendVisible,
             type: 'continuous',
             dimension: visualDimIdx,
             min: parallelAxis[visualDimIdx].min,
             max: parallelAxis[visualDimIdx].max,
-            orient: orient,
-            left: 'center',
-            top: config.legendPosition || 'bottom',
+            ...visualMapOption,
+            calculable: true,
             inRange: {
                 color: visualColors,
             },
