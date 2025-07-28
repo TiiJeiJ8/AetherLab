@@ -1,19 +1,5 @@
 /* eslint-disable */
 
-/**
- * 高级配置项：
- * 树状图朝向 orient
- * 树状图显示样式 layout
- * 树状图多树排列形式 left, right, top, bottom
- * 曲线度 curveness
- * 线宽 lineWidth
- * 节点间距 nodeGap
- * 节点原点半径 symbolSize
- * 折线分叉位置 edgeForkPosition
- * 连线形状 edgeShape
- * 默认展开层级 initialTreeDepth
- */
-
 // 树状图生成器
 export default function treeOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
     return {

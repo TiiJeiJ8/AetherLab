@@ -100,6 +100,16 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // MA5
+            { key: 'ma5', label: 'MA5', type: 'checkbox', description: 'Whether to show the 5-day moving average line' },
+            // MA10
+            { key: 'ma10', label: 'MA10', type: 'checkbox', description: 'Whether to show the 10-day moving average line' },
+            // MA20
+            { key: 'ma20', label: 'MA20', type: 'checkbox', description: 'Whether to show the 20-day moving average line' },
+            // MA30
+            { key: 'ma30', label: 'MA30', type: 'checkbox', description: 'Whether to show the 30-day moving average line' },
+            // 最大/最小值标记
+            { key: 'showMaxMin', label: 'Show Max/Min', type: 'checkbox', description: 'Whether to show maximum and minimum values on the radar chart' },
         ]
     },
     // 箱线图
@@ -137,9 +147,9 @@ export const chartTypeConfig = {
         ],
         advanced: [
             // 热力图单元格中的标签显示
-            { key: 'label', label: 'Label', type: 'boolean', required: false, description: 'Whether to show labels on heatmap cells' },
-            // 热力图单元格标签内容：默认显示value
-            { key: 'labelFormatter', label: 'Label Formatter', type: 'text', description: 'Custom label format, e.g. "{b}: {c}"' },
+            { key: 'isLabelVisible', label: 'Ceils\' Label', type: 'checkbox', description: 'Whether to show labels on heatmap cells' },
+            // 热力图离散映射开关
+            { key: 'isDiscrete', label: 'Discrete Mapping', type: 'checkbox', description: 'Whether to use discrete color mapping for heatmap ( Default: visualMap )' },
         ]
     },
     // 关系图
@@ -242,6 +252,12 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 排序
+            { key: 'sort', label: 'Sort', type: 'select', options: [{ label: 'Descending', value: 'desc' }, { label: 'Ascending', value: 'asc' }] },
+            // 最小可见面积
+            { key: 'visibleMin', label: 'Visible Min Area', type: 'number', min: 0, description: 'Minimum area for a node to be visible, eg. 300' },
+            // 叶子节点的深度(控制最大显示层级)
+            { key: 'leafDepth', label: 'Leaf Depth', type: 'number', min: 1, description: 'Maximum depth of leaf nodes to display' },
         ]
     },
     // 旭日图

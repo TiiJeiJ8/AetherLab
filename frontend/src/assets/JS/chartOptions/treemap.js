@@ -1,13 +1,5 @@
 /* eslint-disable */
 
-/**
- * 矩形树图高级配置项：
- * 副标题 subtext
- * 布局算法 layoutAlgorithm
- * 最小可见面积 visibleMin
- * 叶子节点的深度(控制最大显示层级) leafDepth
- */
-
 // 引入主题视觉编码分发器
 import { getVisualMapInRangeColor } from "../utils/themeDispatcher"
 
@@ -90,18 +82,13 @@ export default function treemapOption(config, fileDataMap, xData, yDataArr, sele
             {
                 type: 'treemap',
                 data: seriesData,
-                layoutAlgorithm: config.layoutAlgorithm || 'squarify', // 布局算法选项 squarify, slice, dice
-                /**
-                 * slice 适合数据量较少时，横向分布清晰。
-                 * dice 适合数据量较少时，纵向分布清晰。
-                 * squarify 则让每个区域尽量接近正方形，更适合数据量大或层级多的场景。
-                 */
                 visibleMin: config.visibleMin || 300, // 最小可见面积
                 leafDepth: config.leafDepth || 2, // 叶子节点的深度
                 label: {
                     show: true,
                     formatter: '{b}',
                 },
+                sort: config.sort || 'desc',
             },
         ],
         ...customOption,

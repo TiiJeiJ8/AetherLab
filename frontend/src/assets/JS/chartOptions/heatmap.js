@@ -1,5 +1,12 @@
 /* eslint-disable */
 
+/**
+ * 热力图高级配置项：
+ * 颜色离散映射和连续映射
+ * 热力区块标签是否显示
+ * 空白区块是否有颜色
+ */
+
 import { getVisualMapInRangeColor } from "../utils/themeDispatcher";
 
 // 引入主题视觉编码分发器
@@ -72,6 +79,7 @@ export default function heatmapOption(config, fileDataMap, xData, yDataArr, sele
             data: yDataArr
         },
         visualMap: {
+            type: config.isDiscrete ? 'piecewise' : 'continuous',
             min: seriesData.reduce((min, item) => Math.min(min, item[2]), Infinity),
             max: seriesData.reduce((max, item) => Math.max(max, item[2]), -Infinity),
             calculable: true,
@@ -85,7 +93,7 @@ export default function heatmapOption(config, fileDataMap, xData, yDataArr, sele
             type: 'heatmap',
             data: seriesData,
             label: {
-                show: true,
+                show: config.isLabelVisible || false,
             },
             emphasis: {
                 itemStyle: {

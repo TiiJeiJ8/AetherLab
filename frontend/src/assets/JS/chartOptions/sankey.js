@@ -1,16 +1,5 @@
 /* eslint-disable */
 
-/**
- * 桑基图高级配置项：
- * 副标题 subtext
- * 连接颜色 isGradient
- * 连接透明度 lineOpacity
- * 连接曲度 lineCurveness
- * 图表布局 orient
- * 标签配置 labelPositon
- * 左/右对齐布局 nodeAlign
- */
-
 // 桑基图配置生成器
 
 export default function sankeyOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
