@@ -13,6 +13,20 @@ import { getVisualMapInRangeColor } from "../utils/themeDispatcher";
 
 // 热力图生成器
 export default function heatmapOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
+    // 网格线显示控制
+    let xGrid = false, yGrid = false;
+    switch (config.gridVisible) {
+        case 'x':
+            xGrid = true; yGrid = false; break;
+        case 'y':
+            xGrid = false; yGrid = true; break;
+        case 'both':
+            xGrid = true; yGrid = true; break;
+        case 'none':
+        default:
+            xGrid = false; yGrid = false;
+    }
+
     // 获取视觉编码色
     let visualColors = getVisualMapInRangeColor(config.colorScheme);
 
@@ -72,11 +86,13 @@ export default function heatmapOption(config, fileDataMap, xData, yDataArr, sele
         },
         xAxis: {
             type: 'category',
-            data: xData
+            data: xData,
+            splitLine: { show: xGrid }
         },
         yAxis: {
             type: 'category',
-            data: yDataArr
+            data: yDataArr,
+            splitLine: { show: yGrid }
         },
         visualMap: {
             type: config.isDiscrete ? 'piecewise' : 'continuous',

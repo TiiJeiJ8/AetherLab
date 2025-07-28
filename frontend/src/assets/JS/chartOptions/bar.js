@@ -2,6 +2,19 @@
 
 // 柱状图 option 生成器
 export default function barOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
+    // 网格线显示控制
+    let xGrid = false, yGrid = false;
+    switch (config.gridVisible) {
+        case 'x':
+            xGrid = true; yGrid = false; break;
+        case 'y':
+            xGrid = false; yGrid = true; break;
+        case 'both':
+            xGrid = true; yGrid = true; break;
+        case 'none':
+        default:
+            xGrid = false; yGrid = false;
+    }
     const { yAxis, title, animation } = config;
     const yArr = Array.isArray(yAxis) ? yAxis : [yAxis];
     const seriesArr = yArr.map((y, idx) => ({
@@ -41,9 +54,14 @@ export default function barOption(config, fileDataMap, xData, yDataArr, selected
         xAxis: {
             type: 'category',
             data: xData,
-            axisLabel: { interval: 0, rotate: xData.length > 10 ? 45 : 0 }
+            axisLabel: { interval: 0, rotate: xData.length > 10 ? 45 : 0 },
+            splitLine: { show: xGrid }
         },
-        yAxis: { type: 'value', name: yArr.map(y => y.field).join(',') },
+        yAxis: {
+            type: 'value',
+            name: yArr.map(y => y.field).join(','),
+            splitLine: { show: yGrid }
+        },
         series: seriesArr,
         animation: animation,
         animationDuration: animation ? 1500 : 0,

@@ -2,6 +2,31 @@
 
 // K线图生成器
 export default function candlestickOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
+    // 网格线显示控制
+    let xGrid = false, yGrid = false;
+    switch (config.gridVisible) {
+        case 'x':
+            xGrid = true; yGrid = false; break;
+        case 'y':
+            xGrid = false; yGrid = true; break;
+        case 'both':
+            xGrid = true; yGrid = true; break;
+        case 'none':
+        default:
+            xGrid = false; yGrid = false;
+    }
+    // 标记最大/最小值
+    let markPoint = undefined;
+    if (config.showMaxMin) {
+        markPoint = {
+            data: [
+                { type: 'max', name: 'Max' },
+                { type: 'min', name: 'Min' }
+            ],
+            symbolSize: 60,
+            label: { fontSize: 12 }
+        };
+    }
     const { yAxis, title, animation } = config;
     const yArr = Array.isArray(yAxis) ? yAxis : [yAxis];
     // K线图数据处理
@@ -9,8 +34,66 @@ export default function candlestickOption(config, fileDataMap, xData, yDataArr, 
         name: yArr[idx].field,
         type: 'candlestick',
         data: yDataArr[0],
-        animationDuration: animation ? 1500 : 0
+        animationDuration: animation ? 1500 : 0,
+        ...(markPoint ? { markPoint } : {})
     }));
+
+    // MA均线计算函数
+    function calcMA(data, period) {
+        return data.map((item, idx) => {
+            if (idx < period - 1) return '-';
+            // ECharts K线数据格式：[open, close, low, high]
+            // 取收盘价（第2项）
+            const sum = data.slice(idx - period + 1, idx + 1).reduce((acc, cur) => acc + cur[1], 0);
+            return +(sum / period).toFixed(2);
+        });
+    }
+
+    // 生成MA系列
+    const maSeries = [];
+    if (config.ma5) {
+        maSeries.push({
+            name: 'MA5',
+            type: 'line',
+            data: calcMA(yDataArr[0], 5),
+            smooth: true,
+            showSymbol: false,
+            lineStyle: { width: 1 }
+        });
+    }
+    if (config.ma10) {
+        maSeries.push({
+            name: 'MA10',
+            type: 'line',
+            data: calcMA(yDataArr[0], 10),
+            smooth: true,
+            showSymbol: false,
+            lineStyle: { width: 1 }
+        });
+    }
+    if (config.ma20) {
+        maSeries.push({
+            name: 'MA20',
+            type: 'line',
+            data: calcMA(yDataArr[0], 20),
+            smooth: true,
+            showSymbol: false,
+            lineStyle: { width: 1 }
+        });
+    }
+    if (config.ma30) {
+        maSeries.push({
+            name: 'MA30',
+            type: 'line',
+            data: calcMA(yDataArr[0], 30),
+            smooth: true,
+            showSymbol: false,
+            lineStyle: { width: 1 }
+        });
+    }
+
+    // legend需包含均线
+    const legendData = [...yArr.map(y => y.field), ...maSeries.map(ma => ma.name)];
 
     return {
         title: {
@@ -31,14 +114,14 @@ export default function candlestickOption(config, fileDataMap, xData, yDataArr, 
         legend: {
             type: 'scroll',
             show: config.legendVisible !== false,
-            data: yArr.map(y => y.field),
+            data: legendData,
             top: config.legendPosition || 'bottom',
         },
         toolbox: {
             show: true,
             feature: {
+                dataZoom: { show: true },
                 dataView: { show: true, readOnly: false },
-                magicType: { show: true, type: ['line', 'bar', 'candlestick'] },
                 restore: { show: true },
                 saveAsImage: { show: true }
             }
@@ -46,10 +129,15 @@ export default function candlestickOption(config, fileDataMap, xData, yDataArr, 
         xAxis: {
             type: 'category',
             data: xData,
-            axisLabel: { interval: 0, rotate: xData.length > 10 ? 45 : 0 }
+            axisLabel: { interval: 0, rotate: xData.length > 10 ? 45 : 0 },
+            splitLine: { show: xGrid }
         },
-        yAxis: { type: 'value', name: yArr.map(y => y.field).join(',') },
-        series: seriesDataProcessed,
+        yAxis: {
+            type: 'value',
+            name: yArr.map(y => y.field).join(','),
+            splitLine: { show: yGrid }
+        },
+        series: [...seriesDataProcessed, ...maSeries],
         animation,
         animationDuration: animation ? 1500 : 0,
         ...customOption

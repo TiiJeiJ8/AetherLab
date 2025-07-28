@@ -4,6 +4,20 @@
 export default function boxplotOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
     const { seriesList, seriesData_boxplot, outlierData } = seriesData;
 
+    // 网格线显示控制
+    let xGrid = false, yGrid = false;
+    switch (config.gridVisible) {
+        case 'x':
+            xGrid = true; yGrid = false; break;
+        case 'y':
+            xGrid = false; yGrid = true; break;
+        case 'both':
+            xGrid = true; yGrid = true; break;
+        case 'none':
+        default:
+            xGrid = false; yGrid = false;
+    }
+
     // legend.data 和 series[].name 都转为字符串，保证颜色和交互
     const legendData = seriesList.map(String);
     const debugSeries = legendData.map((ser, idx) => {
@@ -82,10 +96,12 @@ export default function boxplotOption(config, fileDataMap, xData, yDataArr, sele
                 interval: 0,
                 rotate: xData.length > 10 ? 45 : 0
             },
+            splitLine: { show: xGrid }
         },
         yAxis: {
             type: 'value',
             name: 'Value',
+            splitLine: { show: yGrid }
         },
         series: [...debugSeries, ...outlierSeries],
         ...customOption

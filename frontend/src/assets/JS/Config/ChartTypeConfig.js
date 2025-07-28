@@ -13,6 +13,8 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 网格线(x, y, x&y, none)显示
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] }
         ]
     },
     // 柱状图
@@ -24,6 +26,8 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 网格线(x, y, x&y, none)显示
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] }
         ]
     },
     // 饼图
@@ -46,6 +50,8 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 网格线(x, y, x&y, none)显示
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] }
         ]
     },
     // 地图
@@ -85,6 +91,8 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 网格线(x, y, x&y, none)显示
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
             // MA5
             { key: 'ma5', label: 'MA5', type: 'checkbox', description: 'Whether to show the 5-day moving average line' },
             // MA10
@@ -131,6 +139,8 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 网格线(x, y, x&y, none)显示
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
         ]
     },
     // 热力图
@@ -146,6 +156,8 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 网格线(x, y, x&y, none)显示
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
             // 热力图单元格中的标签显示
             { key: 'isLabelVisible', label: 'Ceils\' Label', type: 'checkbox', description: 'Whether to show labels on heatmap cells' },
             // 热力图离散映射开关
@@ -376,6 +388,8 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 网格线(x, y, x&y, none)显示
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
             // 图形符号（可选）
             { key: 'symbol', label: 'Symbol', type: 'select', options: [{ label: 'Circle', value: 'circle' }, { label: 'Rect', value: 'rect' }, { label: 'Image', value: 'image' }] },
         ]
