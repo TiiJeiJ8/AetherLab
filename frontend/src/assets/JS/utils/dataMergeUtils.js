@@ -968,14 +968,26 @@ function sunburstChartHandler(config, fileDataMap, options) {
 function parallelChartHandler(config, fileDataMap, options) {
     const { dimensions, nameField } = config;
 
-    // 获取数据
-    const dimensionsRows = dimensions.map(dim => getDataRows(fileDataMap, dim.file));
-    const nameRows = nameField ? getDataRows(fileDataMap, nameField.file) : [];
+    const mainFile = dimensions[0].file;
+    const rows = getDataRows(fileDataMap, mainFile);
+    const dimensionsRows = rows.map(row => {
+        const obj = {};
+        dimensions.forEach(dim => {
+            obj[dim.field] = row[dim.field];
+        });
+        return obj;
+    });
+    const nameRows = nameField
+        ? rows.map(row => ({ name: row[nameField.field] }))
+        : [];
 
-    const seriesData = {
-        dimensions: dimensionsRows,
-        name: nameRows
-    };
+
+    const combinedRows = dimensionsRows.map((dimObj, idx) => ({
+        ...dimObj,
+        ...(nameRows[idx] || {})
+    }));
+
+    const seriesData = combinedRows;
 
     return {
         xData: [],
