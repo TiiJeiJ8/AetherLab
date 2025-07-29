@@ -274,8 +274,7 @@ const isConfigValid = computed(() => {
     }
     if (['radar'].includes(type)) {
         return Array.isArray(cfg.indicator) && cfg.indicator.length > 0 &&
-        Array.isArray(cfg.value) && cfg.value.length > 0 &&
-        cfg.name && cfg.name.field;
+        Array.isArray(cfg.value) && cfg.value.length > 0;
 	}
 	if (['boxplot'].includes(type)) {
 		return cfg.category && cfg.category.field
