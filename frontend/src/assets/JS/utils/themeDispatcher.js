@@ -15,10 +15,19 @@ export function getVisualMapInRangeColor(themeName) {
     // 默认色
     return ['#e0ffff', '#006edd'];
 }
-// themeDispatcher.js
+
+// 获取主题的 color数组
+export function getThemeColorPalette(themeName) {
+    const theme = getTheme(themeName);
+    if (theme && Array.isArray(theme.color) && theme.color.length > 0) {
+        return theme.color;
+    }
+    // 默认色
+    return ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'];
+}
+
 // 主题分发器：根据主题名返回主题对象
 
-// 假设所有主题 JSON 已通过 import 或 require 方式加载
 import defaultTheme from '../../../../public/themes/default.json';
 import darkTheme from '../../../../public/themes/dark.json';
 import vintageTheme from '../../../../public/themes/vintage.json';
