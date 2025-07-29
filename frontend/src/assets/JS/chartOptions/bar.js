@@ -10,7 +10,6 @@
  * 极坐标柱状图（radial、tangential）
  * 极坐标endAngle
  * 柱状图渐变
- * 圆角柱体
  * 堆叠柱状图
  * 堆叠柱状图的归一化
  * 堆叠条形图
@@ -19,6 +18,8 @@
  * 多层下钻
  * 动态排序
  */
+
+import { getThemeColorPalette } from '../utils/themeDispatcher'
 
 // 柱状图 option 生成器
 export default function barOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
@@ -37,13 +38,119 @@ export default function barOption(config, fileDataMap, xData, yDataArr, selected
     }
     const { yAxis, title, animation } = config;
     const yArr = Array.isArray(yAxis) ? yAxis : [yAxis];
-    const seriesArr = yArr.map((y, idx) => ({
-        name: y.field,
-        type: 'bar',
-        data: yDataArr[idx],
-        animationDuration: animation ? 1500 : 0
-    }));
-    return {
+    const colorPalette = getThemeColorPalette(config.colorScheme);
+    // 归一化处理
+    let normalizedData = yDataArr;
+    if (config.isNormalized && yDataArr.length > 1) {
+        // 按列归一化
+        normalizedData = yDataArr.map((arr, idx) => arr.map((v, i) => {
+            const sum = yDataArr.reduce((acc, cur) => acc + (cur[i] || 0), 0);
+            return sum ? v / sum : 0;
+        }));
+    }
+    const seriesArr = yArr.map((y, idx) => {
+        const base = {
+            name: y.field,
+            type: 'bar',
+            data: (config.isNormalized && yDataArr.length > 1) ? normalizedData[idx] : yDataArr[idx],
+            // 动画
+            animationDuration: 800,
+            animationEasing: 'cubicOut',
+            animationDelay: (idx) => idx * 30,
+            animationDelayUpdate: (idx) => idx * 30
+        };
+        // 堆叠
+        if (config.isStack || config.isNormalized) base.stack = 'total';
+        // 渐变色
+        if (config.barGradient) {
+            base.itemStyle = base.itemStyle || {};
+            base.itemStyle.color = {
+                type: 'linear',
+                x: 0, y: 0, x2: 0, y2: 1,
+                colorStops: [
+                    { offset: 0, color: colorPalette[idx % colorPalette.length] },
+                    { offset: 1, color: colorPalette[(idx + 1) % colorPalette.length] }
+                ]
+            };
+        }
+        // 背景色
+        if (config.barBackgroundColor) {
+            base.showBackground = true;
+            base.backgroundStyle = { color: config.barBackgroundColor };
+        }
+        // 最大最小值
+        if (config.showMaxMin) {
+            base.markPoint = {
+                data: [
+                    { type: 'max', name: 'Max' },
+                    { type: 'min', name: 'Min' }
+                ]
+            };
+        }
+        // 均值线
+        if (config.showMeanLine) {
+            base.markLine = {
+                data: [
+                    { type: 'average', name: 'Mean' }
+                ]
+            };
+        }
+        return base;
+    });
+    // 极坐标
+    let polarOpt = {};
+    if (config.polarStyle && config.polarStyle !== 'none') {
+        polarOpt.polar = {};
+        if (config.polarStyle === 'radial') {
+            polarOpt.angleAxis = {
+                type: 'category',
+                data: xData,
+                startAngle: config.startAngle || 0,
+                endAngle: config.endAngle || 360,
+            };
+            polarOpt.radiusAxis = { z: 999 };
+            seriesArr.forEach(s => s.coordinateSystem = 'polar');
+        } else if (config.polarStyle === 'tangential') {
+            polarOpt.radiusAxis = { type: 'category', data: xData, z: 999 };
+            polarOpt.angleAxis = {
+                startAngle: config.startAngle || 0,
+                endAngle: config.endAngle || 360
+            };
+            seriesArr.forEach(s => s.coordinateSystem = 'polar');
+        }
+    }
+    // 轴对齐
+    const xAxisOpt = {
+        type: 'category',
+        data: xData,
+        axisLabel: { interval: 0, rotate: xData.length > 10 ? 45 : 0 },
+        splitLine: { show: xGrid },
+        name: config.xAxisName || 'X Axis',
+        alignWithLabel: !!config.alignTicks
+    };
+    // 竖直/水平条形
+    let yAxisOpt = {
+        type: 'value',
+        name: config.yAxisName || 'Y Axis',
+        splitLine: { show: yGrid }
+    };
+    if (config.isHorizontal === true) {
+        // 横向条形
+        xAxisOpt.type = 'value';
+        xAxisOpt.name = config.xAxisName || 'X Axis';
+        yAxisOpt = {
+            type: 'category',
+            data: xData,
+            name: config.yAxisName || 'Y Axis',
+        };
+    }
+    // 交错正负轴标签
+    if (config.staggerAxisLabel) {
+        xAxisOpt.axisLabel = xAxisOpt.axisLabel || {};
+        xAxisOpt.axisLabel.margin = 20;
+        xAxisOpt.axisLabel.rotate = 30;
+    }
+    const option = {
         title: {
             text: config.title || 'Chart of Bar',
             subtext: config.subtext,
@@ -71,22 +178,16 @@ export default function barOption(config, fileDataMap, xData, yDataArr, selected
                 saveAsImage: { show: true }
             }
         },
-        xAxis: {
-            type: 'category',
-            data: xData,
-            axisLabel: { interval: 0, rotate: xData.length > 10 ? 45 : 0 },
-            splitLine: { show: xGrid },
-            name: config.xAxisName || 'X Axis',
-        },
-        yAxis: {
-            type: 'value',
-            name: yArr.map(y => y.field).join(','),
-            splitLine: { show: yGrid },
-            name: config.yAxisName || 'Y Axis',
-        },
         series: seriesArr,
         animation: animation,
         animationDuration: animation ? 1500 : 0,
+        ...polarOpt,
         ...customOption
     };
+    // 极坐标下不显示xAxis/yAxis
+    if (!polarOpt.polar) {
+        option.xAxis = xAxisOpt;
+        option.yAxis = yAxisOpt;
+    }
+    return option;
 }
