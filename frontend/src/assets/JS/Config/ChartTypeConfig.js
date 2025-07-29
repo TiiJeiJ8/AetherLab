@@ -13,8 +13,32 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // xAxis,yAxis名称
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] }
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
+            // 显示最大最小值
+            { key: 'showMaxMin', label: 'Show Max/Min', type: 'checkbox', description: 'Whether to show maximum and minimum values on the line chart' },
+            // 均值线开关
+            { key: 'showMeanLine', label: 'Show Mean Line', type: 'checkbox', description: 'Whether to show the mean line on the chart' },
+            // 折线平滑
+            { key: 'isSmooth', label: 'Smooth', type: 'checkbox', description: 'Whether to smooth the line' },
+            // 折线颜色渐变
+            { key: 'lineGradient', label: '[Line] Gradient', type: 'checkbox', description: 'Whether to use gradient color for the line' },
+            // 极坐标开关
+            { key: 'isPolar', label: 'Polar Coordinate', type: 'checkbox', description: 'Whether to use polar coordinates for the line chart' },
+            // 面积图模式开关
+            { key: 'isArea', label: 'Area Chart', type: 'checkbox', description: 'Whether to display as an area chart' },
+            // 面积图堆叠
+            { key: 'isStack', label: '[Area] Stacked Area', type: 'checkbox', description: 'Whether to stack area charts' },
+            // 面积图颜色渐变
+            { key: 'areaGradient', label: '[Area] Gradient', type: 'checkbox', description: 'Whether to use gradient color for the area chart' },
+            //todo 凹凸图模式开关(future)
+            // { key: 'isBumpChart', label: 'Bump Chart', type: 'checkbox', description: 'Whether to use Bump Chart' },
+            // 阶梯折线图模式开关
+            { key: 'isStep', label: 'Step Line', type: 'checkbox', description: 'Whether to display as a step line chart' },
+            //todo 折线样式和数据点样式(future)
         ]
     },
     // 柱状图
@@ -26,8 +50,17 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // xAxis,yAxis名称
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] }
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
+            // 显示最大最小值
+            { key: 'showMaxMin', label: 'Show Max/Min', type: 'checkbox', description: 'Whether to show maximum and minimum values on the line chart' },
+            // 均值线开关
+            { key: 'showMeanLine', label: 'Show Mean Line', type: 'checkbox', description: 'Whether to show the mean line on the chart' },
+            // 极坐标开关
+            { key: 'isPolar', label: 'Polar Coordinate', type: 'checkbox', description: 'Whether to use polar coordinates for the line chart' },
         ]
     },
     // 饼图
@@ -77,6 +110,9 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // xAxis,yAxis名称
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
             { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] }
         ]
@@ -118,6 +154,9 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // xAxis,yAxis名称
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
             { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
             // MA5
@@ -168,6 +207,9 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // xAxis,yAxis名称
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
             { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
         ]
@@ -185,6 +227,9 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // xAxis,yAxis名称
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
             { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
             // 热力图单元格中的标签显示
@@ -425,6 +470,9 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // xAxis,yAxis名称
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
             { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
             // 图形符号（可选）
