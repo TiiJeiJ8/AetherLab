@@ -130,11 +130,12 @@ export default function candlestickOption(config, fileDataMap, xData, yDataArr, 
             type: 'category',
             data: xData,
             axisLabel: { interval: 0, rotate: xData.length > 10 ? 45 : 0 },
-            splitLine: { show: xGrid }
+            splitLine: { show: xGrid },
+            name: config.xAxisName || 'X Axis',
         },
         yAxis: {
             type: 'value',
-            name: yArr.map(y => y.field).join(','),
+            name: config.yAxisName || 'Y Axis',
             splitLine: { show: yGrid }
         },
         series: [...seriesDataProcessed, ...maSeries],

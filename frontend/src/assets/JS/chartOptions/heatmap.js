@@ -80,12 +80,14 @@ export default function heatmapOption(config, fileDataMap, xData, yDataArr, sele
         xAxis: {
             type: 'category',
             data: xData,
-            splitLine: { show: xGrid }
+            splitLine: { show: xGrid },
+            name: config.xAxisName || 'X Axis',
         },
         yAxis: {
             type: 'category',
             data: yDataArr,
-            splitLine: { show: yGrid }
+            splitLine: { show: yGrid },
+            name: config.yAxisName || 'Y Axis',
         },
         visualMap: {
             type: config.isDiscrete ? 'piecewise' : 'continuous',

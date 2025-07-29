@@ -1,5 +1,25 @@
 /* eslint-disable */
 
+/**
+ * 柱状图高级配置项：
+ * 均值线
+ * 坐标轴刻度与标签对齐开关
+ * 带背景色的柱状图
+ * 高亮单个柱子
+ * 交错正负轴标签
+ * 极坐标柱状图（radial、tangential）
+ * 极坐标endAngle
+ * 柱状图渐变
+ * 圆角柱体
+ * 堆叠柱状图
+ * 堆叠柱状图的归一化
+ * 堆叠条形图
+ * 折、柱混合
+ * 多Y轴
+ * 多层下钻
+ * 动态排序
+ */
+
 // 柱状图 option 生成器
 export default function barOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
     // 网格线显示控制
@@ -26,7 +46,7 @@ export default function barOption(config, fileDataMap, xData, yDataArr, selected
     return {
         title: {
             text: config.title || 'Chart of Bar',
-            subtext: subtext,
+            subtext: config.subtext,
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'
@@ -55,12 +75,14 @@ export default function barOption(config, fileDataMap, xData, yDataArr, selected
             type: 'category',
             data: xData,
             axisLabel: { interval: 0, rotate: xData.length > 10 ? 45 : 0 },
-            splitLine: { show: xGrid }
+            splitLine: { show: xGrid },
+            name: config.xAxisName || 'X Axis',
         },
         yAxis: {
             type: 'value',
             name: yArr.map(y => y.field).join(','),
-            splitLine: { show: yGrid }
+            splitLine: { show: yGrid },
+            name: config.yAxisName || 'Y Axis',
         },
         series: seriesArr,
         animation: animation,

@@ -96,11 +96,12 @@ export default function boxplotOption(config, fileDataMap, xData, yDataArr, sele
                 interval: 0,
                 rotate: xData.length > 10 ? 45 : 0
             },
-            splitLine: { show: xGrid }
+            splitLine: { show: xGrid },
+            name: config.xAxisName || 'X Axis'
         },
         yAxis: {
             type: 'value',
-            name: 'Value',
+            name: config.yAxisName || 'Y Axis',
             splitLine: { show: yGrid }
         },
         series: [...debugSeries, ...outlierSeries],

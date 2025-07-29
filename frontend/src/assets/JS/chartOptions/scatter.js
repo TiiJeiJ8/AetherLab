@@ -1,5 +1,20 @@
 /* eslint-disable */
 
+/**
+ * 散点图高级配置项：
+ * 聚合
+ * 基础拟合回归线（指数回归、线性回归、多项式回归）
+ * 单轴散点图
+ * 均值线
+ * 系列最高值、最小值（可选使用方框框住样式）
+ * 散点图标签顶部/右侧/对齐
+ * 散点样式（根据系列分配）
+ * 视觉映射
+ * 大小映射
+ * 连意图
+ * 极坐标系
+ */
+
 // 散点图 option 生成器
 export default function scatterOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
     // 网格线显示控制
@@ -57,11 +72,13 @@ export default function scatterOption(config, fileDataMap, xData, yDataArr, sele
             data: xData,
             axisLabel: { interval: 0, rotate: xData.length > 10 ? 45 : 0 },
             splitLine: { show: xGrid },
+            name: config.xAxisName || 'X Axis',
         },
         yAxis: {
             type: 'value',
             name: yArr.map(y => y.field).join(','),
             splitLine: { show: yGrid },
+            name: config.yAxisName || 'Y Axis',
         },
         series: seriesArr,
         animation: animation,
