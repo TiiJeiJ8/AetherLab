@@ -55,12 +55,26 @@ export const chartTypeConfig = {
             { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
             { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
+            // 柱状图平行/竖直显示
+            { key: 'isHorizontal', label: 'Horizontal Bars', type: 'checkbox', description: 'Whether to display bars horizontally' },
             // 显示最大最小值
             { key: 'showMaxMin', label: 'Show Max/Min', type: 'checkbox', description: 'Whether to show maximum and minimum values on the line chart' },
             // 均值线开关
             { key: 'showMeanLine', label: 'Show Mean Line', type: 'checkbox', description: 'Whether to show the mean line on the chart' },
-            // 极坐标开关
-            { key: 'isPolar', label: 'Polar Coordinate', type: 'checkbox', description: 'Whether to use polar coordinates for the line chart' },
+            // 坐标轴刻度对齐标签
+            { key: 'alignTicks', label: 'Align Ticks', type: 'checkbox', description: 'Whether to align ticks on the y-axis' },
+            // 柱体背景色
+            { key: 'barBackgroundColor', label: 'Bar Background Color', type: 'text', placeholder: 'Hex Color, eg. #fff', description: 'Background color of the bar chart' },
+            // 柱状图渐变
+            { key: 'barGradient', label: 'Bar Gradient', type: 'checkbox', description: 'Whether to use gradient color for the bar chart' },
+            // 柱体堆叠
+            { key: 'isStack', label: 'Stacked Bar', type: 'checkbox', description: 'Whether to stack bar charts' },
+            // 柱体堆叠归一化
+            { key: 'isNormalized', label: 'Normalized Stacked Bar', type: 'checkbox', description: 'Whether to normalize stacked bar charts' },
+            // 极坐标(None, radial, tangential)
+            { key: 'polarStyle', label: 'Polar Coordinate Style', type: 'select', options: [{ label: 'None', value: 'none' }, { label: 'Radial', value: 'radial' }, { label: 'Tangential', value: 'tangential' }], description: 'Whether to use polar coordinates for the line chart' },
+            // 极坐标endAngle
+            { key: 'endAngle', label: '[Polar]End Angle', type: 'number', min: 0, max: 360, description: 'Ending angle for the polar bar chart, default is 360' },
         ]
     },
     // 饼图
