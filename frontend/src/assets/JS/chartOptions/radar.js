@@ -25,7 +25,8 @@ export default function radarOption(config, fileDataMap, xData, yDataArr, select
             data: seriesData_radar.map(item => item.name) || []
         },
         radar: {
-            indicator: indicator
+            indicator: indicator,
+            shape: config.radarShape || '',
         },
         series: [
             {

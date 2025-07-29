@@ -59,7 +59,7 @@ export default function boxplotOption(config, fileDataMap, xData, yDataArr, sele
     const option = {
         title: {
             text: config.title || 'Chart of Boxplot',
-            subtext: subtext,
+            subtext: config.subtext,
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

@@ -1,14 +1,5 @@
 /* eslint-disable */
 
-/**
- * 旭日图高级配置项：
- * 副标题 subtext
- * 排序方式 sort (undefined, dec, asc)
- * 最小显示标签角度 minAngle
- * 旭日图区块圆角 borderRadius
- * 旭日图边界宽度(控制区块距离) borderWidth
- */
-
 // 引入主题视觉编码分发器
 import { getVisualMapInRangeColor } from '../utils/themeDispatcher';
 
@@ -134,7 +125,7 @@ export default function sunburstOption(config, fileDataMap, xData, yDataArr, sel
                 type: 'sunburst',
                 data: seriesData,
                 radius: [0, outerRadius],
-                sort: config.sort || 'undefined',
+                sort: config.sort || 'desc',
                 emphasis: {
                     focus: 'ancestor'
                 },
