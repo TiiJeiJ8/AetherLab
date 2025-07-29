@@ -73,6 +73,8 @@ export const chartTypeConfig = {
             { key: 'isNormalized', label: 'Normalized Stacked Bar', type: 'checkbox', description: 'Whether to normalize stacked bar charts' },
             // 极坐标(None, radial, tangential)
             { key: 'polarStyle', label: 'Polar Coordinate Style', type: 'select', options: [{ label: 'None', value: 'none' }, { label: 'Radial', value: 'radial' }, { label: 'Tangential', value: 'tangential' }], description: 'Whether to use polar coordinates for the line chart' },
+            // 极坐标startAngle
+            { key: 'startAngle', label: '[Polar]Start Angle', type: 'number', min: 0, max: 360, description: 'Starting angle for the polar bar chart, default is 0' },
             // 极坐标endAngle
             { key: 'endAngle', label: '[Polar]End Angle', type: 'number', min: 0, max: 360, description: 'Ending angle for the polar bar chart, default is 360' },
         ]
