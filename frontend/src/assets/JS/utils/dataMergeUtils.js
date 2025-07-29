@@ -277,6 +277,16 @@ function pieChartHandler(config, fileDataMap, options) {
 }
 
 /**
+ * 地图数据处理器
+ * @param {ChartConfig} config
+ * @param {FileDataMap} fileDataMap
+ * @param {Object} options
+ * @returns {Object}
+ */
+function mapChartHandler(config, fileDataMap, options) {
+}
+
+/**
  * K线图数据处理器
  * @param {ChartConfig} config
  * @param {FileDataMap} fileDataMap
@@ -1148,6 +1158,7 @@ const chartTypeHandlers = {
     Bar: xyChartHandler,
     Pie: pieChartHandler,
     Scatter: xyChartHandler,
+    Map: mapChartHandler,
     Candlestick: candlestickChartHandler,
     Heatmap: heatmapChartHandler,
     Radar: radarChartHandler,

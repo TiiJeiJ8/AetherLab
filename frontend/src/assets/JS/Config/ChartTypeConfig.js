@@ -39,6 +39,33 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 圆角
+            { key: 'pieBorderRadius', label: 'Border Radius', type: 'number', min: 0 },
+            // 扇区间隙
+            { key: 'pieBorderWidth', label: 'Border Width', type: 'number', min: 0 },
+            // 扇区边框颜色
+            { key: 'pieBorderColor', label: 'Border Color', type: 'text', placeholder: 'Hex Color, eg. #fff', description: 'Color of the pie sector border' },
+            // 内/外半径
+            { key: 'innerRadius', label: 'Inner Radius', type: 'number', min: 0, description: 'Inner radius of the pie chart, can be percentage or pixel value' },
+            { key: 'outerRadius', label: 'Outer Radius', type: 'number', min: 0, description: 'Outer radius of the pie chart, can be percentage or pixel value' },
+            // 扇区选中偏移量
+            { key: 'selectedOffset', label: 'Selected Offset', type: 'number', min: 0, description: 'Offset distance when a sector is selected' },
+            // 饼图引导线
+            { key: 'labelLineVisible', label: 'Label Line Visible', type: 'checkbox', description: 'Whether to show label lines for pie sectors' },
+            { key: 'labelLineLength', label: 'Label Line Length', type: 'number', min: 0, description: 'Length of the label line for pie sectors' }, // 第一段引导线长度
+            { key: 'labelLineLength2', label: 'Label Line Length 2', type: 'number', min: 0, description: 'Length of the second segment of the label line for pie sectors' }, // 第二段引导线长度
+            { key: 'labelLineSmooth', label: 'Label Line Smooth', type: 'number', min: 0, max: 1, description: 'Whether to smooth the label line for pie sectors' }, // 是否平滑
+            { key: 'labelLineColor', label: 'Label Line Color', type: 'text', placeholder: 'Hex Color, eg. #fff', description: 'Color of the label line for pie sectors' },
+            { key: 'labelLineWidth', label: 'Label Line Width', type: 'number', min: 0, description: 'Width of the label line for pie sectors' }, // 引导线宽度
+            { key: 'labelLineType', label: 'Label Line Type', type: 'select', options: [{ label: 'Solid', value: 'solid' }, { label: 'Dashed', value: 'dashed' }, { label: 'Dotted', value: 'dotted' }] }, // 引导线类型
+            //todo 饼图纹理(future)
+            // 南丁格尔玫瑰图开关
+            { key: 'roseType', label: 'Rose Type', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'Radius Mode', value: 'radius' }, { label: 'Area Mode', value: 'area' }] }, // radius->数值越大，半径越粗，面积呈二次方放大（视觉冲击强）, area->数值越大，面积越大，半径按平方根增长（更精确感知比例）
+            // 半环形图开关
+            { key: 'isHalfDonut', label: 'Half Donut', type: 'checkbox', description: 'Whether to display as a half donut chart' },
+            { key: 'startAngle', label: 'Start Angle', type: 'number', min: 0, max: 360, description: 'Starting angle for the pie chart, default is 0' },
+            { key: 'endAngle', label: 'End Angle', type: 'number', min: 0, max: 360, description: 'Ending angle for the pie chart, default is 360' },
+            //todo 嵌套环形图开关(future)
         ]
     },
     // 散点图

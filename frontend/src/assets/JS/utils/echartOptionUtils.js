@@ -4,10 +4,11 @@
 /* eslint-disable */
 
 // 模块化导入各类图表 option 生成器
-import barOption from '../../JS/chartOptions/bar'
-import scatterOption from '../../JS/chartOptions/scatter'
 import lineOption from '../../JS/chartOptions/line'
+import barOption from '../../JS/chartOptions/bar'
 import pieOption from '../../JS/chartOptions/pie'
+import scatterOption from '../../JS/chartOptions/scatter'
+import mapOption from '../../JS/chartOptions/map'
 import candlestickOption from '../chartOptions/candlestick'
 import heatmapOption from '../chartOptions/heatmap'
 import radarOption from '../chartOptions/radar'
@@ -38,6 +39,7 @@ registerChartOptionGenerator('Line', lineOption)
 registerChartOptionGenerator('Bar', barOption)
 registerChartOptionGenerator('Pie', pieOption)
 registerChartOptionGenerator('Scatter', scatterOption)
+registerChartOptionGenerator('Geo_Map', mapOption)
 registerChartOptionGenerator('Candlestick', candlestickOption)
 registerChartOptionGenerator('heatmap', heatmapOption)
 registerChartOptionGenerator('Radar', radarOption)
