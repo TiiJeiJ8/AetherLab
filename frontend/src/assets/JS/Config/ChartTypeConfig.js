@@ -113,11 +113,13 @@ export const chartTypeConfig = {
             // 数据值
             { key: 'value', label: 'Value', type: 'measure', required: true, multiple: true, description: 'Values corresponding to each indicator, e.g. [120, 200, 150]' },
             // 系列名称
-            { key: 'name', label: 'Name', type: 'tag', required: false, description: 'Series name for the radar chart' },
+            { key: 'name', label: 'Series Name', type: 'tag', required: true, description: 'Series name for the radar chart' },
         ],
         basic: [
         ],
         advanced: [
+            // 雷达图形状
+            { key: 'radarShape', label: 'Radar Shape', type: 'select', required: false, options: [{ label: 'Polygon', value: '' }, { label: 'Circle', value: 'circle' }] },
         ]
     },
     // 箱线图
@@ -289,6 +291,14 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 排序
+            { key: 'sort', label: 'Sort', type: 'select', options: [{ label: 'Descending', value: 'desc' }, { label: 'Ascending', value: 'asc' }] },
+            // 最小显示标签角度
+            { key: 'minAngle', label: 'Min Angle', type: 'number', min: 0, max: 180, description: 'Minimum angle for labels to be displayed' },
+            // 区块圆角
+            { key: 'borderRadius', label: 'Border Radius', type: 'number', min: 0, max: 50, description: 'Radius of the corners of the sunburst blocks' },
+            // 边框宽度
+            { key: 'borderWidth', label: 'Border Width', type: 'number', min: 0, max: 10, description: 'Width of the border around each sunburst block' },
         ]
     },
     // 平行坐标系图
