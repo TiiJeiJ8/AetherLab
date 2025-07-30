@@ -230,9 +230,15 @@ function xyChartHandler(config, fileDataMap, options) {
         }
         const xData = Array.from(groupMap.keys());
         // 默认聚合函数为累加
-        const defaultAggregate = arr => arr.reduce((a, b) => a + b, 0);
+        const defaultAggregate = arr => arr.length === 0 ? null : arr.reduce((a, b) => a + b, 0);
         const aggFn = typeof aggregateFn === 'function' ? aggregateFn : defaultAggregate;
-        const yDataArr = yArr.map((y, idx) => xData.map(name => aggFn(groupMap.get(name)[idx])));
+        let yDataArr = yArr.map((y, idx) => xData.map(name => aggFn(groupMap.get(name)[idx])));
+
+        // 应用缺失值处理
+        if (nullHandlingType && nullHandlingType !== 'ignore') {
+            yDataArr = yDataArr.map(arr => handleNulls(nullHandlingType, arr, nullHandlingModule));
+        }
+
         return { xData, yDataArr, mergeType: 'groupByName', seriesData: [] };
     } else {
         // 返回原始未聚合数据
@@ -242,6 +248,12 @@ function xyChartHandler(config, fileDataMap, options) {
             const parsedVal = parseFloat(rawVal);
             return (rawVal === null || rawVal === undefined || rawVal === '' || Number.isNaN(parsedVal)) ? null : parsedVal;
         }));
+
+        // 应用缺失值处理
+        if (nullHandlingType && nullHandlingType !== 'ignore') {
+            yDataArr = yDataArr.map(arr => handleNulls(nullHandlingType, arr, nullHandlingModule));
+        }
+
         return { xData, yDataArr, mergeType: 'raw', seriesData: [] };
     }
 }
