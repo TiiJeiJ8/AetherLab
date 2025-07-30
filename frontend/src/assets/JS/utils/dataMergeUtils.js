@@ -990,20 +990,47 @@ function sunburstChartHandler(config, fileDataMap, options) {
  */
 function parallelChartHandler(config, fileDataMap, options) {
     const { dimensions, nameField } = config;
+    const { nullHandlingType = 'ignore', nullHandlingModule = nullHandling } = options;
 
     const mainFile = dimensions[0].file;
     const rows = getDataRows(fileDataMap, mainFile);
-    const dimensionsRows = rows.map(row => {
+
+    // 过滤掉所有维度都为空的行
+    const filteredRows = rows.filter(row =>
+        dimensions.some(dim => {
+            const v = row[dim.field];
+            return v !== undefined && v !== null && v !== '';
+        })
+    );
+
+    // 按列收集数据
+    const dimData = dimensions.map(dim =>
+        filteredRows.map(row => {
+            const v = row[dim.field];
+            const num = parseFloat(v);
+            return (v === null || v === undefined || v === '' || Number.isNaN(num)) ? null : num;
+        })
+    );
+
+    // 缺失值处理
+    const handledDimData = dimData.map(arr =>
+        nullHandlingType && nullHandlingType !== 'ignore'
+            ? (nullHandlingModule[nullHandlingType] || (d => d))(arr)
+            : arr
+    );
+
+    // 重新组装为对象数组
+    const dimensionsRows = filteredRows.map((row, idx) => {
         const obj = {};
-        dimensions.forEach(dim => {
-            obj[dim.field] = row[dim.field];
+        dimensions.forEach((dim, dIdx) => {
+            obj[dim.field] = handledDimData[dIdx][idx];
         });
         return obj;
     });
-    const nameRows = nameField
-        ? rows.map(row => ({ name: row[nameField.field] }))
-        : [];
 
+    const nameRows = nameField
+        ? filteredRows.map(row => ({ name: row[nameField.field] }))
+        : [];
 
     const combinedRows = dimensionsRows.map((dimObj, idx) => ({
         ...dimObj,
