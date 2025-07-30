@@ -102,7 +102,7 @@
 
 .add-condition-btn {
     width: 100%;
-    background: linear-gradient(90deg, var(--primary-color, #409EFF) 60%, var(--accent-color, #6ec6ff) 100%);
+    background: linear-gradient(90deg, #5a8cff 60%, #a8d068 100%);
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -116,8 +116,11 @@
 }
 
 .add-condition-btn:hover {
-    background: linear-gradient(90deg, var(--primary-hover, #357ae8) 60%, var(--accent-color, #4fc3f7) 100%);
+    background: linear-gradient(90deg, #357ae8 60%, #a8d068 100%);
+    filter: brightness(1.08);
+    transform: scale(1.03);
     box-shadow: 0 4px 16px var(--shadow-color, rgba(64, 158, 255, 0.13));
+    transition: background 0.18s, box-shadow 0.18s, filter 0.18s, transform 0.18s;
 }
 
 .apply-btn {
@@ -293,27 +296,6 @@
 .block-toggle-slider.right {
     left: 40px;
     background: #e0e0e0;
-}
-
-/* Add Condition 按钮美化 */
-.add-condition-btn {
-    width: 100%;
-    background: linear-gradient(90deg, #409EFF 60%, #6ec6ff 100%);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 7px 0;
-    font-size: 15px;
-    font-weight: 600;
-    margin-top: 8px;
-    box-shadow: 0 2px 8px rgba(64, 158, 255, 0.08);
-    cursor: pointer;
-    transition: background 0.18s, box-shadow 0.18s;
-}
-
-.add-condition-btn:hover {
-    background: linear-gradient(90deg, #357ae8 60%, #4fc3f7 100%);
-    box-shadow: 0 4px 16px rgba(64, 158, 255, 0.13);
 }
 
 /* 过滤区内容动画区域 */
