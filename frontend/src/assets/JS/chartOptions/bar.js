@@ -15,7 +15,6 @@
  * 堆叠条形图
  * 折、柱混合
  * 多Y轴
- * 多层下钻
  * 动态排序
  */
 
@@ -126,7 +125,6 @@ export default function barOption(config, fileDataMap, xData, yDataArr, selected
         axisLabel: { interval: 0, rotate: xData.length > 10 ? 45 : 0 },
         splitLine: { show: xGrid },
         name: config.xAxisName || 'X Axis',
-        alignWithLabel: !!config.alignTicks
     };
     // 竖直/水平条形
     let yAxisOpt = {
