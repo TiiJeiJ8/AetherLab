@@ -60,6 +60,7 @@ export function fillNearest(data) {
             }
         }
     }
+    console.log('[fillNearest] method completed: ', result);
     return result;
 }
 
@@ -88,6 +89,7 @@ export function linearInterpolate(data) {
             }
         }
     }
+    console.log('[linearInterpolate] method completed: ', result);
     return result;
 }
 
@@ -168,7 +170,7 @@ export function fillCubicSpline(data) {
             result[i] = cubicSplineInterpolate(i, coefs);
         }
     }
-
+    console.log('[fillCubicSpline] method completed: ', result);
     return result;
 }
 
@@ -199,6 +201,7 @@ export function fillPolynomial(data) {
             result[i] = lagrange(i);
         }
     }
+    console.log('[fillPolynomial] method completed: ', result);
     return result;
 }
 
@@ -216,6 +219,7 @@ export function fillStepBefore(data) {
             lastVal = result[i];
         }
     }
+    console.log('[fillStepBefore] method completed: ', result);
     return result;
 }
 
@@ -233,6 +237,7 @@ export function fillStepAfter(data) {
             lastVal = result[i];
         }
     }
+    console.log('[fillStepAfter] method completed: ', result);
     return result;
 }
 
@@ -292,7 +297,7 @@ export function fillBasis(data) {
             result[i] = deBoor(j, degree, t, knots, ctrlY);
         }
     }
-
+    console.log('[fillBasis] method completed: ', result);
     return result;
 }
 
@@ -336,7 +341,7 @@ export function fillCardinal(data) {
             );
         }
     }
-
+    console.log('[fillCardinal] method completed: ', result);
     return result;
 }
 
@@ -389,7 +394,7 @@ export function fillMonotone(data) {
             result[i] = hermite(s, y0, y1, t0 * h, t1 * h);
         }
     }
-
+    console.log('[fillMonotone] method completed: ', result);
     return result;
 }
 
@@ -440,6 +445,6 @@ export function fillAkima(data) {
             result[i] = hermite(s, y0, y1, t0, t1);
         }
     }
-
+    console.log('[fillAkima] method completed: ', result);
     return result;
 }
