@@ -157,11 +157,16 @@ function openHistory() {
 function previewChart(item) {
   chartOption.value = null
   nextTick(() => {
+    console.log('Previewing chart item option:', item.option)
     chartOption.value = JSON.parse(JSON.stringify(item.option))
     // 兼容主题字段
     if (item.colorTheme) {
       if (!chartConfig.value) chartConfig.value = {}
       chartConfig.value.colorScheme = item.colorTheme
+    }
+    // 恢复 config
+    if (item.config) {
+      chartConfig.value = JSON.parse(JSON.stringify(item.config))
     }
     showHistory.value = false
   })
@@ -279,17 +284,18 @@ function handleSaveHistory({ config }) {
     // 重新合并数据并生成option，保证历史区option和当前一致
     const nullHandlingType = config.nullHandling || 'ignore';
     const { xData, yDataArr, mergeType, seriesData } = mergeChartData(config, fileDataMap.value, nullHandlingType);
-    if (currentTheme) config.theme = currentTheme;
+    if (config.colorScheme) config.theme = config.colorScheme;
     option = generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType, seriesData);
   } catch (e) {
+    console.log('Saving history failed while generate option:', e);
     option = null;
   }
-  chartHistory.value.push({
-    title: config.title || `Chart ${chartHistory.value.length + 1}`,
-    option: option || {},
-    config: { ...config },
-    colorTheme: config.colorScheme || 'default',
-  });
+    chartHistory.value.push({
+      title: config.title || `Chart ${chartHistory.value.length + 1}`,
+      option: option || {},
+      config: JSON.parse(JSON.stringify(config)),
+      colorTheme: config.colorScheme || 'default',
+    });
 }
 
 /* 响应历史区标题编辑 */
