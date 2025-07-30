@@ -222,11 +222,11 @@ watch(() => props.modelValue, (newValue) => {
 
 /* 选中状态的样式 */
 .sideBar-btn.selected {
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    background: linear-gradient(135deg, #4d4d4d, #4f4f4f);
     color: white;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(158, 159, 159, 0.112);
+    border: 1px solid rgba(110, 110, 110, 0.2);
 }
 
 .sideBar-btn.selected::before {
@@ -234,9 +234,9 @@ watch(() => props.modelValue, (newValue) => {
 }
 
 .sideBar-btn.selected:hover {
-    background: linear-gradient(135deg, #2563eb, #5b21b6);
+    background: linear-gradient(135deg, #686868, #4d4d4e);
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 6px 16px rgba(159, 159, 159, 0.18);
 }
 
 .sideBar-btn.selected:hover::before {
@@ -266,16 +266,6 @@ watch(() => props.modelValue, (newValue) => {
 
 .sideBar-btn.selected .label {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-/* 选中状态的动画效果 */
-@keyframes selectedShine {
-    0% {
-        background-position: -100% 0;
-    }
-    100% {
-        background-position: 100% 0;
-    }
 }
 
 .sideBar-btn.selected:hover .chart-icon-svg {
