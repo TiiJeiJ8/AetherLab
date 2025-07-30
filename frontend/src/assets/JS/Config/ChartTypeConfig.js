@@ -17,7 +17,7 @@ export const chartTypeConfig = {
             { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
             { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
             // 显示最大最小值
             { key: 'showMaxMin', label: 'Show Max/Min', type: 'checkbox', description: 'Whether to show maximum and minimum values on the line chart' },
             // 均值线开关
@@ -54,15 +54,13 @@ export const chartTypeConfig = {
             { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
             { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
             // 柱状图平行/竖直显示
             { key: 'isHorizontal', label: 'Horizontal Bars', type: 'checkbox', description: 'Whether to display bars horizontally' },
             // 显示最大最小值
             { key: 'showMaxMin', label: 'Show Max/Min', type: 'checkbox', description: 'Whether to show maximum and minimum values on the line chart' },
             // 均值线开关
             { key: 'showMeanLine', label: 'Show Mean Line', type: 'checkbox', description: 'Whether to show the mean line on the chart' },
-            // 坐标轴刻度对齐标签
-            { key: 'alignTicks', label: 'Align Ticks', type: 'checkbox', description: 'Whether to align ticks on the y-axis' },
             // 柱体背景色
             { key: 'barBackgroundColor', label: 'Bar Background Color', type: 'text', placeholder: 'Hex Color, eg. #fff', description: 'Background color of the bar chart' },
             // 柱状图渐变
@@ -77,6 +75,7 @@ export const chartTypeConfig = {
             { key: 'startAngle', label: '[Polar]Start Angle', type: 'number', min: 0, max: 360, description: 'Starting angle for the polar bar chart, default is 0' },
             // 极坐标endAngle
             { key: 'endAngle', label: '[Polar]End Angle', type: 'number', min: 0, max: 360, description: 'Ending angle for the polar bar chart, default is 360' },
+
         ]
     },
     // 饼图
@@ -130,7 +129,46 @@ export const chartTypeConfig = {
             { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
             { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] }
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
+            // 系列最大/小值
+            { key: 'showMaxMin', label: 'Show Max/Min', type: 'checkbox', description: 'Whether to show maximum and minimum values on the scatter chart' },
+            // 均值线
+            { key: 'showMeanLine', label: 'Show Mean Line', type: 'checkbox', description: 'Whether to show the mean line on the chart' },
+            // 拟合回归线
+            { key: 'trendLine', label: 'Trend Line', type: 'select', options: [{ label: 'None', value: '' }, { label: 'Linear', value: 'linear' }, { label: 'Polynomial', value: 'polynomial' }, { label: 'Exponential', value: 'exponential' }] },
+            // 多项式回归阶数
+            { key: 'polynomialOrder', label: 'Polynomial Order', type: 'number', min: 1, description: 'Order of polynomial regression, default is 3' },
+            // 回归线标签是否可见
+            { key: 'trendLineLabelHidden', label: 'Trend Line Label Hidden', type: 'checkbox', description: 'Whether to show the trend line label' },
+            // 回归线标签字体样式
+            { key: 'trendLineFontStyle', label: 'Trend Line Font Style', type: 'select', options: [{ label: 'Normal', value: 'normal' }, { label: 'Bold', value: 'bold' }, { label: 'Italic', value: 'italic' }] },
+            // 回归线标签字体大小
+            { key: 'trendLineFontSize', label: 'Trend Line Font Size', type: 'number', min: 0, max: 40, description: 'Font size of the trend line label' },
+            // 回归线颜色
+            { key: 'trendLineColor', label: 'Trend Line Color', type: 'text', placeholder: 'Hex Color, eg. #fff', description: 'Color of the trend line' },
+            // 回归线宽度
+            { key: 'trendLineWidth', label: 'Trend Line Width', type: 'number', min: 0, description: 'Width of the trend line' },
+            // 回归线样式
+            { key: 'trendLineStyle', label: 'Trend Line Style', type: 'select', options: [{ label: 'Dashed', value: 'dashed' }, { label: 'Solid', value: 'solid' }, { label: 'Dotted', value: 'dotted' }] },
+            // 单轴模式
+            { key: 'singleAxisMode', label: 'Single Axis Mode', type: 'select', options: [{ label: 'None', value: '' }, { label: 'X Axis', value: 'x' }, { label: 'Y Axis', value: 'y' }] },
+            // 散点图标签顶部/右侧
+            { key: 'labelAlign', label: 'Label', type: 'select', options: [{ label: 'None', value: '' }, { label: 'Right', value: 'right' }, { label: 'Inside', value: 'inside' }] },
+            //todo 视觉映射(todo)
+            // 大小映射
+            { key: 'sizeMapping', label: 'Size Mapping', type: 'checkbox', description: 'Whether to enable size mapping for the scatter chart' },
+            // 大小映射最小点大小/最大点大小
+            { key: 'sizeMin', label: 'Size Min', type: 'number', min: 0, description: 'Minimum size for scatter points' },
+            { key: 'sizeMax', label: 'Size Max', type: 'number', min: 0, description: 'Maximum size for scatter points' },
+            // 涟漪图
+            { key: 'rippleEffect', label: 'Ripple Effect', type: 'checkbox', description: 'Whether to enable ripple effect for the scatter chart' },
+            // 极坐标(None, radial, tangential)
+            { key: 'polarStyle', label: 'Polar Coordinate Style', type: 'select', options: [{ label: 'None', value: '' }, { label: 'Radial', value: 'radial' }, { label: 'Tangential', value: 'tangential' }] }, // 极坐标样式
+            // 极坐标startAngle
+            { key: 'startAngle', label: '[Polar]Start Angle', type: 'number', min: 0, max: 360, description: 'Starting angle for the polar scatter chart, default is 0' },
+            // 极坐标endAngle
+            { key: 'endAngle', label: '[Polar]End Angle', type: 'number', min: 0, max: 360, description: 'Ending angle for the polar scatter chart, default is 360' },
+            //todo 散点分系列样式(future)
         ]
     },
     // 地图
@@ -174,7 +212,7 @@ export const chartTypeConfig = {
             { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
             { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
             // MA5
             { key: 'ma5', label: 'MA5', type: 'checkbox', description: 'Whether to show the 5-day moving average line' },
             // MA10
@@ -227,7 +265,7 @@ export const chartTypeConfig = {
             { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
             { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
         ]
     },
     // 热力图
@@ -247,7 +285,7 @@ export const chartTypeConfig = {
             { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
             { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
             // 热力图单元格中的标签显示
             { key: 'isLabelVisible', label: 'Ceils\' Label', type: 'checkbox', description: 'Whether to show labels on heatmap cells' },
             // 热力图离散映射开关
@@ -490,7 +528,7 @@ export const chartTypeConfig = {
             { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
             { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }, { label: 'None', value: 'none' }] },
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
             // 图形符号（可选）
             { key: 'symbol', label: 'Symbol', type: 'select', options: [{ label: 'Circle', value: 'circle' }, { label: 'Rect', value: 'rect' }, { label: 'Image', value: 'image' }] },
         ]
