@@ -222,6 +222,7 @@ function xyChartHandler(config, fileDataMap, options) {
             yArr.forEach((y, idx) => {
                 const rawVal = row[y.field];
                 const parsedVal = parseFloat(rawVal);
+                // console.log(`[xyChartHandler] key=${key}, rawVal=${rawVal}, parsedVal=${parsedVal}`);
                 if (rawVal !== null && rawVal !== undefined && rawVal !== '' && !Number.isNaN(parsedVal)) {
                     groupMap.get(key)[idx].push(parsedVal);
                 }
