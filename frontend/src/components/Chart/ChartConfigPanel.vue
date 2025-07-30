@@ -228,8 +228,7 @@ function onMappingModelUpdate(mapping) {
 
 // 需要显示 Null Handling 的图表类型
 const showNullHandlingTypes = [
-    'Unknown', 'Line', 'Bar', 'Scatter', 'Candlestick', 'Radar',
-    'Boxplot', 'Heatmap', 'Parallel', 'Gauge', 'ThemeRiver', 'PictorialBar'
+    'Unknown', 'Line', 'Bar', 'Scatter', 'Candlestick', 'Parallel', 'PictorialBar'
 ]
 // 判断当前类型是否需要显示 Null Handling
 const showNullHandling = computed(() => {
