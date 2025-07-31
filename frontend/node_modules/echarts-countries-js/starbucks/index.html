@@ -1,0 +1,554 @@
+<!Doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                overflow: hidden;
+            }
+
+            #map {
+                position: relative;
+                width: 100%;
+                /*float: left;*/
+                height: 100%;
+            }
+            #world-map, #country-map {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+            }
+            #country-map {
+                display: none;
+            }
+            #detail {
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 40%;
+                background: #fff;
+                box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+
+                transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+                transform: translate(100%);
+                overflow-y: scroll;
+            }
+
+            #detail.active {
+                transform: translate(0);
+            }
+
+            #detail {
+                padding: 10px;
+                padding-top: 40px;
+            }
+
+            #property-list h5 {
+                margin: 3px 0;
+                color: #888;
+            }
+
+            #property-list .item {
+                margin: 10px 0;
+            }
+
+            #back {
+                position: absolute;
+                left: 20px;
+                top: 20px;
+                border: none;
+                background: #fff;
+                box-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
+                border-radius: 10px 2px 2px 10px;
+
+                cursor: pointer;
+                font-size: 16px;
+
+                outline: none;
+
+                display: none;
+                z-index: 111;
+            }
+
+            #back:hover {
+                background: #ccc;
+            }
+
+            h1 {
+                position: absolute;
+                bottom: 0;
+                left: 10px;
+                z-index: 100;
+                color: #eee;
+                font-size: 18px;
+            }
+            #title {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                text-align: center;
+                color: #eee;
+                font-size: 30px;
+                z-index: 100;
+                margin-top: 10px;
+            }
+            #bmap {
+                height: 300px;
+            }
+            #detail .close {
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>
+            Starbucks Locations
+        </h1>
+        <h5 id="title"></h5>
+        <div id="map">
+            <div id="world-map"></div>
+            <div id="country-map"></div>
+        </div>
+        <div id="detail">
+            <div id="bmap"></div>
+            <div id="property-list"></div>
+            <div class="close">X</div>
+        </div>
+        <button id="back">Back</button>
+        <!-- <div id="detail"></div> -->
+        <script src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+        <script src="dep/echarts.js"></script>
+        <script src="dep/bmap.js"></script>
+        <script src="dep/world.js"></script>
+        <script src="dep/jquery.min.js"></script>
+        <script>
+            // Some configuration
+            var nameMap = {
+                'Iran': 'Islamic Republic of Iran',
+                'United States of America': 'USA',
+                'Democratic Republic of the Congo': 'Congo-Brazzaville',
+                'Republic of the Congo': 'Congo-Kinshasa'
+            };
+
+            var specialAreas = {
+                'USA': {
+                    Alaska: {              // 把阿拉斯加移到美国主大陆左下方
+                        left: -131,
+                        top: 25,
+                        width: 15
+                    },
+                    Hawaii: {
+                        left: -110,        // 夏威夷
+                        top: 28,
+                        width: 5
+                    },
+                    'Puerto Rico': {       // 波多黎各
+                        left: -76,
+                        top: 26,
+                        width: 2
+                    }
+                },
+                'France': {
+                    'Guadeloupe': {
+                        left: -4.8,
+                        top: 37,
+                        width: 1
+                    },
+                    'Martinique': {
+                        left: -1,
+                        top: 37,
+                        width: 1
+                    },
+                    'French Guiana': {
+                        left: 3.2,
+                        top: 37,
+                        width: 2
+                    },
+                    'Mayotte': {
+                        left: 9,
+                        top: 37,
+                        width: 1
+                    },
+                    'Réunion': {
+                        left: 11,
+                        top: 37,
+                        width: 1.5
+                    }
+                }
+            };
+
+            var specialCenterAndZoom = {
+                'Russia': {
+                    center: [103.69826459654769, 60.10460028011932],
+                    zoom: 2
+                }
+            };
+
+            var mapStyle = {
+                normal: {
+                    borderColor: '#404a59'
+                },
+                emphasis: {
+                    shadowColor: 'rgba(0, 0, 0, 0.5)',
+                    shadowBlur: 20,
+                    // areaColor: '#eee',
+                    borderWidth: 0
+                }
+            };
+
+            // 使用百度地图的国家
+            var useBMap = {
+                'China': true
+            };
+
+            var worldMapChart = echarts.init($('#world-map')[0]);
+            var countryMapChart = echarts.init($('#country-map')[0]);
+            var bmapChart = echarts.init($('#bmap')[0]);
+            // Init an empty bmap
+            bmapChart.setOption({
+                animation: false,
+                bmap: {
+                    center: [104.114129, 37.550339],
+                    zoom: 5,
+                    roam: true
+                },
+                series: [{
+                    type: 'scatter',
+                    coordinateSystem: 'bmap',
+                    symbol: 'pin',
+                    symbolSize: 30,
+                    data: []
+                }]
+            });
+
+            worldMapChart.setOption({
+                backgroundColor: '#404a59',
+                animationDurationUpdate: 800,
+                visualMap: {
+                    max: 3000,
+                    show: false
+                },
+                series: [{
+                    type: 'map',
+                    map: 'world',
+                    roam: true,
+                    data: [],
+                    label: {
+                        normal: {
+                            show: false,
+                            formatter: '{c}'
+                        },
+                        emphasis: {
+                            show: false
+                        }
+                    },
+                    itemStyle: mapStyle
+                }]
+            });
+
+            var worldGeo = worldMapChart.getModel().getSeriesByIndex(0).coordinateSystem;
+
+            var starbucksData;
+
+            worldMapChart.showLoading();
+            $.getJSON('data/starbucks.json')
+                .done(function (res) {
+                    starbucksData = converData(res);
+                    worldMapChart.hideLoading();
+                    // Count
+                    var countryCount = starbucksData.reduce(function (map, obj) {
+                        if (obj.country) {
+                            map[obj.country] = map[obj.country] || 0;
+                            map[obj.country] ++;
+                        }
+                        return map;
+                    }, {});
+                    var statisticsData = [];
+                    for (var name in countryCount) {
+                        var count = countryCount[name];
+                        var textStyle = {
+                            color: '#50d5d3',
+                            fontWeight: 'bolder',
+                            fontSize: Math.round(count / 500) + 20
+                        };
+                        statisticsData.push({
+                            name: name,
+                            value: count,
+                            label: {
+                                normal: {
+                                    textStyle: textStyle,
+                                    show: count > 100
+                                },
+                                emphasis: {
+                                    show: count > 100
+                                }
+                            }
+                        });
+                    }
+                    worldMapChart.setOption({
+                        series: [{
+                            data: statisticsData
+                        }]
+                    });
+                });
+
+            worldMapChart.on('mouseover', function (param) {
+                $('#title').html(param.name);
+            });
+
+            worldMapChart.on('click', function (param) {
+                var region = worldGeo.getRegion(param.name);
+                if (!region) {
+                    return;
+                }
+                $('#back').show();
+                $('#title').html('');
+
+                var cp = region.center;
+                worldMapChart.setOption({
+                    series: [{
+                        center: cp,
+                        zoom: 5
+                    }]
+                });
+
+                if (nameMap[param.name]) {
+                    param.name = nameMap[param.name];
+                }
+
+                var name = param.name.split(' ').join('_');
+                $(worldMapChart.getDom()).fadeOut(800);
+                $(countryMapChart.getDom()).fadeIn(800);
+
+                countryMapChart.showLoading();
+                $.getJSON('json/' + name + '.json')
+                    .done(function (geoJson) {
+                        countryMapChart.hideLoading();
+                        countryMapChart.resize();
+
+                        echarts.registerMap(name, geoJson, specialAreas[name]);
+                        countryMapChart.setOption({
+                            backgroundColor: '#404a59',
+                            animation: false,
+                            title: {
+                                text: param.name,
+                                left: 'center',
+                                top: 10,
+                                textStyle: {
+                                    color: '#eee',
+                                    fontSize: 30
+                                }
+                            },
+                            geo: {
+                                roam: true,
+                                map: name,
+                                itemStyle: mapStyle,
+                                selectedMode: 'single',
+                                label: {
+                                    normal: {
+                                        show: false
+                                    },
+                                    emphasis: {
+                                        show: true,
+                                        textStyle: {
+                                            color: '#404a59'
+                                        }
+                                    }
+                                },
+                                center: specialCenterAndZoom[name] && specialCenterAndZoom[name].center,
+                                zoom: specialCenterAndZoom[name] && specialCenterAndZoom[name].zoom
+                            },
+                            series: []
+                        }, true);
+
+                        setTimeout(showScatter, 800);
+                    });
+            });
+
+            $('#back').click(function () {
+                $('#back').hide();
+                $('#detail').removeClass('active');
+
+                $(worldMapChart.getDom()).fadeIn(800);
+                $(countryMapChart.getDom()).fadeOut(800);
+                worldMapChart.setOption({
+                    series: [{
+                        center: null,
+                        zoom: 1
+                    }]
+                });
+            });
+
+            $('#detail .close').click(function () {
+                $('#detail').removeClass('active');
+            });
+
+            function showScatter() {
+                var geo = countryMapChart.getModel().getComponent('geo').coordinateSystem;
+                var data = starbucksData.filter(function (item) {
+                    var country = item.country;
+                    if (nameMap[country]) {
+                        country = nameMap[country];
+                    }
+                    return country === geo.map;
+                }).map(function (item) {
+                    return {
+                        value: [+item.Longitude, +item.Latitude],
+                        raw: item
+                    };
+                });
+                countryMapChart.setOption({
+                    series: [{
+                        type: 'scatter',
+                        symbolSize: 10,
+                        coordinateSystem: 'geo',
+                        hoverAnimation: false,
+                        itemStyle: {
+                            normal: {
+                                borderColor: '#333',
+                                borderWidth: 1
+                            },
+                            emphasis: {
+                                borderColor: '#eee',
+                                borderWidth: 2
+                            }
+                        },
+                        large: true,
+                        data: data
+                    }]
+                });
+                if (useBMap[geo.map]) {
+                    bmapChart.setOption({
+                        bmap: {
+                            center: data[0].value,
+                            zoom: 15
+                        },
+                        series: [{
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top',
+                                    formatter: function (params) {
+                                        return params.data.raw.Name;
+                                    }
+                                },
+                                emphasis: {
+                                    show: true,
+                                    position: 'top',
+                                    formatter: function (params) {
+                                        return params.data.raw.Name;
+                                    }
+                                }
+                            },
+                            data: data
+                        }]
+                    });
+                }
+            }
+
+            function showDetail(params) {
+                var geo = countryMapChart.getModel().getComponent('geo').coordinateSystem;
+
+                if (params.name) {
+                    var region = geo.getRegion(params.name);
+                    countryMapChart.setOption({
+                        geo: {
+                            center: region.center,
+                            zoom: 5
+                        }
+                    });
+                }
+                else if (params.data && params.data.raw) {
+                    $('#detail').addClass('active');
+
+                    var html = '';
+                    for (var name in params.data.raw) {
+                        if (params.data.raw[name]) {
+                            html += '<div class="item">';
+                            html += '<h5>' + name + '</h5>';
+                            html += params.data.raw[name];
+                            html += '</div>';
+                        }
+                    }
+                    $('#property-list').html(html);
+
+                    if (useBMap[geo.map]) {
+                        // Zoom bmap
+                        bmapChart.setOption({
+                            bmap: {
+                                center: params.value,
+                                zoom: 15
+                            },
+                            series: [{
+                                show: true
+                            }]
+                        });
+                        $('#bmap').show();
+                    }
+                    else {
+                        $('#bmap').hide();
+                    }
+                }
+            }
+            countryMapChart.on('click', showDetail);
+            bmapChart.on('click', showDetail);
+
+            // countryMapChart.getZr().on('click', function (e) {
+            //     var geo = countryMapChart.getModel().getComponent('geo').coordinateSystem;
+            //     var coord = geo.pointToData([e.offsetX, e.offsetY]);
+            //     console.log(coord);
+            // });
+
+            // function mockData(geo) {
+            //     var data = [];
+            //     var rect = geo.getBoundingRect();
+            //     for (var i = 0; i < 80;) {
+            //         var lng = rect.x + Math.random() * rect.width;
+            //         var lat = rect.y + Math.random() * rect.height;
+
+            //         if (geo.containCoord([lng, lat])) {
+            //             i++;
+            //             data.push({
+            //                 value: [lng, lat, Math.round(Math.random() * 100)]
+            //             });
+            //         }
+            //     }
+            //     return data;
+            // }
+
+            function converData(arr) {
+                var properties = arr[0];
+                return arr.slice(1).map(function (item) {
+                    var obj = {};
+                    item.forEach(function (val, idx) {
+                        obj[properties[idx]] = val;
+                    });
+                    var lng = +obj.Longitude;
+                    var lat = +obj.Latitude;
+
+                    // Find country
+                    var region = worldGeo.getRegionByCoord([lng, lat]);
+                    if (region) {
+                        obj.country = region.name;                    }
+                    return obj;
+                });
+            }
+
+            $(window).resize(function () {
+                worldMapChart.resize();
+                if ($(countryMapChart.getDom).is(':visible')) {
+                    countryMapChart.resize();
+                }
+            });
+        </script>
+    </body>
+</html>
