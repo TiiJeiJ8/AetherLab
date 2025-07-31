@@ -208,10 +208,15 @@ const chartConfig = ref({
     },
     series: [],
     title: '',
+    titlePosition: 'center',
     colorScheme: 'default',
     animation: true,
+    legendVisible: true,
+    isAggregate: false,
     dataRange: 'all',
-    nullHandling: 'ignoreNull'
+    nullHandling: 'ignoreNull',
+    // 默认seriesType: map（仅Geo_Map类型有效）
+    seriesType: 'map',
 })
 
 // 合并mapping字段，保留其它字段
@@ -274,10 +279,10 @@ const isConfigValid = computed(() => {
     if (['radar'].includes(type)) {
         return Array.isArray(cfg.indicator) && cfg.indicator.length > 0 &&
         Array.isArray(cfg.value) && cfg.value.length > 0;
-	}
-	if (['boxplot'].includes(type)) {
-		return cfg.category && cfg.category.field
-	}
+    }
+    if (['boxplot'].includes(type)) {
+        return cfg.category && cfg.category.field
+    }
     if (['graph'].includes(type)) {
         return cfg.nodeID && cfg.nodeID.field &&
             cfg.edgeSource && cfg.edgeSource.field &&
@@ -555,6 +560,10 @@ function resetConfig () {
         title: '',
         colorScheme: 'default',
         animation: chartConfig.value.animation,
+        isAggregate: false,
+        titlePosition: 'center',
+        legendVisible: true,
+        legendPosition: 'bottom',
         dataRange: 'all',
         nullHandling: 'ignoreNull'
     }
@@ -572,6 +581,48 @@ const mainRawData = computed(() => {
     }
     return []
 })
+
+// 动态生成 mappingConfig，支持 Geo_Map 多类型
+const mappingConfig = computed(() => {
+    // 普通图表类型直接返回
+    if (props.selectedChartType !== 'Geo_Map') {
+        return currentTypeConfig.value.mapping || [];
+    }
+    // 地图类型根据 seriesType 动态返回
+    const baseMapping = currentTypeConfig.value.mapping || [];
+    const seriesType = chartConfig.value.seriesType;
+    if (seriesType === 'map' || seriesType === 'bar') {
+        return [
+            baseMapping.find(f => f.key === 'nameField'),
+            baseMapping.find(f => f.key === 'value'),
+        ].filter(Boolean);
+    } else if (seriesType === 'scatter' || seriesType === 'heatmap') {
+        return [
+            baseMapping.find(f => f.key === 'lngField'),
+            baseMapping.find(f => f.key === 'latField'),
+            baseMapping.find(f => f.key === 'value'),
+            baseMapping.find(f => f.key === 'name'),
+        ].filter(Boolean);
+    } else if (seriesType === 'lines') {
+        return [
+            baseMapping.find(f => f.key === 'fromLngField'),
+            baseMapping.find(f => f.key === 'fromLatField'),
+            baseMapping.find(f => f.key === 'toLngField'),
+            baseMapping.find(f => f.key === 'toLatField'),
+            baseMapping.find(f => f.key === 'fromName'),
+            baseMapping.find(f => f.key === 'toName'),
+            baseMapping.find(f => f.key === 'value'),
+        ].filter(Boolean);
+    } else if (seriesType === 'pie') {
+        const valueField = baseMapping.find(f => f.key === 'value');
+        return [
+            baseMapping.find(f => f.key === 'nameField'),
+            valueField ? { ...valueField, multiple: true } : undefined,
+        ].filter(Boolean);
+    }
+    // 默认
+    return baseMapping;
+});
 
 // 监听图表类型变化
 watch(() => props.selectedChartType, (newType) => {
