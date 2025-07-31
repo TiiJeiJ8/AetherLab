@@ -20,8 +20,8 @@
     <!-- 动态数据映射配置区域 -->
     <div class="mapping-section-toggle-wrapper">
         <ChartMappingConfig
-            v-if="currentTypeConfig.mapping"
-            :mappingConfig="currentTypeConfig.mapping"
+            v-if="mappingConfig && mappingConfig.length"
+            :mappingConfig="mappingConfig"
             :modelValue="chartConfig"
             @update:modelValue="onMappingModelUpdate"
         >
