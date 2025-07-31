@@ -182,6 +182,13 @@ export const chartTypeConfig = {
             { key: 'name', label: 'Location Name', type: 'tag', required: false, description: 'Optional name field for points, if not using region names.' },
             // 值
             { key: 'value', label: 'Value', type: 'measure', required: true, description: 'Value for each region or point (e.g., population, sales).' },
+            // lines 专用字段
+            { key: 'fromLngField', label: 'From Longitude', type: 'dimension', required: false, description: 'Start point longitude for lines.' },
+            { key: 'fromLatField', label: 'From Latitude', type: 'dimension', required: false, description: 'Start point latitude for lines.' },
+            { key: 'toLngField', label: 'To Longitude', type: 'dimension', required: false, description: 'End point longitude for lines.' },
+            { key: 'toLatField', label: 'To Latitude', type: 'dimension', required: false, description: 'End point latitude for lines.' },
+            { key: 'fromName', label: 'From Name', type: 'tag', required: false, description: 'Start point name for lines.' },
+            { key: 'toName', label: 'To Name', type: 'tag', required: false, description: 'End point name for lines.' },
         ],
         basic: [
             // 地图类型选择
@@ -189,7 +196,7 @@ export const chartTypeConfig = {
             // 地图数据源URL
             { key: 'mapUrl', label: 'GeoJSON URL', type: 'text', placeholder: "https://xxx/china.json", required: false },
             // 地图系列类型
-            { key: 'seriesType', label: 'Series Type', type: 'select', required: true, options: [{ label: 'Map', value: 'map' }, { label: 'Scatter', value: 'scatter' }, { label: 'Heatmap', value: 'heatmap' }, { label: 'Lines', value: 'lines' }, { label: 'Bar', value: 'bar' }, { label: 'Pie', value: 'pie' }] },
+            { key: 'seriesType', label: 'Series Type', type: 'select', required: true, options: [{ label: 'Map', value: 'map' }, { label: 'Heatmap', value: 'heatmap' }, { label: 'Scatter', value: 'scatter' }, { label: 'Pie', value: 'pie' }, { label: 'Bar', value: 'bar' }, { label: 'Lines', value: 'lines' }] },
         ],
         advanced: [
         ]
