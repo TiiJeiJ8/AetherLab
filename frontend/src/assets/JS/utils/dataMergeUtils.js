@@ -15,6 +15,8 @@
     返回 {xData, yDataArr, mergeType, seriesData}
 */
 
+// import mapDispatcher from '../utils/mapDispacher.js'
+
 /* eslint-disable */
 
 /**
@@ -305,6 +307,60 @@ function pieChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function mapChartHandler(config, fileDataMap, options) {
+    debugInput(config, fileDataMap, options);
+    const seriesType = config.seriesType || 'map';
+    const { mapType, mapSourceName, mapSourceUrl } = config; // 地图类型选择、地图数据源名称、地图数据源URL
+
+    // 外部URL链接未输入
+    if (mapSourceUrl === undefined) {
+        let isCustom = false;
+        let mapScript = null;
+
+        if (mapType == 'custom') {
+            isCustom = true;
+        }
+
+        if (isCustom) {
+            // 使用 mapSourceName 通过 mapDispatcher 分发对应地图
+        }
+        else {
+            mapScript = mapType; // china, world能够直接用于map字段
+        }
+    }
+    else {
+        // 获取URL指向的地图数据源
+    }
+
+    // 根据seriesType分发地图图表类型
+    if (seriesType === 'map') {
+        const { nameField, value } = config;
+        // 提取数据
+        const dataRow = getDataRows(fileDataMap, value.file);
+        const nameFieldRow = dataRow[nameField.index];
+        const valueFieldRow = dataRow[value.index];
+
+        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+    }
+    else if (seriesType === 'heatmap') {
+        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+    }
+    else if (seriesType === 'scatter') {
+        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+    }
+    else if (seriesType === 'pie') {
+        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+    }
+    else if (seriesType === 'bar') {
+        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+    }
+    else if (seriesType === 'lines') {
+        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+    }
+    else {
+        // 兜底
+        console.warn(`[mapChartHandler] Unsupported seriesType: ${seriesType}`);
+        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+    }
 }
 
 /**
@@ -1206,7 +1262,7 @@ const chartTypeHandlers = {
     Bar: xyChartHandler,
     Pie: pieChartHandler,
     Scatter: xyChartHandler,
-    Map: mapChartHandler,
+    Geo_Map: mapChartHandler,
     Candlestick: candlestickChartHandler,
     Heatmap: heatmapChartHandler,
     Radar: radarChartHandler,
