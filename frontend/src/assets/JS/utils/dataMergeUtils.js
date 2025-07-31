@@ -103,12 +103,14 @@ export function defaultFilterPlugin(rows, filters) {
     if (!filters || !filters.filters || !Array.isArray(filters.filters) || filters.filters.length === 0) return rows;
     const logic = filters.logic || 'AND';
     const conds = filters.filters || [];
+    console.log('[defaultFilterPlugin] Applying filters:', conds);
     if (conds.length === 0) return rows;
     return rows.filter(row => {
         const results = conds.map(f => {
             const val = row[f.field];
             switch (f.type) {
                 case 'integer': {
+                    console.log(`[defaultFilterPlugin] Checking integer field ${f.field} with value ${val}`);
                     const num = parseFloat(val);
                     const cmp = parseFloat(f.value);
                     if (f.operator === 'eq') return num === cmp;
@@ -120,6 +122,7 @@ export function defaultFilterPlugin(rows, filters) {
                     return true;
                 }
                 case 'string': {
+                    console.log(`[defaultFilterPlugin] Checking string field ${f.field} with value ${val}`);
                     const str = String(val ?? '');
                     const cmp = String(f.value ?? '');
                     if (f.operator === 'eq') return str === cmp;
@@ -131,6 +134,7 @@ export function defaultFilterPlugin(rows, filters) {
                     return true;
                 }
                 case 'category': {
+                    console.log(`[defaultFilterPlugin] Checking category field ${f.field} with value ${val}`);
                     if (f.operator === 'eq') return val === f.value;
                     if (f.operator === 'ne') return val !== f.value;
                     if (f.operator === 'in') return Array.isArray(f.value) ? f.value.includes(val) : false;
@@ -138,6 +142,7 @@ export function defaultFilterPlugin(rows, filters) {
                     return true;
                 }
                 case 'boolean': {
+                    console.log(`[defaultFilterPlugin] Checking boolean field ${f.field} with value ${val}`);
                     const boolVal = val === true || val === 'true' || val === 1 || val === '1';
                     const cmp = f.value === true || f.value === 'true' || f.value === 1 || f.value === '1';
                     if (f.operator === 'eq') return boolVal === cmp;
@@ -145,6 +150,7 @@ export function defaultFilterPlugin(rows, filters) {
                     return true;
                 }
                 case 'date': {
+                    console.log(`[defaultFilterPlugin] Checking date field ${f.field} with value ${val}`);
                     const dateVal = new Date(val).getTime();
                     const cmp = new Date(f.value).getTime();
                     if (f.operator === 'eq') return dateVal === cmp;
