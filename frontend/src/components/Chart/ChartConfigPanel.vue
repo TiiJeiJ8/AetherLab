@@ -215,8 +215,9 @@ const chartConfig = ref({
     isAggregate: false,
     dataRange: 'all',
     nullHandling: 'ignoreNull',
-    // 默认seriesType: map（仅Geo_Map类型有效）
+    // spicific to Geo_Map
     seriesType: 'map',
+    mapName: 'china',
 })
 
 // 合并mapping字段，保留其它字段
@@ -263,6 +264,9 @@ const isConfigValid = computed(() => {
         const cat = cfg.category;
         const val = cfg.value;
         return cat && cat.field && val && val.field;
+    }
+    if (['geo_map'].includes(type)) {
+        return cfg.value && cfg.value.field;
     }
     if (['candlestick'].includes(type)) {
         return  cfg.time && cfg.time.field &&
