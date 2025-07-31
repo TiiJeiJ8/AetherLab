@@ -217,7 +217,7 @@ const chartConfig = ref({
     nullHandling: 'ignoreNull',
     // spicific to Geo_Map
     seriesType: 'map',
-    mapName: 'china',
+    mapType: 'china',
 })
 
 // 合并mapping字段，保留其它字段
