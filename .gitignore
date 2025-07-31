@@ -12,3 +12,4 @@
 **/.VSCodeCounter/
 frontend/Docs/
 **/.vscode/
+/node_modules
