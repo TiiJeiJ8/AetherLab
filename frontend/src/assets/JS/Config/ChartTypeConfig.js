@@ -194,9 +194,11 @@ export const chartTypeConfig = {
             // 地图系列类型
             { key: 'seriesType', label: 'Series Type', type: 'select', required: true, options: [{ label: 'Map', value: 'map' }, { label: 'Heatmap', value: 'heatmap' }, { label: 'Scatter', value: 'scatter' }, { label: 'Pie', value: 'pie' }, { label: 'Bar', value: 'bar' }, { label: 'Lines', value: 'lines' }] },
             // 地图类型选择
-            { key: 'mapName', label: 'Map Name', type: 'select', required: true, options: [{ label: 'China', value: 'china' }, { label: 'World', value: 'world' }] },
-            // 地图数据源URL
-            { key: 'mapUrl', label: 'GeoJSON URL', type: 'text', placeholder: "https://xxx/china.json", required: false },
+            { key: 'mapType', label: 'Map Name', type: 'select', required: true, options: [{ label: 'China', value: 'china' }, { label: 'World', value: 'world' }, { label: 'Custom', value: 'custom' }] },
+            // 地图数据源名称（支持中英文）
+            { key: 'mapSourceName', label: 'Map Resource', type: 'text', placeholder: "Enter map resource name" },
+            // 外部地图JSON数据URL
+            { key: 'mapSourceUrl', label: 'GeoJSON URL', type: 'text', placeholder: "Enter GeoJSON URL", description: 'URL for external GeoJSON data, e.g., https://example.com/map.json' }, // https://datav.aliyun.com/portal/school/atlas/area_selector
         ],
         advanced: [
         ]
