@@ -203,10 +203,12 @@ function debugOutput(series) {
  */
 function xyChartHandler(config, fileDataMap, options) {
     // debugInput(config, fileDataMap, options)
-    const { nullHandlingType = 'ignore', nullHandlingModule = nullHandling, filterPlugin = defaultFilterPlugin } = options;
-    const { xAxis, yAxis } = config;
+    let { nullHandlingType = 'ignore', nullHandlingModule = nullHandling, filterPlugin = defaultFilterPlugin } = options;
+    let { xAxis, yAxis } = config;
     let mainData = getDataRows(fileDataMap, xAxis.file);
-    const { isAggregate = true, aggregateFn } = options;
+    // 优先使用config.isAggregate，否则用options.isAggregate，默认true
+    let isAggregate = typeof config.isAggregate === 'boolean' ? config.isAggregate : (typeof options.isAggregate === 'boolean' ? options.isAggregate : true);
+    let aggregateFn = options.aggregateFn;
     // 应用过滤
     if (config.filter && config.filter.filters && config.filter.filters.length) {
         mainData = filterPlugin(mainData, config.filter);
@@ -249,7 +251,7 @@ function xyChartHandler(config, fileDataMap, options) {
     } else {
         // 返回原始未聚合数据
         const xData = mainData.map(row => row[xAxis.field]);
-        const yDataArr = yArr.map(y => mainData.map(row => {
+        let yDataArr = yArr.map(y => mainData.map(row => {
             const rawVal = row[y.field];
             const parsedVal = parseFloat(rawVal);
             return (rawVal === null || rawVal === undefined || rawVal === '' || Number.isNaN(parsedVal)) ? null : parsedVal;
@@ -1241,7 +1243,8 @@ export function mergeChartData(config, fileDataMap, nullHandlingType = 'ignore',
 
     console.log('[mergeChartData] Handler:', handler);
 
-    return handler(config, fileDataMap, { ...options, nullHandlingType });
+    // 允许config.isAggregate传递到handler
+    return handler(config, fileDataMap, { ...options, nullHandlingType, isAggregate: config.isAggregate });
 }
 
 // applyFiltersToRows 已被插件化，见 defaultFilterPlugin

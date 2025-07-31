@@ -197,6 +197,10 @@ const basicConfigList = computed(() => {
     return []
 })
 
+// 支持聚合的图表类型
+const aggregateTypes = ['Line', 'Bar', 'Scatter', 'PictorialBar']
+const showAggregateSwitch = computed(() => aggregateTypes.includes(props.chartType))
+
 // 需要将basic配置传入config中
 
 // Use a computed property for two-way binding with parent
