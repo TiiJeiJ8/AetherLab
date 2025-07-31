@@ -191,12 +191,12 @@ export const chartTypeConfig = {
             { key: 'toName', label: 'To Name', type: 'tag', required: false, description: 'End point name for lines.' },
         ],
         basic: [
-            // 地图类型选择
-            { key: 'mapName', label: 'Map Name', type: 'select', required: true, options: [{ label: 'World', value: 'world' }, { label: 'China', value: 'china' }] },
-            // 地图数据源URL
-            { key: 'mapUrl', label: 'GeoJSON URL', type: 'text', placeholder: "https://xxx/china.json", required: false },
             // 地图系列类型
             { key: 'seriesType', label: 'Series Type', type: 'select', required: true, options: [{ label: 'Map', value: 'map' }, { label: 'Heatmap', value: 'heatmap' }, { label: 'Scatter', value: 'scatter' }, { label: 'Pie', value: 'pie' }, { label: 'Bar', value: 'bar' }, { label: 'Lines', value: 'lines' }] },
+            // 地图类型选择
+            { key: 'mapName', label: 'Map Name', type: 'select', required: true, options: [{ label: 'China', value: 'china' }, { label: 'World', value: 'world' }] },
+            // 地图数据源URL
+            { key: 'mapUrl', label: 'GeoJSON URL', type: 'text', placeholder: "https://xxx/china.json", required: false },
         ],
         advanced: [
         ]
