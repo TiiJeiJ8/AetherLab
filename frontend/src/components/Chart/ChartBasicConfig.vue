@@ -2,46 +2,6 @@
 <div class="chart-basic-config">
     <h4 class="basic-config-title">Basic Configuration</h4>
 
-    <!-- 动态basic配置项渲染 -->
-    <div
-    v-for="item in basicConfigList"
-    :key="item.key"
-    class="basic-config-item"
-    >
-        <label :for="'basic-' + item.key">{{ item.label }}</label>
-        <!-- select -->
-        <template v-if="item.type === 'select' && item.options">
-            <select
-            :id="'basic-' + item.key"
-            v-model="localConfig[item.key]"
-            >
-                <option v-for="opt in item.options" :key="opt.value" :value="opt.value">
-                    {{ opt.label }}
-                </option>
-            </select>
-        </template>
-        <!-- boolean -->
-        <template v-else-if="item.type === 'boolean'">
-            <label class="switch">
-            <input
-                :id="'basic-' + item.key"
-                type="checkbox"
-                v-model="localConfig[item.key]"
-            />
-            <span class="slider"></span>
-            </label>
-            <span style="margin-left:8px;">{{ localConfig[item.key] ? 'On' : 'Off' }}</span>
-        </template>
-        <template v-else>
-            <input
-            :id="'basic-' + item.key"
-            v-model="localConfig[item.key]"
-            :type="item.inputType || (item.type === 'number' ? 'number' : 'text')"
-            :placeholder="item.placeholder || ''"
-            />
-        </template>
-    </div>
-
     <!-- Title -->
     <div class="basic-config-item">
         <label for="chart-title">Title</label>
@@ -85,6 +45,16 @@
                 </a>
             </div>
         </transition>
+    </div>
+
+    <!-- Aggregation -->
+    <div class="basic-config-item" v-if="showAggregateSwitch">
+        <label for="aggregate-toggle">Aggregate</label>
+        <label class="switch">
+            <input id="aggregate-toggle" type="checkbox" v-model="localConfig.isAggregate" />
+            <span class="slider"></span>
+        </label>
+        <span style="margin-left:8px;min-width:32px;">{{ localConfig.isAggregate ? 'On' : 'Off' }}</span>
     </div>
 
     <!-- Animation -->
@@ -144,6 +114,46 @@
             <option value="fillMonotone">Monotone</option>
             <option value="fillAkima">Akima</option>
         </select>
+    </div>
+
+    <!-- Dynamic basic configuration -->
+    <div
+    v-for="item in basicConfigList"
+    :key="item.key"
+    class="basic-config-item"
+    >
+        <label :for="'basic-' + item.key">{{ item.label }}</label>
+        <!-- select -->
+        <template v-if="item.type === 'select' && item.options">
+            <select
+            :id="'basic-' + item.key"
+            v-model="localConfig[item.key]"
+            >
+                <option v-for="opt in item.options" :key="opt.value" :value="opt.value">
+                    {{ opt.label }}
+                </option>
+            </select>
+        </template>
+        <!-- boolean -->
+        <template v-else-if="item.type === 'boolean'">
+            <label class="switch">
+            <input
+                :id="'basic-' + item.key"
+                type="checkbox"
+                v-model="localConfig[item.key]"
+            />
+            <span class="slider"></span>
+            </label>
+            <span style="margin-left:8px;">{{ localConfig[item.key] ? 'On' : 'Off' }}</span>
+        </template>
+        <template v-else>
+            <input
+            :id="'basic-' + item.key"
+            v-model="localConfig[item.key]"
+            :type="item.inputType || (item.type === 'number' ? 'number' : 'text')"
+            :placeholder="item.placeholder || ''"
+            />
+        </template>
     </div>
 </div>
 </template>
