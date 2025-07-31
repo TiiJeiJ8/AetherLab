@@ -1,0 +1,10 @@
+sudo: false
+language: python
+notifications:
+  email: false
+python:
+  - 2.7
+before_install:
+  - pip install -r test/requirements.txt
+script:
+  - nosetests 
