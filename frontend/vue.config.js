@@ -4,11 +4,9 @@ const port = 8080; // 端口配置
 module.exports = defineConfig({
   devServer: {
     historyApiFallback: true, // 解决前端路由刷新404问题
-  },
-  transpileDependencies: true,
-  devServer: {
     port, // 设置端口
   },
+  transpileDependencies: true,
   publicPath: './', // 修改目录
   outputDir: 'dist', // 构建文件目录
   assetsDir: 'assets', // 静态资源目录

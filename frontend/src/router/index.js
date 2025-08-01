@@ -20,6 +20,12 @@ const routes = [
     path: '/under-construction',
     name: 'UnderConstruction',
     component: () => import('../views/UnderConstruction.vue')
+  },
+  // 地图测试页面
+  {
+    path: '/map-test',
+    name: 'MapTest',
+    component: () => import('../views/mapTest.vue')
   }
 ]
 
