@@ -14,10 +14,10 @@ window.echarts = echarts;
 export default {
     name: 'MapTest',
     mounted() {
-        const mapName = 'china-cities'; // 直接用注册名
+        const mapName = 'china'; // 直接用注册名
         // 直接插入 <script> 标签导入地图 JS
         const script = document.createElement('script');
-        script.src = '/maps/worldCountries/china-cities.js';
+        script.src = '/maps/worldCountries/china.js';
         script.onload = () => {
             // 检查地图是否注册
             const mapInfo = echarts.getMap(mapName);
@@ -30,7 +30,7 @@ export default {
                 series: [{
                     type: 'map',
                     map: mapName,
-                    data: [{ name: mapName, value: 100 }]
+                    data: [{ name: '广东', value: 100 }]
                 }]
             };
             const chart = echarts.init(this.$refs.chart);
