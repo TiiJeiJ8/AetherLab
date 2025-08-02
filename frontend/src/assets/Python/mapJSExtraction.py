@@ -27,15 +27,15 @@ for map_dir in MAP_DIRS:
                 match = register_map_pattern.search(content)
                 if match:
                     city_cn = match.group(1)
-                    mapping[city_cn] = {"file": filename, "source": source}
+                    mapping[city_cn] = {"file": filename, "source": source, 'origin': city_cn}
                     # 国内城市自动生成拼音英文主键
                     if is_china:
                         pinyin_key = ''.join([w.capitalize() for w in lazy_pinyin(city_cn)])
-                        mapping[pinyin_key] = {"file": filename, "source": source}
+                        mapping[pinyin_key.upper()] = {"file": filename, "source": source, 'origin': city_cn}
                     else:
                         # 国外直接用文件名去掉.js作为英文主键
                         en_key = filename[:-3]
-                        mapping[en_key] = {"file": filename, "source": source}
+                        mapping[en_key.upper()] = {"file": filename, "source": source, 'origin': city_cn}
                 else:
                     unmatched_files.append(filename)
 
