@@ -569,6 +569,7 @@ function resetConfig () {
         legendVisible: true,
         legendPosition: 'bottom',
         dataRange: 'all',
+        seriesType: 'map',
         nullHandling: 'ignoreNull'
     }
 
@@ -600,13 +601,20 @@ const mappingConfig = computed(() => {
             baseMapping.find(f => f.key === 'nameField'),
             baseMapping.find(f => f.key === 'value'),
         ].filter(Boolean);
-    } else if (seriesType === 'scatter' || seriesType === 'heatmap') {
+    } else if (seriesType === 'heatmap') {
+        return [
+            baseMapping.find(f => f.key === 'lngField'),
+            baseMapping.find(f => f.key === 'latField'),
+            baseMapping.find(f => f.key === 'value'),
+        ].filter(Boolean);
+    } else if (seriesType === 'scatter') {
         return [
             baseMapping.find(f => f.key === 'lngField'),
             baseMapping.find(f => f.key === 'latField'),
             baseMapping.find(f => f.key === 'value'),
             baseMapping.find(f => f.key === 'name'),
         ].filter(Boolean);
+        // seriesType === 'heatmap'
     } else if (seriesType === 'lines') {
         return [
             baseMapping.find(f => f.key === 'fromLngField'),
