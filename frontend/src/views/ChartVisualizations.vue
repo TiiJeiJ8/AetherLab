@@ -232,7 +232,7 @@ function handleConfigChange(config) {
 // 导入数据合并工具函数
 import { mergeChartData } from '../assets/JS/utils/dataMergeUtils.js';
 
-function handleGenerateChart(config) {
+async function handleGenerateChart(config) {
   console.log('[handleGenerateChart] config:', JSON.parse(JSON.stringify(config)));
   console.log('[handleGenerateChart] fileDataMap:', JSON.parse(JSON.stringify(fileDataMap.value)));
   // 保证config.type始终同步
@@ -249,7 +249,7 @@ function handleGenerateChart(config) {
   }
   // 合并数据，传递nullHandling参数
   const nullHandlingType = config.nullHandling || 'ignore';
-  const { xData, yDataArr, mergeType, seriesData } = mergeChartData(config, fileDataMap.value, nullHandlingType);
+  const { xData, yDataArr, mergeType, seriesData, customOption } = mergeChartData(config, fileDataMap.value, nullHandlingType);
 
   if ((seriesData && seriesData.length === 0) && (!xData || xData.length === 0)) {
     alert('Main file data is empty, unable to generate chart.');
@@ -261,7 +261,7 @@ function handleGenerateChart(config) {
   }
   // 生成ECharts配置
   if (chartConfig.colorScheme) config.theme = chartConfig.colorScheme;
-  const newChartOption = generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType, seriesData);
+  const newChartOption = await generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType, seriesData, customOption);
   // 恢复主题字段到 chartConfig，防止被 config 覆盖
   if (!config.colorScheme && !config.colorTheme) {
     if (!config) config = {};
@@ -277,7 +277,7 @@ function handleGenerateChart(config) {
 }
 
 // 保存到图表历史区
-function handleSaveHistory({ config }) {
+async function handleSaveHistory({ config }) {
   // 生成当前option
   let option = null;
   try {
@@ -285,7 +285,7 @@ function handleSaveHistory({ config }) {
     const nullHandlingType = config.nullHandling || 'ignore';
     const { xData, yDataArr, mergeType, seriesData } = mergeChartData(config, fileDataMap.value, nullHandlingType);
     if (config.colorScheme) config.theme = config.colorScheme;
-    option = generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType, seriesData);
+    option = await generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType, seriesData);
   } catch (e) {
     console.log('Saving history failed while generate option:', e);
     option = null;
