@@ -27,10 +27,39 @@ export default {
                 return;
             }
             const option = {
-                series: [{
-                    type: 'map',
+                geo: {
                     map: mapName,
-                    data: [{ name: '广东', value: 100 }]
+                    roam: true,
+                    zoom: 2,
+                    center: '',
+                    label: {
+                        show: true,
+                    },
+                    itemStyle: {
+                        areaColor: '#f3f3f3',
+                        borderColor: '#111'
+                    },
+                },
+                visualMap: {
+                    min: 0,
+                    max: 200,
+                    calculable: true,
+                    inRange: {
+                    color: ['blue', 'green', 'yellow', 'red']
+                    }
+                },
+                series: [{
+                    type: 'heatmap',
+                    coordinateSystem: 'geo',
+                    map: mapName,
+                    data: [
+                        [113.2668, 23.1322, 100], // 广州
+                        [114.3055, 30.5928, 80],  // 武汉
+                        [121.4737, 31.2304, 120], // 上海
+                        [116.4074, 39.9042, 90]   // 北京
+                    ],
+                    pointSize: 20,
+                    blurSize: 30,
                 }]
             };
             const chart = echarts.init(this.$refs.chart);
