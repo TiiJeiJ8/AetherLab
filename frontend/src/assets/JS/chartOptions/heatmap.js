@@ -77,6 +77,14 @@ export default function heatmapOption(config, fileDataMap, xData, yDataArr, sele
         tooltip: {
             position: 'top'
         },
+        toolbox: {
+            show: true,
+            feature: {
+                dataView: { show: true, readOnly: false },
+                restore: { show: true },
+                saveAsImage: { show: true }
+            }
+        },
         xAxis: {
             type: 'category',
             data: xData,
