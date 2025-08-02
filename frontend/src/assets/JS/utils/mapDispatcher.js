@@ -5,29 +5,41 @@
 import mapMatch from './mapMatchDispatcher';
 
 /**
- * 根据地图名称（支持中文、拼音、英文）返回对应的地图js文件名
+ * 判断是否为中文
+ */
+function isChinese(str) {
+    return /[\u4e00-\u9fa5]/.test(str);
+}
+
+/**
+ * 地图分发器
  * @param {string} mapName
- * @returns {string|undefined} 地图js文件名
+ * @returns {object|undefined} { file, source, origin }
  */
 export default function mapDispatcher(mapName) {
     if (!mapName) return undefined;
-    // 直接查找
-    if (mapMatch[mapName]) {
-        console.log(`[mapDispatcher] Found map file for ${mapName}: ${mapMatch[mapName]}`);
-        return mapMatch[mapName];
-    }
-    // 尝试首字母大写（兼容拼音key）
-    const cap = mapName.charAt(0).toUpperCase() + mapName.slice(1);
-    if (mapMatch[cap]) {
-        console.log(`[mapDispatcher] Found map file for ${cap}: ${mapMatch[cap]}`);
-        return mapMatch[cap];
-    }
-    // 兼容全小写
-    const lower = mapName.toLowerCase();
-    for (const key in mapMatch) {
-        if (key.toLowerCase() === lower) {
-            console.log(`[mapDispatcher] Found map file for ${key}: ${mapMatch[key]}`);
-            return mapMatch[key];
+
+    // 中文直接查找
+    if (isChinese(mapName)) {
+        const info = mapMatch[mapName];
+        if (info) {
+            return {
+                file: info.file,
+                source: info.source,
+                origin: mapName
+            };
+        }
+    } else {
+        // 英文统一转大写
+        const upper = mapName.toUpperCase();
+        const info = mapMatch[upper];
+        if (info) {
+            // 分发器里英文key的origin就是中文名
+            return {
+                file: info.file,
+                source: info.source,
+                origin: info.origin
+            };
         }
     }
     return undefined;
