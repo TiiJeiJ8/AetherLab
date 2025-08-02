@@ -1,3 +1,4 @@
+/* eslint-disable */
 // dataMergeUtils.js
 // 多文件数据合并与主键处理工具函数
 // 根据不同图表类型，主函数分发到对应的处理器进行数据处理，生成能够绘制图表的数据
@@ -15,9 +16,8 @@
     返回 {xData, yDataArr, mergeType, seriesData}
 */
 
-// import mapDispatcher from '../utils/mapDispacher.js'
-
-/* eslint-disable */
+import mapDispatcher from '../utils/mapDispatcher.js' // 地图文件信息分发器
+import LatLonProcessor from './LatLonProcessor.js'; // 经纬度规范化处理器
 
 /**
  * @typedef {Object} AxisConfig
@@ -307,59 +307,195 @@ function pieChartHandler(config, fileDataMap, options) {
  * @returns {Object}
  */
 function mapChartHandler(config, fileDataMap, options) {
-    debugInput(config, fileDataMap, options);
-    const seriesType = config.seriesType || 'map';
-    const { mapType, mapSourceName, mapSourceUrl } = config; // 地图类型选择、地图数据源名称、地图数据源URL
+    // debugInput(config, fileDataMap, options);
+    let seriesType = config.seriesType || 'map';
+    let { mapType, mapSourceName, mapSourceUrl } = config;
 
-    // 外部URL链接未输入
-    if (mapSourceUrl === undefined) {
-        let isCustom = false;
-        let mapScript = null;
+    let isCustom = mapType == 'custom';
+    let mapFile = null;
 
-        if (mapType == 'custom') {
-            isCustom = true;
+    if (isCustom) {
+        if (mapSourceUrl == undefined) {
+            if (mapSourceName == undefined) {
+                console.warn('[mapChartHandler] No mapSourceUrl or mapSourceName provided, using default map script.');
+                mapFile = mapDispatcher('china'); // 默认中国地图
+            } else {
+                mapFile = mapDispatcher(mapSourceName);
+            }
+        } else {
+            //todo ...外部JSON逻辑...
         }
-
-        if (isCustom) {
-            // 使用 mapSourceName 通过 mapDispatcher 分发对应地图
-        }
-        else {
-            mapScript = mapType; // china, world能够直接用于map字段
-        }
+    } else {
+        mapFile = mapDispatcher(mapType);
     }
-    else {
-        // 获取URL指向的地图数据源
+
+    // 组装地图JS路径和注册名（中文）
+    let mapFilePath = '';
+    let mapRegisterName = '';
+    if (mapFile) {
+        mapFilePath = `/maps/${mapFile.source}/${mapFile.file}`;
+        mapRegisterName = mapFile.origin || mapType;
+        //! 调试
+        // console.log(`[mapChartHandler] Map file path: `, mapFilePath);
+        // console.log(`[mapChartHandler] Map register name: `, mapRegisterName);
     }
 
     // 根据seriesType分发地图图表类型
-    if (seriesType === 'map') {
-        const { nameField, value } = config;
-        // 提取数据
-        const dataRow = getDataRows(fileDataMap, value.file);
-        const nameFieldRow = dataRow[nameField.index];
-        const valueFieldRow = dataRow[value.index];
+    if (seriesType === 'map') { //* 区域热力型
+        let { nameField = {}, value } = config;
+        let dataRow = getDataRows(fileDataMap, value.file);
+        // 增加过滤器支持
+        const filterPlugin = options.filterPlugin || defaultFilterPlugin;
+        if (config.filter && config.filter.filters && config.filter.filters.length) {
+            dataRow = filterPlugin(dataRow, config.filter);
+        }
 
-        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+        let nameFieldRow = [];
+        if (nameField) {
+            nameFieldRow = dataRow.map(row => row[nameField.field]);
+        }
+        let valueFieldRow = dataRow.map(row => row[value.field]);
+
+        const seriesData = [];
+        nameFieldRow.forEach((name, i) => {
+            seriesData.push({
+                name: name,
+                value: valueFieldRow[i]
+            });
+        });
+
+        return {
+            xData: [],
+            yDataArr: [],
+            mergeType: 'map',
+            seriesData: seriesData,
+            customOption: {
+                seriesType,
+                mapSourceName: mapRegisterName, // 用于注册的中文名
+                mapFilePath
+            }
+        };
     }
-    else if (seriesType === 'heatmap') {
-        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+    else if (seriesType === 'heatmap') { //* 地理热力型
+        let { lngField = {}, latField = {}, value } = config;
+        let dataRow = getDataRows(fileDataMap, value.file);
+
+        // 增加过滤器支持
+        const filterPlugin = options.filterPlugin || defaultFilterPlugin;
+        if (config.filter && config.filter.filters && config.filter.filters.length) {
+            dataRow = filterPlugin(dataRow, config.filter);
+        }
+
+        // 获取数据行
+        let latFieldRow = [];
+        let lngFieldRow = [];
+        if (lngField && latField && lngField.field && latField.field) {
+            // 确保经纬度字段存在
+            latFieldRow = dataRow.map(row => row[latField.field]);
+            lngFieldRow = dataRow.map(row => row[lngField.field]);
+
+            // 处理经纬度格式
+            lngFieldRow = LatLonProcessor(lngFieldRow, latFieldRow).lngArr;
+            latFieldRow = LatLonProcessor(lngFieldRow, latFieldRow).latArr;
+
+            if (latFieldRow == null || lngFieldRow == null) {
+                console.warn(`[mapChartHandler] latFieldRow and lngFieldRow length mismatch: ${latFieldRow} vs ${lngFieldRow}`);
+                return {
+                    xData: [], yDataArr: [], mergeType: 'map', seriesData: [],
+                    customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath }
+                };
+            }
+        }
+        let valueFieldRow = dataRow.map(row => row[value.field]);
+
+        const seriesData = [];
+        for (let i = 0; i < dataRow.length; i++) {
+            const lng = lngFieldRow[i];
+            const lat = latFieldRow[i];
+            const val = valueFieldRow[i];
+            seriesData.push({ value: [lng, lat, val] });
+        }
+
+        return {
+            xData: [], yDataArr: [], mergeType: 'map', seriesData: seriesData,
+            customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath }
+        };
     }
-    else if (seriesType === 'scatter') {
-        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+    else if (seriesType === 'scatter') { //* 散点型
+        let { lngField = {}, latField = {}, name = {}, value } = config;
+        let dataRow = getDataRows(fileDataMap, value.file);
+
+        // 增加过滤器支持
+        const filterPlugin = options.filterPlugin || defaultFilterPlugin;
+        if (config.filter && config.filter.filters && config.filter.filters.length) {
+            dataRow = filterPlugin(dataRow, config.filter);
+        }
+
+        // 获取数据行
+        let latFieldRow = [];
+        let lngFieldRow = [];
+        let nameFieldRow = [];
+        if (lngField && latField && lngField.field && latField.field) {
+            // 确保经纬度字段存在
+            latFieldRow = dataRow.map(row => row[latField.field]);
+            lngFieldRow = dataRow.map(row => row[lngField.field]);
+
+            // 处理经纬度格式
+            lngFieldRow = LatLonProcessor(lngFieldRow, latFieldRow).lngArr;
+            latFieldRow = LatLonProcessor(lngFieldRow, latFieldRow).latArr;
+
+            if (latFieldRow == null || lngFieldRow == null) {
+                console.warn(`[mapChartHandler] latFieldRow and lngFieldRow length mismatch: ${latFieldRow} vs ${lngFieldRow}`);
+                return {
+                    xData: [], yDataArr: [], mergeType: 'map', seriesData: [],
+                    customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath }
+                };
+            }
+        }
+
+        if (name && name.field) {
+            nameFieldRow = dataRow.map(row => row[name.field]);
+        }
+
+        let valueFieldRow = dataRow.map(row => row[value.field]);
+
+        const seriesData = [];
+        for (let i = 0; i < dataRow.length; i++) {
+            const lng = lngFieldRow[i];
+            const lat = latFieldRow[i];
+            const val = valueFieldRow[i];
+            seriesData.push({ value: [lng, lat, val] });
+        }
+
+        return {
+            xData: [], yDataArr: [], mergeType: 'map', seriesData: seriesData,
+            customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath, nameFieldRow }
+        };
     }
-    else if (seriesType === 'pie') {
-        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+    else if (seriesType === 'pie') { //* 饼图型
+        return {
+            xData: [], yDataArr: [], mergeType: 'map', seriesData: [],
+            customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath }
+        };
     }
-    else if (seriesType === 'bar') {
-        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+    else if (seriesType === 'bar') { //* 外部条形型
+        return {
+            xData: [], yDataArr: [], mergeType: 'map', seriesData: [],
+            customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath }
+        };
     }
-    else if (seriesType === 'lines') {
-        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+    else if (seriesType === 'lines') { //* 路径型
+        return {
+            xData: [], yDataArr: [], mergeType: 'map', seriesData: [],
+            customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath }
+        };
     }
-    else {
-        // 兜底
+    else { // 兜底
         console.warn(`[mapChartHandler] Unsupported seriesType: ${seriesType}`);
-        return { xData: [], yDataArr: [], mergeType: 'map', seriesData: [] };
+        return {
+            xData: [], yDataArr: [], mergeType: 'map', seriesData: [],
+            customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath }
+        };
     }
 }
 
