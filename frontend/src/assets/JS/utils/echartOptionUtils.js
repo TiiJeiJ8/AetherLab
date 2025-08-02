@@ -58,7 +58,7 @@ registerChartOptionGenerator('Calendar', calendarOption)
 // ...可继续注册更多类型
 
 // 主入口：根据类型分发
-export function generateEChartOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
+export async function generateEChartOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
     //! 控制台显示传入的所有字段
     console.log('[generateEChartOption] config:', config);
     console.log('[generateEChartOption] fileDataMap:', fileDataMap);
@@ -74,10 +74,10 @@ export function generateEChartOption(config, fileDataMap, xData, yDataArr, selec
     if (!generator) {
         throw new Error(`No chart option generator registered for type: ${type}`);
     }
-    const option = generator(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption);
+    const option = await generator(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption);
 
-    //! 调试输出
-    console.log('[generateEChartOption] Type:', type);
-    console.log('[generateEChartOption] Generated option:', option);
+    // //! 调试输出
+    // console.log('[generateEChartOption] Type:', type);
+    // console.log('[generateEChartOption] Generated option:', option);
     return option;
 }
