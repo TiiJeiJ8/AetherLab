@@ -175,13 +175,15 @@ export const chartTypeConfig = {
     Geo_Map: {
         mapping: [
             // 地区名字
-            { key: 'nameField', label: 'Field Name', type: 'dimension', required: false, description: 'Region name field, such as province, city, or district. Used to match map areas.\n ( If you choose this field, it is no need to provide longitude and latitude fields anymore)' },
+            { key: 'nameField', label: 'Field Name', type: 'dimension', required: true, description: 'Field containing region names or point names.' },
             // 经纬度坐标及其坐标点名称
-            { key: 'lngField', label: 'Longitude', type: 'dimension', required: false, description: 'Longitude & Latitude field, for point-based geo data.' },
-            { key: 'latField', label: 'Latitude', type: 'dimension', required: false },
+            { key: 'lngField', label: 'Longitude', type: 'dimension', required: true, description: 'Longitude & Latitude field, for point-based geo data.' },
+            { key: 'latField', label: 'Latitude', type: 'dimension', required: true },
             { key: 'name', label: 'Location Name', type: 'tag', required: false, description: 'Optional name field for points, if not using region names.' },
             // 值
             { key: 'value', label: 'Value', type: 'measure', required: true, description: 'Value for each region or point (e.g., population, sales).' },
+            // 分类字段
+            { key: 'categoryField', label: 'Category Field', type: 'dimension', required: true, description: 'Field used to categorize the data points.' },
             // lines 专用字段
             { key: 'fromLngField', label: 'From Longitude', type: 'dimension', required: false, description: 'Start point longitude for lines.' },
             { key: 'fromLatField', label: 'From Latitude', type: 'dimension', required: false, description: 'Start point latitude for lines.' },

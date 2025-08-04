@@ -188,7 +188,7 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'
-                        : 'center', // bottom 也用 center
+                        : 'center',
             top: config.titlePosition === 'bottom' ? 'bottom' : 'top',
             textStyle: { fontSize: 16, fontWeight: 'bold' },
             subtextStyle: { fontSize: 12 }
@@ -339,14 +339,6 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
                     borderWidth: config.borderWidth || 0.5
                 }
             },
-            toolbox: {
-                show: true,
-                feature: {
-                    dataView: { show: true, readOnly: false },
-                    restore: { show: true },
-                    saveAsImage: { show: true }
-                }
-            },
             series: [{
                 name: mapSourceName || 'Scatter Data',
                 type: config.rippleEffect ? 'effectScatter' : 'scatter',
@@ -361,14 +353,73 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
                     show: true,
                 },
                 roam: true,
-                // pointSize/blurSize 可保留用于兼容
-                pointSize: config.pointSize || 20,
-                blurSize: config.blurSize || 20,
+                pointSize: config.pointSize || 20, // 散点像素大小
+                blurSize: config.blurSize || 20, // 散点模糊半径
             }],
         }
     }
     else if (seriesType === 'pie') { //* 饼图型
-
+        console.log(`[mapOption] Pie chart seriesData:`, seriesData);
+        console.log(`[mapOption] Pie chart positionData:`, customOption.positionData);
+        // seriesData 和 positionData 一一对应，每个饼图有多个扇区（category）
+        const pieSeriesArr = (customOption.positionData || []).map((pos, idx) => ({
+            type: 'pie',
+            coordinateSystem: 'geo',
+            radius: config.pieRadius || 20,
+            center: pos.value,
+            data: seriesData[idx], // [{name: category, value}, ...]
+            label: { show: false },
+            labelLine: { show: false },
+            selectedMode: 'multiple',
+            selectedOffset: config.selectedOffset || 10, // 选中偏移量
+            roseType: config.roseType || '', // 南丁格尔玫瑰图类型
+            itemStyle: {
+                borderRadius: config.pieBorderRadius || 0, // 圆角
+                borderWidth: config.pieBorderWidth || 0 // 扇区间隙
+                , borderColor: config.pieBorderColor || '' // 扇区边框颜色
+            },
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)',
+                    borderRadius: config.pieBorderRadius || 0, // 圆角
+                    borderWidth: config.pieBorderWidth || 0 // 扇区间隙
+                    , borderColor: config.pieBorderColor || '' // 扇区边框颜色
+                }
+            },
+            animation: animation,
+            animationDuration: animation ? 1500 : 0
+        }));
+        return {
+            ...option,
+            geo: {
+                map: mapSourceName || 'china',
+                roam: true,
+                label: {
+                    show: config.labelVisible || false,
+                },
+                itemStyle: {
+                    areaColor: config.areaColor || '#f3f3f3',
+                    borderColor: config.borderColor || '#999',
+                    borderWidth: config.borderWidth || 0.5
+                }
+            },
+            tooltip: { trigger: 'item' },
+            legend: {
+                type: 'scroll',
+                show: config.legendVisible !== false,
+                top: ['top', 'bottom'].includes(config.legendPosition) ? config.legendPosition : undefined,
+                left: config.legendPosition === 'left' ? 'left' : undefined,
+                right: config.legendPosition === 'right' ? 'right' : undefined,
+                data: Array.from(
+                    new Set(
+                        (seriesData || []).flatMap(arr => arr.map(d => d.name))
+                    )
+                ),
+            },
+            series: pieSeriesArr,
+        }
     }
     else if (seriesType === 'bar') { //* 外部条形型
 
