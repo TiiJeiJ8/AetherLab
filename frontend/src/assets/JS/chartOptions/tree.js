@@ -4,8 +4,8 @@
 export default function treeOption(config, fileDataMap, xData, yDataArr, selectedChartType, seriesData, customOption = {}) {
     return {
         title: {
-            text: config.title || 'Chart of Tree',
-            subtext: config.subtext,
+            text: config.title || '',
+            subtext: config.subtext || '',
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

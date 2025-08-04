@@ -59,8 +59,8 @@ export default function treemapOption(config, fileDataMap, xData, yDataArr, sele
 
     const baseOption = {
         title: {
-            text: config.title || 'Chart of Treemap',
-            subtext: config.subtext,
+            text: config.title || '',
+            subtext: config.subtext || '',
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

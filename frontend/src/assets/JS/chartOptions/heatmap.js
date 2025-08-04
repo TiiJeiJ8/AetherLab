@@ -64,8 +64,8 @@ export default function heatmapOption(config, fileDataMap, xData, yDataArr, sele
     return {
         // ECharts 热力图配置
         title: {
-            text: config.title || 'Chart of Heatmap',
-            subtext: config.subtext,
+            text: config.title || '',
+            subtext: config.subtext || '',
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

@@ -6,8 +6,8 @@ export default function funnelOption(config, fileDataMap, xData, yDataArr, selec
 
     return {
         title: {
-            text: config.title || 'Chart of Funnel',
-            subtext: config.subtext,
+            text: config.title || '',
+            subtext: config.subtext || '',
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

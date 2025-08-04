@@ -150,8 +150,8 @@ export default function barOption(config, fileDataMap, xData, yDataArr, selected
     }
     const option = {
         title: {
-            text: config.title || 'Chart of Bar',
-            subtext: config.subtext,
+            text: config.title || '',
+            subtext: config.subtext || '',
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

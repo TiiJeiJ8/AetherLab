@@ -35,7 +35,7 @@ export default function scatterOption(config, fileDataMap, xData, yDataArr, sele
             xGrid = false; yGrid = false;
     }
 
-    const { yAxis, title, animation } = config;
+    const { yAxis, animation } = config;
     const yArr = Array.isArray(yAxis) ? yAxis : [yAxis];
     // 处理极坐标
     let usePolar = config.polarStyle && config.polarStyle !== 'none';
@@ -227,8 +227,8 @@ export default function scatterOption(config, fileDataMap, xData, yDataArr, sele
     // 构造option
     let option = {
         title: {
-            text: config.title || 'Chart of Scatter',
-            subtext: config.subtext,
+            text: config.title || '',
+            subtext: config.subtext || '',
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

@@ -108,8 +108,8 @@ export default function parallelOption(config, fileDataMap, xData, yDataArr, sel
     const legendType = config.legendType || 'legend'; // legend 或 visualmap
     let option = {
         title: {
-            text: config.title || 'Chart of Parallel',
-            subtext: config.subtext,
+            text: config.title || '',
+            subtext: config.subtext || '',
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

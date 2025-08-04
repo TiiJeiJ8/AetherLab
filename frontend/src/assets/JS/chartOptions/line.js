@@ -37,7 +37,7 @@ export default function lineOption(config, fileDataMap, xData, yDataArr, selecte
         default:
             xGrid = false; yGrid = false;
     }
-    const { yAxis, title, animation } = config;
+    const { yAxis, animation } = config;
     const yArr = Array.isArray(yAxis) ? yAxis : [yAxis];
     const seriesArr = yArr.map((y, idx) => {
         const base = {
@@ -81,8 +81,8 @@ export default function lineOption(config, fileDataMap, xData, yDataArr, selecte
     });
     const option = {
         title: {
-            text: config.title || 'Chart of Line',
-            subtext: config.subtext,
+            text: config.title || '',
+            subtext: config.subtext || '',
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'

@@ -53,8 +53,8 @@ export default function graphOption(config, fileDataMap, xData, yDataArr, select
 
     return {
         title: {
-            text: config.title || 'Chart of Graph',
-            subtext: config.subtext,
+            text: config.title || '',
+            subtext: config.subtext || '',
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
                     : config.titlePosition === 'right' ? 'right'
