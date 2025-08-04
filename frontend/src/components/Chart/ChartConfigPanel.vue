@@ -123,7 +123,7 @@
 
 <script setup>
 /* eslint-disable */
-import { ref, computed, watch, reactive, nextTick } from 'vue'
+import { ref, computed, watch, reactive, nextTick, onMounted, onUnmounted } from 'vue'
 import { chartIcons } from '../../assets/JS/SVG/chartIcons.js'
 import { chartsTooltipConfig } from '../../assets/JS/Config/ChartsTooltipConfig.js'
 import { chartTypeConfig } from '../../assets/JS/Config/ChartTypeConfig.js'
@@ -215,6 +215,7 @@ const chartConfig = ref({
     isAggregate: false,
     dataRange: 'all',
     nullHandling: 'ignoreNull',
+    aspectRatio: 'auto',
     // spicific to Geo_Map
     seriesType: 'map',
     mapType: 'china',
@@ -266,7 +267,7 @@ const isConfigValid = computed(() => {
         return cat && cat.field && val && val.field;
     }
     if (['geo_map'].includes(type)) {
-        return cfg.value && cfg.value.field;
+        return cfg.value && cfg.value.field && cfg.lngField && cfg.latField;
     }
     if (['candlestick'].includes(type)) {
         return  cfg.time && cfg.time.field &&
@@ -628,8 +629,11 @@ const mappingConfig = computed(() => {
     } else if (seriesType === 'pie') {
         const valueField = baseMapping.find(f => f.key === 'value');
         return [
+            baseMapping.find(f => f.key === 'lngField'),
+            baseMapping.find(f => f.key === 'latField'),
             baseMapping.find(f => f.key === 'nameField'),
-            valueField ? { ...valueField, multiple: true } : undefined,
+            valueField ? { ...valueField, multiple: false } : undefined,
+            baseMapping.find(f => f.key === 'categoryField'),
         ].filter(Boolean);
     }
     // 默认
@@ -647,6 +651,43 @@ watch(() => props.selectedChartType, (newType) => {
     if (autoRender.value && isConfigValid.value) {
         emit('generate-chart', chartConfig.value)
     }
+})
+
+// 监听全局主题变化
+function handleGlobalThemeChange(event) {
+    const { colorScheme } = event.detail
+    console.log('[ChartConfigPanel] Global theme changed to:', colorScheme)
+    
+    // 更新图表配置中的colorScheme
+    if (chartConfig.value.colorScheme !== colorScheme) {
+        chartConfig.value.colorScheme = colorScheme
+        // 触发配置变化事件
+        emit('config-change', chartConfig.value)
+        
+        // 如果自动渲染开启且配置有效，立即重新生成图表
+        if (autoRender.value && isConfigValid.value) {
+            emit('generate-chart', chartConfig.value)
+        }
+    }
+}
+
+// 生命周期钩子
+onMounted(() => {
+    // 监听全局主题变化事件
+    window.addEventListener('app-theme-change', handleGlobalThemeChange)
+    
+    // 初始化时同步当前主题状态
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    if (currentTheme === 'dark' && chartConfig.value.colorScheme !== 'dark') {
+        chartConfig.value.colorScheme = 'dark'
+    } else if (currentTheme === 'light' && chartConfig.value.colorScheme !== 'default') {
+        chartConfig.value.colorScheme = 'default'
+    }
+})
+
+onUnmounted(() => {
+    // 清理事件监听器
+    window.removeEventListener('app-theme-change', handleGlobalThemeChange)
 })
 </script>
 

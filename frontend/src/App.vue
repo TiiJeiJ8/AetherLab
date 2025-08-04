@@ -3,17 +3,29 @@
     <div class="min-vh-100 bg-color position-relative">
       <router-view />
     </div>
-    <ThemeButton />
+    <ThemeButton @change="handleThemeChange" />
   </div>
 </template>
 
 <script>
+/* eslint-disable */
 import ThemeButton from './components/Common/ThemeButton.vue'
 
 export default {
   name: 'App',
   components: {
     ThemeButton
+  },
+  methods: {
+    handleThemeChange(theme) {
+      // 当主题变化时，发送全局事件
+      this.$emit('global-theme-change', theme === 'dark' ? 'dark' : 'default')
+      
+      // 也可以通过事件总线或其他方式通知其他组件
+      window.dispatchEvent(new CustomEvent('app-theme-change', {
+        detail: { colorScheme: theme === 'dark' ? 'dark' : 'default' }
+      }))
+    }
   }
 }
 </script>

@@ -33,7 +33,10 @@
     <!-- 绘制区 -->
     <div class="main-content">
       <section class="chart-workspace">
-        <ChartDisplay v-if="chartOption" :option="chartOption" :colorTheme="chartConfig?.colorScheme || chartConfig?.colorTheme || 'default'" />
+        <ChartDisplay v-if="chartOption"
+          :option="chartOption"
+          :colorTheme="chartConfig?.colorScheme || chartConfig?.colorTheme || 'default'"
+          :aspectRatio="chartConfig?.aspectRatio || 'auto'" />
       </section>
     </div>
 
@@ -122,11 +125,44 @@ function handleEscKey(e) {
     if (showStructurePanel.value) showStructurePanel.value = false
   }
 }
+// 监听全局主题变化
+function handleGlobalThemeChange(event) {
+    const { colorScheme } = event.detail
+    console.log('[ChartVisualizations] Global theme changed to:', colorScheme)
+    
+    // 更新当前chartConfig中的colorScheme
+    if (chartConfig.value && chartConfig.value.colorScheme !== colorScheme) {
+        const prevTheme = chartConfig.value.colorScheme || 'default'
+        chartConfig.value.colorScheme = colorScheme
+        
+        // 如果有现有图表，强制刷新以应用新主题
+        if (chartOption.value && prevTheme !== colorScheme) {
+            const tmp = JSON.parse(JSON.stringify(chartOption.value));
+            chartOption.value = null;
+            nextTick(() => {
+                chartOption.value = tmp;
+            });
+        }
+    }
+}
+
 onMounted(() => {
   window.addEventListener('keydown', handleEscKey)
+  window.addEventListener('app-theme-change', handleGlobalThemeChange)
+  
+  // 初始化时同步当前主题状态
+  const currentTheme = document.documentElement.getAttribute('data-theme')
+  if (currentTheme === 'dark') {
+    // 如果当前是深色模式，当有chartConfig时将其更新为dark主题
+    console.log('[ChartVisualizations] Initial theme is dark, will update chartConfig when available')
+  } else if (currentTheme === 'light') {
+    // 如果当前是浅色模式，当有chartConfig时将其更新为default主题  
+    console.log('[ChartVisualizations] Initial theme is light, will update chartConfig when available')
+  }
 })
 onUnmounted(() => {
   window.removeEventListener('keydown', handleEscKey)
+  window.removeEventListener('app-theme-change', handleGlobalThemeChange)
 })
 
 // 文件上传相关
@@ -208,6 +244,17 @@ function handleColumnDrag(dragInfo) {
 // 图表配置处理方法
 function handleConfigChange(config) {
   console.log('Chart config changed:', JSON.parse(JSON.stringify(config)))
+  
+  // 检查并同步当前的主题状态
+  const currentTheme = document.documentElement.getAttribute('data-theme')
+  if (currentTheme === 'dark' && config.colorScheme !== 'dark') {
+    console.log('[handleConfigChange] Syncing dark theme to config')
+    config.colorScheme = 'dark'
+  } else if (currentTheme === 'light' && config.colorScheme !== 'default') {
+    console.log('[handleConfigChange] Syncing light theme to config')  
+    config.colorScheme = 'default'
+  }
+  
   // 检查主题是否变化
   const prevTheme = chartConfig.value?.colorScheme || chartConfig.value?.colorTheme || 'default';
   const nextTheme = config.colorScheme || config.colorTheme || 'default';

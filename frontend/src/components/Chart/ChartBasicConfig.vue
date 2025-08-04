@@ -162,7 +162,7 @@
 /* eslint-disable */
 // This component is for basic configuration shared by all chart types
 // 该组件用于所有图表的通用基础配置
-import { ref, onMounted, computed, defineProps, defineEmits, watchEffect } from 'vue'
+import { ref, onMounted, onUnmounted, computed, defineProps, defineEmits, watchEffect } from 'vue'
 import { chartTypeConfig } from '../../assets/JS/Config/ChartTypeConfig'
 
 const props = defineProps({
@@ -213,7 +213,31 @@ const localConfig = computed({
 // 主题列表（可手动维护或通过接口/fetch获取）
 const themeList = ref(['default'])
 
+// 监听全局主题变化
+function handleGlobalThemeChange(event) {
+    const { colorScheme } = event.detail
+    console.log('[ChartBasicConfig] Global theme changed to:', colorScheme)
+    
+    // 更新localConfig中的colorScheme
+    if (localConfig.value && localConfig.value.colorScheme !== colorScheme) {
+        localConfig.value.colorScheme = colorScheme
+    }
+}
+
 onMounted(async () => {
+    // 监听全局主题变化事件
+    window.addEventListener('app-theme-change', handleGlobalThemeChange)
+    
+    // 初始化时同步当前主题状态
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    if (localConfig.value) {
+        if (currentTheme === 'dark' && localConfig.value.colorScheme !== 'dark') {
+            localConfig.value.colorScheme = 'dark'
+        } else if (currentTheme === 'light' && localConfig.value.colorScheme !== 'default') {
+            localConfig.value.colorScheme = 'default'
+        }
+    }
+
     // 先尝试后端接口
     try {
         const res = await fetch('/api/themes')
@@ -254,6 +278,11 @@ onMounted(() => {
             localConfig.value.legendPosition = 'bottom'
         }
     }
+})
+
+onUnmounted(() => {
+    // 清理事件监听器
+    window.removeEventListener('app-theme-change', handleGlobalThemeChange)
 })
 
 const showThemeTip = ref(false)
