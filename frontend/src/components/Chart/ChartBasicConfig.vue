@@ -67,6 +67,20 @@
         <span style="margin-left:8px;min-width:32px;">{{ localConfig.animation ? 'On' : 'Off' }}</span>
     </div>
 
+    <!-- Aspect Ratio -->
+    <div class="basic-config-item">
+        <label for="aspect-ratio">Aspect Ratio</label>
+        <select id="aspect-ratio" v-model="localConfig.aspectRatio">
+            <option value="auto">Auto</option>
+            <option value="16:9">16:9</option>
+            <option value="4:3">4:3</option>
+            <option value="1:1">1:1</option>
+            <option value="3:2">3:2</option>
+            <option value="21:9">21:9</option>
+            <option value="9:16">9:16</option>
+        </select>
+    </div>
+
     <!-- Legend 开关 -->
     <div class="basic-config-item">
         <label for="legend-toggle">Legend</label>
@@ -276,6 +290,10 @@ onMounted(() => {
         }
         if (!localConfig.value.legendPosition) {
             localConfig.value.legendPosition = 'bottom'
+        }
+        // aspectRatio 默认值 auto
+        if (!localConfig.value.aspectRatio) {
+            localConfig.value.aspectRatio = 'auto'
         }
     }
 })

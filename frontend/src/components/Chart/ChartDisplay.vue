@@ -1,12 +1,14 @@
 <template>
-<div class="chart-display">
+<div class="chart-display" ref="containerRef">
     <div v-if="!hasSeries" class="empty-tip">
         <!-- SVG动画轮播组件 -->
         <AnimateIcon :icon-list="iconList" :interval="7500" :fade="600" />
         <div class="empty-title">No Chart Data</div>
         <div class="empty-desc">Select a chart type on the left and configure your data to <span class="faststart">get started fast</span> with visualization!</div>
     </div>
-    <div v-else ref="chartRef" class="chart-container"></div>
+    <div v-else class="chart-container" :style="containerStyle">
+        <div ref="chartRef" class="chart-inner"></div>
+    </div>
 </div>
 </template>
 
@@ -62,18 +64,78 @@ async function loadAndRegisterTheme(themeName) {
  * Props
  * @prop {Object} option - ECharts 配置对象，必填
  * @prop {String} colorTheme - 主题名，默认 'default'
+ * @prop {String} aspectRatio - 宽高比，默认 'auto'
  */
 const props = defineProps({
     option: { type: Object, required: true },
-    colorTheme: { type: String, default: 'default' }
+    colorTheme: { type: String, default: 'default' },
+    aspectRatio: { type: String, default: 'auto' }
 })
 
 const chartRef = ref(null)
+const containerRef = ref(null)
 let chartInstance = null
 let resizeObserver = null
 
 const hasSeries = computed(() => {
     return props.option && Array.isArray(props.option.series) && props.option.series.length > 0
+})
+
+// 获取容器的实际尺寸
+const containerDimensions = ref({ width: 0, height: 0 })
+
+// 计算容器样式
+const containerStyle = computed(() => {
+    if (props.aspectRatio === 'auto') {
+        return {
+            width: '100%',
+            height: '100%'
+        }
+    }
+    
+    // 解析比例
+    const [widthRatio, heightRatio] = props.aspectRatio.split(':').map(Number)
+    const targetRatio = widthRatio / heightRatio
+    
+    const { width: containerWidth, height: containerHeight } = containerDimensions.value
+    
+    if (containerWidth === 0 || containerHeight === 0) {
+        // 如果还没有获取到容器尺寸，使用默认的padding-bottom方式
+        return {
+            width: '100%',
+            height: '0',
+            paddingBottom: `${(1 / targetRatio) * 100}%`,
+            position: 'relative',
+            maxWidth: '100%',
+            maxHeight: '80vh'
+        }
+    }
+    
+    // 根据容器的实际尺寸和目标比例来计算最佳尺寸
+    const currentRatio = containerWidth / containerHeight
+    
+    let finalWidth, finalHeight
+    
+    if (currentRatio > targetRatio) {
+        // 容器更宽，以高度为准
+        finalHeight = Math.min(containerHeight, containerWidth / targetRatio)
+        finalWidth = finalHeight * targetRatio
+    } else {
+        // 容器更高，以宽度为准
+        finalWidth = Math.min(containerWidth, containerHeight * targetRatio)
+        finalHeight = finalWidth / targetRatio
+    }
+    
+    // 确保不超出容器边界
+    finalWidth = Math.min(finalWidth, containerWidth)
+    finalHeight = Math.min(finalHeight, containerHeight)
+    
+    return {
+        width: `${finalWidth}px`,
+        height: `${finalHeight}px`,
+        maxWidth: '100%',
+        maxHeight: '80vh'
+    }
 })
 
 // 空状态图标轮播逻辑
@@ -262,18 +324,43 @@ async function renderChart() {
     })
 }
 
+// 更新容器尺寸
+function updateContainerDimensions() {
+    if (containerRef.value) {
+        const rect = containerRef.value.getBoundingClientRect()
+        containerDimensions.value = {
+            width: rect.width,
+            height: rect.height
+        }
+    }
+}
+
 onMounted(() => {
     startIconLoop()
+    // 初始获取容器尺寸
+    updateContainerDimensions()
     renderChart()
+    
     // 监听容器大小变化，自适应图表
     if (window.ResizeObserver) {
         resizeObserver = new ResizeObserver(() => {
-            if (chartInstance) chartInstance.resize()
+            updateContainerDimensions()
+            if (chartInstance) {
+                // 延迟执行resize，确保CSS变化已完成
+                setTimeout(() => {
+                    chartInstance.resize()
+                }, 50)
+            }
         })
-        if (chartRef.value) resizeObserver.observe(chartRef.value)
+        if (containerRef.value) resizeObserver.observe(containerRef.value)
     } else {
         window.addEventListener('resize', () => {
-            if (chartInstance) chartInstance.resize()
+            updateContainerDimensions()
+            if (chartInstance) {
+                setTimeout(() => {
+                    chartInstance.resize()
+                }, 50)
+            }
         })
     }
 })
@@ -282,10 +369,21 @@ onBeforeUnmount(() => {
     if (chartInstance) chartInstance.dispose()
     clearInterval(iconTimer)
     clearTimeout(fadeTimer)
-    if (resizeObserver && chartRef.value) resizeObserver.unobserve(chartRef.value)
+    if (resizeObserver) {
+        if (containerRef.value) resizeObserver.unobserve(containerRef.value)
+        resizeObserver.disconnect()
+    }
 })
 
 watch([() => props.option, () => props.colorTheme], renderChart, { deep: true })
+watch(() => props.aspectRatio, () => {
+    // 当aspectRatio变化时，重新计算尺寸并resize图表
+    if (chartInstance) {
+        setTimeout(() => {
+            chartInstance.resize()
+        }, 100)
+    }
+})
 onMounted(renderChart)
 onBeforeUnmount(() => {
     if (chartInstance) chartInstance.dispose()
@@ -312,16 +410,20 @@ onBeforeUnmount(() => {
 }
 
 .chart-container {
-    width: 100% !important;
-    height: 100% !important;
     min-height: 320px;
     min-width: 0;
-    max-width: 100vw;
+    max-width: 100%;
     max-height: 80vh;
     overflow: visible; /* 允许legend溢出显示 */
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0 auto; /* 居中显示 */
+}
+
+.chart-inner {
+    width: 100%;
+    height: 100%;
 }
 
 .empty-tip {
