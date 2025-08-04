@@ -1,9 +1,28 @@
 // chartIcons.js
 /* eslint-disable */
 export const chartTypes = [
-    "Unknown", "Line", "Bar", "Pie", "Scatter", "Geo_Map", "Candlestick", "Radar", "Boxplot",
-    "Heatmap", "Graph", "Tree", "Treemap", "Sunburst", "Parallel",
-    "Sankey", "Funnel", "Gauge", "PictorialBar", "ThemeRiver", "Calendar"
+    "Unknown",
+    "Line",
+    "Bar",
+    "Pie",
+    "Scatter",
+    "Geo_Map",
+    "Candlestick",
+    "Radar",
+    "Boxplot",
+    "Heatmap",
+    "Graph",
+    "Tree",
+    "Treemap",
+    "Sunburst",
+    "Parallel",
+    "Sankey",
+    "Funnel",
+    "Gauge",
+    //todo 未来支持 (Future plan)
+    // "PictorialBar",
+    "ThemeRiver",
+    "Calendar"
 ]
 
 export const chartIcons = {
