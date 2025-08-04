@@ -278,18 +278,16 @@ function xyChartHandler(config, fileDataMap, options) {
 function pieChartHandler(config, fileDataMap, options) {
     // debugInput(config, fileDataMap, options)
     const { filterPlugin = defaultFilterPlugin } = options;
-    let catData = getDataRows(fileDataMap, config.category.file);
-    let valData = getDataRows(fileDataMap, config.value.file);
+    let dataRows = getDataRows(fileDataMap, config.value.file);
     // 应用过滤
     if (config.filter && config.filter.filters && config.filter.filters.length) {
-        catData = filterPlugin(catData, config.filter);
-        valData = filterPlugin(valData, config.filter);
+        dataRows = filterPlugin(dataRows, config.filter);
     }
-    const len = Math.min(catData.length, valData.length);
+    const len = dataRows.length;
     const result = [];
     for (let i = 0; i < len; i++) {
-        const name = catData[i][config.category.field];
-        const rawVal = valData[i][config.value.field];
+        const name = dataRows[i][config.category.field];
+        const rawVal = dataRows[i][config.value.field];
         const parsedVal = parseFloat(rawVal);
         const val = (rawVal === null || rawVal === undefined || rawVal === '' || Number.isNaN(parsedVal)) ? null : parsedVal;
         if (name !== undefined && name !== null && name !== '') {
@@ -473,9 +471,72 @@ function mapChartHandler(config, fileDataMap, options) {
         };
     }
     else if (seriesType === 'pie') { //* 饼图型
+        let { lngField = {}, latField = {}, nameField = {}, value, categoryField = {} } = config;
+        const { filterPlugin = defaultFilterPlugin } = config;
+        let dataRow = getDataRows(fileDataMap, config.value.file);
+        // 应用过滤器
+        if (config.filter && config.filter.filters && config.filter.filters.length) {
+            dataRow = filterPlugin(dataRow, config.filter);
+        }
+
+        // 获取数据行
+        let latFieldRow = [];
+        let lngFieldRow = [];
+        let nameFieldRow = [];
+        let categoryFieldRow = [];
+        if (lngField && latField && lngField.field && latField.field) {
+            // 确保经纬度字段存在
+            latFieldRow = dataRow.map(row => row[latField.field]);
+            lngFieldRow = dataRow.map(row => row[lngField.field]);
+
+            // 处理经纬度格式
+            lngFieldRow = LatLonProcessor(lngFieldRow, latFieldRow).lngArr;
+            latFieldRow = LatLonProcessor(lngFieldRow, latFieldRow).latArr;
+
+            if (latFieldRow == null || lngFieldRow == null) {
+                console.warn(`[mapChartHandler] latFieldRow and lngFieldRow length mismatch: ${latFieldRow} vs ${lngFieldRow}`);
+                return {
+                    xData: [], yDataArr: [], mergeType: 'map', seriesData: [],
+                    customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath }
+                };
+            }
+        }
+
+        if (nameField && nameField.field) {
+            nameFieldRow = dataRow.map(row => row[nameField.field]);
+        }
+
+        if (categoryField && categoryField.field) {
+            categoryFieldRow = dataRow.map(row => row[categoryField.field]);
+        }
+
+        console.log('----------------', categoryFieldRow)
+
+        let valueFieldRow = dataRow.map(row => row[value.field]);
+
+        // 分组：每个 name 一个饼图，饼图内是各 category 的扇区
+        const pieGroups = {}; // name -> { coord, data: [{name: category, value}] }
+        for (let i = 0; i < dataRow.length; i++) {
+            const name = nameFieldRow[i];
+            const category = categoryFieldRow[i];
+            const val = Number(valueFieldRow[i]);
+            const lng = lngFieldRow[i];
+            const lat = latFieldRow[i];
+            if (!pieGroups[name]) {
+                pieGroups[name] = {
+                    coord: [lng, lat],
+                    data: []
+                };
+            }
+            pieGroups[name].data.push({ name: category, value: val });
+        }
+        // 组装 seriesData 和 positionData
+        const seriesData = Object.values(pieGroups).map(group => group.data);
+        const positionData = Object.values(pieGroups).map(group => ({ value: group.coord }));
+
         return {
-            xData: [], yDataArr: [], mergeType: 'map', seriesData: [],
-            customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath }
+            xData: [], yDataArr: [], mergeType: 'map', seriesData: seriesData,
+            customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath, positionData }
         };
     }
     else if (seriesType === 'bar') { //* 外部条形型
