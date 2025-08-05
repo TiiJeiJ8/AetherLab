@@ -6,13 +6,14 @@
     </div>
     <transition name="collapse">
         <div v-show="!isCollapsed" class="adv-content">
-            <div v-for="item in advancedConfig" :key="item.key" class="config-item">
+            <div v-for="item in filteredAdvancedConfig" :key="item.key" class="config-item">
                 <!-- 组件标题 -->
                 <label>{{ item.label }}</label>
 
                 <!-- 输入number,显示数字输入框 -->
                 <input v-if="item.type === 'number'" type="number"
                 :min="item.min" :max="item.max"
+                :placeholder="item.placeholder"
                 :value="localConfig[item.key]"
                 @input="updateField(item.key, $event.target.valueAsNumber)" />
 
@@ -23,6 +24,7 @@
 
                 <!-- 输入text，显示文本输入框 -->
                 <input v-if="item.type === 'text'" type="text"
+                :placeholder="item.placeholder"
                 :value="localConfig[item.key]"
                 @input="updateField(item.key, $event.target.value)" />
 
@@ -30,7 +32,6 @@
                 <select v-if="item.type === 'select'" :value="localConfig[item.key]" @change="updateField(item.key, $event.target.value)">
                     <option v-for="option in item.options" :key="option.value" :value="option.value">{{ option.label }}</option>
                 </select>
-                <!-- 其他类型可扩展 -->
             </div>
         </div>
     </transition>
@@ -40,7 +41,7 @@
 <script setup>
 /* no-undef */
 /* eslint-disable */
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 const props = defineProps({
     advancedConfig: Array,
     modelValue: Object
@@ -52,6 +53,43 @@ const isCollapsed = ref(true)
 
 watch(() => props.modelValue, (val) => {
     localConfig.value = { ...val }
+})
+
+// 检查条件是否满足
+function checkCondition(condition, config) {
+    for (const [key, expectedValue] of Object.entries(condition)) {
+        const actualValue = config[key]
+        
+        if (Array.isArray(expectedValue)) {
+            // 如果期望值是数组，检查实际值是否在数组中
+            if (!expectedValue.includes(actualValue)) {
+                return false
+            }
+        } else if (typeof expectedValue === 'boolean') {
+            // 布尔值直接比较
+            if (actualValue !== expectedValue) {
+                return false
+            }
+        } else {
+            // 字符串或其他类型的值
+            if (actualValue !== expectedValue) {
+                return false
+            }
+        }
+    }
+    return true
+}
+
+// 过滤配置项，只显示满足条件的项目
+const filteredAdvancedConfig = computed(() => {
+    if (!props.advancedConfig) return []
+    
+    return props.advancedConfig.filter(item => {
+        if (!item.condition) return true // 没有条件限制，总是显示
+        
+        // 使用 props.modelValue 而不是 localConfig.value 来确保实时响应
+        return checkCondition(item.condition, props.modelValue)
+    })
 })
 
 function updateField(key, value) {
@@ -117,5 +155,21 @@ input[type="number"], input[type="text"] {
 }
 input[type="checkbox"] {
     accent-color: #3b82f6;
+}
+.config-description {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 12px;
+    margin-top: 4px;
+    opacity: 0.8;
+}
+.config-item {
+    margin-bottom: 12px;
+}
+.config-item label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: var(--text-main);
 }
 </style>

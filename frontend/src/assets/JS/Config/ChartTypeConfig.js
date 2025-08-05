@@ -204,6 +204,35 @@ export const chartTypeConfig = {
             // { key: 'mapSourceUrl', label: 'GeoJSON URL', type: 'text', placeholder: "Enter GeoJSON URL", description: 'URL for external GeoJSON data, e.g., https://example.com/map.json' }, // https://datav.aliyun.com/portal/school/atlas/area_selector
         ],
         advanced: [
+            // 通用配置项
+            { key: 'areaColor', label: 'Area Color', type: 'text', description: 'Background color of map areas', placeholder: '#f3f3f3' },
+            { key: 'borderColor', label: 'Border Color', type: 'text', description: 'Border color of map areas', placeholder: '#999' },
+            { key: 'borderWidth', label: 'Border Width', type: 'number', min: 0, max: 10, description: 'Width of area borders' },
+            { key: 'isDiscrete', label: 'Discrete Legend', type: 'checkbox', description: 'Use discrete color mapping instead of continuous', condition: { seriesType: ['map'] } },
+
+            // 热力地图特有配置
+            { key: 'pointSize', label: 'Point Size', type: 'number', min: 5, max: 100, description: 'Size of scatter points (heatmap type only)', condition: { seriesType: 'heatmap' } },
+            { key: 'blurSize', label: 'Blur Size', type: 'number', min: 5, max: 50, description: 'Blur radius for points (heatmap)', condition: { seriesType: 'heatmap' } },
+
+            // 散点图特有配置
+            { key: 'sizeMapping', label: 'Size Mapping', type: 'checkbox', description: 'Map point size to data values', condition: { seriesType: 'scatter' } },
+            { key: 'sizeMin', label: 'Min Size', type: 'number', min: 1, max: 999, description: 'Minimum point size when size mapping enabled', condition: { seriesType: 'scatter', sizeMapping: true } },
+            { key: 'sizeMax', label: 'Max Size', type: 'number', min: 1, max: 999, description: 'Maximum point size when size mapping enabled', condition: { seriesType: 'scatter', sizeMapping: true } },
+            { key: 'rippleEffect', label: 'Ripple Effect', type: 'checkbox', description: 'Enable ripple animation (scatter type only)', condition: { seriesType: 'scatter' } },
+
+            // 饼图特有配置
+            { key: 'pieRadius', label: 'Pie Radius', type: 'number', min: 10, max: 100, description: 'Radius of pie charts', condition: { seriesType: 'pie' } },
+            { key: 'selectedOffset', label: 'Selected Offset', type: 'number', min: 0, max: 50, description: 'Offset when pie sector is selected', condition: { seriesType: 'pie' } },
+            {
+                key: 'roseType', label: 'Rose Type', type: 'select', options: [
+                    { label: 'None', value: '' },
+                    { label: 'Radius', value: 'radius' },
+                    { label: 'Area', value: 'area' }
+                ], description: 'Nightingale rose chart type', condition: { seriesType: 'pie' }
+            },
+            { key: 'pieBorderRadius', label: 'Pie Border Radius', type: 'number', min: 0, max: 20, description: 'Border radius of pie sectors', condition: { seriesType: 'pie' } },
+            { key: 'pieBorderWidth', label: 'Pie Border Width', type: 'number', min: 0, max: 5, description: 'Border width of pie sectors', condition: { seriesType: 'pie' } },
+            { key: 'pieBorderColor', label: 'Pie Border Color', type: 'text', description: 'Border color of pie sectors', placeholder: '#fff', condition: { seriesType: 'pie' } },
         ]
     },
     // K线图

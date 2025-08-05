@@ -388,8 +388,8 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
                     , borderColor: config.pieBorderColor || '' // 扇区边框颜色
                 }
             },
-            animation: animation,
-            animationDuration: animation ? 1500 : 0
+            animation: true, // 修复未定义的animation变量
+            animationDuration: 1500
         }));
         return {
             ...option,
@@ -422,12 +422,54 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
         }
     }
     else if (seriesType === 'bar') { //* 外部条形型
-
+        // TODO: 实现外部条形图逻辑
+        console.warn(`[mapOption] seriesType 'bar' is not implemented yet`);
+        return {
+            ...option,
+            geo: {
+                map: mapSourceName || 'china',
+                roam: true,
+                itemStyle: {
+                    areaColor: config.areaColor || '#f3f3f3',
+                    borderColor: config.borderColor || '#999',
+                    borderWidth: config.borderWidth || 0.5
+                }
+            },
+            series: []
+        };
     }
     else if (seriesType === 'lines') { //* 路径型
-
+        // TODO: 实现路径图逻辑
+        console.warn(`[mapOption] seriesType 'lines' is not implemented yet`);
+        return {
+            ...option,
+            geo: {
+                map: mapSourceName || 'china',
+                roam: true,
+                itemStyle: {
+                    areaColor: config.areaColor || '#f3f3f3',
+                    borderColor: config.borderColor || '#999',
+                    borderWidth: config.borderWidth || 0.5
+                }
+            },
+            series: []
+        };
     }
     else {
-        // 兜底
+        // 兜底：默认返回基础地图配置
+        console.warn(`[mapOption] Unknown seriesType: ${seriesType}, fallback to basic map`);
+        return {
+            ...option,
+            geo: {
+                map: mapSourceName || 'china',
+                roam: true,
+                itemStyle: {
+                    areaColor: config.areaColor || '#f3f3f3',
+                    borderColor: config.borderColor || '#999',
+                    borderWidth: config.borderWidth || 0.5
+                }
+            },
+            series: []
+        };
     }
 }

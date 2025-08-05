@@ -267,7 +267,7 @@ const isConfigValid = computed(() => {
         return cat && cat.field && val && val.field;
     }
     if (['geo_map'].includes(type)) {
-        return cfg.value && cfg.value.field && cfg.lngField && cfg.latField;
+        return cfg.value && cfg.value.field;
     }
     if (['candlestick'].includes(type)) {
         return  cfg.time && cfg.time.field &&

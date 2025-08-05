@@ -330,9 +330,9 @@ async function handleSaveHistory({ config }) {
   try {
     // 重新合并数据并生成option，保证历史区option和当前一致
     const nullHandlingType = config.nullHandling || 'ignore';
-    const { xData, yDataArr, mergeType, seriesData } = mergeChartData(config, fileDataMap.value, nullHandlingType);
+    const { xData, yDataArr, mergeType, seriesData, customOption } = mergeChartData(config, fileDataMap.value, nullHandlingType);
     if (config.colorScheme) config.theme = config.colorScheme;
-    option = await generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType, seriesData);
+    option = await generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType, seriesData, customOption);
   } catch (e) {
     console.log('Saving history failed while generate option:', e);
     option = null;
