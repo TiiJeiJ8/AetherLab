@@ -539,18 +539,19 @@ function mapChartHandler(config, fileDataMap, options) {
             customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath, positionData }
         };
     }
-    else if (seriesType === 'bar') { //* 外部条形型
-        return {
-            xData: [], yDataArr: [], mergeType: 'map', seriesData: [],
-            customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath }
-        };
-    }
-    else if (seriesType === 'lines') { //* 路径型
-        return {
-            xData: [], yDataArr: [], mergeType: 'map', seriesData: [],
-            customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath }
-        };
-    }
+    //todo futrue plan
+    // else if (seriesType === 'bar') { //* 外部条形型
+    //     return {
+    //         xData: [], yDataArr: [], mergeType: 'map', seriesData: [],
+    //         customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath }
+    //     };
+    // }
+    // else if (seriesType === 'lines') { //* 路径型
+    //     return {
+    //         xData: [], yDataArr: [], mergeType: 'map', seriesData: [],
+    //         customOption: { seriesType, mapSourceName: mapRegisterName, mapFilePath }
+    //     };
+    // }
     else { // 兜底
         console.warn(`[mapChartHandler] Unsupported seriesType: ${seriesType}`);
         return {
