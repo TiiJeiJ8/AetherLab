@@ -52,10 +52,11 @@ const cards = [
   },
   {
     icon: '📚',
-    title: 'Instruction 🚧',
+    title: 'Instruction',
     description: 'How to use this APP',
     buttonText: 'Explore',
-    href: '/instruction'
+    href: '/instruction',
+    isDeveloping: false
   },
   {
     icon: '🎨',

@@ -1,0 +1,300 @@
+.data-visualization-module {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.content-section {
+    margin-bottom: 60px;
+    scroll-margin-top: 100px;
+}
+
+.content-section h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    color: var(--text-main);
+    margin-top: 5%;
+    margin-bottom: 15%;
+    text-align: center;
+}
+
+.content-section h2 {
+    font-size: 2rem;
+    color: var(--text-main);
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 8px;
+}
+
+.section-description {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.chart-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.category-card {
+    background: transparent;
+    padding: 24px;
+    border-radius: 12px;
+    border: none;
+}
+
+.category-card h3 {
+    color: var(--text-main);
+    margin-bottom: 16px;
+    font-size: 1.3rem;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.chart-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.chart-item:hover {
+    border-color: var(--primary-color);
+    background: var(--bg-tertiary);
+}
+
+.chart-icon {
+    font-size: 1.2rem;
+}
+
+.chart-name {
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+.charts-showcase {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.chart-showcase {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.chart-showcase:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chart-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background: var(--bg-primary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.preview-icon {
+    font-size: 2.5rem;
+}
+
+.chart-info {
+    flex: 1;
+}
+
+.chart-info h4 {
+    color: var(--text-main);
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+}
+
+.chart-info p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.chart-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.feature-tag {
+    padding: 4px 8px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
+.selection-guide {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.guide-item {
+    padding: 20px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.guide-scenario h4 {
+    color: var(--text-main);
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.guide-scenario p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.recommended-charts {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.recommend-label {
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.chart-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.chart-tag {
+    padding: 3px 8px;
+    background: var(--bg-tertiary);
+    color: var(--text-main);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    border: 1px solid var(--border-color);
+}
+
+.practices-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.practice-item {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.practice-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.practice-content {
+    flex: 1;
+}
+
+.practice-content h4 {
+    color: var(--text-main);
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+}
+
+.practice-content p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.practice-content ul {
+    color: var(--text-secondary);
+    padding-left: 20px;
+}
+
+.practice-content li {
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .data-visualization-module {
+        padding: 0 15px;
+    }
+
+    .content-section h1 {
+        font-size: 2rem;
+    }
+
+    .content-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .chart-categories {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-showcase {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .chart-preview {
+        align-self: center;
+    }
+
+    .practice-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .recommended-charts {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}

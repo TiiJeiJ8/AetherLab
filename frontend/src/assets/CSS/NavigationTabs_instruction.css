@@ -1,0 +1,164 @@
+.navigation-tabs {
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 60px;
+    /* 顶部导航栏高度 */
+    z-index: 900;
+}
+
+.nav-tabs-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-tabs {
+    display: flex;
+    padding: 0px;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+}
+
+.nav-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 20px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    position: relative;
+    font-weight: 500;
+}
+
+.nav-tab:hover {
+    color: var(--text-main);
+    background: var(--bg-secondary);
+}
+
+.nav-tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    background: var(--bg-secondary);
+}
+
+.tab-icon {
+    font-size: 1.2rem;
+}
+
+.tab-text {
+    font-size: 0.95rem;
+}
+
+.tab-badge {
+    background: var(--error-color);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 16px;
+    text-align: center;
+}
+
+.nav-tab.has-badge {
+    position: relative;
+}
+
+.count-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: inherit;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 8px;
+    min-width: 16px;
+    text-align: center;
+}
+
+.completed-icon {
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .nav-tabs {
+        padding: 0 15px;
+    }
+
+    .nav-tab {
+        padding: 12px 16px;
+    }
+
+    .tab-text {
+        font-size: 0.9rem;
+    }
+
+    .sub-nav-container {
+        padding: 0 15px;
+    }
+
+    .sub-nav-item {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-tab {
+        padding: 10px 12px;
+    }
+
+    .tab-text {
+        display: none;
+    }
+
+    .tab-icon {
+        font-size: 1.1rem;
+    }
+
+    .sub-nav-item {
+        padding: 6px 10px;
+    }
+}
+
+/* 平滑滚动动画 */
+.nav-tabs,
+.sub-nav-scroll {
+    scroll-behavior: smooth;
+}
+
+/* 活跃状态动画 */
+.nav-tab.active {
+    animation: tabActivate 0.3s ease;
+}
+
+@keyframes tabActivate {
+    0% {
+        transform: translateY(2px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.sub-nav-item.active {
+    animation: subNavActivate 0.3s ease;
+}
+
+@keyframes subNavActivate {
+    0% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

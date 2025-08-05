@@ -1,0 +1,126 @@
+.content-area {
+  flex: 1;
+  padding: 0;
+}
+
+.search-results {
+  padding: 20px;
+}
+
+.search-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
+}
+
+.search-results-header h2 {
+  color: var(--text-main);
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.clear-search {
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clear-search:hover {
+  background: var(--error-color);
+  color: white;
+  border-color: var(--error-color);
+}
+
+.search-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.search-result-item {
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-result-item:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.result-icon {
+  font-size: 1.2rem;
+}
+
+.result-title {
+  font-weight: 600;
+  color: var(--text-main);
+  flex: 1;
+}
+
+.result-category {
+  padding: 2px 8px;
+  background: var(--primary-color-light);
+  color: var(--primary-color);
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.result-excerpt {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.module-content {
+  min-height: calc(100vh - 200px);
+}
+
+.default-content {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.default-content h2 {
+  color: var(--text-main);
+  margin-bottom: 16px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .search-results {
+    padding: 15px;
+  }
+  
+  .search-results-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .search-results-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .default-content {
+    padding: 20px;
+  }
+}

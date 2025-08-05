@@ -1,0 +1,220 @@
+/* CSS 变量定义 */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --text-main: #333333;
+    --text-secondary: #666666;
+    --border-color: #e5e5e5;
+    --primary-color: #5a81b4;
+    --primary-color-light: #e8f0ff;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --error-color: #dc3545;
+    --info-color: #17a2b8;
+}
+
+/* 深色模式变量 */
+[data-theme="dark"],
+:root.dark {
+    --bg-primary: #2d2d2d;
+    --bg-secondary: #3a3a3a;
+    --bg-tertiary: #454545;
+    --text-main: #ffffff;
+    --text-secondary: #cccccc;
+    --border-color: #555555;
+    --primary-color: #7da3d9;
+    --primary-color-light: #4a5f7a;
+    --success-color: #51cf66;
+    --warning-color: #ffd93d;
+    --error-color: #ff6b6b;
+    --info-color: #339af0;
+}
+
+/* 深色模式下的特殊样式 */
+[data-theme="dark"] .toggle-btn.active,
+:root.dark .toggle-btn.active {
+    background: #5a7db8;
+    color: white;
+}
+
+[data-theme="dark"] .action-btn:hover,
+[data-theme="dark"] .toggle-btn:hover,
+:root.dark .action-btn:hover,
+:root.dark .toggle-btn:hover {
+    background: #4a5f7a;
+    transform: translateY(-1px);
+}
+
+.instruction-top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.top-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo-section {
+    flex: 1;
+}
+
+.app-logo {
+    font-weight: 900;
+    font-size: calc(1.35rem + 1vw);
+    background: linear-gradient(270deg, #ff416c, #fa83bf, #1f97ff, #12d8fa, #50f6a0, #ff416c);
+    background-size: 1200% 1200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientMove 20s ease infinite;
+    -webkit-user-select: none;
+    user-select: none;
+    margin-right: auto;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.actions-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* 通用按钮样式 */
+.action-btn,
+.toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background: var(--bg-secondary);
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.action-btn:hover,
+.toggle-btn:hover {
+    background: var(--bg-tertiary);
+    transform: translateY(-1px);
+}
+
+.toggle-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-icon {
+    font-size: 1rem;
+}
+
+.btn-text {
+    white-space: nowrap;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .top-bar-container {
+        padding: 0 15px;
+    }
+
+    .app-logo {
+        font-size: 1rem;
+    }
+
+    .btn-text {
+        display: none;
+    }
+
+    .action-btn,
+    .toggle-btn {
+        padding: 8px;
+        min-width: 40px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .actions-section {
+        gap: 8px;
+    }
+
+    .action-btn,
+    .toggle-btn {
+        padding: 6px;
+        min-width: 36px;
+    }
+
+    .btn-icon {
+        font-size: 0.9rem;
+    }
+}
+
+/* 渐变动画关键帧 */
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* 动画效果 */
+.action-btn,
+.toggle-btn,
+.theme-toggle-btn {
+    position: relative;
+}
+
+.action-btn::before,
+.toggle-btn::before,
+.theme-toggle-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.action-btn:active::before,
+.toggle-btn:active::before,
+.theme-toggle-btn:active::before {
+    width: 100%;
+    height: 100%;
+}
