@@ -22,7 +22,8 @@ export const chartTypes = [
     //todo 未来支持 (Future plan)
     // "PictorialBar",
     "ThemeRiver",
-    "Calendar"
+    //todo 未来支持 (Future plan)
+    // "Calendar"
 ]
 
 export const chartIcons = {
