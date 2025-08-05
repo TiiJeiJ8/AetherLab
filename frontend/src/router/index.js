@@ -17,11 +17,6 @@ const routes = [
     component: () => import('../views/DataPreprocessing.vue')
   },
   {
-    path: '/instruction',
-    name: 'Instruction',
-    component: () => import('../views/InstructionView.vue')
-  },
-  {
     path: '/under-construction',
     name: 'UnderConstruction',
     component: () => import('../views/UnderConstruction.vue')

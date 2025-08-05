@@ -27,8 +27,8 @@ export const instructionConfig = {
                     title: 'Deployment Installation',
                     icon: '📦',
                     children: [
-                        { id: 'source-download', title: 'Download Source Code', icon: '🔧' },
-                        { id: 'package-download', title: 'Download Package', icon: '📦' },
+                        { id: 'source-download', title: 'Source Code', icon: '🔧' },
+                        { id: 'package-download', title: 'Package', icon: '📦' },
                     ]
                 },
                 {

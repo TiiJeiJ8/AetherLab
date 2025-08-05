@@ -1,62 +1,14 @@
-/* CSS 变量定义 */
-:root {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8f9fa;
-    --bg-tertiary: #e9ecef;
-    --text-main: #333333;
-    --text-secondary: #666666;
-    --border-color: #e5e5e5;
-    --primary-color: #5a81b4;
-    --primary-color-light: #e8f0ff;
-    --success-color: #28a745;
-    --warning-color: #ffc107;
-    --error-color: #dc3545;
-    --info-color: #17a2b8;
-}
-
-/* 深色模式变量 */
-[data-theme="dark"],
-:root.dark {
-    --bg-primary: #2d2d2d;
-    --bg-secondary: #3a3a3a;
-    --bg-tertiary: #454545;
-    --text-main: #ffffff;
-    --text-secondary: #cccccc;
-    --border-color: #555555;
-    --primary-color: #7da3d9;
-    --primary-color-light: #4a5f7a;
-    --success-color: #51cf66;
-    --warning-color: #ffd93d;
-    --error-color: #ff6b6b;
-    --info-color: #339af0;
-}
-
-/* 深色模式下的特殊样式 */
-[data-theme="dark"] .search-input:focus,
-:root.dark .search-input:focus {
-    border-color: #7da3d9;
-}
-
-[data-theme="dark"] .action-btn:hover,
-:root.dark .action-btn:hover {
-    background: #4a5f7a;
-    border-color: #7da3d9;
-}
-
 .table-of-contents {
     width: 280px;
     height: calc(100vh - 120px);
     /* 减去顶部导航栏高度 */
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     position: sticky;
     top: 120px;
     overflow: hidden;
-}
-
-.table-of-contents h2 {
-    font-size: 1.7rem;
-    font-weight: 600;
 }
 
 .toc-header {

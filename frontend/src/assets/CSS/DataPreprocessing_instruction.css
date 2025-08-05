@@ -41,9 +41,9 @@
 
 .step-card {
     padding: 24px;
-    background: transparent;
+    background: var(--bg-secondary);
     border-radius: 12px;
-    border: none;
+    border: 1px solid var(--border-color);
     transition: all 0.3s ease;
 }
 

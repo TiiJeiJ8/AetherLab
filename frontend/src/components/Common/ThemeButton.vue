@@ -44,21 +44,14 @@ function toggleTheme() {
   isActive.value = !isActive.value
   const theme = isActive.value ? 'dark' : 'light'
   document.documentElement.setAttribute('data-theme', theme)
-  localStorage.setItem('theme', theme)
   emit('update:modelValue', isActive.value)
   emit('change', theme)
 }
 
 onMounted(() => {
-  // 优先受控，否则根据localStorage或html属性同步按钮状态
+  // 优先受控，否则根据html属性同步按钮状态
   if (props.modelValue === undefined && props.theme === undefined) {
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) {
-      isActive.value = savedTheme === 'dark'
-      document.documentElement.setAttribute('data-theme', savedTheme)
-    } else {
-      isActive.value = document.documentElement.getAttribute('data-theme') === 'dark'
-    }
+    isActive.value = document.documentElement.getAttribute('data-theme') === 'dark'
   }
 })
 </script>
@@ -104,7 +97,7 @@ onMounted(() => {
   .theme-button {
     transform: scale(0.35);
     position: fixed;
-    bottom: 95%;
+    bottom: 93%;
     right: 20px;
   }
 }
