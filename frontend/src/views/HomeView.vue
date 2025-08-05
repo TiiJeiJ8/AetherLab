@@ -53,7 +53,7 @@ const cards = [
   {
     icon: '📚',
     title: 'Instruction',
-    description: 'How to use this APP',
+    description: 'App Guide Hub',
     buttonText: 'Explore',
     href: '/instruction',
     isDeveloping: false
