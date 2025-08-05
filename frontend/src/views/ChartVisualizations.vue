@@ -111,7 +111,7 @@ import { handleWorkspaceUpdate, handleWorkspaceRemove, handleWorkspacePreview, l
 const topBarActions = [
   { type: 'button', label: 'Files', onClick: uploadFiles },
   { type: 'button', label: 'Chart History', onClick: openHistory },
-  { type: 'button', label: 'Dashboard' },
+  // { type: 'button', label: 'Dashboard' },
   { type: 'button', label: 'Instruction', to: '/under-construction' },
   { type: 'button', label: 'Back2Home', to: '/' }
 ]
