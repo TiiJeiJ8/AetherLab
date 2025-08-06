@@ -43,6 +43,9 @@
         </main>
       </div>
     </div>
+
+    <!-- 主题切换按钮 -->
+    <ThemeButton @change="handleThemeChange" />
   </div>
 </template>
 
@@ -54,6 +57,7 @@ import InstructionTopBar from '../components/Instruction/InstructionTopBar.vue'
 import NavigationTabs from '../components/Instruction/NavigationTabs.vue'
 import TableOfContents from '../components/Instruction/TableOfContents.vue'
 import ContentArea from '../components/Instruction/ContentArea.vue'
+import ThemeButton from '../components/Common/ThemeButton.vue'
 import { instructionConfig } from '../assets/instructions/config.js'
 
 const router = useRouter()
@@ -135,12 +139,11 @@ const handleProgressUpdate = (progress) => {
   readingProgress.value = progress
 }
 
-const handleThemeToggle = () => {
-  // 主题切换逻辑
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light'
-  const newTheme = currentTheme === 'light' ? 'dark' : 'light'
-  document.documentElement.setAttribute('data-theme', newTheme)
-  localStorage.setItem('theme', newTheme)
+const handleThemeChange = (theme) => {
+  // 当 ThemeButton 组件触发主题变化时，发送全局事件
+  window.dispatchEvent(new CustomEvent('app-theme-change', {
+    detail: { colorScheme: theme === 'dark' ? 'dark' : 'default' }
+  }))
 }
 
 const scrollToTop = () => {
@@ -163,10 +166,6 @@ const handleScroll = () => {
 
 // 生命周期
 onMounted(() => {
-  // 初始化主题
-  const savedTheme = localStorage.getItem('theme') || 'light'
-  document.documentElement.setAttribute('data-theme', savedTheme)
-  
   // 监听滚动
   if (mainContent.value) {
     mainContent.value.addEventListener('scroll', handleScroll)
