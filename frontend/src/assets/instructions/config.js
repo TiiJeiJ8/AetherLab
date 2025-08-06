@@ -6,9 +6,9 @@ export const instructionConfig = {
     modules: [
         {
             id: 'quick-start',
-            title: 'Fast Start',
+            title: 'Quick Start',
             icon: '🚀',
-            description: '快速上手指南和基础概念',
+            description: 'Quick start guide and basic concepts',
             badge: '',
             children: [],
             tocItems: [
@@ -24,7 +24,7 @@ export const instructionConfig = {
                 },
                 {
                     id: 'installation',
-                    title: 'Deployment Installation',
+                    title: 'Deployment & Installation',
                     icon: '📦',
                     children: [
                         { id: 'source-download', title: 'Source Code', icon: '🔧' },
@@ -49,36 +49,36 @@ export const instructionConfig = {
             id: 'data-visualization',
             title: 'Data Visualization',
             icon: '📊',
-            description: '各种图表类型和可视化功能',
+            description: 'Various chart types and visualization features',
             badge: '',
             children: [
                 {
                     id: 'basic-charts',
-                    title: '基础图表',
+                    title: 'Basic Charts',
                     count: 4,
                     charts: ['Line', 'Bar', 'Pie', 'Scatter']
                 },
                 {
                     id: 'geo-charts',
-                    title: '地理图表',
+                    title: 'Geographical Charts',
                     count: 1,
                     charts: ['Geo_Map']
                 },
                 {
                     id: 'relation-charts',
-                    title: '关系图表',
+                    title: 'Relationship Charts',
                     count: 3,
                     charts: ['Graph', 'Tree', 'Sankey']
                 },
                 {
                     id: 'statistical-charts',
-                    title: '统计图表',
+                    title: 'Statistical Charts',
                     count: 3,
                     charts: ['Boxplot', 'Radar', 'Heatmap']
                 },
                 {
                     id: 'special-charts',
-                    title: '特殊图表',
+                    title: 'Special Charts',
                     count: 9,
                     charts: ['Candlestick', 'Funnel', 'Gauge', 'PictorialBar', 'ThemeRiver', 'Calendar', 'Treemap', 'Sunburst', 'Parallel']
                 }
@@ -86,44 +86,44 @@ export const instructionConfig = {
             tocItems: [
                 {
                     id: 'chart-basics',
-                    title: '图表基础',
+                    title: 'Chart Basics',
                     icon: '📈',
                     children: [
-                        { id: 'chart-types-overview', title: '图表类型概览', icon: '🔍' },
-                        { id: 'data-mapping', title: '数据映射', icon: '🔗' },
-                        { id: 'chart-configuration', title: '图表配置', icon: '⚙️' }
+                        { id: 'chart-types-overview', title: 'Chart Types Overview', icon: '🔍' },
+                        { id: 'data-mapping', title: 'Data Mapping', icon: '🔗' },
+                        { id: 'chart-configuration', title: 'Chart Configuration', icon: '⚙️' }
                     ]
                 },
                 {
                     id: 'basic-charts-detail',
-                    title: '基础图表',
+                    title: 'Basic Charts',
                     icon: '📊',
                     children: [
-                        { id: 'line-chart', title: '折线图 (Line)', icon: '📈' },
-                        { id: 'bar-chart', title: '柱状图 (Bar)', icon: '📊' },
-                        { id: 'pie-chart', title: '饼图 (Pie)', icon: '🥧' },
-                        { id: 'scatter-chart', title: '散点图 (Scatter)', icon: '🔴' }
+                        { id: 'line-chart', title: 'Line Chart', icon: '📈' },
+                        { id: 'bar-chart', title: 'Bar Chart', icon: '📊' },
+                        { id: 'pie-chart', title: 'Pie Chart', icon: '🥧' },
+                        { id: 'scatter-chart', title: 'Scatter Chart', icon: '🔴' }
                     ]
                 },
                 {
                     id: 'geo-charts-detail',
-                    title: '地理图表',
+                    title: 'Geographical Charts',
                     icon: '🌍',
                     children: [
-                        { id: 'geo-map-basic', title: '地图基础', icon: '🗺️' },
-                        { id: 'geo-map-types', title: '地图类型', icon: '📍' },
-                        { id: 'geo-map-config', title: '地图配置', icon: '⚙️' }
+                        { id: 'geo-map-basic', title: 'Map Basics', icon: '🗺️' },
+                        { id: 'geo-map-types', title: 'Map Types', icon: '📍' },
+                        { id: 'geo-map-config', title: 'Map Configuration', icon: '⚙️' }
                     ]
                 },
                 {
                     id: 'advanced-features',
-                    title: '高级功能',
+                    title: 'Advanced Features',
                     icon: '⚡',
                     children: [
-                        { id: 'theme-system', title: '主题系统', icon: '🎨' },
-                        { id: 'animation-effects', title: '动画效果', icon: '🎭' },
-                        { id: 'interaction-config', title: '交互配置', icon: '🖱️' },
-                        { id: 'chart-history', title: '图表历史', icon: '📋' }
+                        { id: 'theme-system', title: 'Theme System', icon: '🎨' },
+                        { id: 'animation-effects', title: 'Animation Effects', icon: '🎭' },
+                        { id: 'interaction-config', title: 'Interaction Configuration', icon: '🖱️' },
+                        { id: 'chart-history', title: 'Chart History', icon: '📋' }
                     ]
                 }
             ]
@@ -132,59 +132,59 @@ export const instructionConfig = {
             id: 'data-preprocessing',
             title: 'Data Preprocessing 🚧',
             icon: '🔍',
-            description: '数据清洗、转换和管理功能',
-            badge: '预留',
+            description: 'Data cleaning, transformation, and management features',
+            badge: 'Reserved',
             children: [
                 {
                     id: 'file-management',
-                    title: '文件管理',
-                    description: '文件上传、预览、工作区管理'
+                    title: 'File Management',
+                    description: 'File upload, preview, workspace management'
                 },
                 {
                     id: 'data-cleaning',
-                    title: '数据清洗',
-                    description: '缺失值处理、异常值检测'
+                    title: 'Data Cleaning',
+                    description: 'Missing value handling, outlier detection'
                 },
                 {
                     id: 'data-transformation',
-                    title: '数据转换',
-                    description: '格式转换、字段映射'
+                    title: 'Data Transformation',
+                    description: 'Format conversion, field mapping'
                 },
                 {
                     id: 'multi-file-merge',
-                    title: '多文件整合',
-                    description: '关联合并、数据对齐'
+                    title: 'Multi-file Integration',
+                    description: 'Relational merge, data alignment'
                 }
             ],
             tocItems: [
                 {
                     id: 'file-operations',
-                    title: '文件操作',
+                    title: 'File Operations',
                     icon: '📁',
                     children: [
-                        { id: 'file-upload', title: '文件上传', icon: '⬆️' },
-                        { id: 'file-preview', title: '文件预览', icon: '👀' },
-                        { id: 'workspace-management', title: '工作区管理', icon: '🗂️' }
+                        { id: 'file-upload', title: 'File Upload', icon: '⬆️' },
+                        { id: 'file-preview', title: 'File Preview', icon: '👀' },
+                        { id: 'workspace-management', title: 'Workspace Management', icon: '🗂️' }
                     ]
                 },
                 {
                     id: 'data-quality',
-                    title: '数据质量',
+                    title: 'Data Quality',
                     icon: '🔍',
                     children: [
-                        { id: 'missing-values', title: '缺失值处理', icon: '❓' },
-                        { id: 'outlier-detection', title: '异常值检测', icon: '⚠️' },
-                        { id: 'data-validation', title: '数据验证', icon: '✅' }
+                        { id: 'missing-values', title: 'Missing Value Handling', icon: '❓' },
+                        { id: 'outlier-detection', title: 'Outlier Detection', icon: '⚠️' },
+                        { id: 'data-validation', title: 'Data Validation', icon: '✅' }
                     ]
                 },
                 {
                     id: 'data-integration',
-                    title: '数据整合',
+                    title: 'Data Integration',
                     icon: '🔗',
                     children: [
-                        { id: 'merge-strategies', title: '合并策略', icon: '🤝' },
-                        { id: 'join-operations', title: '连接操作', icon: '🔗' },
-                        { id: 'data-alignment', title: '数据对齐', icon: '📐' }
+                        { id: 'merge-strategies', title: 'Merge Strategies', icon: '🤝' },
+                        { id: 'join-operations', title: 'Join Operations', icon: '🔗' },
+                        { id: 'data-alignment', title: 'Data Alignment', icon: '📐' }
                     ]
                 }
             ]
@@ -193,52 +193,52 @@ export const instructionConfig = {
             id: 'mathematical-modeling',
             title: 'Mathematical Modeling 🚧',
             icon: '✏️',
-            description: '统计分析和机器学习功能',
-            badge: '预留',
+            description: 'Statistical analysis and machine learning features',
+            badge: 'Reserved',
             children: [
                 {
                     id: 'cluster-analysis',
-                    title: '聚类分析',
-                    description: 'K-means、层次聚类等'
+                    title: 'Cluster Analysis',
+                    description: 'K-means, hierarchical clustering, etc.'
                 },
                 {
                     id: 'regression-analysis',
-                    title: '回归分析',
-                    description: '线性回归、多项式回归'
+                    title: 'Regression Analysis',
+                    description: 'Linear regression, polynomial regression'
                 },
                 {
                     id: 'predictive-modeling',
-                    title: '预测建模',
-                    description: '时间序列预测、趋势分析'
+                    title: 'Predictive Modeling',
+                    description: 'Time series forecasting, trend analysis'
                 }
             ],
             tocItems: [
                 {
                     id: 'statistical-analysis',
-                    title: '统计分析',
+                    title: 'Statistical Analysis',
                     icon: '📊',
                     status: 'in-progress',
                     children: [
-                        { id: 'descriptive-stats', title: '描述性统计', icon: '📈', status: 'in-progress' },
-                        { id: 'correlation-analysis', title: '相关性分析', icon: '🔗', status: 'in-progress' }
+                        { id: 'descriptive-stats', title: 'Descriptive Statistics', icon: '📈', status: 'in-progress' },
+                        { id: 'correlation-analysis', title: 'Correlation Analysis', icon: '🔗', status: 'in-progress' }
                     ]
                 },
                 {
                     id: 'clustering',
-                    title: '聚类分析',
+                    title: 'Cluster Analysis',
                     icon: '🎯',
                     children: [
-                        { id: 'kmeans-clustering', title: 'K-means聚类', icon: '⭕' },
-                        { id: 'hierarchical-clustering', title: '层次聚类', icon: '🌳' }
+                        { id: 'kmeans-clustering', title: 'K-means Clustering', icon: '⭕' },
+                        { id: 'hierarchical-clustering', title: 'Hierarchical Clustering', icon: '🌳' }
                     ]
                 },
                 {
                     id: 'forecasting',
-                    title: '预测建模',
+                    title: 'Predictive Modeling',
                     icon: '🔮',
                     children: [
-                        { id: 'time-series', title: '时间序列分析', icon: '📅' },
-                        { id: 'trend-analysis', title: '趋势分析', icon: '📈' }
+                        { id: 'time-series', title: 'Time Series Analysis', icon: '📅' },
+                        { id: 'trend-analysis', title: 'Trend Analysis', icon: '📈' }
                     ]
                 }
             ]
@@ -247,82 +247,64 @@ export const instructionConfig = {
             id: 'developer-guide',
             title: 'Developer Guide',
             icon: '👨‍💻',
-            description: '扩展开发和API文档',
+            description: 'Extension development and API documentation',
             badge: '',
             children: [
                 {
                     id: 'architecture-guide',
-                    title: '架构指南',
-                    description: '系统架构和设计模式'
+                    title: 'Architecture Guide',
+                    description: 'System architecture and design patterns'
                 },
                 {
                     id: 'api-reference',
-                    title: 'API参考',
-                    description: '接口文档和使用说明'
+                    title: 'API Reference',
+                    description: 'API documentation and usage instructions'
                 },
                 {
                     id: 'plugin-development',
-                    title: '插件开发',
-                    description: '自定义图表和功能扩展'
+                    title: 'Plugin Development',
+                    description: 'Custom charts and feature extensions'
                 },
                 {
                     id: 'contribution-guide',
-                    title: '贡献指南',
-                    description: '参与项目开发的指南'
+                    title: 'Contribution Guide',
+                    description: 'Guidelines for contributing to the project'
                 }
             ],
             tocItems: [
                 {
                     id: 'system-architecture',
-                    title: '系统架构',
+                    title: 'System Architecture',
                     icon: '🏗️',
                     children: [
-                        { id: 'frontend-architecture', title: '前端架构', icon: '🖥️' },
-                        { id: 'backend-architecture', title: '后端架构', icon: '⚙️' },
-                        { id: 'data-flow', title: '数据流设计', icon: '🌊' }
+                        { id: 'frontend-architecture', title: 'Frontend Architecture', icon: '🖥️' },
+                        { id: 'backend-architecture', title: 'Backend Architecture', icon: '⚙️' },
+                        { id: 'data-flow', title: 'Data Flow Design', icon: '🌊' }
                     ]
                 },
                 {
                     id: 'development-setup',
-                    title: '开发环境',
+                    title: 'Development Environment',
                     icon: '🔧',
                     children: [
-                        { id: 'dev-requirements', title: '开发要求', icon: '📋' },
-                        { id: 'project-setup', title: '项目设置', icon: '⚙️' },
-                        { id: 'debugging-tips', title: '调试技巧', icon: '🐛' }
+                        { id: 'dev-requirements', title: 'Development Requirements', icon: '📋' },
+                        { id: 'project-setup', title: 'Project Setup', icon: '⚙️' },
+                        { id: 'debugging-tips', title: 'Debugging Tips', icon: '🐛' }
                     ]
                 },
                 {
                     id: 'customization',
-                    title: '定制化开发',
+                    title: 'Customization Development',
                     icon: '🎨',
                     children: [
-                        { id: 'custom-charts', title: '自定义图表', icon: '📊' },
-                        { id: 'theme-development', title: '主题开发', icon: '🎨' },
-                        { id: 'plugin-system', title: '插件系统', icon: '🔌' }
+                        { id: 'custom-charts', title: 'Custom Charts', icon: '📊' },
+                        { id: 'theme-development', title: 'Theme Development', icon: '🎨' },
+                        { id: 'plugin-system', title: 'Plugin System', icon: '🔌' }
                     ]
                 }
             ]
         }
     ],
-
-    // 搜索配置
-    search: {
-        placeholder: '搜索文档内容...',
-        suggestions: [
-            { text: '如何创建折线图', icon: '📈', category: '图表' },
-            { text: '地图配置参数', icon: '🗺️', category: '配置' },
-            { text: '数据上传格式', icon: '📁', category: '数据' },
-            { text: '主题切换方法', icon: '🎨', category: '样式' },
-            { text: '图表历史管理', icon: '📋', category: '功能' }
-        ],
-        quickActions: [
-            { icon: '📊', label: '图表类型', action: 'chart-types', shortcut: 'Ctrl+1' },
-            { icon: '🔧', label: '配置选项', action: 'config-options', shortcut: 'Ctrl+2' },
-            { icon: '📝', label: '示例代码', action: 'examples', shortcut: 'Ctrl+3' },
-            { icon: '🎨', label: '主题样式', action: 'themes', shortcut: 'Ctrl+4' }
-        ]
-    },
 
     // 导航配置
     navigation: {
