@@ -3,7 +3,7 @@
     <div class="top-bar-container">
         <!-- Logo区域 -->
         <div style="display: flex; align-items: center; gap: 12px;">
-            <span class="app-logo">Fuck Charts</span>
+            <span class="app-logo">AetherLab</span>
             <span style="font-size: 2rem; font-weight: bold;">- Instructions</span>
         </div>
 

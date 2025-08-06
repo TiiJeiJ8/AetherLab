@@ -2,7 +2,7 @@
 <div class="data-visualization-module">
     <section id="chart-types" class="content-section">
     <h1 style="user-select: none;"><span class="float-chart-icon">📊</span><br>Visualization</h1>
-    <p class="section-description" style="margin-bottom: 15%">Explore the rich chart types and visualization features provided by Fuck Charts.</p>
+    <p class="section-description" style="margin-bottom: 15%">Explore the rich chart types and visualization features provided by AetherLab.</p>
 
     <div class="chart-categories">
         <div class="category-card" v-for="category in chartCategories" :key="category.id">

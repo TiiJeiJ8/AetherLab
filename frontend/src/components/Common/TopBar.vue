@@ -7,7 +7,7 @@
     >
         <nav class="nav-container">
         <!-- LOGO -->
-        <div class="logo dynamic-gradient-text">Fuck Charts</div>
+        <div class="logo dynamic-gradient-text">AetherLab</div>
 
         <!-- 汉堡菜单图标 -->
         <div class="burger-container" @click="toggleMenu">

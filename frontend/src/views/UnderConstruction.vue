@@ -32,7 +32,7 @@
         </div>
       </div>
       <footer class="text-center p-3 mt-4 border-top position-absolute bottom-0 start-50 translate-middle-x">
-        Fuck Charts © {{ new Date().getFullYear() }} - TiiJeiJ8
+        AetherLab © {{ new Date().getFullYear() }} - TiiJeiJ8
       </footer>
     </div>
   </div>

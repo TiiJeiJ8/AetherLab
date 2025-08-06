@@ -4,7 +4,7 @@
  * 支持前端缓存和后端同步的双模式工作
  */
 import * as XLSX from 'xlsx'
-const CACHE_KEY = 'fuck_charts_files'
+const CACHE_KEY = 'aetherLab_files'
 
 
 

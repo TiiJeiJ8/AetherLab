@@ -3,7 +3,7 @@
     <section id="overview" class="content-section">
     <h1 style="user-select: none;"><span class="float-pc-icon">👨‍💻</span><br>Developer Guide</h1>
     <p class="section-description" style="margin-bottom: 5%">
-        This section provides guidance for developers to extend, customize, and contribute to Fuck Charts.
+        This section provides guidance for developers to extend, customize, and contribute to AetherLab.
     </p>
     </section>
 
@@ -65,8 +65,8 @@ const devSteps = [
         id: 'setup',
         title: 'Setup Environment',
         description: 'Clone the repository and install dependencies.',
-        code: `git clone https://github.com/TiiJeiJ8/Fuck-Charts.git
-    cd Fuck-Charts
+        code: `git clone https://github.com/TiiJeiJ8/AetherLab.git
+    cd AetherLab
     npm install`
     },
     {

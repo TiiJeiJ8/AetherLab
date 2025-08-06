@@ -2,28 +2,28 @@
 <div class="quick-start-module">
     <section id="overview" class="content-section">
         <h1 style="user-select: none;"><span class="float-rocket-icon">🚀</span><br>Fast Start</h1>
-        <p class="section-description" style="margin-bottom: 5%">Welcome to Fuck Charts! This is a powerful platform for data visualization, processing, and modeling.</p>
+        <p class="section-description" style="margin-bottom: 5%">Welcome to AetherLab! This is a powerful platform for data visualization, processing, and modeling.</p>
 
         <div class="contribution-links" style="align-items: center;justify-content: center;text-align: center">
-            <a href="https://github.com/TiiJeiJ8/Fuck-Charts" target="_blank" class="contrib-link">
+            <a href="https://github.com/TiiJeiJ8/AetherLab" target="_blank" class="contrib-link">
             <span class="contrib-icon">🐙</span>
             <span>GitHub Repository</span>
             </a>
-            <a href="https://github.com/TiiJeiJ8/Fuck-Charts/issues" target="_blank" class="contrib-link">
+            <a href="https://github.com/TiiJeiJ8/AetherLab/issues" target="_blank" class="contrib-link">
             <span class="contrib-icon">🐛</span>
             <span>Issues</span>
             </a>
-            <a href="https://github.com/TiiJeiJ8/Fuck-Charts/pulls" target="_blank" class="contrib-link">
+            <a href="https://github.com/TiiJeiJ8/AetherLab/pulls" target="_blank" class="contrib-link">
             <span class="contrib-icon">🔄</span>
             <span>Pull Requests</span>
             </a>
         </div>
     </section>
 
-    <section id="what-is-fuck-charts" class="content-section">
-    <h2>❓ What is Fuck Charts</h2>
+    <section id="what-is-aetherLab" class="content-section">
+    <h2>❓ What is AetherLab</h2>
     <div class="content-card">
-        <p>Fuck Charts is a lightweight data processing and visualization tool for individuals and small teams, based on Echarts, built with Flask+Vue hybrid architecture, and supports LAN multi-user collaboration.</p>
+        <p>AetherLab is a lightweight data processing and visualization tool for individuals and small teams. Built on the ECharts library and a Flask + Vue hybrid architecture, it enables multi-user collaboration over a local area network (LAN).</p>
         <ul>
         <li>Supports 15+ chart types</li>
         <li>Flexible data filtering</li>

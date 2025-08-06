@@ -17,7 +17,7 @@ export const instructionConfig = {
                     title: 'Overview',
                     icon: '👋',
                     children: [
-                        { id: 'what-is-fuck-charts', title: 'What is Fuck Charts', icon: '❓' },
+                        { id: 'what-is-aetherLab', title: 'What is AetherLab', icon: '❓' },
                         { id: 'key-features', title: 'Core Features', icon: '⭐' },
                         { id: 'architecture', title: 'Software Architecture', icon: '🏗️' }
                     ]

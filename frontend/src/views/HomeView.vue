@@ -4,7 +4,7 @@
     <!-- Title -->
     <div class="text-center mb-5 animate__fadeIn">
       <div>
-        <h1 class="text-center mb-2 d-inline-block dynamic-gradient-text-home" style="user-select: none;">Fuck Charts</h1>
+        <h1 class="text-center mb-2 d-inline-block dynamic-gradient-text-home" style="user-select: none;">AetherLab</h1>
         <p class="lead text-muted dynamic-gradient-text-sub" style="user-select: none;">---- Present by TiiJeiJ8 ----</p>
       </div>
     </div>
@@ -18,7 +18,7 @@
 
     <!-- Footer -->
     <footer class="text-center text-muted p-3 mt-4 border-top">
-      Fuck Charts © {{ new Date().getFullYear() }} - TiiJeiJ8
+      AetherLab © {{ new Date().getFullYear() }} - TiiJeiJ8
     </footer>
   </div>
 </template>

@@ -39,8 +39,7 @@
 
         <!-- 默认内容 -->
         <div v-else class="default-content">
-            <h2>👋 欢迎使用 Fuck Charts</h2>
-            <p>请选择左侧导航来查看具体内容。</p>
+            <h2>👋 Welcome to AetherLab</h2>
         </div>
     </div>
 </div>

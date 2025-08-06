@@ -6,10 +6,10 @@ from pypinyin import lazy_pinyin
 
 # 需要扫描的所有目录
 MAP_DIRS = [
-    r'd:\Learning Material\Git\Fuck-Charts\frontend\public\maps\chinaCities',
-    r'd:\Learning Material\Git\Fuck-Charts\frontend\public\maps\worldCountries'
+    r'd:\Learning Material\Git\AetherLab\frontend\public\maps\chinaCities',
+    r'd:\Learning Material\Git\AetherLab\frontend\public\maps\worldCountries'
 ]
-OUTPUT_PATH = r'd:\Learning Material\Git\Fuck-Charts\frontend\src\assets\JS\utils\mapMatchDispatcher.js'
+OUTPUT_PATH = r'd:\Learning Material\Git\AetherLab\frontend\src\assets\JS\utils\mapMatchDispatcher.js'
 
 register_map_pattern = re.compile(r'registerMap\(\s*["\']([^"\']+)["\']')
 

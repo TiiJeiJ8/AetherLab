@@ -57,11 +57,12 @@
 }
 
 .nav-tab.active {
-    justify-content: center;
-    width: 280px;
     /* 展开后的宽度 */
+    width: 280px;
+    font-weight: 600;
+    justify-content: center;
     background: var(--bg-tertiary);
-    color: var(--primary-color);
+    color: var(--text-tertiary);
 }
 
 .nav-tab:hover .tab-text,
