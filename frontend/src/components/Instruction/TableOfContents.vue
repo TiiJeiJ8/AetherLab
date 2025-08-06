@@ -3,7 +3,7 @@
     <!-- 目录头部 -->
     <div class="toc-header">
         <h2 class="toc-title">📑 Content</h2>
-        <button class="toc-close" @click="$emit('close')" v-if="$isMobile">✕</button>
+        <button class="toc-close" @click="$emit('close')" v-if="isMobile">✕</button>
     </div>
 
     <!-- 搜索框 -->
@@ -52,7 +52,7 @@
 
 <script setup>
 /* eslint-disable */
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import TocItem from './TocItem.vue'
 
 const props = defineProps({
@@ -79,6 +79,20 @@ const emit = defineEmits(['navigate', 'search', 'toggle-expand', 'close'])
 const localSearchQuery = ref('')
 const expandedItems = ref(new Set())
 const tocTree = ref(null)
+const isMobile = ref(window.innerWidth <= 768)
+
+// 监听窗口大小变化
+const handleResize = () => {
+    isMobile.value = window.innerWidth <= 768
+}
+
+onMounted(() => {
+    window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize)
+})
 
 // 计算属性
 const allExpanded = computed(() => {
