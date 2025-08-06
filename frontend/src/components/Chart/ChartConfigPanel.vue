@@ -219,6 +219,7 @@ const chartConfig = ref({
     // spicific to Geo_Map
     seriesType: 'map',
     mapType: 'china',
+    aspectRatio: 'auto',
 })
 
 // 合并mapping字段，保留其它字段
@@ -571,7 +572,9 @@ function resetConfig () {
         legendPosition: 'bottom',
         dataRange: 'all',
         seriesType: 'map',
-        nullHandling: 'ignoreNull'
+        mapType: 'china',
+        aspectRatio: 'auto',
+        nullHandling: 'ignoreNull',
     }
 
     errorMessage.value = ''
