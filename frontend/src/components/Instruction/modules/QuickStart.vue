@@ -91,6 +91,7 @@
                     <pre style="padding-top: 24px;"><code class="language-bash">cd backend<br>pip install -r requirement.txt</code></pre>
                 </div>
             </ul>
+            <p>Development environment startup</p>
         </section>
         <section id="package-download" class="content-section">
             <h2>📦 Package</h2>
