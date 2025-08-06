@@ -183,7 +183,7 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
     // 通用配置
     let option = {
         title: {
-            text: config.title || `Chart of Map[${seriesType}]`,
+            text: config.title || ``,
             subtext: config.subtext,
             left: config.titlePosition === 'left' ? 'left'
                 : config.titlePosition === 'center' ? 'center'
