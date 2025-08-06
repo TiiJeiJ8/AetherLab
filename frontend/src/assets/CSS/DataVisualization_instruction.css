@@ -24,19 +24,19 @@
     padding: 0 20px;
 }
 
-.content-section {
+.data-visualization .content-section {
     margin-bottom: 60px;
     scroll-margin-top: 100px;
 }
 
-.content-section h1 {
+.data-visualization .content-section h1 {
     font-size: 8rem;
     color: var(--text-main);
     margin-bottom: 16px;
     text-align: center;
 }
 
-.content-section h2 {
+.data-visualization .content-section h2 {
     font-size: 2rem;
     color: var(--text-main);
     margin-bottom: 24px;
@@ -44,7 +44,7 @@
     padding-bottom: 8px;
 }
 
-.section-description {
+.data-visualization .section-description {
     font-size: 1.2rem;
     color: var(--text-secondary);
     text-align: center;
@@ -279,11 +279,11 @@
         padding: 0 15px;
     }
 
-    .content-section h1 {
+    .data-visualization .content-section h1 {
         font-size: 2rem;
     }
 
-    .content-section h2 {
+    .data-visualization .content-section h2 {
         font-size: 1.5rem;
     }
 

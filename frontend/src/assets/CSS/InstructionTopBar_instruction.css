@@ -3,7 +3,6 @@
     top: 0;
     z-index: 1000;
     background: var(--bg-primary);
-    border-bottom: 1px solid var(--border-color);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;

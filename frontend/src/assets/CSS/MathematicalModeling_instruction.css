@@ -28,17 +28,17 @@
     margin-bottom: 30px;
 }
 
-.content-section {
+.mathematical-modeling .content-section {
     display: grid;
     gap: 30px;
 }
 
-.content-section {
+.mathematical-modeling .content-section {
     padding: 24px;
     border-radius: 12px;
 }
 
-.content-section h1 {
+.mathematical-modeling .content-section h1 {
     font-size: 8rem;
     font-weight: bold;
     margin-top: 5%;
@@ -48,13 +48,13 @@
     text-align: center;
 }
 
-.content-section h3 {
+.mathematical-modeling .content-section h3 {
     margin: 0 0 12px 0;
     color: var(--text-main);
     font-size: 18px;
 }
 
-.content-section p {
+.mathematical-modeling .content-section p {
     color: var(--text-secondary);
     margin-bottom: 16px;
     line-height: 1.6;
@@ -65,7 +65,7 @@
     gap: 8px;
 }
 
-.feature-item {
+.mathematical-modeling .feature-item {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -75,12 +75,12 @@
     transition: background-color 0.2s;
 }
 
-.feature-item:hover {
+.mathematical-modeling .feature-item:hover {
     background: var(--bg-hover);
 }
 
-.feature-icon {
-    font-size: 16px;
+.mathematical-modeling .feature-icon {
+    font-size: 3rem;
     width: 20px;
     text-align: center;
 }
@@ -89,7 +89,7 @@
     margin-top: 30px;
 }
 
-.notice-card {
+.mathematical-modeling .notice-card {
     display: flex;
     align-items: center;
     gap: 16px;
@@ -122,7 +122,7 @@
     background: linear-gradient(135deg, #2d2416 0%, #332818 100%);
 }
 
-.center-content {
+.mathematical-modeling .center-content {
     display: flex;
     flex-direction: column;
     align-items: center;
