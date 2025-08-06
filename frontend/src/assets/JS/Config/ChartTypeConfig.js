@@ -16,6 +16,10 @@ export const chartTypeConfig = {
             // xAxis,yAxis名称
             { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
             { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
+            // y轴刻度最大/小值/间隔
+            { key: 'yAxisMin', label: 'Y Axis Min', type: 'number', min: 0, placeholder: 'Min Value' },
+            { key: 'yAxisMax', label: 'Y Axis Max', type: 'number', min: 0, placeholder: 'Max Value' },
+            { key: 'yAxisInterval', label: 'Y Axis Interval', type: 'number', min: 1, placeholder: 'Interval' },
             // 网格线(x, y, x&y, none)显示
             { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
             // 显示最大最小值
@@ -24,6 +28,8 @@ export const chartTypeConfig = {
             { key: 'showMeanLine', label: 'Show Mean Line', type: 'checkbox', description: 'Whether to show the mean line on the chart' },
             // 折线平滑
             { key: 'isSmooth', label: 'Smooth', type: 'checkbox', description: 'Whether to smooth the line' },
+            // 对数尺度
+            { key: 'isLogScale', label: 'Log Scale', type: 'checkbox', description: 'Whether to use logarithmic scale for the Y axis' },
             // 折线颜色渐变
             { key: 'lineGradient', label: '[Line] Gradient', type: 'checkbox', description: 'Whether to use gradient color for the line' },
             // 极坐标开关
@@ -53,6 +59,10 @@ export const chartTypeConfig = {
             // xAxis,yAxis名称
             { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
             { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
+            // y轴刻度最大/小值/间隔
+            { key: 'yAxisMin', label: 'Y Axis Min', type: 'number', min: 0, placeholder: 'Min Value' },
+            { key: 'yAxisMax', label: 'Y Axis Max', type: 'number', min: 0, placeholder: 'Max Value' },
+            { key: 'yAxisInterval', label: 'Y Axis Interval', type: 'number', min: 1, placeholder: 'Interval' },
             // 网格线(x, y, x&y, none)显示
             { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
             // 柱状图平行/竖直显示
@@ -61,6 +71,8 @@ export const chartTypeConfig = {
             { key: 'showMaxMin', label: 'Show Max/Min', type: 'checkbox', description: 'Whether to show maximum and minimum values on the line chart' },
             // 均值线开关
             { key: 'showMeanLine', label: 'Show Mean Line', type: 'checkbox', description: 'Whether to show the mean line on the chart' },
+            // 对数尺度
+            { key: 'isLogScale', label: 'Log Scale', type: 'checkbox', description: 'Whether to use logarithmic scale for the Y axis' },
             // 柱体背景色
             { key: 'barBackgroundColor', label: 'Bar Background Color', type: 'text', placeholder: 'Hex Color, eg. #fff', description: 'Background color of the bar chart' },
             // 柱状图渐变
@@ -128,6 +140,10 @@ export const chartTypeConfig = {
             // xAxis,yAxis名称
             { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
             { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
+            // y轴刻度最大/小值/间隔
+            { key: 'yAxisMin', label: 'Y Axis Min', type: 'number', min: 0, placeholder: 'Min Value' },
+            { key: 'yAxisMax', label: 'Y Axis Max', type: 'number', min: 0, placeholder: 'Max Value' },
+            { key: 'yAxisInterval', label: 'Y Axis Interval', type: 'number', min: 1, placeholder: 'Interval' },
             // 网格线(x, y, x&y, none)显示
             { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
             // 系列最大/小值

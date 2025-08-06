@@ -128,9 +128,13 @@ export default function barOption(config, fileDataMap, xData, yDataArr, selected
     };
     // 竖直/水平条形
     let yAxisOpt = {
-        type: 'value',
+        type: config.isLogScale ? 'log' : 'value',
         name: config.yAxisName || 'Y Axis',
-        splitLine: { show: yGrid }
+        splitLine: { show: yGrid },
+        // 支持自定义 min/max/interval
+        ...(typeof config.yAxisMin !== 'undefined' ? { min: config.yAxisMin } : {}),
+        ...(typeof config.yAxisMax !== 'undefined' ? { max: config.yAxisMax } : {}),
+        ...(typeof config.yAxisInterval !== 'undefined' ? { interval: config.yAxisInterval } : {})
     };
     if (config.isHorizontal === true) {
         // 横向条形
@@ -140,6 +144,10 @@ export default function barOption(config, fileDataMap, xData, yDataArr, selected
             type: 'category',
             data: xData,
             name: config.yAxisName || 'Y Axis',
+            // 支持自定义 min/max/interval
+            ...(typeof config.yAxisMin !== 'undefined' ? { min: config.yAxisMin } : {}),
+            ...(typeof config.yAxisMax !== 'undefined' ? { max: config.yAxisMax } : {}),
+            ...(typeof config.yAxisInterval !== 'undefined' ? { interval: config.yAxisInterval } : {})
         };
     }
     // 交错正负轴标签

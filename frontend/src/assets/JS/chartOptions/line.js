@@ -122,9 +122,13 @@ export default function lineOption(config, fileDataMap, xData, yDataArr, selecte
             splitLine: { show: xGrid }
         };
         option.yAxis = {
-            type: 'value',
+            type: config.isLogScale ? 'log' : 'value',
             name: config.yAxisName || 'Y Axis',
-            splitLine: { show: yGrid }
+            splitLine: { show: yGrid },
+            // 支持自定义 min/max/interval
+            ...(typeof config.yAxisMin !== 'undefined' ? { min: config.yAxisMin } : {}),
+            ...(typeof config.yAxisMax !== 'undefined' ? { max: config.yAxisMax } : {}),
+            ...(typeof config.yAxisInterval !== 'undefined' ? { interval: config.yAxisInterval } : {})
         };
     }
     // 极坐标配置

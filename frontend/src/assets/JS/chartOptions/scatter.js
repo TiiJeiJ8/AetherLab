@@ -217,10 +217,14 @@ export default function scatterOption(config, fileDataMap, xData, yDataArr, sele
             name: config.xAxisName || 'X Axis',
         };
         yAxisOpt = {
-            type: 'value',
+            type: config.isLogScale ? 'log' : 'value',
             name: yArr.map(y => y.field).join(','),
             splitLine: { show: yGrid },
             name: config.yAxisName || 'Y Axis',
+            // 支持自定义 min/max/interval(非单轴模式)
+            ...(typeof config.yAxisMin !== 'undefined' ? { min: config.yAxisMin } : {}),
+            ...(typeof config.yAxisMax !== 'undefined' ? { max: config.yAxisMax } : {}),
+            ...(typeof config.yAxisInterval !== 'undefined' ? { interval: config.yAxisInterval } : {})
         };
     }
 
