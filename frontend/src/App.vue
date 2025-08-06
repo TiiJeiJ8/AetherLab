@@ -35,21 +35,11 @@ export default {
 @import './assets/CSS/btn.css';
 @import './assets/CSS/index_style.css';
 @import './assets/CSS/construction_style.css';
+@import './assets/CSS/variables.css';
 
 :root {
   --z-index-content: 1;
   --z-index-theme-button: 1000;
-  /* 默认light主题颜色 */
-  --bg-color: #faf9f8e9;
-  --text-color: #333333;
-  --primary-color: #5a81b4;
-}
-
-[data-theme="dark"] {
-  /* dark主题颜色 */
-  --bg-color: #333333ff;
-  --text-color: #dee2e6;
-  --primary-color: #3a506b;
 }
 
 .min-vh-100 {
