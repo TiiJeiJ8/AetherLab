@@ -29,9 +29,9 @@ graph TB
     L --> O[File Management System]
     
     style A fill:#e23e57
-    style B fill:#88304e
-    style I fill:#522546
-    style L fill:#311d3f
+    style B fill:#c06c84
+    style I fill:#c9d6df
+    style L fill:#c9d6df
 
 ```
 
