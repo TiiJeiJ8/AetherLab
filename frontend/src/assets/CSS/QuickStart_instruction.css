@@ -17,18 +17,48 @@
     }
 }
 
+.quick-start .contribution-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    text-align: center;
+    margin: 150px;
+}
+
+.quick-start .contrib-link {
+    display: flex;
+    /* align-items: center; */
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-main);
+    transition: all 0.2s;
+}
+
+.quick-start .contrib-link:hover {
+    background: var(--bg-hover);
+    transform: translateY(-2px);
+}
+
+.quick-start .contrib-icon {
+    font-size: 18px;
+}
+
 .quick-start-module {
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
-.content-section {
+.quick-start .content-section {
     margin-bottom: 60px;
     scroll-margin-top: 100px;
 }
 
-.content-section h1 {
+.quick-start .content-section h1 {
     font-size: 8rem;
     font-weight: bold;
     color: var(--text-main);
@@ -37,7 +67,7 @@
     text-align: center;
 }
 
-.content-section h2 {
+.quick-start .content-section h2 {
     font-size: 2rem;
     color: var(--text-main);
     margin-bottom: 24px;
@@ -45,27 +75,27 @@
     padding-bottom: 8px;
 }
 
-.content-section h4 {
+.quick-start .content-section h4 {
     font-size: 1.2rem;
     color: var(--text-main);
     margin-bottom: 8px;
 }
 
-.section-description {
+.quick-start .section-description {
     font-size: 1.2rem;
     color: var(--text-secondary);
     text-align: center;
     margin-bottom: 40px;
 }
 
-.feature-grid {
+.quick-start .feature-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 24px;
     margin-bottom: 40px;
 }
 
-.feature-card {
+.quick-start .feature-card {
     background: var(--bg-secondary);
     padding: 24px;
     border-radius: 12px;
@@ -74,58 +104,59 @@
     transition: all 0.3s ease;
 }
 
-.feature-card:hover {
+.quick-start .feature-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     border-color: var(--primary-color);
 }
 
-.feature-icon {
+.quick-start .feature-icon {
     font-size: 3rem;
     margin-bottom: 16px;
     display: block;
 }
 
-.feature-card h3 {
+.quick-start .feature-card h3 {
     color: var(--text-main);
     margin-bottom: 12px;
 }
 
-.feature-card p {
+.quick-start .feature-card p {
     color: var(--text-secondary);
     line-height: 1.6;
 }
 
-.content-card {
+.quick-start .content-card {
     background: var(--bg-secondary);
     padding: 24px;
     border-radius: 12px;
     border: 1px solid var(--border-color);
 }
 
-.content-card p {
+.quick-start .content-card p {
     color: var(--text-main);
     line-height: 1.6;
     margin-bottom: 16px;
 }
 
-.content-card ul {
+.quick-start .content-card ul {
+    margin-left: 2em;
     color: var(--text-secondary);
     padding-left: 20px;
 }
 
-.content-card li {
+.quick-start .content-card li {
     margin-bottom: 8px;
     line-height: 1.5;
 }
 
-.features-list {
+.quick-start .features-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.feature-item {
+.quick-start .feature-item {
     display: flex;
     align-items: flex-start;
     gap: 16px;
@@ -136,34 +167,34 @@
     transition: all 0.3s ease;
 }
 
-.feature-item:hover {
+.quick-start .feature-item:hover {
     border-color: var(--primary-color);
     background: var(--bg-tertiary);
 }
 
-.feature-item .feature-icon {
-    font-size: 2rem;
+.quick-start .feature-item .feature-icon {
+    font-size: 3rem;
     flex-shrink: 0;
 }
 
-.feature-content h4 {
+.quick-start .feature-content h4 {
     color: var(--text-main);
     margin-bottom: 8px;
 }
 
-.feature-content p {
+.quick-start .feature-content p {
     color: var(--text-secondary);
     line-height: 1.5;
     margin: 0;
 }
 
-.steps-container {
+.quick-start .steps-container {
     display: flex;
     flex-direction: column;
     gap: 24px;
 }
 
-.step-item {
+.quick-start .step-item {
     display: flex;
     gap: 20px;
     padding: 24px;
@@ -173,7 +204,7 @@
     position: relative;
 }
 
-.step-item:not(:last-child)::after {
+.quick-start .step-item:not(:last-child)::after {
     content: '';
     position: absolute;
     left: 23px;
@@ -183,7 +214,7 @@
     background: var(--border-color);
 }
 
-.step-number {
+.quick-start .step-number {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -196,34 +227,55 @@
     flex-shrink: 0;
 }
 
-.step-content {
+.quick-start .step-content {
     flex: 1;
 }
 
-.step-content h4 {
+.quick-start .step-content h4 {
     color: var(--text-main);
     margin-bottom: 8px;
 }
 
-.step-content p {
+.quick-start .step-content p {
     color: var(--text-secondary);
     line-height: 1.5;
     margin-bottom: 12px;
 }
 
-.code-example {
-    background: var(--bg-primary);
+.quick-start .languageType {
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--warning-color);
+    background: var(--bg-code);
+    padding: 2px 8px;
+    border-radius: 8px;
+    z-index: 2;
+}
+
+.quick-start .code-example {
+    background: var(--bg-code);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 16px;
     margin-top: 12px;
 }
 
-.code-example pre {
+.quick-start .code-example code {
     margin: 0;
-    font-family: 'Consolas', 'Monaco', monospace;
-    font-size: 0.9rem;
-    color: var(--text-main);
+    font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
+    background: none;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--text-color);
+    overflow: hidden;
+}
+
+.quick-start .code-example code::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
 }
 
 /* 响应式设计 */
@@ -232,33 +284,34 @@
         padding: 0 15px;
     }
 
-    .content-section h1 {
+    .quick-start .content-section h1 {
         font-size: 2rem;
     }
 
-    .content-section h2 {
+    .quick-start .content-section h2 {
         font-size: 1.5rem;
     }
 
-    .feature-grid {
+    .quick-start .feature-grid {
         grid-template-columns: 1fr;
         gap: 16px;
     }
 
-    .feature-card {
+    .quick-start .feature-card {
         padding: 20px;
     }
 
-    .step-item {
+    .quick-start .step-item {
         flex-direction: column;
         text-align: center;
     }
 
-    .step-item::after {
+    .quick-start .step-item::after {
         display: none;
     }
 
-    .step-number {
+    .quick-start .step-number {
         align-self: center;
     }
 }
+
