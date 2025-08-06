@@ -24,10 +24,10 @@ export const instructionConfig = {
                 },
                 {
                     id: 'installation',
-                    title: 'Deployment & Installation',
+                    title: 'Deployment',
                     icon: '📦',
                     children: [
-                        { id: 'source-download', title: 'Source Code', icon: '🔧' },
+                        { id: 'source-download', title: 'Source Code', icon: '🗒' },
                         { id: 'package-download', title: 'Package', icon: '📦' },
                     ]
                 },
@@ -35,14 +35,8 @@ export const instructionConfig = {
                     id: 'first-chart',
                     title: 'Your First Chart',
                     icon: '🎯',
-                    children: [
-                        { id: 'upload-data', title: 'Upload File', icon: '📁' },
-                        { id: 'select-chart-type', title: 'Select Chart Type', icon: '🖱️' },
-                        { id: 'configure-chart', title: 'Configure Chart', icon: '⚙️' },
-                        { id: 'generate-chart', title: 'Generate Chart', icon: '📊' },
-                        { id: 'customize-style', title: 'Customize Style', icon: '🎨' }
-                    ]
-                }
+                    children: []
+                },
             ]
         },
         {
