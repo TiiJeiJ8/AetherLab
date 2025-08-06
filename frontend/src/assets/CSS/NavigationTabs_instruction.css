@@ -5,6 +5,8 @@
     top: 60px;
     /* 顶部导航栏高度 */
     z-index: 900;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
 }
 
 .nav-tabs-container {
