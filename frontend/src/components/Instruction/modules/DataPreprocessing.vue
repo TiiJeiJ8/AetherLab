@@ -1,23 +1,23 @@
 <template>
-<div class="data-preprocessing-module">
+<div class="data-preprocessing-module data-preprocessing">
     <section id="data-upload" class="content-section">
-    <h1 style="user-select: none;"><span class="float-magnify-icon">🔍</span><br>Preprocessing</h1>
-    <p class="section-description">Learn how to prepare and process data to ensure the best visualization results.</p>
+        <h1 style="user-select: none;"><span class="float-magnify-icon">🔍</span><br>Preprocessing</h1>
+        <p class="section-description">Learn how to prepare and process data to ensure the best visualization results.</p>
 
-    <div class="upload-steps">
-        <div class="step-card" v-for="(step, index) in uploadSteps" :key="step.id">
-        <div class="step-header">
-            <span class="step-number">{{ index + 1 }}</span>
-            <h3>{{ step.title }}</h3>
+        <div class="upload-steps">
+            <div class="step-card" v-for="(step, index) in uploadSteps" :key="step.id">
+            <div class="step-header">
+                <span class="step-number">{{ index + 1 }}</span>
+                <h3>{{ step.title }}</h3>
+            </div>
+            <p>{{ step.description }}</p>
+            <div v-if="step.formats" class="format-tags">
+                <span class="format-tag" v-for="format in step.formats" :key="format">
+                {{ format }}
+                </span>
+            </div>
+            </div>
         </div>
-        <p>{{ step.description }}</p>
-        <div v-if="step.formats" class="format-tags">
-            <span class="format-tag" v-for="format in step.formats" :key="format">
-            {{ format }}
-            </span>
-        </div>
-        </div>
-    </div>
     </section>
 
     <section id="data-formats" class="content-section">

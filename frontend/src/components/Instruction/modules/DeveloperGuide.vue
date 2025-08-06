@@ -1,21 +1,21 @@
 <template>
-<div class="developer-guide-module">
+<div class="developer-guide-module developer-guide">
     <section id="overview" class="content-section">
-    <h1 style="user-select: none;"><span class="float-pc-icon">👨‍💻</span><br>Developer Guide</h1>
-    <p class="section-description" style="margin-bottom: 5%">
-        This section provides guidance for developers to extend, customize, and contribute to AetherLab.
-    </p>
-    </section>
+        <h1 style="user-select: none;"><span class="float-pc-icon">👨‍💻</span><br>Developer Guide</h1>
+        <p class="section-description" style="margin-bottom: 5%">
+            This section provides guidance for developers to extend, customize, and contribute to AetherLab.
+        </p>
+        </section>
 
-    <section id="key-features" class="content-section">
-    <h2>⭐ Key Topics</h2>
-    <div class="feature-grid">
-        <div class="feature-card" v-for="topic in topics" :key="topic.id">
-        <div class="feature-icon">{{ topic.icon }}</div>
-        <h3>{{ topic.title }}</h3>
-        <p>{{ topic.description }}</p>
+        <section id="key-features" class="content-section">
+        <h2>⭐ Key Topics</h2>
+        <div class="feature-grid">
+            <div class="feature-card" v-for="topic in topics" :key="topic.id">
+            <div class="feature-icon">{{ topic.icon }}</div>
+            <h3>{{ topic.title }}</h3>
+            <p>{{ topic.description }}</p>
+            </div>
         </div>
-    </div>
     </section>
 
     <section id="dev-steps" class="content-section">

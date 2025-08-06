@@ -1,20 +1,20 @@
 <template>
-<div class="data-visualization-module">
+<div class="data-visualization-module data-visualization">
     <section id="chart-types" class="content-section">
-    <h1 style="user-select: none;"><span class="float-chart-icon">📊</span><br>Visualization</h1>
-    <p class="section-description" style="margin-bottom: 15%">Explore the rich chart types and visualization features provided by AetherLab.</p>
+        <h1 style="user-select: none;"><span class="float-chart-icon">📊</span><br>Visualization</h1>
+        <p class="section-description" style="margin-bottom: 15%">Explore the rich chart types and visualization features provided by AetherLab.</p>
 
-    <div class="chart-categories">
-        <div class="category-card" v-for="category in chartCategories" :key="category.id">
-        <h3>{{ category.icon }} {{ category.title }}</h3>
-        <div class="charts-grid">
-            <div class="chart-item" v-for="chart in category.charts" :key="chart.id">
-            <span class="chart-icon">{{ chart.icon }}</span>
-            <span class="chart-name">{{ chart.name }}</span>
+        <div class="chart-categories">
+            <div class="category-card" v-for="category in chartCategories" :key="category.id">
+            <h3>{{ category.icon }} {{ category.title }}</h3>
+            <div class="charts-grid">
+                <div class="chart-item" v-for="chart in category.charts" :key="chart.id">
+                <span class="chart-icon">{{ chart.icon }}</span>
+                <span class="chart-name">{{ chart.name }}</span>
+                </div>
+            </div>
             </div>
         </div>
-        </div>
-    </div>
     </section>
 
     <section id="basic-charts" class="content-section">

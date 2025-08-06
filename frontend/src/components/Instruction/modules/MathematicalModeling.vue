@@ -1,21 +1,21 @@
 <template>
-<div class="mathematical-modeling-module">
+<div class="mathematical-modeling-module mathematical-modeling">
     <section id="overview" class="content-section">
-    <h1 style="user-select: none;"><span class="float-pencil-icon">✏️</span><br>Modeling</h1>
-    <p class="section-description" style="margin-bottom: 5%">
-        This section introduces the mathematical modeling features of AetherLab, including clustering, regression, and predictive analysis.
-    </p>
-    </section>
+        <h1 style="user-select: none;"><span class="float-pencil-icon">✏️</span><br>Modeling</h1>
+        <p class="section-description" style="margin-bottom: 5%">
+            This section introduces the mathematical modeling features of AetherLab, including clustering, regression, and predictive analysis.
+        </p>
+        </section>
 
-    <section id="key-features" class="content-section">
-    <h2>⭐ Key Features</h2>
-    <div class="feature-grid">
-        <div class="feature-card" v-for="feature in features" :key="feature.id">
-        <div class="feature-icon">{{ feature.icon }}</div>
-        <h3>{{ feature.title }}</h3>
-        <p>{{ feature.description }}</p>
+        <section id="key-features" class="content-section">
+        <h2>⭐ Key Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card" v-for="feature in features" :key="feature.id">
+            <div class="feature-icon">{{ feature.icon }}</div>
+            <h3>{{ feature.title }}</h3>
+            <p>{{ feature.description }}</p>
+            </div>
         </div>
-    </div>
     </section>
 
     <section id="modeling-steps" class="content-section">

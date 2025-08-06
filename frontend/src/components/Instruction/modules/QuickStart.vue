@@ -1,50 +1,57 @@
 <template>
-<div class="quick-start-module">
-    <section id="overview" class="content-section">
+<div class="quick-start-module quick-start">
+    <section class="content-section">
+        <!-- LOGO -->
         <h1 style="user-select: none;"><span class="float-rocket-icon">🚀</span><br>Fast Start</h1>
         <p class="section-description" style="margin-bottom: 5%">Welcome to AetherLab! This is a powerful platform for data visualization, processing, and modeling.</p>
 
-        <div class="contribution-links" style="align-items: center;justify-content: center;text-align: center">
-            <a href="https://github.com/TiiJeiJ8/AetherLab" target="_blank" class="contrib-link">
+        <div class="contribution-links">
+        <a href="https://github.com/TiiJeiJ8/AetherLab" target="_blank" class="contrib-link">
             <span class="contrib-icon">🐙</span>
             <span>GitHub Repository</span>
-            </a>
-            <a href="https://github.com/TiiJeiJ8/AetherLab/issues" target="_blank" class="contrib-link">
+        </a>
+        <a href="https://github.com/TiiJeiJ8/AetherLab/issues" target="_blank" class="contrib-link">
             <span class="contrib-icon">🐛</span>
             <span>Issues</span>
-            </a>
-            <a href="https://github.com/TiiJeiJ8/AetherLab/pulls" target="_blank" class="contrib-link">
+        </a>
+        <a href="https://github.com/TiiJeiJ8/AetherLab/pulls" target="_blank" class="contrib-link">
             <span class="contrib-icon">🔄</span>
             <span>Pull Requests</span>
-            </a>
+        </a>
         </div>
     </section>
 
-    <section id="what-is-aetherLab" class="content-section">
-    <h2>❓ What is AetherLab</h2>
-    <div class="content-card">
-        <p>AetherLab is a lightweight data processing and visualization tool for individuals and small teams. Built on the ECharts library and a Flask + Vue hybrid architecture, it enables multi-user collaboration over a local area network (LAN).</p>
-        <ul>
-        <li>Supports 15+ chart types</li>
-        <li>Flexible data filtering</li>
-        <li>Powerful official theme system</li>
-        <li>LAN multi-user collaboration</li>
-        <!--todo More -->
-        </ul>
-    </div>
-    </section>
+    <!-- Overview Section -->
+    <section id="overview" class="content-section">
+        <!-- What is AetherLab -->
+        <section id="what-is-aetherLab" class="content-section">
+            <h2>❓ What is AetherLab</h2>
+            <div class="content-card">
+                <p>AetherLab is a lightweight data processing and visualization tool for individuals and small teams. Built on the ECharts library and a Flask + Vue hybrid architecture, it enables multi-user collaboration over a local area network (LAN).</p>
+                <ul>
+                <li>Supports 15+ chart types</li>
+                <li>Flexible data filtering</li>
+                <li>Powerful official theme system</li>
+                <li>LAN multi-user collaboration</li>
+                <!--todo More -->
+                </ul>
+            </div>
+        </section>
 
-    <section id="key-features" class="content-section">
-    <h2>⭐ Key Features</h2>
-    <div class="feature-grid">
-        <div class="feature-card" v-for="feature in features" :key="feature.id">
-        <div class="feature-icon">{{ feature.icon }}</div>
-        <h3>{{ feature.title }}</h3>
-        <p>{{ feature.description }}</p>
+        <!-- Key Features -->
+        <section id="key-features" class="content-section">
+        <h2>⭐ Key Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card" v-for="feature in features" :key="feature.id">
+            <div class="feature-icon">{{ feature.icon }}</div>
+            <h3>{{ feature.title }}</h3>
+            <p>{{ feature.description }}</p>
+            </div>
         </div>
     </div>
     </section>
 
+    <!-- Your First Chart -->
     <section id="first-chart" class="content-section">
     <h2>🎯 Create Your First Chart</h2>
     <div class="steps-container">
@@ -111,27 +118,33 @@ const features = [
 
 const quickStartSteps = [
     {
-        id: 'upload',
+        id: 'upload-data',
         title: 'Upload Data File',
         description: 'Click the "Files" button to upload data files in CSV, Excel, or other formats.',
         code: null
     },
     {
-        id: 'select',
+        id: 'select-chart-type',
         title: 'Select Chart Type',
         description: 'Choose the appropriate visualization from 20+ chart types.',
         code: null
     },
     {
-        id: 'config',
+        id: 'configure-chart',
         title: 'Configure Chart',
         description: 'Set data mapping, styles, themes, and other parameters.',
         code: null
     },
     {
-        id: 'generate',
+        id: 'generate-chart',
         title: 'Generate Chart',
         description: 'Click the "Generate Chart" button to create your visualization.',
+        code: null
+    },
+    {
+        id: 'customize-style',
+        title: 'Customize Chart',
+        description: 'Adjust styles, themes, data filters and advanced settings to meet your needs.',
         code: null
     }
 ]
@@ -152,10 +165,13 @@ const handleScroll = () => {
     }
 }
 
+
 onMounted(() => {
     window.addEventListener('scroll', handleScroll)
-    // 初始设置当前章节
     emit('section-change', 'overview')
+    nextTick(async () => {
+        await renderArchChart()
+    })
 })
 
 onUnmounted(() => {
