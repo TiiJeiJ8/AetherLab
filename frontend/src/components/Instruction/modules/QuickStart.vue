@@ -1,7 +1,7 @@
 <template>
 <div class="quick-start-module">
     <section id="overview" class="content-section">
-        <h1>🚀<br>Fast Start</h1>
+        <h1 style="user-select: none;"><span class="float-rocket-icon">🚀</span><br>Fast Start</h1>
         <p class="section-description" style="margin-bottom: 5%">Welcome to Fuck Charts! This is a powerful platform for data visualization, processing, and modeling.</p>
 
         <div class="contribution-links" style="align-items: center;justify-content: center;text-align: center">

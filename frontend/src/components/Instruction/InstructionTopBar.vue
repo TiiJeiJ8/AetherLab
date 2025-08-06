@@ -9,29 +9,29 @@
 
         <!-- 操作按钮区域 -->
         <div class="actions-section">
-        <!-- 操作按钮 -->
-        <template v-for="(action, index) in actions" :key="index">
-            <button
-            v-if="action.type === 'button'"
-            class="action-btn"
-            @click="action.onClick"
-            :title="action.label"
-            >
-            <span v-if="action.icon" class="btn-icon">{{ action.icon }}</span>
-            <span class="btn-text">{{ action.label }}</span>
-            </button>
+            <!-- 操作按钮 -->
+            <template v-for="(action, index) in actions" :key="index">
+                <button
+                v-if="action.type === 'button'"
+                class="action-btn"
+                @click="action.onClick"
+                :title="action.label"
+                >
+                <span v-if="action.icon" class="btn-icon">{{ action.icon }}</span>
+                <span class="btn-text">{{ action.label }}</span>
+                </button>
 
-            <button
-            v-else-if="action.type === 'toggle'"
-            class="toggle-btn"
-            :class="{ 'active': action.active.value }"
-            @click="action.onClick"
-            :title="action.label"
-            >
-            <span v-if="action.icon" class="btn-icon">{{ action.icon }}</span>
-            <span class="btn-text">{{ action.label }}</span>
-            </button>
-        </template>
+                <button
+                v-else-if="action.type === 'toggle'"
+                class="toggle-btn"
+                :class="{ 'active': action.active.value }"
+                @click="action.onClick"
+                :title="action.label"
+                >
+                <span v-if="action.icon" class="btn-icon">{{ action.icon }}</span>
+                <span class="btn-text">{{ action.label }}</span>
+                </button>
+            </template>
         </div>
     </div>
 </header>

@@ -23,7 +23,6 @@
 
 <script setup>
 /* eslint-disable */
-import { computed } from 'vue'
 
 const props = defineProps({
     modules: {

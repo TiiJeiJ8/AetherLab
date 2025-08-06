@@ -9,7 +9,7 @@ export const instructionConfig = {
             title: 'Quick Start',
             icon: '🚀',
             description: 'Quick start guide and basic concepts',
-            badge: '',
+            badge: '🚧',
             children: [],
             tocItems: [
                 {
@@ -50,7 +50,7 @@ export const instructionConfig = {
             title: 'Data Visualization',
             icon: '📊',
             description: 'Various chart types and visualization features',
-            badge: '',
+            badge: '🚧',
             children: [
                 {
                     id: 'basic-charts',
@@ -130,10 +130,10 @@ export const instructionConfig = {
         },
         {
             id: 'data-preprocessing',
-            title: 'Data Preprocessing 🚧',
+            title: 'Data Preprocessing',
             icon: '🔍',
             description: 'Data cleaning, transformation, and management features',
-            badge: 'Reserved',
+            badge: '🚧',
             children: [
                 {
                     id: 'file-management',
@@ -191,10 +191,10 @@ export const instructionConfig = {
         },
         {
             id: 'mathematical-modeling',
-            title: 'Mathematical Modeling 🚧',
+            title: 'Mathematical Modeling',
             icon: '✏️',
             description: 'Statistical analysis and machine learning features',
-            badge: 'Reserved',
+            badge: '🚧',
             children: [
                 {
                     id: 'cluster-analysis',
@@ -248,7 +248,7 @@ export const instructionConfig = {
             title: 'Developer Guide',
             icon: '👨‍💻',
             description: 'Extension development and API documentation',
-            badge: '',
+            badge: '🚧',
             children: [
                 {
                     id: 'architecture-guide',

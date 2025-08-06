@@ -1,7 +1,7 @@
 <template>
 <div class="data-preprocessing-module">
     <section id="data-upload" class="content-section">
-    <h1>🔍<br>Preprocessing</h1>
+    <h1 style="user-select: none;"><span class="float-magnify-icon">🔍</span><br>Preprocessing</h1>
     <p class="section-description">Learn how to prepare and process data to ensure the best visualization results.</p>
 
     <div class="upload-steps">

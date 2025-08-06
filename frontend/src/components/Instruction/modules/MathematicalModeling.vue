@@ -1,7 +1,7 @@
 <template>
 <div class="mathematical-modeling-module">
     <section id="overview" class="content-section">
-    <h1>✏️<br>Modeling</h1>
+    <h1 style="user-select: none;"><span class="float-pencil-icon">✏️</span><br>Modeling</h1>
     <p class="section-description" style="margin-bottom: 5%">
         This section introduces the mathematical modeling features of Fuck Charts, including clustering, regression, and predictive analysis.
     </p>

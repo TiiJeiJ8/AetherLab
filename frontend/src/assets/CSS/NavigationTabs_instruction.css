@@ -15,6 +15,7 @@
 .nav-tabs {
     display: flex;
     padding: 0px;
+    border-bottom: none;
     overflow-x: auto;
     -ms-overflow-style: none;
 }
@@ -29,24 +30,45 @@
     gap: 8px;
     padding: 16px 20px;
     border: none;
+    border-radius: 100px;
     background: transparent;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
     white-space: nowrap;
     position: relative;
     font-weight: 500;
+    width: 48px;
+    /* 只显示图标时的宽度 */
+    overflow: hidden;
+    margin-right: 1.1%;
 }
 
-.nav-tab:hover {
-    color: var(--text-main);
-    background: var(--bg-secondary);
+.nav-tab .tab-text {
+    justify-content: center;
+    display: inline-block;
+    max-width: 300px;
+    opacity: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.3s, max-width 0.3s;
+    margin-left: 0;
+    width: 0;
 }
 
 .nav-tab.active {
+    justify-content: center;
+    width: 280px;
+    /* 展开后的宽度 */
+    background: var(--bg-tertiary);
     color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
-    background: var(--bg-secondary);
+}
+
+.nav-tab:hover .tab-text,
+.nav-tab.active .tab-text {
+    opacity: 1;
+    width: auto;
+    margin-left: 8px;
 }
 
 .tab-icon {
@@ -58,8 +80,8 @@
 }
 
 .tab-badge {
-    background: var(--error-color);
-    color: white;
+    background: var(--primary-color);
+    color: var(--text-color);
     font-size: 0.7rem;
     padding: 2px 6px;
     border-radius: 10px;

@@ -1,7 +1,7 @@
 <template>
 <div class="developer-guide-module">
     <section id="overview" class="content-section">
-    <h1>👨‍💻<br>Developer Guide</h1>
+    <h1 style="user-select: none;"><span class="float-pc-icon">👨‍💻</span><br>Developer Guide</h1>
     <p class="section-description" style="margin-bottom: 5%">
         This section provides guidance for developers to extend, customize, and contribute to Fuck Charts.
     </p>

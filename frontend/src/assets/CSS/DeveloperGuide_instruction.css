@@ -1,3 +1,22 @@
+.float-pc-icon {
+    display: inline-block;
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
 .developer-guide {
     padding: 20px;
 }
@@ -8,16 +27,14 @@
     margin-bottom: 30px;
 }
 
-.content-sections {
+.content-section {
     display: grid;
     gap: 30px;
 }
 
 .content-section {
-    background: var(--bg-secondary);
     padding: 24px;
     border-radius: 12px;
-    border: 1px solid var(--border-color);
 }
 
 .content-section h1 {
