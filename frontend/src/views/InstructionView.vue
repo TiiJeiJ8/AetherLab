@@ -51,7 +51,7 @@
 
 <script setup>
 /* eslint-disable */
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick, onUpdated } from 'vue'
 import { useRouter } from 'vue-router'
 import InstructionTopBar from '../components/Instruction/InstructionTopBar.vue'
 import NavigationTabs from '../components/Instruction/NavigationTabs.vue'
@@ -59,6 +59,10 @@ import TableOfContents from '../components/Instruction/TableOfContents.vue'
 import ContentArea from '../components/Instruction/ContentArea.vue'
 import ThemeButton from '../components/Common/ThemeButton.vue'
 import { instructionConfig } from '../assets/instructions/config.js'
+
+// highlight.js 引入
+import hljs from 'highlight.js'
+import 'highlight.js/styles/monokai-sublime.min.css'
 
 const router = useRouter()
 
@@ -146,6 +150,16 @@ const handleThemeChange = (theme) => {
   }))
 }
 
+const handleThemeToggle = () => {
+  // 主题切换逻辑
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'default'
+  const newTheme = currentTheme === 'dark' ? 'default' : 'dark'
+  document.documentElement.setAttribute('data-theme', newTheme)
+  window.dispatchEvent(new CustomEvent('app-theme-change', {
+    detail: { colorScheme: newTheme }
+  }))
+}
+
 const scrollToTop = () => {
   if (mainContent.value) {
     mainContent.value.scrollTo({ top: 0, behavior: 'smooth' })
@@ -164,6 +178,15 @@ const handleScroll = () => {
   readingProgress.value = (scrollTop / (scrollHeight - clientHeight)) * 100
 }
 
+// 代码高亮函数
+const highlightAllCode = () => {
+  nextTick(() => {
+    document.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightElement(block)
+    })
+  })
+}
+
 // 生命周期
 onMounted(() => {
   // 监听滚动
@@ -173,6 +196,13 @@ onMounted(() => {
   
   // 监听键盘快捷键
   window.addEventListener('keydown', handleKeydown)
+  
+  // 初始化代码高亮
+  highlightAllCode()
+})
+
+onUpdated(() => {
+  highlightAllCode()
 })
 
 onUnmounted(() => {

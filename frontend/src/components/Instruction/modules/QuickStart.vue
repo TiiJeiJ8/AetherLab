@@ -48,7 +48,53 @@
             <p>{{ feature.description }}</p>
             </div>
         </div>
-    </div>
+        </section>
+
+        <!-- Software Architecture -->
+        <section id="architecture" class="content-section">
+            <h2>🏗️ Software Architecture</h2>
+            <div class="content-card">
+                <div ref="archChart" style="width:100%;height:500px;"></div>
+            </div>
+        </section>
+    </section>
+
+    <!-- Deployment -->
+    <section id="installation" class="content-section">
+        <h2>🗒 Source Code</h2>
+        <section id="source-download" class="content-card">
+            <p>Download the source code from my <a href="https://github.com/TiiJeiJ8/AetherLab" target="_blank">GitHub Repository</a>.</p>
+            <div class="code-example" style="position: relative;">
+                <span class="languageType">bash</span>
+                <pre style="padding-top: 24px;"><code class="language-bash">git clone https://github.com/TiiJeiJ8/AetherLab.git</code></pre>
+            </div>
+            <br>
+            <p>Install dependencies</p>
+            <ul>
+                <li>Frontend</li>
+                <div class="code-example" style="position: relative;">
+                    <span class="languageType">cmd (Windows)</span>
+                    <pre style="padding-top: 24px;"><code class="language-bat">cd frontend<br>npm install</code></pre>
+                </div>
+                <div class="code-example" style="position: relative;">
+                    <span class="languageType">bash (Linux/macOS)</span>
+                    <pre style="padding-top: 24px;"><code class="language-bash">cd frontend<br>npm install</code></pre>
+                </div>
+
+                <li>Backend</li>
+                <div class="code-example" style="position: relative;">
+                    <span class="languageType">cmd (Windows)</span>
+                    <pre style="padding-top: 24px;"><code class="language-bat">cd backend<br>pip install -r requirement.txt</code></pre>
+                </div>
+                <div class="code-example" style="position: relative;">
+                    <span class="languageType">bash</span>
+                    <pre style="padding-top: 24px;"><code class="language-bash">cd backend<br>pip install -r requirement.txt</code></pre>
+                </div>
+            </ul>
+        </section>
+        <section id="package-download" class="content-section">
+            <h2>📦 Package</h2>
+        </section>
     </section>
 
     <!-- Your First Chart -->
@@ -61,7 +107,7 @@
             <h4>{{ step.title }}</h4>
             <p>{{ step.description }}</p>
             <div v-if="step.code" class="code-example">
-            <pre><code>{{ step.code }}</code></pre>
+            <pre><code :class="step.language || 'language-bash'">{{ step.code }}</code></pre>
             </div>
         </div>
         </div>
@@ -72,7 +118,19 @@
 
 <script setup>
 /* eslint-disable */
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref, nextTick } from 'vue'
+
+// 引入 ECharts 和工具函数
+import * as echarts from 'echarts'
+import { generateArchitectureGraphOption } from '../../../assets/instructions/instruction_chart_gen'
+const archChart = ref(null)
+
+const renderArchChart = async () => {
+    if (!archChart.value) return
+    const chart = echarts.init(archChart.value)
+    const option = await generateArchitectureGraphOption()
+    chart.setOption(option)
+}
 
 const emit = defineEmits(['section-change'])
 
