@@ -94,7 +94,12 @@ const filteredAdvancedConfig = computed(() => {
 
 function updateField(key, value) {
     localConfig.value[key] = value
-    emit('update:modelValue', { ...localConfig.value })
+    
+    //bugFix 只更新当前字段，不覆盖其他字段
+    const updatedConfig = { ...props.modelValue }
+    updatedConfig[key] = value
+    
+    emit('update:modelValue', updatedConfig)
 }
 
 function toggleCollapse() {

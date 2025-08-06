@@ -571,7 +571,7 @@ function resetConfig () {
         legendVisible: true,
         legendPosition: 'bottom',
         dataRange: 'all',
-        seriesType: 'map',
+        seriesType: chartConfig.value.seriesType || 'map', // 保持当前的 seriesType，如果没有则默认为 'map'
         mapType: 'china',
         aspectRatio: 'auto',
         nullHandling: 'ignoreNull',
