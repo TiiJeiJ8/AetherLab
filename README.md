@@ -28,10 +28,10 @@ graph TB
     L --> N[Mathematical Modeling Service]
     L --> O[File Management System]
     
-    style A fill:#e1f5fe
-    style B fill:#f3e5f5
-    style I fill:#fff3e0
-    style L fill:#e8f5e8
+    style A fill:#e23e57
+    style B fill:#88304e
+    style I fill:#522546
+    style L fill:#311d3f
 
 ```
 
