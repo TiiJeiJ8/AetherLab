@@ -1,21 +1,21 @@
 <template>
   <div class="instruction-view">
     <!-- 顶部导航栏 -->
-    <InstructionTopBar 
+    <InstructionTopBar
       :actions="topBarActions"
       @toggle-theme="handleThemeToggle"
     />
-    
+
     <!-- 主要内容区域 -->
     <div class="instruction-container">
       <!-- 主导航 -->
-      <NavigationTabs 
+      <NavigationTabs
         :modules="mainModules"
         :active-module="activeModule"
         :reading-progress="readingProgress"
         @switch-module="handleModuleSwitch"
       />
-      
+
       <!-- 内容区域 -->
       <div class="content-wrapper">
         <!-- 侧边目录 -->
@@ -28,19 +28,10 @@
           @search="handleTocSearch"
           @toggle-expand="handleTocToggle"
         />
-        
+
         <!-- 主内容区 -->
         <main class="main-content" ref="mainContent">
-          <!-- 搜索框 -->
-          <div class="content-search">
-            <SearchBox 
-              v-model="globalSearchQuery"
-              :suggestions="searchSuggestions"
-              @search="handleGlobalSearch"
-              @clear="handleSearchClear"
-            />
-          </div>
-          
+
           <!-- 动态内容组件 -->
           <ContentArea
             :active-module="activeModule"
@@ -49,12 +40,6 @@
             @section-change="handleSectionChange"
             @progress-update="handleProgressUpdate"
           />
-          
-          <!-- 返回顶部按钮 -->
-          <BackToTop 
-            v-show="showBackToTop"
-            @click="scrollToTop"
-          />
         </main>
       </div>
     </div>
@@ -62,14 +47,13 @@
 </template>
 
 <script setup>
+/* eslint-disable */
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import InstructionTopBar from '../components/Instruction/InstructionTopBar.vue'
 import NavigationTabs from '../components/Instruction/NavigationTabs.vue'
 import TableOfContents from '../components/Instruction/TableOfContents.vue'
-import SearchBox from '../components/Instruction/SearchBox.vue'
 import ContentArea from '../components/Instruction/ContentArea.vue'
-import BackToTop from '../components/Instruction/BackToTop.vue'
 import { instructionConfig } from '../assets/instructions/config.js'
 
 const router = useRouter()
@@ -80,11 +64,9 @@ const activeSubModule = ref('')
 const activeSection = ref('')
 const readingProgress = ref(0)
 const showToc = ref(true)
-const showBackToTop = ref(false)
 const tocSearchQuery = ref('')
 const globalSearchQuery = ref('')
 const searchResults = ref([])
-const searchSuggestions = ref([])
 const mainContent = ref(null)
 
 // 计算属性
@@ -96,15 +78,15 @@ const currentTocItems = computed(() => {
 
 // 顶部导航栏操作
 const topBarActions = [
-  { 
-    type: 'button', 
-    label: 'Back to Home', 
+  {
+    type: 'button',
+    label: 'Back to Home',
     icon: '🏠',
-    onClick: () => router.push('/') 
+    onClick: () => router.push('/')
   },
-  { 
-    type: 'toggle', 
-    label: 'Toggle TOC', 
+  {
+    type: 'toggle',
+    label: 'Toggle TOC',
     icon: '📑',
     active: showToc,
     onClick: () => showToc.value = !showToc.value 
@@ -177,9 +159,6 @@ const handleScroll = () => {
   
   // 更新进度
   readingProgress.value = (scrollTop / (scrollHeight - clientHeight)) * 100
-  
-  // 显示/隐藏返回顶部按钮
-  showBackToTop.value = scrollTop > 300
 }
 
 // 生命周期

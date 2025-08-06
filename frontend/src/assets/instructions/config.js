@@ -38,9 +38,8 @@ export const instructionConfig = {
                     children: [
                         { id: 'upload-data', title: 'Upload File', icon: '📁' },
                         { id: 'select-chart-type', title: 'Select Chart Type', icon: '🖱️' },
-                        { id: 'open-structurePanel', title: 'Open Structure Panel', icon: '⚒️' },
-                        { id: 'drag-item', title: 'Drag items', icon: '👈🏻' },
-                        { id: 'create-chart', title: 'Create Chart', icon: '📊' },
+                        { id: 'configure-chart', title: 'Configure Chart', icon: '⚙️' },
+                        { id: 'generate-chart', title: 'Generate Chart', icon: '📊' },
                         { id: 'customize-style', title: 'Customize Style', icon: '🎨' }
                     ]
                 }

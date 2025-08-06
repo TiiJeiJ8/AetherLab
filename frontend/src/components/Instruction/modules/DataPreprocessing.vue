@@ -1,8 +1,8 @@
 <template>
 <div class="data-preprocessing-module">
     <section id="data-upload" class="content-section">
-    <h1>🔍<br>预处理</h1>
-    <p class="section-description">了解如何准备和处理数据，确保最佳的可视化效果。</p>
+    <h1>🔍<br>Preprocessing</h1>
+    <p class="section-description">Learn how to prepare and process data to ensure the best visualization results.</p>
 
     <div class="upload-steps">
         <div class="step-card" v-for="(step, index) in uploadSteps" :key="step.id">
@@ -21,7 +21,7 @@
     </section>
 
     <section id="data-formats" class="content-section">
-    <h2>📁 支持的数据格式</h2>
+    <h2>📁 Supported Data Formats</h2>
     <div class="formats-grid">
         <div class="format-card" v-for="format in supportedFormats" :key="format.id">
         <div class="format-icon">{{ format.icon }}</div>
@@ -37,7 +37,7 @@
     </section>
 
     <section id="data-cleaning" class="content-section">
-    <h2>🧹 数据清洗</h2>
+    <h2>🧹 Data Cleaning</h2>
     <div class="cleaning-tools">
         <div class="tool-category" v-for="category in cleaningTools" :key="category.id">
         <h3>{{ category.icon }} {{ category.title }}</h3>
@@ -49,7 +49,7 @@
             </div>
             <p>{{ tool.description }}</p>
             <div v-if="tool.example" class="tool-example">
-                <strong>示例：</strong>{{ tool.example }}
+                <strong>Example:</strong> {{ tool.example }}
             </div>
             </div>
         </div>
@@ -58,7 +58,7 @@
     </section>
 
     <section id="data-transformation" class="content-section">
-    <h2>🔄 数据转换</h2>
+    <h2>🔄 Data Transformation</h2>
     <div class="transformation-types">
         <div class="transform-card" v-for="transform in transformations" :key="transform.id">
         <div class="transform-icon">{{ transform.icon }}</div>
@@ -66,7 +66,7 @@
             <h4>{{ transform.name }}</h4>
             <p>{{ transform.description }}</p>
             <div class="transform-use-cases">
-            <strong>适用场景：</strong>
+            <strong>Use Cases:</strong>
             <ul>
                 <li v-for="useCase in transform.useCases" :key="useCase">{{ useCase }}</li>
             </ul>
@@ -77,7 +77,7 @@
     </section>
 
     <section id="data-validation" class="content-section">
-    <h2>✅ 数据验证</h2>
+    <h2>✅ Data Validation</h2>
     <div class="validation-checklist">
         <div class="checklist-category" v-for="category in validationChecks" :key="category.id">
         <h3>{{ category.title }}</h3>
@@ -95,7 +95,7 @@
     </section>
 
     <section id="common-issues" class="content-section">
-    <h2>⚠️ 常见问题</h2>
+    <h2>⚠️ Common Issues</h2>
     <div class="issues-accordion">
         <div class="issue-item" v-for="issue in commonIssues" :key="issue.id">
         <div class="issue-header" @click="toggleIssue(issue.id)">
@@ -104,10 +104,10 @@
             <span class="toggle-icon" :class="{ 'expanded': expandedIssues.includes(issue.id) }">▼</span>
         </div>
         <div class="issue-content" :class="{ 'expanded': expandedIssues.includes(issue.id) }">
-            <p><strong>问题描述：</strong>{{ issue.problem }}</p>
-            <p><strong>解决方案：</strong>{{ issue.solution }}</p>
+            <p><strong>Problem:</strong> {{ issue.problem }}</p>
+            <p><strong>Solution:</strong> {{ issue.solution }}</p>
             <div v-if="issue.tips" class="issue-tips">
-            <strong>小贴士：</strong>
+            <strong>Tips:</strong>
             <ul>
                 <li v-for="tip in issue.tips" :key="tip">{{ tip }}</li>
             </ul>
@@ -129,26 +129,26 @@ const expandedIssues = ref([])
 const uploadSteps = [
     {
         id: 'select',
-        title: '选择文件',
-        description: '点击"Files"按钮或拖拽文件到上传区域',
+        title: 'Select File',
+        description: 'Click the "Files" button or drag files into the upload area',
         formats: ['CSV', 'Excel', 'JSON', 'TSV']
     },
     {
         id: 'preview',
-        title: '预览数据',
-        description: '系统会自动解析并显示数据预览，检查数据结构',
+        title: 'Preview Data',
+        description: 'The system will automatically parse and display a data preview. Check the data structure.',
         formats: null
     },
     {
         id: 'configure',
-        title: '配置参数',
-        description: '设置分隔符、编码格式、表头行等解析参数',
+        title: 'Configure Parameters',
+        description: 'Set parsing parameters such as delimiter, encoding, and header row.',
         formats: null
     },
     {
         id: 'validate',
-        title: '验证数据',
-        description: '检查数据质量，处理缺失值和异常值',
+        title: 'Validate Data',
+        description: 'Check data quality, handle missing and abnormal values.',
         formats: null
     }
 ]
@@ -158,93 +158,93 @@ const supportedFormats = [
         id: 'csv',
         name: 'CSV',
         icon: '📄',
-        description: '逗号分隔值文件，最常用的数据交换格式',
-        features: ['轻量级', '通用性强', '易于编辑', '支持大文件']
+        description: 'Comma-separated values file, the most common data exchange format.',
+        features: ['Lightweight', 'Highly compatible', 'Easy to edit', 'Supports large files']
     },
     {
         id: 'excel',
         name: 'Excel',
         icon: '📊',
-        description: 'Microsoft Excel格式，支持多工作表',
-        features: ['多工作表', '格式丰富', '公式支持', 'XLSX/XLS']
+        description: 'Microsoft Excel format, supports multiple worksheets.',
+        features: ['Multiple sheets', 'Rich formatting', 'Formula support', 'XLSX/XLS']
     },
     {
         id: 'json',
         name: 'JSON',
         icon: '📋',
-        description: 'JavaScript对象标记，适合结构化数据',
-        features: ['层次结构', '嵌套数据', 'Web友好', '标准格式']
+        description: 'JavaScript Object Notation, suitable for structured data.',
+        features: ['Hierarchical', 'Nested data', 'Web-friendly', 'Standard format']
     },
     {
         id: 'tsv',
         name: 'TSV',
         icon: '📝',
-        description: '制表符分隔值文件，适合包含逗号的数据',
-        features: ['制表符分隔', '兼容性好', '处理逗号', '纯文本']
+        description: 'Tab-separated values file, suitable for data containing commas.',
+        features: ['Tab-separated', 'Good compatibility', 'Handles commas', 'Plain text']
     }
 ]
 
 const cleaningTools = [
     {
         id: 'missing-data',
-        title: '缺失值处理',
+        title: 'Missing Value Handling',
         icon: '❓',
         tools: [
         {
             id: 'remove-null',
-            name: '删除空值',
+            name: 'Remove Nulls',
             icon: '🗑️',
-            description: '移除包含空值的行或列',
-            example: '删除所有包含 null 或 undefined 的记录'
+            description: 'Remove rows or columns containing null values.',
+            example: 'Delete all records containing null or undefined.'
         },
         {
             id: 'fill-values',
-            name: '填充数值',
+            name: 'Fill Values',
             icon: '🔄',
-            description: '用指定值或统计值填充缺失数据',
-            example: '用平均值填充数值型字段的缺失值'
+            description: 'Fill missing data with specified or statistical values.',
+            example: 'Fill missing numeric fields with the average value.'
         }
         ]
     },
     {
         id: 'data-filtering',
-        title: '数据筛选',
+        title: 'Data Filtering',
         icon: '🔍',
         tools: [
         {
             id: 'range-filter',
-            name: '范围筛选',
+            name: 'Range Filter',
             icon: '📏',
-            description: '根据数值范围过滤数据',
-            example: '筛选年龄在 18-65 之间的记录'
+            description: 'Filter data based on value ranges.',
+            example: 'Filter records with age between 18 and 65.'
         },
         {
             id: 'condition-filter',
-            name: '条件筛选',
+            name: 'Conditional Filter',
             icon: '⚡',
-            description: '根据复杂条件筛选数据',
-            example: '筛选销售额 > 1000 且地区为"北京"的记录'
+            description: 'Filter data based on complex conditions.',
+            example: 'Filter records where sales > 1000 and region is "Beijing".'
         }
         ]
     },
     {
         id: 'outlier-detection',
-        title: '异常值检测',
+        title: 'Outlier Detection',
         icon: '🎯',
         tools: [
         {
             id: 'statistical',
-            name: '统计方法',
+            name: 'Statistical Methods',
             icon: '📊',
-            description: '使用统计方法识别异常值',
-            example: '基于3σ原则或四分位数识别异常值'
+            description: 'Identify outliers using statistical methods.',
+            example: 'Identify outliers based on 3σ rule or quartiles.'
         },
         {
             id: 'manual',
-            name: '手动标记',
+            name: 'Manual Tagging',
             icon: '✏️',
-            description: '手动标记和处理异常数据点',
-            example: '在数据预览中直接标记异常值'
+            description: 'Manually tag and handle abnormal data points.',
+            example: 'Directly tag outliers in the data preview.'
         }
         ]
     }
@@ -253,86 +253,86 @@ const cleaningTools = [
 const transformations = [
     {
         id: 'aggregation',
-        name: '数据聚合',
+        name: 'Data Aggregation',
         icon: '📊',
-        description: '将多行数据合并成单行汇总数据',
-        useCases: ['计算每月销售总额', '统计各地区用户数量', '按类别汇总产品信息']
+        description: 'Merge multiple rows into a single summary row.',
+        useCases: ['Calculate monthly sales totals', 'Count users by region', 'Aggregate product info by category']
     },
     {
         id: 'pivot',
-        name: '数据透视',
+        name: 'Data Pivot',
         icon: '🔄',
-        description: '重新组织数据结构，行列转换',
-        useCases: ['将长格式转为宽格式', '创建交叉统计表', '多维数据分析']
+        description: 'Reorganize data structure, transpose rows and columns.',
+        useCases: ['Convert long format to wide format', 'Create cross-tab reports', 'Multidimensional data analysis']
     },
     {
         id: 'merge',
-        name: '数据合并',
+        name: 'Data Merge',
         icon: '🔗',
-        description: '基于共同字段合并多个数据源',
-        useCases: ['关联用户信息和订单数据', '合并历史数据', '补充维度信息']
+        description: 'Merge multiple data sources based on common fields.',
+        useCases: ['Join user info and order data', 'Merge historical data', 'Supplement dimension info']
     },
     {
         id: 'normalization',
-        name: '数据标准化',
+        name: 'Data Normalization',
         icon: '⚖️',
-        description: '将数据缩放到标准范围',
-        useCases: ['Min-Max标准化', 'Z-score标准化', '消除量纲影响']
+        description: 'Scale data to a standard range.',
+        useCases: ['Min-Max normalization', 'Z-score normalization', 'Eliminate unit effects']
     }
 ]
 
 const validationChecks = [
     {
         id: 'structure',
-        title: '结构验证',
+        title: 'Structure Validation',
         checks: [
         {
             id: 'columns',
-            title: '列结构检查',
+            title: 'Column Structure Check',
             icon: '📋',
-            description: '验证数据列的名称、类型和数量是否符合预期'
+            description: 'Verify column names, types, and counts meet expectations.'
         },
         {
             id: 'datatypes',
-            title: '数据类型验证',
+            title: 'Data Type Validation',
             icon: '🏷️',
-            description: '确保每列的数据类型正确（数值、文本、日期等）'
+            description: 'Ensure each column has the correct data type (number, text, date, etc.).'
         }
         ]
     },
     {
         id: 'quality',
-        title: '质量检查',
+        title: 'Quality Check',
         checks: [
         {
             id: 'completeness',
-            title: '完整性检查',
+            title: 'Completeness Check',
             icon: '✅',
-            description: '检查缺失值的比例和分布情况'
+            description: 'Check the proportion and distribution of missing values.'
         },
         {
             id: 'consistency',
-            title: '一致性验证',
+            title: 'Consistency Validation',
             icon: '🔄',
-            description: '验证数据格式和取值范围的一致性'
+            description: 'Verify consistency of data formats and value ranges.'
         }
         ]
     },
     {
         id: 'business',
-        title: '业务规则',
+        title: 'Business Rules',
         checks: [
         {
             id: 'range',
-            title: '取值范围',
+            title: 'Value Range',
             icon: '📏',
-            description: '验证数值是否在合理的业务范围内'
+            description: 'Verify values are within reasonable business ranges.'
         },
         {
             id: 'logic',
-            title: '逻辑关系',
+            title: 'Logical Relationships',
             icon: '🧠',
-            description: '检查字段间的逻辑关系是否合理'
+            description: 'Check if relationships between fields are reasonable.'
         }
         ]
     }
@@ -341,35 +341,35 @@ const validationChecks = [
 const commonIssues = [
     {
         id: 'encoding',
-        title: '文件编码问题',
+        title: 'File Encoding Issues',
         icon: '🔤',
-        problem: '中文或特殊字符显示为乱码',
-        solution: '选择正确的编码格式（UTF-8、GBK等）重新解析文件',
-        tips: ['UTF-8是推荐的标准编码', '如果不确定编码，可以尝试自动检测', 'Excel文件通常使用GBK编码']
+        problem: 'Chinese or special characters appear garbled.',
+        solution: 'Select the correct encoding (UTF-8, GBK, etc.) and re-parse the file.',
+        tips: ['UTF-8 is the recommended standard encoding.', 'If unsure, try auto-detection.', 'Excel files usually use GBK encoding.']
     },
     {
         id: 'separator',
-        title: '分隔符识别错误',
+        title: 'Separator Recognition Error',
         icon: '📐',
-        problem: 'CSV文件列划分不正确，数据混合在一起',
-        solution: '手动指定正确的分隔符（逗号、分号、制表符等）',
-        tips: ['查看原始文件确认分隔符', '注意区分逗号和分号', '制表符分隔较为安全']
+        problem: 'CSV columns are not split correctly, data is mixed together.',
+        solution: 'Manually specify the correct separator (comma, semicolon, tab, etc.).',
+        tips: ['Check the original file for the separator.', 'Distinguish between comma and semicolon.', 'Tab separation is safer.']
     },
     {
         id: 'header',
-        title: '表头行设置',
+        title: 'Header Row Setting',
         icon: '📑',
-        problem: '数据的第一行被误认为表头或数据',
-        solution: '正确设置表头行位置，指定从第几行开始读取数据',
-        tips: ['检查文件前几行的内容', '确认表头行的位置', '跳过说明行和空行']
+        problem: 'The first row of data is mistaken for the header or data.',
+        solution: 'Set the correct header row position and specify which row to start reading data.',
+        tips: ['Check the first few rows of the file.', 'Confirm the header row position.', 'Skip instruction and empty rows.']
     },
     {
         id: 'large-file',
-        title: '大文件处理',
+        title: 'Large File Handling',
         icon: '📦',
-        problem: '文件过大导致上传或处理缓慢',
-        solution: '考虑数据采样、分批处理或优化文件格式',
-        tips: ['超过100MB的文件建议分批处理', '删除不必要的列和行', '使用CSV格式而非Excel']
+        problem: 'Large files cause slow upload or processing.',
+        solution: 'Consider data sampling, batch processing, or optimizing file format.',
+        tips: ['Files over 100MB are recommended to be processed in batches.', 'Remove unnecessary columns and rows.', 'Use CSV instead of Excel.']
     }
 ]
 
@@ -382,7 +382,7 @@ const toggleIssue = (issueId) => {
     }
 }
 
-// 监听滚动，更新当前章节
+// Listen to scroll and update current section
 const handleScroll = () => {
     const sections = document.querySelectorAll('.content-section')
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop
@@ -409,5 +409,5 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-@import '../../../assets/CSS/DataPreprocessing_instruction.css'
+@import '../../../assets/CSS/DataPreprocessing_instruction.css';
 </style>
