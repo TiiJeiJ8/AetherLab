@@ -20,7 +20,7 @@ graph TB
     C --> H[UI Component Library]
     
     F --> I[ECharts Visualization]
-    I --> J[15+ Chart Types]
+    I --> J[25+ Chart Types]
     
     B --> K[HTTP Client]
     K --> L[Flask Backend API]
@@ -34,6 +34,42 @@ graph TB
     style L fill:#c9d6df
 
 ```
+
+---
+
+## Quick Start -- Chart Generation Process
+
+1. **Upload Data File**  
+   Click the "Files" button to upload data files in CSV, Excel, or other formats.  
+   ![step-upload-file](/img-step/step-upload-file.gif)
+
+2. **Check Data**  
+   Preview the uploaded data in the "Data Preview" panel to ensure it is correct.  
+   ![step-check-data](/img-step/step-check-data.gif)
+
+3. **Add file to Workspace**  
+   Click the "Add to Workspace" button to add the selected file to your workspace.  
+   ![step-add-workspace](/img-step/step-add-workspace.gif)
+
+4. **Select Chart Type**  
+   Choose the appropriate visualization from 25+ chart types.  
+   ![step-select-chart-type](/img-step/step-select-chart-type.gif)
+
+5. **Open Structure Panel**  
+   Click the "Structure" button to open the chart structure panel.  
+   ![step-open-structure-panel](/img-step/step-open-structure-panel.gif)
+
+6. **Configure Chart**  
+   Set data mapping, styles, themes, and other parameters.  
+   ![step-config-chart](/img-step/step-config-chart.gif)
+
+7. **Generate Chart**  
+   Click the "Apply Configuration" button to create your visualization.  
+   ![step-generate-chart](/img-step/step-generate-chart.gif)
+
+8. **Customization**  
+   Adjust styles, themes, data filters and advanced settings to meet your needs.  
+   ![step-customization](/img-step/step-customization.gif)
 
 ---
 
