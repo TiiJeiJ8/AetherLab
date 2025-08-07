@@ -66,35 +66,112 @@
             <p>Download the source code from my <a href="https://github.com/TiiJeiJ8/AetherLab" target="_blank">GitHub Repository</a>.</p>
             <div class="code-example" style="position: relative;">
                 <span class="languageType">bash</span>
-                <pre style="padding-top: 24px;"><code class="language-bash">git clone https://github.com/TiiJeiJ8/AetherLab.git</code></pre>
+<pre style="padding-top: 24px;"><code class="language-bash">git clone https://github.com/TiiJeiJ8/AetherLab.git</code></pre>
             </div>
             <br>
             <p>Install dependencies</p>
             <ul>
-                <li>Frontend</li>
+                <li>Frontend <span class="tech-tag">VUE 3</span></li>
                 <div class="code-example" style="position: relative;">
                     <span class="languageType">cmd (Windows)</span>
-                    <pre style="padding-top: 24px;"><code class="language-bat">cd frontend<br>npm install</code></pre>
+<pre style="padding-top: 24px;">
+<code class="language-bat">cd frontend
+npm install</code>
+</pre>
                 </div>
                 <div class="code-example" style="position: relative;">
                     <span class="languageType">bash (Linux/macOS)</span>
-                    <pre style="padding-top: 24px;"><code class="language-bash">cd frontend<br>npm install</code></pre>
+<pre style="padding-top: 24px;">
+<code class="language-bash">cd frontend
+npm install</code>
+</pre>
                 </div>
 
-                <li>Backend</li>
+                <li>Backend <span class="tech-tag">Flask + Python</span></li>
                 <div class="code-example" style="position: relative;">
                     <span class="languageType">cmd (Windows)</span>
-                    <pre style="padding-top: 24px;"><code class="language-bat">cd backend<br>pip install -r requirement.txt</code></pre>
+<pre style="padding-top: 24px;">
+<code class="language-bat">cd backend
+pip install -r requirement.txt</code>
+</pre>
                 </div>
                 <div class="code-example" style="position: relative;">
-                    <span class="languageType">bash</span>
-                    <pre style="padding-top: 24px;"><code class="language-bash">cd backend<br>pip install -r requirement.txt</code></pre>
+                    <span class="languageType">bash (Linux/macOS)</span>
+<pre style="padding-top: 24px;">
+<code class="language-bash">cd backend
+pip install -r requirement.txt</code>
+</pre>
                 </div>
             </ul>
             <p>Development environment startup</p>
+            <ul>
+                <li>Frontend Startup <span class="tech-tag">Default Port: 8000</span></li>
+                <div class="code-example" style="position: relative;">
+                    <span class="languageType">cmd (Windows)</span>
+<pre style="padding-top: 24px;">
+<code class="language-bat">cd frontend
+npm run serve</code>
+</pre>
+                </div>
+                <div class="code-example" style="position: relative;">
+                    <span class="languageType">bash (Linux/macOS)</span>
+<pre style="padding-top: 24px;">
+<code class="language-bash">cd frontend
+npm run serve</code>
+</pre>
+                </div>
+                <li>Backend Startup <span class="tech-tag">Default Port: 8050</span></li>
+                <div class="code-example" style="position: relative;">
+                    <span class="languageType">cmd (Windows)</span>
+<pre style="padding-top: 24px;">
+<code class="language-bat">cd backend
+python App.py</code>
+</pre>
+                </div>
+                <div class="code-example" style="position: relative;">
+                    <span class="languageType">bash (Linux/macOS)</span>
+<pre style="padding-top: 24px;">
+<code class="language-bash">cd backend
+python App.py</code>
+</pre>
+                </div>
+            </ul>
         </section>
-        <section id="package-download" class="content-section">
-            <h2>📦 Package</h2>
+        <br>
+        <h2>📦 Package</h2>
+        <section id="package-download" class="content-card">
+            <p>Download the source code from <a href="https://github.com/AetherLab" target="_blank">Github Repository</a></p>
+            <ul>
+                <li>Frontend build</li>
+                <div class="code-example" style="position: relative;">
+<span class="languageType">bash / cmd</span>
+<pre style="padding-top: 24px;"><code class="language-bash">cd frontend
+npm run build</code></pre>
+                </div>
+                <li>Backend build</li>
+                <div class="code-example" style="position: relative;">
+<span class="languageType">bash / cmd</span>
+<pre style="padding-top: 24px;"><code class="language-bash">cd backend
+python App.py</code></pre>
+                </div>
+                <p>After building, the <code>dist</code> directory will be automatically served by the Flask backend according to the directory structure below. No extra configuration is needed.</p>
+                <div class="code-example" style="position: relative;">
+<span class="languageType">Markdown</span>
+<pre style="padding-top: 24px;"><code class="language-plaintext">AetherLab/
+└── frontend/
+    ├── dist
+└── backend/
+    ├── App.py
+    ├── ...
+</code></pre>
+                </div>
+            </ul>
+            <p>After STARTUP, visit <a href="http://localhost:8080" target="_blank">http://localhost:8080</a> in your browser.</p>
+            <br>
+            <p>
+                If you encounter any issues, please check
+                <a href="https://github.com/AetherLab/vissues" target="_blank">Github Issues</a>.
+            </p>
         </section>
     </section>
 
