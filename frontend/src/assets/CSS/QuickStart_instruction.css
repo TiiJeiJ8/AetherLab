@@ -242,6 +242,12 @@
     margin-bottom: 12px;
 }
 
+.quick-start .step-image {
+    max-width: 80%;
+    margin: 12px 0;
+    border-radius: 10px;
+}
+
 .quick-start .languageType {
     position: absolute;
     top: 6px;

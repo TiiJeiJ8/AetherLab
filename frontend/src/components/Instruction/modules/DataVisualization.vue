@@ -1,18 +1,58 @@
 <template>
+<section id="top"></section>
 <div class="data-visualization-module data-visualization">
+    <!-- LOGO -->
     <section id="chart-types" class="content-section">
         <h1 style="user-select: none;"><span class="float-chart-icon">📊</span><br>Visualization</h1>
         <p class="section-description" style="margin-bottom: 15%">Explore the rich chart types and visualization features provided by AetherLab.</p>
 
-        <div class="chart-categories">
+        <!-- Contribution button -->
+        <div class="contribution-links">
+            <a href="https://github.com/TiiJeiJ8/AetherLab" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🐙</span>
+                <span>GitHub Repository</span>
+            </a>
+            <a href="https://github.com/TiiJeiJ8/AetherLab/issues" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🐛</span>
+
+                <span>Issues</span>
+            </a>
+            <a href="https://github.com/TiiJeiJ8/AetherLab/pulls" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🔄</span>
+                <span>Pull Requests</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Chart Generation Process -->
+    <section id="generation-process" class="content-section">
+    <h2>⚙️ Chart Generation Process</h2>
+    <p>Understand the steps involved in generating a chart in AetherLab.</p>
+    <div class="steps-container">
+        <div class="step-item" v-for="(step, index) in StartSteps" :key="step.id">
+        <div class="step-number">{{ index + 1 }}</div>
+        <div class="step-content">
+            <h4>{{ step.title }}</h4>
+            <p>{{ step.description }}</p>
+            <img v-if="step.img" :src="step.img" alt="step image" class="step-image" />
+        </div>
+        </div>
+    </div>
+    </section>
+
+    <!-- Chart Gallery -->
+    <section id="chart-gallery" class="content-section">
+        <h2>🖼️ Chart Gallery</h2>
+        <div ref="galleryChart" style="width:100%;height:700px;"></div>
+        <div id="chart-categories" class="chart-categories">
             <div class="category-card" v-for="category in chartCategories" :key="category.id">
-            <h3>{{ category.icon }} {{ category.title }}</h3>
-            <div class="charts-grid">
-                <div class="chart-item" v-for="chart in category.charts" :key="chart.id">
-                <span class="chart-icon">{{ chart.icon }}</span>
-                <span class="chart-name">{{ chart.name }}</span>
+                <h3>{{ category.icon }} {{ category.title }}</h3>
+                <div class="charts-grid">
+                    <div class="chart-item" v-for="chart in category.charts" :key="chart.id">
+                    <span class="chart-icon">{{ chart.icon }}</span>
+                    <span class="chart-name">{{ chart.name }}</span>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
     </section>
@@ -57,26 +97,6 @@
     </div>
     </section>
 
-    <section id="chart-selection" class="content-section">
-    <h2>🤔 How to Choose the Right Chart</h2>
-    <div class="selection-guide">
-        <div class="guide-item" v-for="guide in selectionGuides" :key="guide.id">
-        <div class="guide-scenario">
-            <h4>{{ guide.scenario }}</h4>
-            <p>{{ guide.description }}</p>
-        </div>
-        <div class="recommended-charts">
-            <span class="recommend-label">Recommended Charts：</span>
-            <div class="chart-tags">
-            <span class="chart-tag" v-for="chart in guide.charts" :key="chart">
-                {{ chart }}
-            </span>
-            </div>
-        </div>
-        </div>
-    </div>
-    </section>
-
     <section id="best-practices" class="content-section">
     <h2>💡 Best Practices</h2>
     <div class="practices-list">
@@ -97,9 +117,77 @@
 
 <script setup>
 /* eslint-disable */
-import { onMounted, onUnmounted } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { generateChartGalleryOption } from '../../../assets/instructions/instruction_chart_gen'
+const galleryChart = ref(null)
+
+const renderGalleryChart = async () => {
+    if (!galleryChart.value) return
+    const chart = echarts.init(galleryChart.value)
+    const option = await generateChartGalleryOption()
+    chart.setOption(option)
+}
 
 const emit = defineEmits(['section-change'])
+
+const StartSteps = [
+    {
+        id: 'upload-data',
+        title: 'Upload Data File',
+        description: 'Click the "Files" button to upload data files in CSV, Excel, or other formats.',
+        code: null,
+        img: '/img-step/step-upload-file.gif'
+    },
+    {
+        id: 'check-data',
+        title: 'Check Data',
+        description: 'Preview the uploaded data in the "Data Preview" panel to ensure it is correct.',
+        code: null,
+        img: '/img-step/step-check-data.gif'
+    },
+    {
+        id: 'add-to-workspace',
+        title: 'Add file to Workspace',
+        description: 'Click the "Add to Workspace" button to add the selected file to your workspace.',
+        code: null,
+        img: '/img-step/step-add-workspace.gif'
+    },
+    {
+        id: 'select-chart-type',
+        title: 'Select Chart Type',
+        description: 'Choose the appropriate visualization from 25+ chart types.',
+        code: null,
+        img: '/img-step/step-select-chart-type.gif'
+    },
+    {
+        id: 'open-structure-panel',
+        title: 'Open Structure Panel',
+        description: 'Click the "Structure" button to open the chart structure panel.',
+        code: null,
+        img: '/img-step/step-open-structure-panel.gif'
+    },
+    {
+        id: 'configure-chart',
+        title: 'Configure Chart',
+        description: 'Set data mapping, styles, themes, and other parameters.',
+        code: null,
+        img: '/img-step/step-config-chart.gif'
+    },
+    {
+        id: 'generate-chart',
+        title: 'Generate Chart',
+        description: 'Click the "Apply Configuration" button to create your visualization.',
+        code: null,
+        img: '/img-step/step-generate-chart.gif'
+    },
+    {
+        id: 'customize-style',
+        title: 'Customization',
+        description: 'Adjust styles, themes, data filters and advanced settings to meet your needs.',
+        code: null,
+        img: '/img-step/step-customization.gif'
+    }
+]
 
 const chartCategories = [
     {
@@ -107,10 +195,31 @@ const chartCategories = [
         title: 'Basic Charts',
         icon: '📊',
         charts: [
-        { id: 'line', name: 'Line Chart', icon: '📈' },
-        { id: 'bar', name: 'Bar Chart', icon: '📊' },
-        { id: 'pie', name: 'Pie Chart', icon: '🥧' },
-        { id: 'scatter', name: 'Scatter Plot', icon: '⚬' }
+            { id: 'line', name: 'Line Chart', icon: '📈' },
+            { id: 'bar', name: 'Bar Chart', icon: '📊' },
+            { id: 'pie', name: 'Pie Chart', icon: '🥧' },
+            { id: 'scatter', name: 'Scatter Plot', icon: '⚬' },
+            { id: 'radar', name: 'Radar Chart', icon: '📡' },
+            { id: 'area', name: 'Area Chart', icon: '🌄' },
+        ]
+    },
+    {
+        id: 'geospatial',
+        title: 'Geospatial Charts',
+        icon: '🗺️',
+        charts: [
+            { id: 'geo_map', name: 'Geo of Map', icon: '🌍' },
+            { id: 'geo_heatmap', name: 'Geo of Heatmap', icon: '🔥' },
+            { id: 'geo_scatter', name: 'Geo of Scatter', icon: '⚬' },
+            { id: 'geo_pie', name: 'Geo of Pie', icon: '🥧' }
+        ]
+    },
+    {
+        id: 'financial',
+        title: 'Financial Charts',
+        icon: '💹',
+        charts: [
+            { id: 'candlestick', name: 'Candlestick Chart', icon: '🕯️' },
         ]
     },
     {
@@ -118,30 +227,55 @@ const chartCategories = [
         title: 'Statistical Charts',
         icon: '📋',
         charts: [
-        { id: 'boxplot', name: 'Box Plot', icon: '📦' },
-        { id: 'histogram', name: 'Histogram', icon: '📊' },
-        { id: 'violin', name: 'Violin Plot', icon: '🎻' },
-        { id: 'heatmap', name: 'Heatmap', icon: '🔥' }
+            { id: 'boxplot', name: 'Box Plot', icon: '📦' },
         ]
     },
     {
-        id: 'geographical',
-        title: 'Geographical Charts',
-        icon: '🗺️',
+        id: 'advanced',
+        title: 'Advanced Charts',
+        icon: '⚡',
         charts: [
-        { id: 'map', name: 'Map', icon: '🌍' },
-        { id: 'geo_heatmap', name: 'Geo Heatmap', icon: '🔥' }
+            { id: 'nightingale', name: 'Rose', icon: '🌹' },
+            { id: 'doughnut', name: 'Doughnut', icon: '🍩' },
+            { id: 'heatmap', name: 'Heatmap', icon: '🔥' },
+            { id: 'parallel', name: 'Parallel', icon: '📏' },
+            { id: 'ripple', name: 'Ripple', icon: '💧' }
         ]
     },
     {
-        id: 'relationship',
-        title: 'Relationship Charts',
+        id: 'network',
+        title: 'Network Charts',
         icon: '🕸️',
         charts: [
-        { id: 'network', name: 'Network Graph', icon: '🕸️' },
-        { id: 'sankey', name: 'Sankey Diagram', icon: '🌊' },
-        { id: 'tree', name: 'Tree Chart', icon: '🌳' },
-        { id: 'graph', name: 'Graph Chart', icon: '🔗' }
+            { id: 'graph', name: 'Graph', icon: '🕸️' }
+        ]
+    },
+    {
+        id: 'hierarchical',
+        title: 'Hierarchical Charts',
+        icon: '🌳',
+        charts: [
+            { id: 'tree', name: 'Tree', icon: '🌳' },
+            { id: 'treemap', name: 'Treemap', icon: '🗂️' },
+            { id: 'sunburst', name: 'Sunburst', icon: '☀️' }
+        ]
+    },
+    {
+        id: 'flow',
+        title: 'Flow Charts',
+        icon: '🔄',
+        charts: [
+            { id: 'sankey', name: 'Sankey Diagram', icon: '🌊' },
+            { id: 'funnel', name: 'Funnel', icon: '🔄' },
+            { id: 'themeRiver', name: 'ThemeRiver', icon: '🌈' }
+        ]
+    },
+    {
+        id: 'indicator',
+        title: 'Indicator Charts',
+        icon: '📟',
+        charts: [
+            { id: 'gauge', name: 'Gauge', icon: '📟' }
         ]
     }
 ]
@@ -208,85 +342,7 @@ const advancedCharts = [
     }
 ]
 
-const selectionGuides = [
-    {
-        id: 'comparison',
-        scenario: 'Compare Data',
-        description: 'When you need to compare numerical differences between different categories or groups',
-        charts: ['Bar Chart', 'Column Chart', 'Radar Chart', 'Parallel Coordinates']
-    },
-    {
-        id: 'trend',
-        scenario: 'Show Trends',
-        description: 'When you need to show how data changes over time',
-        charts: ['Line Chart', 'Area Chart', 'Stream Graph']
-    },
-    {
-        id: 'proportion',
-        scenario: 'Display Proportions',
-        description: 'When you need to show the proportional relationship of each part to the whole',
-        charts: ['Pie Chart', 'Donut Chart', 'Sunburst Chart', 'Treemap']
-    },
-    {
-        id: 'relationship',
-        scenario: 'Analyze Relationships',
-        description: 'When you need to explore correlations or relationships between variables',
-        charts: ['Scatter Plot', 'Bubble Chart', 'Heatmap', 'Network Graph']
-    },
-    {
-        id: 'distribution',
-        scenario: 'Distribution Analysis',
-        description: 'When you need to analyze the distribution characteristics of data',
-        charts: ['Histogram', 'Box Plot', 'Violin Plot', 'Density Plot']
-    }
-]
 
-const bestPractices = [
-    {
-        id: 'data-quality',
-        icon: '🎯',
-        title: 'Data Quality',
-        description: 'Ensuring data accuracy and completeness is the foundation of creating effective visualizations',
-        tips: [
-        'Check for missing values and outliers in data',
-        'Ensure correct data types',
-        'Verify logical consistency of data'
-        ]
-    },
-    {
-        id: 'color-usage',
-        icon: '🎨',
-        title: 'Color Usage',
-        description: 'Proper use of colors can enhance chart readability and aesthetics',
-        tips: [
-        'Use colorblind-friendly color schemes',
-        'Avoid too many colors causing visual confusion',
-        'Use colors to highlight important information'
-        ]
-    },
-    {
-        id: 'clarity',
-        icon: '👁️',
-        title: 'Clarity',
-        description: 'Charts should be clear and easy to understand, able to convey information quickly',
-        tips: [
-        'Add clear titles and labels',
-        'Set appropriate axis ranges',
-        'Avoid overly complex charts'
-        ]
-    },
-    {
-        id: 'interactivity',
-        icon: '🖱️',
-        title: 'Interactivity',
-        description: 'Appropriate interactive features can enhance user experience',
-        tips: [
-        'Add hover tooltip information',
-        'Support zoom and filter functions',
-        'Provide data drill-down capabilities'
-        ]
-    }
-]
 
 // Listen to scroll, update current section
 const handleScroll = () => {
@@ -307,6 +363,9 @@ const handleScroll = () => {
 onMounted(() => {
     window.addEventListener('scroll', handleScroll)
     emit('section-change', 'chart-types')
+    nextTick(async () => {
+        await renderGalleryChart()
+    })
 })
 
 onUnmounted(() => {

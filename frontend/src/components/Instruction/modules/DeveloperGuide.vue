@@ -1,13 +1,30 @@
 <template>
+<section id="top"></section>
 <div class="developer-guide-module developer-guide">
     <section id="overview" class="content-section">
-        <h1 style="user-select: none;"><span class="float-pc-icon">👨‍💻</span><br>Developer Guide</h1>
+        <h1 style="user-select: none;"><span class="float-pc-icon">👨‍💻</span><br>Docs</h1>
         <p class="section-description" style="margin-bottom: 5%">
             This section provides guidance for developers to extend, customize, and contribute to AetherLab.
         </p>
-        </section>
 
-        <section id="key-features" class="content-section">
+        <!-- Contribution button -->
+        <div class="contribution-links">
+            <a href="https://github.com/TiiJeiJ8/AetherLab" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🐙</span>
+                <span>GitHub Repository</span>
+            </a>
+            <a href="https://github.com/TiiJeiJ8/AetherLab/issues" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🐛</span>
+                <span>Issues</span>
+            </a>
+            <a href="https://github.com/TiiJeiJ8/AetherLab/pulls" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🔄</span>
+                <span>Pull Requests</span>
+            </a>
+        </div>
+    </section>
+
+    <section id="key-features" class="content-section">
         <h2>⭐ Key Topics</h2>
         <div class="feature-grid">
             <div class="feature-card" v-for="topic in topics" :key="topic.id">

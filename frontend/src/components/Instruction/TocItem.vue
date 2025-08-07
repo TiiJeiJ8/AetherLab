@@ -11,7 +11,7 @@
         @click.stop="handleToggle"
         >
         <span class="toggle-icon">
-            {{ isExpanded ? '▼' : '▶' }}
+            {{ isExpanded ? '▂' : '▄' }}
         </span>
         </button>
 

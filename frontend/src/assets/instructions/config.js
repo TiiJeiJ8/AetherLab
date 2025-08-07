@@ -9,17 +9,23 @@ export const instructionConfig = {
             title: 'Quick Start',
             icon: '🚀',
             description: 'Quick start guide and basic concepts',
-            badge: '🚧',
+            badge: '',
             children: [],
             tocItems: [
+                {
+                    id: 'top',
+                    title: 'To the Top',
+                    icon: '🔝',
+                    children: []
+                },
                 {
                     id: 'overview',
                     title: 'Overview',
                     icon: '👋',
                     children: [
-                        { id: 'what-is-aetherLab', title: 'What is AetherLab', icon: '❓' },
-                        { id: 'key-features', title: 'Core Features', icon: '⭐' },
-                        { id: 'architecture', title: 'Software Architecture', icon: '🏗️' }
+                        { id: 'what-is-aetherLab', title: 'What is AetherLab', icon: '' },
+                        { id: 'key-features', title: 'Core Features', icon: '' },
+                        { id: 'architecture', title: 'Software Architecture', icon: '' }
                     ]
                 },
                 {
@@ -27,8 +33,8 @@ export const instructionConfig = {
                     title: 'Deployment',
                     icon: '📦',
                     children: [
-                        { id: 'source-download', title: 'Source Code', icon: '🗒' },
-                        { id: 'package-download', title: 'Package', icon: '📦' },
+                        { id: 'source-download', title: 'Source Code', icon: '' },
+                        { id: 'package-download', title: 'Package', icon: '' },
                     ]
                 },
                 {
@@ -45,80 +51,137 @@ export const instructionConfig = {
             icon: '📊',
             description: 'Various chart types and visualization features',
             badge: '🚧',
-            children: [
-                {
-                    id: 'basic-charts',
-                    title: 'Basic Charts',
-                    count: 4,
-                    charts: ['Line', 'Bar', 'Pie', 'Scatter']
-                },
-                {
-                    id: 'geo-charts',
-                    title: 'Geographical Charts',
-                    count: 1,
-                    charts: ['Geo_Map']
-                },
-                {
-                    id: 'relation-charts',
-                    title: 'Relationship Charts',
-                    count: 3,
-                    charts: ['Graph', 'Tree', 'Sankey']
-                },
-                {
-                    id: 'statistical-charts',
-                    title: 'Statistical Charts',
-                    count: 3,
-                    charts: ['Boxplot', 'Radar', 'Heatmap']
-                },
-                {
-                    id: 'special-charts',
-                    title: 'Special Charts',
-                    count: 9,
-                    charts: ['Candlestick', 'Funnel', 'Gauge', 'PictorialBar', 'ThemeRiver', 'Calendar', 'Treemap', 'Sunburst', 'Parallel']
-                }
-            ],
+            children: [],
             tocItems: [
                 {
-                    id: 'chart-basics',
-                    title: 'Chart Basics',
+                    id: 'top',
+                    title: 'To the Top',
+                    icon: '🔝',
+                    children: []
+                },
+                {
+                    id: 'generation-process',
+                    title: 'Generation Process',
+                    icon: '⚙️',
+                    children: []
+                },
+                {
+                    id: 'chart-gallery',
+                    title: 'Chart Gallery',
+                    icon: '🖼️',
+                    children: [
+                        { id: 'chart-categories', title: 'Chart Categories', icon: '' }
+                    ]
+                },
+                {
+                    id: 'chart-selection-guide',
+                    title: 'Choose a Chart',
+                    icon: '🧭',
+                    children: [
+                        { id: 'selection-principles', title: 'Selection Principles', icon: '' },
+                        { id: 'scenarios', title: 'Common Scenarios', icon: '' }
+                    ]
+                },
+                {
+                    id: 'chart-details',
+                    title: 'Details & Examples',
                     icon: '📈',
                     children: [
-                        { id: 'chart-types-overview', title: 'Chart Types Overview', icon: '🔍' },
-                        { id: 'data-mapping', title: 'Data Mapping', icon: '🔗' },
-                        { id: 'chart-configuration', title: 'Chart Configuration', icon: '⚙️' }
+                        {
+                            id: 'basic-charts',
+                            title: 'Basic Charts',
+                            icon: '',
+                            children: [
+                                { id: 'line-chart', title: 'Line', icon: '' },
+                                { id: 'area-chart', title: 'Area', icon: '' },
+                                { id: 'bar-chart', title: 'Bar', icon: '' },
+                                { id: 'pie-chart', title: 'Pie', icon: '' },
+                                { id: 'scatter-chart', title: 'Scatter', icon: '' },
+                                { id: 'radar-chart', title: 'Radar', icon: '' }
+                            ]
+                        },
+                        {
+                            id: 'geospatial-charts',
+                            title: 'Geospatial Charts',
+                            icon: '',
+                            children: [
+                                { id: 'geo-map-chart', title: 'Geo of Map', icon: '' },
+                                { id: 'geo-heatmap-chart', title: 'Geo of Heatmap', icon: '' },
+                                { id: 'geo-scatter-chart', title: 'Geo of Scatter', icon: '' },
+                                { id: 'geo-pie-chart', title: 'Geo of Pie', icon: '' },
+                            ]
+                        }, {
+                            id: 'financial-charts',
+                            title: 'Financial Charts',
+                            icon: '',
+                            children: [
+                                { id: 'candlestick-chart', title: 'Candlestick', icon: '' },
+                            ]
+                        }, {
+                            id: 'statistical-charts',
+                            title: 'Statistical Charts',
+                            icon: '',
+                            children: [
+                                { id: 'boxplot-chart', title: 'Boxplot', icon: '' },
+                                { id: 'heatmap-chart', title: 'Heatmap', icon: '' },
+                            ]
+                        }, {
+                            id: 'advanced-charts',
+                            title: 'Advanced Charts',
+                            icon: '',
+                            children: [
+                                { id: 'nightingale-chart', title: 'Nightingale Rose', icon: '' },
+                                { id: 'doughnut-chart', title: 'Doughnut', icon: '' },
+                                { id: 'parallel-chart', title: 'Parallel', icon: '' },
+                                { id: 'ripple-chart', title: 'Ripple', icon: '' }
+                            ]
+                        }, {
+                            id: 'network-charts',
+                            title: 'Network Charts',
+                            icon: '',
+                            children: [
+                                { id: 'graph-chart', title: 'Graph', icon: '' },
+                            ]
+                        }, {
+                            id: 'hierarchical-charts',
+                            title: 'Hierarchical Charts',
+                            icon: '',
+                            children: [
+                                { id: 'tree-chart', title: 'Tree', icon: '' },
+                                { id: 'treemap-chart', title: 'Treemap', icon: '' },
+                                { id: 'sunburst-chart', title: 'Sunburst', icon: '' }
+                            ]
+                        }, {
+                            id: 'flow-charts',
+                            title: 'Flow Charts',
+                            icon: '',
+                            children: [
+                                { id: 'sankey-chart', title: 'Sankey', icon: '' },
+                                { id: 'funnel-chart', title: 'Funnel', icon: '' },
+                                { id: 'themeRiver-chart', title: 'ThemeRiver', icon: '' }
+                            ]
+                        }, {
+                            id: 'indicator-charts',
+                            title: 'Indicator Charts',
+                            icon: '',
+                            children: [
+                                { id: 'gauge-chart', title: 'Gauge', icon: '' },
+                            ]
+                        },
+                        // ... more chart types & categories
                     ]
                 },
                 {
-                    id: 'basic-charts-detail',
-                    title: 'Basic Charts',
-                    icon: '📊',
-                    children: [
-                        { id: 'line-chart', title: 'Line Chart', icon: '📈' },
-                        { id: 'bar-chart', title: 'Bar Chart', icon: '📊' },
-                        { id: 'pie-chart', title: 'Pie Chart', icon: '🥧' },
-                        { id: 'scatter-chart', title: 'Scatter Chart', icon: '🔴' }
-                    ]
+                    id: 'history',
+                    title: 'Chart History',
+                    icon: '🕑',
+                    children: []
                 },
                 {
-                    id: 'geo-charts-detail',
-                    title: 'Geographical Charts',
-                    icon: '🌍',
-                    children: [
-                        { id: 'geo-map-basic', title: 'Map Basics', icon: '🗺️' },
-                        { id: 'geo-map-types', title: 'Map Types', icon: '📍' },
-                        { id: 'geo-map-config', title: 'Map Configuration', icon: '⚙️' }
-                    ]
-                },
-                {
-                    id: 'advanced-features',
-                    title: 'Advanced Features',
-                    icon: '⚡',
-                    children: [
-                        { id: 'theme-system', title: 'Theme System', icon: '🎨' },
-                        { id: 'animation-effects', title: 'Animation Effects', icon: '🎭' },
-                        { id: 'interaction-config', title: 'Interaction Configuration', icon: '🖱️' },
-                        { id: 'chart-history', title: 'Chart History', icon: '📋' }
-                    ]
+                    id: 'roadmap',
+                    title: 'Future Plans',
+                    icon: '🚀',
+                    children: []
                 }
             ]
         },
@@ -128,37 +191,22 @@ export const instructionConfig = {
             icon: '🔍',
             description: 'Data cleaning, transformation, and management features',
             badge: '🚧',
-            children: [
-                {
-                    id: 'file-management',
-                    title: 'File Management',
-                    description: 'File upload, preview, workspace management'
-                },
-                {
-                    id: 'data-cleaning',
-                    title: 'Data Cleaning',
-                    description: 'Missing value handling, outlier detection'
-                },
-                {
-                    id: 'data-transformation',
-                    title: 'Data Transformation',
-                    description: 'Format conversion, field mapping'
-                },
-                {
-                    id: 'multi-file-merge',
-                    title: 'Multi-file Integration',
-                    description: 'Relational merge, data alignment'
-                }
-            ],
+            children: [],
             tocItems: [
+                {
+                    id: 'top',
+                    title: 'To the Top',
+                    icon: '🔝',
+                    children: []
+                },
                 {
                     id: 'file-operations',
                     title: 'File Operations',
                     icon: '📁',
                     children: [
-                        { id: 'file-upload', title: 'File Upload', icon: '⬆️' },
-                        { id: 'file-preview', title: 'File Preview', icon: '👀' },
-                        { id: 'workspace-management', title: 'Workspace Management', icon: '🗂️' }
+                        { id: 'file-upload', title: 'File Upload', icon: '⬆' },
+                        { id: 'file-preview', title: 'File Preview', icon: '' },
+                        { id: 'workspace-management', title: 'Workspace Management', icon: '' }
                     ]
                 },
                 {
@@ -166,9 +214,9 @@ export const instructionConfig = {
                     title: 'Data Quality',
                     icon: '🔍',
                     children: [
-                        { id: 'missing-values', title: 'Missing Value Handling', icon: '❓' },
-                        { id: 'outlier-detection', title: 'Outlier Detection', icon: '⚠️' },
-                        { id: 'data-validation', title: 'Data Validation', icon: '✅' }
+                        { id: 'missing-values', title: 'Missing Value Handling', icon: '' },
+                        { id: 'outlier-detection', title: 'Outlier Detection', icon: '' },
+                        { id: 'data-validation', title: 'Data Validation', icon: '' }
                     ]
                 },
                 {
@@ -176,9 +224,9 @@ export const instructionConfig = {
                     title: 'Data Integration',
                     icon: '🔗',
                     children: [
-                        { id: 'merge-strategies', title: 'Merge Strategies', icon: '🤝' },
-                        { id: 'join-operations', title: 'Join Operations', icon: '🔗' },
-                        { id: 'data-alignment', title: 'Data Alignment', icon: '📐' }
+                        { id: 'merge-strategies', title: 'Merge Strategies', icon: '' },
+                        { id: 'join-operations', title: 'Join Operations', icon: '' },
+                        { id: 'data-alignment', title: 'Data Alignment', icon: '' }
                     ]
                 }
             ]
@@ -189,32 +237,22 @@ export const instructionConfig = {
             icon: '✏️',
             description: 'Statistical analysis and machine learning features',
             badge: '🚧',
-            children: [
-                {
-                    id: 'cluster-analysis',
-                    title: 'Cluster Analysis',
-                    description: 'K-means, hierarchical clustering, etc.'
-                },
-                {
-                    id: 'regression-analysis',
-                    title: 'Regression Analysis',
-                    description: 'Linear regression, polynomial regression'
-                },
-                {
-                    id: 'predictive-modeling',
-                    title: 'Predictive Modeling',
-                    description: 'Time series forecasting, trend analysis'
-                }
-            ],
+            children: [],
             tocItems: [
+                {
+                    id: 'top',
+                    title: 'To the Top',
+                    icon: '🔝',
+                    children: []
+                },
                 {
                     id: 'statistical-analysis',
                     title: 'Statistical Analysis',
                     icon: '📊',
                     status: 'in-progress',
                     children: [
-                        { id: 'descriptive-stats', title: 'Descriptive Statistics', icon: '📈', status: 'in-progress' },
-                        { id: 'correlation-analysis', title: 'Correlation Analysis', icon: '🔗', status: 'in-progress' }
+                        { id: 'descriptive-stats', title: 'Descriptive Statistics', icon: '', status: 'in-progress' },
+                        { id: 'correlation-analysis', title: 'Correlation Analysis', icon: '', status: 'in-progress' }
                     ]
                 },
                 {
@@ -222,8 +260,8 @@ export const instructionConfig = {
                     title: 'Cluster Analysis',
                     icon: '🎯',
                     children: [
-                        { id: 'kmeans-clustering', title: 'K-means Clustering', icon: '⭕' },
-                        { id: 'hierarchical-clustering', title: 'Hierarchical Clustering', icon: '🌳' }
+                        { id: 'kmeans-clustering', title: 'K-means Clustering', icon: '' },
+                        { id: 'hierarchical-clustering', title: 'Hierarchical Clustering', icon: '' }
                     ]
                 },
                 {
@@ -231,8 +269,8 @@ export const instructionConfig = {
                     title: 'Predictive Modeling',
                     icon: '🔮',
                     children: [
-                        { id: 'time-series', title: 'Time Series Analysis', icon: '📅' },
-                        { id: 'trend-analysis', title: 'Trend Analysis', icon: '📈' }
+                        { id: 'time-series', title: 'Time Series Analysis', icon: '' },
+                        { id: 'trend-analysis', title: 'Trend Analysis', icon: '' }
                     ]
                 }
             ]
@@ -243,37 +281,22 @@ export const instructionConfig = {
             icon: '👨‍💻',
             description: 'Extension development and API documentation',
             badge: '🚧',
-            children: [
-                {
-                    id: 'architecture-guide',
-                    title: 'Architecture Guide',
-                    description: 'System architecture and design patterns'
-                },
-                {
-                    id: 'api-reference',
-                    title: 'API Reference',
-                    description: 'API documentation and usage instructions'
-                },
-                {
-                    id: 'plugin-development',
-                    title: 'Plugin Development',
-                    description: 'Custom charts and feature extensions'
-                },
-                {
-                    id: 'contribution-guide',
-                    title: 'Contribution Guide',
-                    description: 'Guidelines for contributing to the project'
-                }
-            ],
+            children: [],
             tocItems: [
+                {
+                    id: 'top',
+                    title: 'To the Top',
+                    icon: '🔝',
+                    children: []
+                },
                 {
                     id: 'system-architecture',
                     title: 'System Architecture',
                     icon: '🏗️',
                     children: [
-                        { id: 'frontend-architecture', title: 'Frontend Architecture', icon: '🖥️' },
-                        { id: 'backend-architecture', title: 'Backend Architecture', icon: '⚙️' },
-                        { id: 'data-flow', title: 'Data Flow Design', icon: '🌊' }
+                        { id: 'frontend-architecture', title: 'Frontend Architecture', icon: '' },
+                        { id: 'backend-architecture', title: 'Backend Architecture', icon: '' },
+                        { id: 'data-flow', title: 'Data Flow Design', icon: '' }
                     ]
                 },
                 {
@@ -281,9 +304,9 @@ export const instructionConfig = {
                     title: 'Development Environment',
                     icon: '🔧',
                     children: [
-                        { id: 'dev-requirements', title: 'Development Requirements', icon: '📋' },
-                        { id: 'project-setup', title: 'Project Setup', icon: '⚙️' },
-                        { id: 'debugging-tips', title: 'Debugging Tips', icon: '🐛' }
+                        { id: 'dev-requirements', title: 'Development Requirements', icon: '' },
+                        { id: 'project-setup', title: 'Project Setup', icon: '' },
+                        { id: 'debugging-tips', title: 'Debugging Tips', icon: '' }
                     ]
                 },
                 {
@@ -291,9 +314,9 @@ export const instructionConfig = {
                     title: 'Customization Development',
                     icon: '🎨',
                     children: [
-                        { id: 'custom-charts', title: 'Custom Charts', icon: '📊' },
-                        { id: 'theme-development', title: 'Theme Development', icon: '🎨' },
-                        { id: 'plugin-system', title: 'Plugin System', icon: '🔌' }
+                        { id: 'custom-charts', title: 'Custom Charts', icon: '' },
+                        { id: 'theme-development', title: 'Theme Development', icon: '' },
+                        { id: 'plugin-system', title: 'Plugin System', icon: '' }
                     ]
                 }
             ]
@@ -302,7 +325,6 @@ export const instructionConfig = {
 
     // 导航配置
     navigation: {
-        showProgress: true,
         autoExpand: true,
         maxDepth: 3,
         stickyToc: true

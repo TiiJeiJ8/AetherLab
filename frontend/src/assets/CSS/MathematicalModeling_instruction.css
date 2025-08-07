@@ -17,9 +17,40 @@
     }
 }
 
+.mathematical-modeling .contribution-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    text-align: center;
+    margin: 150px;
+}
 
-.mathematical-modeling {
-    padding: 20px;
+.mathematical-modeling .contrib-link {
+    display: flex;
+    /* align-items: center; */
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-main);
+    transition: all 0.2s;
+}
+
+.mathematical-modeling .contrib-link:hover {
+    background: var(--bg-hover);
+    transform: translateY(-2px);
+}
+
+.mathematical-modeling .contrib-icon {
+    font-size: 18px;
+}
+
+.mathematical-modeling-module {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .module-description {
@@ -29,23 +60,25 @@
 }
 
 .mathematical-modeling .content-section {
-    display: grid;
-    gap: 30px;
-}
-
-.mathematical-modeling .content-section {
-    padding: 24px;
-    border-radius: 12px;
+    margin-bottom: 60px;
+    scroll-margin-top: 100px;
 }
 
 .mathematical-modeling .content-section h1 {
     font-size: 8rem;
     font-weight: bold;
-    margin-top: 5%;
     color: var(--text-main);
     margin-top: 5%;
     margin-bottom: 15%;
     text-align: center;
+}
+
+.mathematical-modeling .content-section h2 {
+    font-size: 2rem;
+    color: var(--text-main);
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 8px;
 }
 
 .mathematical-modeling .content-section h3 {
@@ -54,10 +87,11 @@
     font-size: 18px;
 }
 
-.mathematical-modeling .content-section p {
+.mathematical-modeling .section-description {
+    font-size: 1.2rem;
     color: var(--text-secondary);
-    margin-bottom: 16px;
-    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 40px;
 }
 
 .feature-list {
@@ -120,12 +154,4 @@
 /* 深色模式适配 */
 [data-theme="dark"] .notice-card.developing {
     background: linear-gradient(135deg, #2d2416 0%, #332818 100%);
-}
-
-.mathematical-modeling .center-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
 }

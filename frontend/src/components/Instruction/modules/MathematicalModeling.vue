@@ -1,13 +1,31 @@
 <template>
+<section id="top"></section>
 <div class="mathematical-modeling-module mathematical-modeling">
     <section id="overview" class="content-section">
+        <!-- LOGO -->
         <h1 style="user-select: none;"><span class="float-pencil-icon">✏️</span><br>Modeling</h1>
-        <p class="section-description" style="margin-bottom: 5%">
+        <p class="section-description">
             This section introduces the mathematical modeling features of AetherLab, including clustering, regression, and predictive analysis.
         </p>
-        </section>
 
-        <section id="key-features" class="content-section">
+        <!-- Contribution button -->
+        <div class="contribution-links">
+            <a href="https://github.com/TiiJeiJ8/AetherLab" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🐙</span>
+                <span>GitHub Repository</span>
+            </a>
+            <a href="https://github.com/TiiJeiJ8/AetherLab/issues" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🐛</span>
+                <span>Issues</span>
+            </a>
+            <a href="https://github.com/TiiJeiJ8/AetherLab/pulls" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🔄</span>
+                <span>Pull Requests</span>
+            </a>
+        </div>
+    </section>
+
+    <section id="key-features" class="content-section">
         <h2>⭐ Key Features</h2>
         <div class="feature-grid">
             <div class="feature-card" v-for="feature in features" :key="feature.id">

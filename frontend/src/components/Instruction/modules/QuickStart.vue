@@ -1,23 +1,25 @@
 <template>
+<section id="top"></section>
 <div class="quick-start-module quick-start">
     <section class="content-section">
         <!-- LOGO -->
-        <h1 style="user-select: none;"><span class="float-rocket-icon">🚀</span><br>Fast Start</h1>
+        <h1 style="user-select: none;"><span class="float-rocket-icon">🚀</span><br>Quick Start</h1>
         <p class="section-description" style="margin-bottom: 5%">Welcome to AetherLab! This is a powerful platform for data visualization, processing, and modeling.</p>
 
+        <!-- Contribution button -->
         <div class="contribution-links">
-        <a href="https://github.com/TiiJeiJ8/AetherLab" target="_blank" class="contrib-link">
-            <span class="contrib-icon">🐙</span>
-            <span>GitHub Repository</span>
-        </a>
-        <a href="https://github.com/TiiJeiJ8/AetherLab/issues" target="_blank" class="contrib-link">
-            <span class="contrib-icon">🐛</span>
-            <span>Issues</span>
-        </a>
-        <a href="https://github.com/TiiJeiJ8/AetherLab/pulls" target="_blank" class="contrib-link">
-            <span class="contrib-icon">🔄</span>
-            <span>Pull Requests</span>
-        </a>
+            <a href="https://github.com/TiiJeiJ8/AetherLab" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🐙</span>
+                <span>GitHub Repository</span>
+            </a>
+            <a href="https://github.com/TiiJeiJ8/AetherLab/issues" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🐛</span>
+                <span>Issues</span>
+            </a>
+            <a href="https://github.com/TiiJeiJ8/AetherLab/pulls" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🔄</span>
+                <span>Pull Requests</span>
+            </a>
         </div>
     </section>
 
@@ -29,7 +31,7 @@
             <div class="content-card">
                 <p>AetherLab is a lightweight data processing and visualization tool for individuals and small teams. Built on the ECharts library and a Flask + Vue hybrid architecture, it enables multi-user collaboration over a local area network (LAN).</p>
                 <ul>
-                <li>Supports 15+ chart types</li>
+                <li>Supports 25+ chart types</li>
                 <li>Flexible data filtering</li>
                 <li>Powerful official theme system</li>
                 <li>LAN multi-user collaboration</li>
@@ -53,9 +55,7 @@
         <!-- Software Architecture -->
         <section id="architecture" class="content-section">
             <h2>🏗️ Software Architecture</h2>
-            <div class="content-card">
-                <div ref="archChart" style="width:100%;height:500px;"></div>
-            </div>
+            <div ref="archChart" style="width:100%;height:500px;"></div>
         </section>
     </section>
 
@@ -184,9 +184,7 @@ python App.py</code></pre>
         <div class="step-content">
             <h4>{{ step.title }}</h4>
             <p>{{ step.description }}</p>
-            <div v-if="step.code" class="code-example">
-            <pre><code :class="step.language || 'language-bash'">{{ step.code }}</code></pre>
-            </div>
+            <img v-if="step.img" :src="step.img" alt="step image" class="step-image" />
         </div>
         </div>
     </div>
@@ -217,7 +215,7 @@ const features = [
         id: 'visualization',
         icon: '📊',
         title: 'Data Visualization',
-        description: 'Supports 15+ chart types, no coding required for professional data presentation.'
+        description: 'Supports 25+ chart types, no coding required for professional data presentation.'
     },
     {
         id: 'themes',
@@ -249,7 +247,7 @@ const features = [
         title: 'Multi-user Collaboration',
         description: 'Supports simultaneous use by multiple users in a LAN.'
     },
-    //todo More
+    // More...
 ]
 
 const quickStartSteps = [
@@ -257,31 +255,57 @@ const quickStartSteps = [
         id: 'upload-data',
         title: 'Upload Data File',
         description: 'Click the "Files" button to upload data files in CSV, Excel, or other formats.',
-        code: null
+        code: null,
+        img: '/img-step/step-upload-file.gif'
+    },
+    {
+        id: 'check-data',
+        title: 'Check Data',
+        description: 'Preview the uploaded data in the "Data Preview" panel to ensure it is correct.',
+        code: null,
+        img: '/img-step/step-check-data.gif'
+    },
+    {
+        id: 'add-to-workspace',
+        title: 'Add file to Workspace',
+        description: 'Click the "Add to Workspace" button to add the selected file to your workspace.',
+        code: null,
+        img: '/img-step/step-add-workspace.gif'
     },
     {
         id: 'select-chart-type',
         title: 'Select Chart Type',
-        description: 'Choose the appropriate visualization from 20+ chart types.',
-        code: null
+        description: 'Choose the appropriate visualization from 25+ chart types.',
+        code: null,
+        img: '/img-step/step-select-chart-type.gif'
+    },
+    {
+        id: 'open-structure-panel',
+        title: 'Open Structure Panel',
+        description: 'Click the "Structure" button to open the chart structure panel.',
+        code: null,
+        img: '/img-step/step-open-structure-panel.gif'
     },
     {
         id: 'configure-chart',
         title: 'Configure Chart',
         description: 'Set data mapping, styles, themes, and other parameters.',
-        code: null
+        code: null,
+        img: '/img-step/step-config-chart.gif'
     },
     {
         id: 'generate-chart',
         title: 'Generate Chart',
-        description: 'Click the "Generate Chart" button to create your visualization.',
-        code: null
+        description: 'Click the "Apply Configuration" button to create your visualization.',
+        code: null,
+        img: '/img-step/step-generate-chart.gif'
     },
     {
         id: 'customize-style',
-        title: 'Customize Chart',
+        title: 'Customization',
         description: 'Adjust styles, themes, data filters and advanced settings to meet your needs.',
-        code: null
+        code: null,
+        img: '/img-step/step-customization.gif'
     }
 ]
 

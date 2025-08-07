@@ -1,10 +1,28 @@
 <template>
+<section id="top"></section>
 <div class="data-preprocessing-module data-preprocessing">
     <section id="data-upload" class="content-section">
         <h1 style="user-select: none;"><span class="float-magnify-icon">🔍</span><br>Preprocessing</h1>
         <p class="section-description">Learn how to prepare and process data to ensure the best visualization results.</p>
 
-        <div class="upload-steps">
+        <!-- Contribution button -->
+        <div class="contribution-links">
+            <a href="https://github.com/TiiJeiJ8/AetherLab" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🐙</span>
+                <span>GitHub Repository</span>
+            </a>
+            <a href="https://github.com/TiiJeiJ8/AetherLab/issues" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🐛</span>
+                <span>Issues</span>
+            </a>
+            <a href="https://github.com/TiiJeiJ8/AetherLab/pulls" target="_blank" class="contrib-link">
+                <span class="contrib-icon">🔄</span>
+                <span>Pull Requests</span>
+            </a>
+        </div>
+    </section>
+
+    <div class="upload-steps">
             <div class="step-card" v-for="(step, index) in uploadSteps" :key="step.id">
             <div class="step-header">
                 <span class="step-number">{{ index + 1 }}</span>
@@ -17,8 +35,7 @@
                 </span>
             </div>
             </div>
-        </div>
-    </section>
+    </div>
 
     <section id="data-formats" class="content-section">
     <h2>📁 Supported Data Formats</h2>

@@ -17,6 +17,95 @@
     }
 }
 
+.data-visualization .steps-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.data-visualization .step-item {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.data-visualization .step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 23px;
+    bottom: -24px;
+    width: 2px;
+    height: 24px;
+    background: var(--border-color);
+}
+
+.data-visualization .step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.data-visualization .step-content {
+    flex: 1;
+}
+
+.data-visualization .step-content h4 {
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.data-visualization .step-content p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.data-visualization .step-image {
+    max-width: 80%;
+    margin: 12px 0;
+    border-radius: 10px;
+}
+
+.data-visualization .contribution-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    text-align: center;
+    margin: 150px;
+}
+
+.data-visualization .contrib-link {
+    display: flex;
+    /* align-items: center; */
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-main);
+    transition: all 0.2s;
+}
+
+.data-visualization .contrib-link:hover {
+    background: var(--bg-hover);
+    transform: translateY(-2px);
+}
+
+.data-visualization .contrib-icon {
+    font-size: 18px;
+}
 
 .data-visualization-module {
     max-width: 1000px;
@@ -31,8 +120,10 @@
 
 .data-visualization .content-section h1 {
     font-size: 8rem;
+    font-weight: bold;
     color: var(--text-main);
-    margin-bottom: 16px;
+    margin-top: 5%;
+    margin-bottom: 15%;
     text-align: center;
 }
 
@@ -44,11 +135,39 @@
     padding-bottom: 8px;
 }
 
+.data-visualization .content-section h4 {
+    font-size: 1.2rem;
+}
+
 .data-visualization .section-description {
     font-size: 1.2rem;
     color: var(--text-secondary);
     text-align: center;
     margin-bottom: 40px;
+}
+
+.data-visualization .content-card {
+    background: var(--bg-secondary);
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.data-visualization .content-card p {
+    color: var(--text-main);
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.data-visualization .content-card ul {
+    margin-left: 2em;
+    color: var(--text-secondary);
+    padding-left: 20px;
+}
+
+.data-visualization .content-card li {
+    margin-bottom: 8px;
+    line-height: 1.5;
 }
 
 .chart-categories {
@@ -275,6 +394,19 @@
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+    .data-visualization .step-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .data-visualization .step-item::after {
+        display: none;
+    }
+
+    .data-visualization .step-number {
+        align-self: center;
+    }
+
     .data-visualization-module {
         padding: 0 15px;
     }

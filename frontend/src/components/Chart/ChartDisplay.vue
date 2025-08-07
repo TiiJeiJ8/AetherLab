@@ -399,7 +399,7 @@ onBeforeUnmount(() => {
     max-height: 80vh;
     background: var(--bg-color, #fff);
     border-radius: clamp(8px, 2vw, 12px);
-    box-shadow: 0 0 1px 1px var(--text-color);
+    border: 1px solid var(--border-color, #ddd);
     position: relative;
     display: flex;
     align-items: center;

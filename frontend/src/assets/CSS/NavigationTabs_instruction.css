@@ -60,7 +60,7 @@
 
 .nav-tab.active {
     /* 展开后的宽度 */
-    width: 280px;
+    width: 300px;
     font-weight: 600;
     justify-content: center;
     background: var(--bg-tertiary);

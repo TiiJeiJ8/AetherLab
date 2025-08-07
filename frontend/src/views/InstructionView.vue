@@ -67,7 +67,7 @@ import 'highlight.js/styles/monokai-sublime.min.css'
 const router = useRouter()
 
 // 响应式数据
-const activeModule = ref('quick-start')
+const activeModule = ref('data-visualization')
 const activeSubModule = ref('')
 const activeSection = ref('')
 const readingProgress = ref(0)
