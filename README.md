@@ -20,7 +20,7 @@ graph TB
     C --> H[UI Component Library]
     
     F --> I[ECharts Visualization]
-    I --> J[20+ Chart Types]
+    I --> J[15+ Chart Types]
     
     B --> K[HTTP Client]
     K --> L[Flask Backend API]
