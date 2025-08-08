@@ -135,6 +135,20 @@
     padding-bottom: 8px;
 }
 
+.data-visualization #chart-details h3 {
+    font-size: 1.3rem;
+    color: var(--text-main);
+    background-color: var(--bg-label);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    display: inline-block;
+    font-weight: bold;
+    padding: 8px 16px;
+    margin-left: 12px;
+    box-shadow: 2px 2px 8px #0001;
+    position: relative;
+}
+
 .data-visualization .content-section h4 {
     font-size: 1.2rem;
 }
@@ -170,24 +184,151 @@
     line-height: 1.5;
 }
 
-.chart-categories {
+.data-visualization .chart-categories {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 24px;
     margin-bottom: 40px;
 }
 
-.category-card {
+.data-visualization .category-card {
     background: var(--bg-secondary);
     padding: 24px;
     border-radius: 12px;
     border: 1px solid var(--border-color);
 }
 
-.category-card h3 {
+.data-visualization .category-card h3 {
     color: var(--text-main);
     margin-bottom: 16px;
     font-size: 1.3rem;
+}
+
+/* --- 图表类型推荐区样式 --- */
+.data-visualization .chart-selection-guide-area {
+    display: grid;
+    grid-template-columns: 1.3fr 1.1fr 1.7fr;
+    gap: 24px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+.data-visualization .selection-column {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+}
+
+.data-visualization .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.data-visualization .tag-scroll {
+    max-height: 180px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.data-visualization .tag-scroll::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari/Webkit */
+}
+
+.data-visualization .tag-search {
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-size: 0.95rem;
+    background: var(--bg-primary);
+    color: var(--text-main);
+    box-sizing: border-box;
+}
+
+.data-visualization .reset-btn {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.data-visualization .reset-btn:hover {
+    background: var(--primary-color-dark, #2c3e50);
+}
+
+.data-visualization .tag {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--bg-primary);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.data-visualization .tag.selected {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+.data-visualization .recommend-column {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    min-height: 200px;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.data-visualization .recommend-column::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari/Webkit */
+}
+
+.data-visualization .chart-recommend-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-visualization .chart-recommend-item:last-child {
+    border-bottom: none;
+}
+
+.data-visualization .chart-icon {
+    font-size: 1.1rem;
+}
+
+.data-visualization .chart-name {
+    font-weight: bold;
+    color: var(--text-main);
+}
+
+.data-visualization .chart-desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.data-visualization .no-result {
+    color: var(--text-secondary);
+    text-align: center;
+    margin-top: 40px;
 }
 
 .charts-grid {
@@ -207,189 +348,18 @@
     transition: all 0.3s ease;
 }
 
-.chart-item:hover {
+.data-visualization .chart-item:hover {
     border-color: var(--primary-color);
     background: var(--bg-tertiary);
 }
 
-.chart-icon {
+.data-visualization .chart-icon {
     font-size: 1.2rem;
 }
 
-.chart-name {
+.data-visualization .chart-name {
     color: var(--text-main);
     font-size: 0.9rem;
-}
-
-.charts-showcase {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.chart-showcase {
-    display: flex;
-    gap: 20px;
-    padding: 24px;
-    background: var(--bg-secondary);
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
-}
-
-.chart-showcase:hover {
-    border-color: var(--primary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.chart-preview {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    height: 80px;
-    background: var(--bg-primary);
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    flex-shrink: 0;
-}
-
-.preview-icon {
-    font-size: 2.5rem;
-}
-
-.chart-info {
-    flex: 1;
-}
-
-.chart-info h4 {
-    color: var(--text-main);
-    margin-bottom: 8px;
-    font-size: 1.2rem;
-}
-
-.chart-info p {
-    color: var(--text-secondary);
-    line-height: 1.5;
-    margin-bottom: 12px;
-}
-
-.chart-features {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.feature-tag {
-    padding: 4px 8px;
-    background: var(--primary-color);
-    color: white;
-    border-radius: 12px;
-    font-size: 0.8rem;
-}
-
-.selection-guide {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.guide-item {
-    padding: 20px;
-    background: var(--bg-secondary);
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-}
-
-.guide-scenario h4 {
-    color: var(--text-main);
-    margin-bottom: 8px;
-    font-size: 1.1rem;
-}
-
-.guide-scenario p {
-    color: var(--text-secondary);
-    line-height: 1.5;
-    margin-bottom: 12px;
-}
-
-.recommended-charts {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.recommend-label {
-    color: var(--text-main);
-    font-weight: 500;
-}
-
-.chart-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.chart-tag {
-    padding: 3px 8px;
-    background: var(--bg-tertiary);
-    color: var(--text-main);
-    border-radius: 8px;
-    font-size: 0.85rem;
-    border: 1px solid var(--border-color);
-}
-
-.practices-list {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.practice-item {
-    display: flex;
-    gap: 20px;
-    padding: 24px;
-    background: var(--bg-secondary);
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-}
-
-.practice-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    font-size: 2rem;
-    flex-shrink: 0;
-}
-
-.practice-content {
-    flex: 1;
-}
-
-.practice-content h4 {
-    color: var(--text-main);
-    margin-bottom: 8px;
-    font-size: 1.2rem;
-}
-
-.practice-content p {
-    color: var(--text-secondary);
-    line-height: 1.5;
-    margin-bottom: 12px;
-}
-
-.practice-content ul {
-    color: var(--text-secondary);
-    padding-left: 20px;
-}
-
-.practice-content li {
-    margin-bottom: 6px;
-    line-height: 1.4;
 }
 
 /* 响应式设计 */
@@ -419,30 +389,20 @@
         font-size: 1.5rem;
     }
 
-    .chart-categories {
+    .data-visualization .content-section h3 {
+        font-size: 1.1rem;
+    }
+
+    .data-visualization .chart-categories {
         grid-template-columns: 1fr;
         gap: 16px;
     }
 
-    .charts-grid {
+    .data-visualization .charts-grid {
         grid-template-columns: 1fr;
     }
 
-    .chart-showcase {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .chart-preview {
-        align-self: center;
-    }
-
-    .practice-item {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .recommended-charts {
+    .data-visualization .recommended-charts {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;

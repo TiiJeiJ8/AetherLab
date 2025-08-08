@@ -7,21 +7,21 @@ export const chartTypeConfig = {
     // 折线图
     Line: {
         mapping: [
-            { key: 'xAxis', label: 'X Axis', type: 'dimension', required: true },
-            { key: 'yAxis', label: 'Y Axis', type: 'measure', required: true, multiple: true },
+            { key: 'xAxis', label: 'X Axis', type: 'dimension', required: true, description: 'Field for X axis, typically time, category, or numerical values.' },
+            { key: 'yAxis', label: 'Y Axis', type: 'measure', required: true, multiple: true, description: 'Field for Y axis, typically a numerical value.' },
         ],
         basic: [
         ],
         advanced: [
             // xAxis,yAxis名称
-            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
-            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name', description: 'Name for the X axis' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name', description: 'Name for the Y axis' },
             // y轴刻度最大/小值/间隔
-            { key: 'yAxisMin', label: 'Y Axis Min', type: 'number', min: 0, placeholder: 'Min Value' },
-            { key: 'yAxisMax', label: 'Y Axis Max', type: 'number', min: 0, placeholder: 'Max Value' },
-            { key: 'yAxisInterval', label: 'Y Axis Interval', type: 'number', min: 1, placeholder: 'Interval' },
+            { key: 'yAxisMin', label: 'Y Axis Min', type: 'number', min: 0, placeholder: 'Min Value', description: 'Minimum value for the Y axis' },
+            { key: 'yAxisMax', label: 'Y Axis Max', type: 'number', min: 0, placeholder: 'Max Value', description: 'Maximum value for the Y axis' },
+            { key: 'yAxisInterval', label: 'Y Axis Interval', type: 'number', min: 1, placeholder: 'Interval', description: 'Interval between Y axis ticks' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }], description: 'Grid visibility for the chart', tip: [{ key: 'None', content: 'Disable grid' }] },
             // 显示最大最小值
             { key: 'showMaxMin', label: 'Show Max/Min', type: 'checkbox', description: 'Whether to show maximum and minimum values on the line chart' },
             // 均值线开关
@@ -50,21 +50,21 @@ export const chartTypeConfig = {
     // 柱状图
     Bar: {
         mapping: [
-            { key: 'xAxis', label: 'X Axis', type: 'dimension', required: true },
-            { key: 'yAxis', label: 'Y Axis', type: 'measure', required: true, multiple: true },
+            { key: 'xAxis', label: 'X Axis', type: 'dimension', required: true, description: 'Field for X axis, typically a category, time or numerical data.' },
+            { key: 'yAxis', label: 'Y Axis', type: 'measure', required: true, multiple: true, description: 'Field for Y axis, typically a numerical value.' },
         ],
         basic: [
         ],
         advanced: [
             // xAxis,yAxis名称
-            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
-            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name', description: 'Name for the X axis' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name', description: 'Name for the Y axis' },
             // y轴刻度最大/小值/间隔
-            { key: 'yAxisMin', label: 'Y Axis Min', type: 'number', min: 0, placeholder: 'Min Value' },
-            { key: 'yAxisMax', label: 'Y Axis Max', type: 'number', min: 0, placeholder: 'Max Value' },
-            { key: 'yAxisInterval', label: 'Y Axis Interval', type: 'number', min: 1, placeholder: 'Interval' },
+            { key: 'yAxisMin', label: 'Y Axis Min', type: 'number', min: 0, placeholder: 'Min Value', description: 'Minimum value for the Y axis' },
+            { key: 'yAxisMax', label: 'Y Axis Max', type: 'number', min: 0, placeholder: 'Max Value', description: 'Maximum value for the Y axis' },
+            { key: 'yAxisInterval', label: 'Y Axis Interval', type: 'number', min: 1, placeholder: 'Interval', description: 'Interval between Y axis ticks' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }], description: 'Grid visibility for the chart' },
             // 柱状图平行/竖直显示
             { key: 'isHorizontal', label: 'Horizontal Bars', type: 'checkbox', description: 'Whether to display bars horizontally' },
             // 显示最大最小值
@@ -93,16 +93,16 @@ export const chartTypeConfig = {
     // 饼图
     Pie: {
         mapping: [
-            { key: 'category', label: 'Category', type: 'dimension', required: true },
-            { key: 'value', label: 'Value', type: 'measure', required: true },
+            { key: 'category', label: 'Category', type: 'dimension', required: true, description: 'Field for pie chart categories, typically a categorical or nominal data.' },
+            { key: 'value', label: 'Value', type: 'measure', required: true, description: 'Field for pie chart values, typically a numerical value.' },
         ],
         basic: [
         ],
         advanced: [
             // 圆角
-            { key: 'pieBorderRadius', label: 'Border Radius', type: 'number', min: 0 },
+            { key: 'pieBorderRadius', label: 'Border Radius', type: 'number', min: 0, description: 'Border radius of the pie chart' },
             // 扇区间隙
-            { key: 'pieBorderWidth', label: 'Border Width', type: 'number', min: 0 },
+            { key: 'pieBorderWidth', label: 'Border Width', type: 'number', min: 0, description: 'Border width of the pie chart' },
             // 扇区边框颜色
             { key: 'pieBorderColor', label: 'Border Color', type: 'text', placeholder: 'Hex Color, eg. #fff', description: 'Color of the pie sector border' },
             // 内/外半径
@@ -120,7 +120,7 @@ export const chartTypeConfig = {
             { key: 'labelLineType', label: 'Label Line Type', type: 'select', options: [{ label: 'Solid', value: 'solid' }, { label: 'Dashed', value: 'dashed' }, { label: 'Dotted', value: 'dotted' }] }, // 引导线类型
             //todo 饼图纹理(future)
             // 南丁格尔玫瑰图开关
-            { key: 'roseType', label: 'Rose Type', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'Radius Mode', value: 'radius' }, { label: 'Area Mode', value: 'area' }] }, // radius->数值越大，半径越粗，面积呈二次方放大（视觉冲击强）, area->数值越大，面积越大，半径按平方根增长（更精确感知比例）
+            { key: 'roseType', label: 'Rose Type', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'Radius Mode', value: 'radius' }, { label: 'Area Mode', value: 'area' }], description: 'Rose chart type selection' }, // radius->数值越大，半径越粗，面积呈二次方放大（视觉冲击强）, area->数值越大，面积越大，半径按平方根增长（更精确感知比例）
             // 半环形图开关
             { key: 'isHalfDonut', label: 'Half Donut', type: 'checkbox', description: 'Whether to display as a half donut chart' },
             { key: 'startAngle', label: 'Start Angle', type: 'number', min: 0, max: 360, description: 'Starting angle for the pie chart, default is 0' },
@@ -131,33 +131,33 @@ export const chartTypeConfig = {
     // 散点图
     Scatter: {
         mapping: [
-            { key: 'xAxis', label: 'X Axis', type: 'dimension', required: true },
-            { key: 'yAxis', label: 'Y Axis', type: 'measure', required: true, multiple: true },
+            { key: 'xAxis', label: 'X Axis', type: 'dimension', required: true, description: 'The dimension for the X axis' },
+            { key: 'yAxis', label: 'Y Axis', type: 'measure', required: true, multiple: true, description: 'The measure for the Y axis' },
         ],
         basic: [
         ],
         advanced: [
             // xAxis,yAxis名称
-            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
-            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name', description: 'Name for the X axis' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name', description: 'Name for the Y axis' },
             // y轴刻度最大/小值/间隔
-            { key: 'yAxisMin', label: 'Y Axis Min', type: 'number', min: 0, placeholder: 'Min Value' },
-            { key: 'yAxisMax', label: 'Y Axis Max', type: 'number', min: 0, placeholder: 'Max Value' },
-            { key: 'yAxisInterval', label: 'Y Axis Interval', type: 'number', min: 1, placeholder: 'Interval' },
+            { key: 'yAxisMin', label: 'Y Axis Min', type: 'number', min: 0, placeholder: 'Min Value', description: 'Minimum value for the Y axis' },
+            { key: 'yAxisMax', label: 'Y Axis Max', type: 'number', min: 0, placeholder: 'Max Value', description: 'Maximum value for the Y axis' },
+            { key: 'yAxisInterval', label: 'Y Axis Interval', type: 'number', min: 1, placeholder: 'Interval', description: 'Interval between Y axis ticks' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }], description: 'Grid visibility for the chart' },
             // 系列最大/小值
             { key: 'showMaxMin', label: 'Show Max/Min', type: 'checkbox', description: 'Whether to show maximum and minimum values on the scatter chart' },
             // 均值线
             { key: 'showMeanLine', label: 'Show Mean Line', type: 'checkbox', description: 'Whether to show the mean line on the chart' },
             // 拟合回归线
-            { key: 'trendLine', label: 'Trend Line', type: 'select', options: [{ label: 'None', value: '' }, { label: 'Linear', value: 'linear' }, { label: 'Polynomial', value: 'polynomial' }, { label: 'Exponential', value: 'exponential' }] },
+            { key: 'trendLine', label: 'Trend Line', type: 'select', options: [{ label: 'None', value: '' }, { label: 'Linear', value: 'linear' }, { label: 'Polynomial', value: 'polynomial' }, { label: 'Exponential', value: 'exponential' }], description: 'Type of trend line to fit on the scatter chart' },
             // 多项式回归阶数
             { key: 'polynomialOrder', label: 'Polynomial Order', type: 'number', min: 1, description: 'Order of polynomial regression, default is 3' },
             // 回归线标签是否可见
             { key: 'trendLineLabelHidden', label: 'Trend Line Label Hidden', type: 'checkbox', description: 'Whether to show the trend line label' },
             // 回归线标签字体样式
-            { key: 'trendLineFontStyle', label: 'Trend Line Font Style', type: 'select', options: [{ label: 'Normal', value: 'normal' }, { label: 'Bold', value: 'bold' }, { label: 'Italic', value: 'italic' }] },
+            { key: 'trendLineFontStyle', label: 'Trend Line Font Style', type: 'select', options: [{ label: 'Normal', value: 'normal' }, { label: 'Bold', value: 'bold' }, { label: 'Italic', value: 'italic' }], description: 'Font style of the trend line label' },
             // 回归线标签字体大小
             { key: 'trendLineFontSize', label: 'Trend Line Font Size', type: 'number', min: 0, max: 40, description: 'Font size of the trend line label' },
             // 回归线颜色
@@ -165,11 +165,11 @@ export const chartTypeConfig = {
             // 回归线宽度
             { key: 'trendLineWidth', label: 'Trend Line Width', type: 'number', min: 0, description: 'Width of the trend line' },
             // 回归线样式
-            { key: 'trendLineStyle', label: 'Trend Line Style', type: 'select', options: [{ label: 'Dashed', value: 'dashed' }, { label: 'Solid', value: 'solid' }, { label: 'Dotted', value: 'dotted' }] },
+            { key: 'trendLineStyle', label: 'Trend Line Style', type: 'select', options: [{ label: 'Dashed', value: 'dashed' }, { label: 'Solid', value: 'solid' }, { label: 'Dotted', value: 'dotted' }], description: 'Style of the trend line' },
             // 单轴模式
-            { key: 'singleAxisMode', label: 'Single Axis Mode', type: 'select', options: [{ label: 'None', value: '' }, { label: 'X Axis', value: 'x' }, { label: 'Y Axis', value: 'y' }] },
+            { key: 'singleAxisMode', label: 'Single Axis Mode', type: 'select', options: [{ label: 'None', value: '' }, { label: 'X Axis', value: 'x' }, { label: 'Y Axis', value: 'y' }], description: 'Whether to use single axis mode for the scatter chart' },
             // 散点图标签顶部/右侧
-            { key: 'labelAlign', label: 'Label', type: 'select', options: [{ label: 'None', value: '' }, { label: 'Right', value: 'right' }, { label: 'Inside', value: 'inside' }] },
+            { key: 'labelAlign', label: 'Label', type: 'select', options: [{ label: 'None', value: '' }, { label: 'Right', value: 'right' }, { label: 'Inside', value: 'inside' }], description: 'Label alignment for scatter points' },
             //todo 视觉映射(todo)
             // 大小映射
             { key: 'sizeMapping', label: 'Size Mapping', type: 'checkbox', description: 'Whether to enable size mapping for the scatter chart' },
@@ -179,7 +179,7 @@ export const chartTypeConfig = {
             // 涟漪图
             { key: 'rippleEffect', label: 'Ripple Effect', type: 'checkbox', description: 'Whether to enable ripple effect for the scatter chart' },
             // 极坐标(None, radial, tangential)
-            { key: 'polarStyle', label: 'Polar Coordinate Style', type: 'select', options: [{ label: 'None', value: '' }, { label: 'Radial', value: 'radial' }, { label: 'Tangential', value: 'tangential' }] }, // 极坐标样式
+            { key: 'polarStyle', label: 'Polar Coordinate Style', type: 'select', options: [{ label: 'None', value: '' }, { label: 'Radial', value: 'radial' }, { label: 'Tangential', value: 'tangential' }], description: 'Polar coordinate style for the scatter chart' }, // 极坐标样式
             // 极坐标startAngle
             { key: 'startAngle', label: '[Polar]Start Angle', type: 'number', min: 0, max: 360, description: 'Starting angle for the polar scatter chart, default is 0' },
             // 极坐标endAngle
@@ -210,12 +210,12 @@ export const chartTypeConfig = {
         ],
         basic: [
             // 地图系列类型
-            { key: 'seriesType', label: 'Series Type', type: 'select', required: true, options: [{ label: 'Map', value: 'map' }, { label: 'Heatmap', value: 'heatmap' }, { label: 'Scatter', value: 'scatter' }, { label: 'Pie', value: 'pie' }] },
+            { key: 'seriesType', label: 'Series Type', type: 'select', required: true, options: [{ label: 'Map', value: 'map' }, { label: 'Heatmap', value: 'heatmap' }, { label: 'Scatter', value: 'scatter' }, { label: 'Pie', value: 'pie' }], description: 'Type of map series to display' },
             // , { label: 'Bar', value: 'bar' }, { label: 'Lines', value: 'lines' }
             // 地图类型选择
-            { key: 'mapType', label: 'Map Name', type: 'select', required: true, options: [{ label: 'China', value: 'china' }, { label: 'World', value: 'world' }, { label: 'Custom', value: 'custom' }] },
+            { key: 'mapType', label: 'Map Name', type: 'select', required: true, options: [{ label: 'China', value: 'china' }, { label: 'World', value: 'world' }, { label: 'Custom', value: 'custom' }], description: 'Type of map to display' },
             // 地图数据源名称（支持中英文）
-            { key: 'mapSourceName', label: 'Map Resource', type: 'text', placeholder: "Enter map resource name" },
+            { key: 'mapSourceName', label: 'Map Resource', type: 'text', placeholder: "Enter map resource name", description: 'Name of the map resource, e.g., "USA", "Foshan" or "美国", "佛山". (Uppercase and lowercase and Chinese are supported)' },
             //todo 外部地图JSON数据URL(future plan)
             // { key: 'mapSourceUrl', label: 'GeoJSON URL', type: 'text', placeholder: "Enter GeoJSON URL", description: 'URL for external GeoJSON data, e.g., https://example.com/map.json' }, // https://datav.aliyun.com/portal/school/atlas/area_selector
         ],
@@ -257,21 +257,21 @@ export const chartTypeConfig = {
     Candlestick: {
         mapping: [
             // 时间序列
-            { key: 'time', label: 'Time', type: 'dimension', required: true },
+            { key: 'time', label: 'Time', type: 'dimension', required: true, description: 'Time series for the Candlestick chart, typically a date or timestamp.' },
             // 开盘价、收盘价、最高价、最低价
-            { key: 'open', label: 'Open', type: 'measure', required: true },
-            { key: 'close', label: 'Close', type: 'measure', required: true },
-            { key: 'high', label: 'High', type: 'measure', required: true },
-            { key: 'low', label: 'Low', type: 'measure', required: true },
+            { key: 'open', label: 'Open', type: 'measure', required: true, description: 'Opening price for the Candlestick chart.' },
+            { key: 'close', label: 'Close', type: 'measure', required: true, description: 'Closing price for the Candlestick chart.' },
+            { key: 'high', label: 'High', type: 'measure', required: true, description: 'Highest price for the Candlestick chart.' },
+            { key: 'low', label: 'Low', type: 'measure', required: true, description: 'Lowest price for the Candlestick chart.' },
         ],
         basic: [
         ],
         advanced: [
             // xAxis,yAxis名称
-            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
-            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name', description: 'Name for the X axis' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name', description: 'Name for the Y axis' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }], description: 'Grid visibility for the chart' },
             // MA5
             { key: 'ma5', label: 'MA5', type: 'checkbox', description: 'Whether to show the 5-day moving average line' },
             // MA10
@@ -298,53 +298,53 @@ export const chartTypeConfig = {
         ],
         advanced: [
             // 雷达图形状
-            { key: 'radarShape', label: 'Radar Shape', type: 'select', required: false, options: [{ label: 'Polygon', value: '' }, { label: 'Circle', value: 'circle' }] },
+            { key: 'radarShape', label: 'Radar Shape', type: 'select', required: false, options: [{ label: 'Polygon', value: '' }, { label: 'Circle', value: 'circle' }], description: 'Shape of the radar chart, polygon or circle' },
         ]
     },
     // 箱线图
     Boxplot: {
         mapping: [
             // 类目
-            { key: 'category', label: 'Category', type: 'dimension', required: true },
+            { key: 'category', label: 'Category', type: 'dimension', required: true, description: 'Field for categories, typically a categorical or nominal data.' },
             // 系列
             { key: 'series', label: 'Series', type: 'tag', required: false, description: 'Optional series name for the boxplot' },
             // 值列(自动计算Min、Q1、Q2、Q3、Max)
             { key: 'value', label: 'Value', type: 'measure', required: false, multiple: false, description: 'This field will be automatically used to calculate the boxplot statistics' },
             // 最小值、Q1、Q2（中位数）、Q3、最大值
-            { key: 'min', label: 'Min', type: 'measure', required: false },
-            { key: 'q1', label: 'Q1', type: 'measure', required: false },
-            { key: 'median', label: 'Median', type: 'measure', required: false },
-            { key: 'q3', label: 'Q3', type: 'measure', required: false },
-            { key: 'max', label: 'Max', type: 'measure', required: false },
+            { key: 'min', label: 'Min', type: 'measure', required: false, description: 'Minimum value for the boxplot' },
+            { key: 'q1', label: 'Q1', type: 'measure', required: false, description: 'First quartile value for the boxplot' },
+            { key: 'median', label: 'Median', type: 'measure', required: false, description: 'Median value for the boxplot' },
+            { key: 'q3', label: 'Q3', type: 'measure', required: false, description: 'Third quartile value for the boxplot' },
+            { key: 'max', label: 'Max', type: 'measure', required: false, description: 'Maximum value for the boxplot' },
         ],
         basic: [
         ],
         advanced: [
             // xAxis,yAxis名称
-            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
-            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name', description: 'Name for the X axis' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name', description: 'Name for the Y axis' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }], description: 'Grid visibility for the chart' },
         ]
     },
     // 热力图
     Heatmap: {
         mapping: [
             // X轴维度
-            { key: 'xAxis', label: 'X Axis', type: 'dimension', required: true },
+            { key: 'xAxis', label: 'X Axis', type: 'dimension', required: true, description: 'The dimension for the X axis of the heatmap' },
             // Y轴维度
-            { key: 'yAxis', label: 'Y Axis', type: 'dimension', required: true },
+            { key: 'yAxis', label: 'Y Axis', type: 'dimension', required: true, description: 'The dimension for the Y axis of the heatmap' },
             // 值
-            { key: 'value', label: 'Value', type: 'measure', required: true },
+            { key: 'value', label: 'Value', type: 'measure', required: true, description: 'The value for each cell in the heatmap' },
         ],
         basic: [
         ],
         advanced: [
             // xAxis,yAxis名称
-            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
-            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name', description: 'Name for the X axis' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name', description: 'Name for the Y axis' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }], description: 'Grid visibility for the chart' },
             // 热力图单元格中的标签显示
             { key: 'isLabelVisible', label: 'Ceils\' Label', type: 'checkbox', description: 'Whether to show labels on heatmap cells' },
             // 热力图离散映射开关
@@ -375,7 +375,7 @@ export const chartTypeConfig = {
             // 是否可拖拽和缩放
             { key: 'isRoam', label: 'Roam', type: 'checkbox', description: 'Whether the graph is draggable and zoomable' },
             // 布局设置
-            { key: 'layout', label: 'Layout', type: 'select', options: [{ label: 'Circular', value: 'circular' }, { label: 'Force', value: 'force' }] },
+            { key: 'layout', label: 'Layout', type: 'select', options: [{ label: 'Circular', value: 'circular' }, { label: 'Force', value: 'force' }], description: 'Layout type for the graph' },
             // 力引导布局的配置
             // 节点间斥力
             { key: 'forceRepulsion', label: '[Force] Repulsion', type: 'number', min: 0, description: 'Repulsion force for the force layout' },
@@ -403,15 +403,15 @@ export const chartTypeConfig = {
         mapping: [
             // 平铺模式
             // 节点ID
-            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: true },
+            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: true, description: 'Unique identifier for each node' },
             // 节点名称
-            { key: 'nodeName', label: 'Node Name', type: 'tag', required: false },
+            { key: 'nodeName', label: 'Node Name', type: 'tag', required: false, description: 'Optional name for each node' },
             // 父节点ID
-            { key: 'parentID', label: 'Parent ID', type: 'dimension', required: true },
+            { key: 'parentID', label: 'Parent ID', type: 'dimension', required: true, description: 'Parent node ID for each node' },
             // 父节点名称
-            { key: 'parentName', label: 'Parent Name', type: 'tag', required: false },
+            { key: 'parentName', label: 'Parent Name', type: 'tag', required: false, description: 'Optional name for parent node' },
             // 节点数值
-            { key: 'nodeValue', label: 'Node Value', type: 'measure', required: true },
+            { key: 'nodeValue', label: 'Node Value', type: 'measure', required: true, description: 'Value for each node' },
         ],
         basic: [
         ],
@@ -419,15 +419,15 @@ export const chartTypeConfig = {
             // 是否可拖拽和缩放
             { key: 'isRoam', label: 'Roam', type: 'checkbox', description: 'Whether the tree is draggable and zoomable' },
             // 树状图朝向
-            { key: 'orient', label: 'Orientation', type: 'select', options: [{ label: 'Left to Right', value: 'LR' }, { label: 'Right to Left', value: 'RL' }, { label: 'Top to Bottom', value: 'TB' }, { label: 'Bottom to Top', value: 'BT' }] },
+            { key: 'orient', label: 'Orientation', type: 'select', options: [{ label: 'Left to Right', value: 'LR' }, { label: 'Right to Left', value: 'RL' }, { label: 'Top to Bottom', value: 'TB' }, { label: 'Bottom to Top', value: 'BT' }], description: 'Orientation of the tree layout' },
             // 树状图显示样式
-            { key: 'layout', label: 'Layout', type: 'select', options: [{ label: 'Orthogonal', value: 'orthogonal' }, { label: 'Radial', value: 'radial' }] },
+            { key: 'layout', label: 'Layout', type: 'select', options: [{ label: 'Orthogonal', value: 'orthogonal' }, { label: 'Radial', value: 'radial' }], description: 'Layout style for the tree' },
             // 树状图多树排列形式
-            { key: 'position_tree', label: 'Multiple Trees Position', type: 'select', options: [{ label: 'Left and Right', value: 'left and right' }, { label: 'Top and Bottom', value: 'top and bottom' }] },
+            { key: 'position_tree', label: 'Multiple Trees Position', type: 'select', options: [{ label: 'Left and Right', value: 'left and right' }, { label: 'Top and Bottom', value: 'top and bottom' }], description: 'Arrangement for multiple trees' },
             // 默认展开层级
             { key: 'initialTreeDepth', label: 'Initial Depth', type: 'number', min: 1, description: 'Initial depth of the tree to display' },
             // 连线形状
-            { key: 'edgeShape', label: 'Edge Shape', type: 'select', options: [{ label: 'Polyline', value: 'polyline' }, { label: 'Curve', value: 'curve' }] },
+            { key: 'edgeShape', label: 'Edge Shape', type: 'select', options: [{ label: 'Polyline', value: 'polyline' }, { label: 'Curve', value: 'curve' }], description: 'Shape of the connecting lines' },
             // 连线分叉位置
             { key: 'edgeForkPosition', label: 'Edge Fork Position', type: 'number', min: 0, max: 1, description: 'Position of edge forks' },
             // 节点原点半径
@@ -442,21 +442,21 @@ export const chartTypeConfig = {
     Treemap: {
         mapping: [
             // 节点ID
-            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: true },
+            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: true, description: 'Unique identifier for each node' },
             // 节点名称
-            { key: 'nodeName', label: 'Node Name', type: 'tag', required: false },
+            { key: 'nodeName', label: 'Node Name', type: 'tag', required: false, description: 'Optional name for each node' },
             // 父节点ID
-            { key: 'parentID', label: 'Parent ID', type: 'dimension', required: true },
+            { key: 'parentID', label: 'Parent ID', type: 'dimension', required: true, description: 'Parent node ID for each node' },
             // 父节点名称
-            { key: 'parentName', label: 'Parent Name', type: 'tag', required: false },
+            { key: 'parentName', label: 'Parent Name', type: 'tag', required: false, description: 'Optional name for parent node' },
             // 节点数值
-            { key: 'nodeValue', label: 'Node Value', type: 'measure', required: true },
+            { key: 'nodeValue', label: 'Node Value', type: 'measure', required: true, description: 'Value for each node' },
         ],
         basic: [
         ],
         advanced: [
             // 排序
-            { key: 'sort', label: 'Sort', type: 'select', options: [{ label: 'Descending', value: 'desc' }, { label: 'Ascending', value: 'asc' }] },
+            { key: 'sort', label: 'Sort', type: 'select', options: [{ label: 'Descending', value: 'desc' }, { label: 'Ascending', value: 'asc' }], description: 'Sort order for treemap nodes' },
             // 最小可见面积
             { key: 'visibleMin', label: 'Visible Min Area', type: 'number', min: 0, description: 'Minimum area for a node to be visible, eg. 300' },
             // 叶子节点的深度(控制最大显示层级)
@@ -467,21 +467,21 @@ export const chartTypeConfig = {
     Sunburst: {
         mapping: [
             // 节点ID
-            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: true },
+            { key: 'nodeID', label: 'Node ID', type: 'dimension', required: true, description: 'Unique identifier for each node' },
             // 节点名称
-            { key: 'nodeName', label: 'Node Name', type: 'tag', required: false },
+            { key: 'nodeName', label: 'Node Name', type: 'tag', required: false, description: 'Optional name for each node' },
             // 父节点ID
-            { key: 'parentID', label: 'Parent ID', type: 'dimension', required: true },
+            { key: 'parentID', label: 'Parent ID', type: 'dimension', required: true, description: 'Parent node ID for each node' },
             // 父节点名称
-            { key: 'parentName', label: 'Parent Name', type: 'tag', required: false },
+            { key: 'parentName', label: 'Parent Name', type: 'tag', required: false, description: 'Optional name for parent node' },
             // 节点数值
-            { key: 'nodeValue', label: 'Node Value', type: 'measure', required: false },
+            { key: 'nodeValue', label: 'Node Value', type: 'measure', required: false, description: 'Value for each node' },
         ],
         basic: [
         ],
         advanced: [
             // 排序
-            { key: 'sort', label: 'Sort', type: 'select', options: [{ label: 'Descending', value: 'desc' }, { label: 'Ascending', value: 'asc' }] },
+            { key: 'sort', label: 'Sort', type: 'select', options: [{ label: 'Descending', value: 'desc' }, { label: 'Ascending', value: 'asc' }], description: 'Sort order for sunburst nodes' },
             // 最小显示标签角度
             { key: 'minAngle', label: 'Min Angle', type: 'number', min: 0, max: 180, description: 'Minimum angle for labels to be displayed' },
             // 区块圆角
@@ -494,21 +494,21 @@ export const chartTypeConfig = {
     Parallel: {
         mapping: [
             // 维度
-            { key: 'dimensions', label: 'Dimensions (multiple)', type: 'dimension & measure', required: true, multiple: true },
+            { key: 'dimensions', label: 'Dimensions (multiple)', type: 'dimension & measure', required: true, multiple: true, description: 'Dimensions and/or measures for parallel coordinates' },
             // 系列名称
-            { key: 'nameField', label: 'Series', type: 'tag', required: false },
+            { key: 'nameField', label: 'Series', type: 'tag', required: false, description: 'Optional series name for the parallel chart' },
         ],
         basic: [
         ],
         advanced: [
             // 图例显示方式( VisualMap or Legend )
-            { key: 'legendType', label: 'Legend Type', type: 'select', options: [{ label: 'VisualMap', value: 'visualMap' }, { label: 'Legend', value: 'legend' }] },
+            { key: 'legendType', label: 'Legend Type', type: 'select', options: [{ label: 'VisualMap', value: 'visualMap' }, { label: 'Legend', value: 'legend' }], description: 'Legend display type' },
             // 是否显示Category维度
             { key: 'isCategoryDim', label: 'Show Category Dimension', type: 'checkbox', description: 'Whether to add a category dimension to the parallel chart' },
             // Category维度位置
-            { key: 'positionCategoryDim', label: 'Category Dimension Position', type: 'select', options: [{ label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }] },
+            { key: 'positionCategoryDim', label: 'Category Dimension Position', type: 'select', options: [{ label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }], description: 'Position of the category dimension' },
             // 线条宽度
-            { key: 'lineWidth', label: 'Line Width', type: 'number', min: 1, max: 100 },
+            { key: 'lineWidth', label: 'Line Width', type: 'number', min: 1, max: 100, description: 'Width of the lines in the parallel chart' },
             // 是否平滑
             { key: 'isSmooth', label: 'Smooth Lines', type: 'checkbox', description: 'Whether to use smooth lines for the parallel chart' },
         ]
@@ -517,27 +517,27 @@ export const chartTypeConfig = {
     Sankey: {
         mapping: [
             // 源节点
-            { key: 'source', label: 'Source', type: 'dimension', required: true },
+            { key: 'source', label: 'Source', type: 'dimension', required: true, description: 'Source node for the link' },
             // 目标节点
-            { key: 'target', label: 'Target', type: 'dimension', required: true },
+            { key: 'target', label: 'Target', type: 'dimension', required: true, description: 'Target node for the link' },
             // 流量/权重
-            { key: 'value', label: 'Value', type: 'measure', required: true },
+            { key: 'value', label: 'Value', type: 'measure', required: true, description: 'Value or weight of the link' },
         ],
         basic: [
         ],
         advanced: [
             // 图表布局
-            { key: 'orient', label: 'Layout Orientation', type: 'select', options: [{ label: 'Horizontal', value: 'horizontal' }, { label: 'Vertical', value: 'vertical' }] },
+            { key: 'orient', label: 'Layout Orientation', type: 'select', options: [{ label: 'Horizontal', value: 'horizontal' }, { label: 'Vertical', value: 'vertical' }], description: 'Orientation of the Sankey diagram' },
             // 连接是否为渐变色
             { key: 'isGradient', label: 'Link Gradient', type: 'checkbox', description: 'Whether to use gradient color for links' },
             // 连接透明度
-            { key: 'lineOpacity', label: 'Link Opacity', type: 'number', min: 0, max: 1 },
+            { key: 'lineOpacity', label: 'Link Opacity', type: 'number', min: 0, max: 1, description: 'Opacity of the links' },
             // 连接曲度
-            { key: 'lineCurveness', label: 'Link Curveness', type: 'number', min: 0, max: 1 },
+            { key: 'lineCurveness', label: 'Link Curveness', type: 'number', min: 0, max: 1, description: 'Curveness of the links' },
             // 标签位置
-            { key: 'labelPosition', label: 'Label Position', type: 'select', options: [{ label: 'Inside', value: 'inside' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }] },
+            { key: 'labelPosition', label: 'Label Position', type: 'select', options: [{ label: 'Inside', value: 'inside' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }], description: 'Position of the node labels' },
             // 左/右对齐布局
-            { key: 'nodeAlign', label: 'Node Alignment', type: 'select', options: [{ label: 'Justify', value: 'justify' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }] },
+            { key: 'nodeAlign', label: 'Node Alignment', type: 'select', options: [{ label: 'Justify', value: 'justify' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }], description: 'Alignment of the nodes' },
         ]
     },
     // 漏斗图
@@ -552,15 +552,15 @@ export const chartTypeConfig = {
         ],
         advanced: [
             // 排序
-            { key: 'sort', label: 'Sort', type: 'select', options: [{ label: 'Descending', value: 'descending' }, { label: 'Ascending', value: 'ascending' }] },
+            { key: 'sort', label: 'Sort', type: 'select', options: [{ label: 'Descending', value: 'descending' }, { label: 'Ascending', value: 'ascending' }], description: 'Sort order for funnel stages' },
             // 标签位置
-            { key: 'labelPosition', label: 'Label Position', type: 'select', options: [{ label: 'Inside', value: 'inside' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }] },
+            { key: 'labelPosition', label: 'Label Position', type: 'select', options: [{ label: 'Inside', value: 'inside' }, { label: 'Left', value: 'left' }, { label: 'Right', value: 'right' }], description: 'Position of the labels' },
             // 标签字体大小
-            { key: 'labelFontSize', label: 'Label Font Size', type: 'number', min: 8, max: 24 },
+            { key: 'labelFontSize', label: 'Label Font Size', type: 'number', min: 8, max: 24, description: 'Font size of the labels' },
             // 标签字体粗细
-            { key: 'labelFontWeight', label: 'Label Font Weight', type: 'select', options: [{ label: 'Normal', value: 'normal' }, { label: 'Bold', value: 'bold' }, { label: 'Lighter', value: 'lighter' }] },
+            { key: 'labelFontWeight', label: 'Label Font Weight', type: 'select', options: [{ label: 'Normal', value: 'normal' }, { label: 'Bold', value: 'bold' }, { label: 'Lighter', value: 'lighter' }], description: 'Font weight of the labels' },
             // 标签引导线长度
-            { key: 'labelLineLength', label: 'Label Line Length', type: 'number', min: 0, max: 100 },
+            { key: 'labelLineLength', label: 'Label Line Length', type: 'number', min: 0, max: 100, description: 'Length of the label guide lines' },
         ]
     },
     // 仪表盘
@@ -580,31 +580,31 @@ export const chartTypeConfig = {
     PictorialBar: {
         mapping: [
             // 类别轴字段
-            { key: 'category', label: 'Category', type: 'dimension', required: true },
+            { key: 'category', label: 'Category', type: 'dimension', required: true, description: 'Category field for pictorial bar' },
             // 值轴字段
-            { key: 'value', label: 'Value', type: 'measure', required: true },
+            { key: 'value', label: 'Value', type: 'measure', required: true, description: 'Value field for pictorial bar' },
         ],
         basic: [
         ],
         advanced: [
             // xAxis,yAxis名称
-            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name' },
-            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name' },
+            { key: 'xAxisName', label: 'X Axis Name', type: 'text', placeholder: 'X Axis Name', description: 'Name for the X axis' },
+            { key: 'yAxisName', label: 'Y Axis Name', type: 'text', placeholder: 'Y Axis Name', description: 'Name for the Y axis' },
             // 网格线(x, y, x&y, none)显示
-            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }] },
+            { key: 'gridVisible', label: 'Grid', type: 'select', required: false, options: [{ label: 'None', value: '' }, { label: 'X', value: 'x' }, { label: 'Y', value: 'y' }, { label: 'X & Y', value: 'both' }], description: 'Grid visibility for the chart' },
             // 图形符号（可选）
-            { key: 'symbol', label: 'Symbol', type: 'select', options: [{ label: 'Circle', value: 'circle' }, { label: 'Rect', value: 'rect' }, { label: 'Image', value: 'image' }] },
+            { key: 'symbol', label: 'Symbol', type: 'select', options: [{ label: 'Circle', value: 'circle' }, { label: 'Rect', value: 'rect' }, { label: 'Image', value: 'image' }], description: 'Symbol type for pictorial bar' },
         ]
     },
     // 主题河流图
     ThemeRiver: {
         mapping: [
             // 时间字段
-            { key: 'date', label: 'Date', type: 'dimension', required: true },
+            { key: 'date', label: 'Date', type: 'dimension', required: true, description: 'Date field for theme river' },
             // 类别字段
-            { key: 'category', label: 'Category', type: 'dimension', required: false },
+            { key: 'category', label: 'Category', type: 'dimension', required: false, description: 'Category field for theme river' },
             // 值字段
-            { key: 'value', label: 'Value', type: 'measure', required: true },
+            { key: 'value', label: 'Value', type: 'measure', required: true, description: 'Value field for theme river' },
         ],
         basic: [
         ],
@@ -615,9 +615,9 @@ export const chartTypeConfig = {
     Calendar: {
         mapping: [
             // 日期字段
-            { key: 'date', label: 'Date', type: 'dimension', required: true },
+            { key: 'date', label: 'Date', type: 'dimension', required: true, description: 'Date field for calendar chart' },
             // 数值字段
-            { key: 'value', label: 'Value', type: 'measure', required: false },
+            { key: 'value', label: 'Value', type: 'measure', required: false, description: 'Value field for calendar chart' },
         ],
         basic: [
         ],

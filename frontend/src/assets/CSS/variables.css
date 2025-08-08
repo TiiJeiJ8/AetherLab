@@ -3,6 +3,7 @@
     --bg-color: #faf9f8e9;
     --bg-secondary: #f8f9fa;
     --bg-tertiary: #e9ecef;
+    --bg-label: #c3bef0;
     --bg-code: #9593b2be;
     --text-color: #333333;
     --text-secondary: #666666;
@@ -28,6 +29,7 @@
     --bg-secondary: rgb(49, 49, 49);
     --bg-tertiary: #3d3d3d;
     --bg-code: #77758ed6;
+    --bg-label: #9b91b4;
     --text-color: #dee2e6;
     --text-secondary: #b0b0b0;
     --text-tertiary: #86a8e6e3;

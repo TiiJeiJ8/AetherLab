@@ -43,7 +43,7 @@
     <!-- Chart Gallery -->
     <section id="chart-gallery" class="content-section">
         <h2>🖼️ Chart Gallery</h2>
-        <div ref="galleryChart" style="width:100%;height:700px;"></div>
+        <div ref="galleryChart" style="width:100%;height:750px;"></div>
         <div id="chart-categories" class="chart-categories">
             <div class="category-card" v-for="category in chartCategories" :key="category.id">
                 <h3>{{ category.icon }} {{ category.title }}</h3>
@@ -57,68 +57,85 @@
         </div>
     </section>
 
-    <section id="basic-charts" class="content-section">
-    <h2>📈 Basic Charts</h2>
-    <div class="charts-showcase">
-        <div class="chart-showcase" v-for="chart in basicCharts" :key="chart.id">
-        <div class="chart-preview">
-            <span class="preview-icon">{{ chart.icon }}</span>
-        </div>
-        <div class="chart-info">
-            <h4>{{ chart.name }}</h4>
-            <p>{{ chart.description }}</p>
-            <div class="chart-features">
-            <span class="feature-tag" v-for="feature in chart.features" :key="feature">
-                {{ feature }}
-            </span>
+    <!-- Choose a Chart -->
+    <section id="chart-selection-guide" class="content-section">
+        <h2>🧭 Choose a Chart</h2>
+        <p>Select appropriate charts based on data requirements and usage scenarios.</p>
+        <div class="chart-selection-guide-area">
+            <div class="selection-column">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <h4 style="margin: 0;">Data Requirements</h4>
+                <button class="reset-btn" @click="resetSelection">Reset</button>
+                </div>
+                <input v-model="requirementFilter" placeholder="Search data requirements..." class="tag-search" />
+                <div class="tag-list tag-scroll">
+                <span
+                    v-for="req in filteredRequirements"
+                    :key="req"
+                    :class="['tag', { selected: selectedRequirements.includes(req) }]"
+                    @click="toggleRequirement(req)"
+                >{{ req }}</span>
+                </div>
+            </div>
+            <div class="selection-column">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <h4 style="margin: 0;">Use Cases</h4>
+                <button class="reset-btn" @click="resetSelection">Reset</button>
+                </div>
+                <input v-model="usecaseFilter" placeholder="Search use cases..." class="tag-search" />
+                <div class="tag-list tag-scroll">
+                <span
+                    v-for="use in filteredUseCases"
+                    :key="use"
+                    :class="['tag', { selected: selectedUseCases.includes(use) }]"
+                    @click="toggleUseCase(use)"
+                >{{ use }}</span>
+                </div>
+            </div>
+            <div class="recommend-column">
+                <h4>Charts recommended</h4>
+                <div v-if="filteredCharts.length === 0" class="no-result">Select labels</div>
+                <div v-for="chart in filteredCharts" :key="chart.name" class="chart-recommend-item">
+                    <span class="chart-icon">{{ chart.icon }}</span>
+                    <span class="chart-name">{{ chart.name }}</span>
+                    <span class="chart-desc">{{ chart.description }}</span>
+                </div>
             </div>
         </div>
-        </div>
-    </div>
     </section>
 
-    <section id="advanced-charts" class="content-section">
-    <h2>🎯 Advanced Charts</h2>
-    <div class="charts-showcase">
-        <div class="chart-showcase" v-for="chart in advancedCharts" :key="chart.id">
-        <div class="chart-preview">
-            <span class="preview-icon">{{ chart.icon }}</span>
-        </div>
-        <div class="chart-info">
-            <h4>{{ chart.name }}</h4>
-            <p>{{ chart.description }}</p>
-            <div class="chart-features">
-            <span class="feature-tag" v-for="feature in chart.features" :key="feature">
-                {{ feature }}
-            </span>
-            </div>
-        </div>
-        </div>
-    </div>
+    <!-- Chart Details -->
+    <section id="chart-details" class="content-section">
+        <ChartDetails />
     </section>
 
-    <section id="best-practices" class="content-section">
-    <h2>💡 Best Practices</h2>
-    <div class="practices-list">
-        <div class="practice-item" v-for="practice in bestPractices" :key="practice.id">
-        <div class="practice-icon">{{ practice.icon }}</div>
-        <div class="practice-content">
-            <h4>{{ practice.title }}</h4>
-            <p>{{ practice.description }}</p>
-            <ul v-if="practice.tips">
-            <li v-for="tip in practice.tips" :key="tip">{{ tip }}</li>
-            </ul>
-        </div>
-        </div>
-    </div>
+    <!-- Chart History -->
+    <section id="chart-history" class="content-section">
+        <h2>📜 Chart History</h2>
+    </section>
+
+    <!-- Future Plan -->
+    <section id="future-plan" class="content-section">
+        <h2>🗓 Future Plan</h2>
     </section>
 </div>
 </template>
 
 <script setup>
 /* eslint-disable */
-import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref, computed, reactive } from 'vue'
+import ChartDetails from '../ChartDetails.vue'
+import { chartsTooltipConfig } from '../../../assets/JS/Config/ChartsTooltipConfig'
 import { generateChartGalleryOption } from '../../../assets/instructions/instruction_chart_gen'
+
+// 接收父组件传入的非 props 属性，避免 Extraneous non-props attributes 警告
+const props = defineProps({
+    activeSubModule: { type: String, default: '' }
+})
+
+// 声明自定义事件，避免 Extraneous non-emits 监听器警告
+const emit = defineEmits(['sectionChange', 'progressUpdate'])
+
 const galleryChart = ref(null)
 
 const renderGalleryChart = async () => {
@@ -127,8 +144,6 @@ const renderGalleryChart = async () => {
     const option = await generateChartGalleryOption()
     chart.setOption(option)
 }
-
-const emit = defineEmits(['section-change'])
 
 const StartSteps = [
     {
@@ -280,6 +295,77 @@ const chartCategories = [
     }
 ]
 
+// --- 图表类型推荐区逻辑 ---
+
+// 1. 生成所有唯一的标签
+const allRequirements = computed(() => {
+    const set = new Set()
+    Object.values(chartsTooltipConfig).forEach(cfg => {
+        (cfg.dataRequirements || []).forEach(r => set.add(r))
+    })
+    return Array.from(set)
+})
+const allUseCases = computed(() => {
+    const set = new Set()
+    Object.values(chartsTooltipConfig).forEach(cfg => {
+        (cfg.useCases || []).forEach(u => set.add(u))
+    })
+    return Array.from(set)
+})
+
+// 搜索过滤
+const requirementFilter = ref('')
+const usecaseFilter = ref('')
+const filteredRequirements = computed(() =>
+    allRequirements.value.filter(r => r.toLowerCase().includes(requirementFilter.value.trim().toLowerCase()))
+)
+const filteredUseCases = computed(() =>
+    allUseCases.value.filter(u => u.toLowerCase().includes(usecaseFilter.value.trim().toLowerCase()))
+)
+
+// 2. 选中标签
+const selectedRequirements = reactive([])
+const selectedUseCases = reactive([])
+
+function toggleRequirement(req) {
+    const idx = selectedRequirements.indexOf(req)
+    if (idx === -1) selectedRequirements.push(req)
+    else selectedRequirements.splice(idx, 1)
+}
+function toggleUseCase(use) {
+    const idx = selectedUseCases.indexOf(use)
+    if (idx === -1) selectedUseCases.push(use)
+    else selectedUseCases.splice(idx, 1)
+}
+function resetSelection() {
+    selectedRequirements.splice(0, selectedRequirements.length)
+    selectedUseCases.splice(0, selectedUseCases.length)
+}
+
+// 3. 推荐图表筛选
+const filteredCharts = computed(() => {
+    if (selectedRequirements.length === 0 && selectedUseCases.length === 0) return []
+    const iconMap = {
+        Line: '📈', Bar: '📊', Pie: '🥧', Scatter: '⚬', Radar: '📡', Boxplot: '📦',
+        Heatmap: '🔥', Graph: '🕸️', Tree: '🌳', Treemap: '🗂️', Sunburst: '☀️',
+        Parallel: '📏', Sankey: '🌊', Funnel: '🔄', Gauge: '📟',
+        Candlestick: '🕯️', PictorialBar: '🖼️', ThemeRiver: '🌈', Calendar: '📅',
+        'GEO/MAP': '🌍'
+    }
+    return Object.entries(chartsTooltipConfig)
+        .filter(([name, cfg]) => {
+        // “与”逻辑：所有选中的标签都要被图表包含
+        const reqHit = selectedRequirements.length === 0 || selectedRequirements.every(r => (cfg.dataRequirements || []).includes(r))
+        const useHit = selectedUseCases.length === 0 || selectedUseCases.every(u => (cfg.useCases || []).includes(u))
+        return reqHit && useHit
+        })
+        .map(([name, cfg]) => ({
+        name,
+        icon: iconMap[name] || '📊',
+        description: cfg.description
+        }))
+})
+
 const basicCharts = [
     {
         id: 'line',
@@ -343,7 +429,6 @@ const advancedCharts = [
 ]
 
 
-
 // Listen to scroll, update current section
 const handleScroll = () => {
     const sections = document.querySelectorAll('.content-section')
@@ -354,15 +439,15 @@ const handleScroll = () => {
         const offsetTop = section.offsetTop - 100
         
         if (scrollTop >= offsetTop) {
-        emit('section-change', section.id)
-        break
+            emit('sectionChange', section.id)
+            break
         }
     }
 }
 
 onMounted(() => {
     window.addEventListener('scroll', handleScroll)
-    emit('section-change', 'chart-types')
+    emit('sectionChange', 'chart-types')
     nextTick(async () => {
         await renderGalleryChart()
     })

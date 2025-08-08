@@ -78,8 +78,8 @@ export const instructionConfig = {
                     title: 'Choose a Chart',
                     icon: '🧭',
                     children: [
-                        { id: 'selection-principles', title: 'Selection Principles', icon: '' },
-                        { id: 'scenarios', title: 'Common Scenarios', icon: '' }
+                        // { id: 'selection-principles', title: 'Selection Principles', icon: '' },
+                        // { id: 'scenarios', title: 'Common Scenarios', icon: '' }
                     ]
                 },
                 {
@@ -93,11 +93,11 @@ export const instructionConfig = {
                             icon: '',
                             children: [
                                 { id: 'line-chart', title: 'Line', icon: '' },
-                                { id: 'area-chart', title: 'Area', icon: '' },
                                 { id: 'bar-chart', title: 'Bar', icon: '' },
                                 { id: 'pie-chart', title: 'Pie', icon: '' },
                                 { id: 'scatter-chart', title: 'Scatter', icon: '' },
-                                { id: 'radar-chart', title: 'Radar', icon: '' }
+                                { id: 'radar-chart', title: 'Radar', icon: '' },
+                                { id: 'area-chart', title: 'Area', icon: '' }
                             ]
                         },
                         {
@@ -180,7 +180,7 @@ export const instructionConfig = {
                 {
                     id: 'roadmap',
                     title: 'Future Plans',
-                    icon: '🚀',
+                    icon: '🗓',
                     children: []
                 }
             ]
