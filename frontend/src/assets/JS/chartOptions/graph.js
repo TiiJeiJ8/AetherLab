@@ -82,7 +82,7 @@ export default function graphOption(config, fileDataMap, xData, yDataArr, select
             {
                 type: 'graph',
                 layout: config.layout || 'force', // none, circular, force
-                roam: true,
+                roam: config.isRoam || false, // 是否允许缩放和平移
                 data: sizedNodes,
                 links: Edges,
                 categories: categories.map(cat => ({ name: cat })),

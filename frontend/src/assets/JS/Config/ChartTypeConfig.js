@@ -220,6 +220,8 @@ export const chartTypeConfig = {
             // { key: 'mapSourceUrl', label: 'GeoJSON URL', type: 'text', placeholder: "Enter GeoJSON URL", description: 'URL for external GeoJSON data, e.g., https://example.com/map.json' }, // https://datav.aliyun.com/portal/school/atlas/area_selector
         ],
         advanced: [
+            // 是否可拖拽和缩放
+            { key: 'isRoam', label: 'Roam', type: 'checkbox', description: 'Whether the map is draggable and zoomable' },
             // 通用配置项
             { key: 'areaColor', label: 'Area Color', type: 'text', description: 'Background color of map areas', placeholder: '#f3f3f3' },
             { key: 'borderColor', label: 'Border Color', type: 'text', description: 'Border color of map areas', placeholder: '#999' },
@@ -370,6 +372,8 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 是否可拖拽和缩放
+            { key: 'isRoam', label: 'Roam', type: 'checkbox', description: 'Whether the graph is draggable and zoomable' },
             // 布局设置
             { key: 'layout', label: 'Layout', type: 'select', options: [{ label: 'Circular', value: 'circular' }, { label: 'Force', value: 'force' }] },
             // 力引导布局的配置
@@ -412,6 +416,8 @@ export const chartTypeConfig = {
         basic: [
         ],
         advanced: [
+            // 是否可拖拽和缩放
+            { key: 'isRoam', label: 'Roam', type: 'checkbox', description: 'Whether the tree is draggable and zoomable' },
             // 树状图朝向
             { key: 'orient', label: 'Orientation', type: 'select', options: [{ label: 'Left to Right', value: 'LR' }, { label: 'Right to Left', value: 'RL' }, { label: 'Top to Bottom', value: 'TB' }, { label: 'Bottom to Top', value: 'BT' }] },
             // 树状图显示样式

@@ -243,7 +243,7 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
                     borderColor: config.borderColor || '#999',
                     borderWidth: config.borderWidth || 0.5
                 },
-                roam: true,
+                roam: config.isRoam || false,
             }],
         }
     }
@@ -252,7 +252,7 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
             ...option,
             geo: {
                 map: mapSourceName || 'china',
-                roam: true,
+                roam: config.isRoam || false,
                 label: {
                     show: config.labelVisible || false,
                 },
@@ -298,7 +298,7 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
                 emphasis: {
                     show: true,
                 },
-                roam: true,
+                roam: config.isRoam || false,
                 pointSize: config.pointSize || 20, // 热力点像素大小
                 blurSize: config.blurSize || 20, // 热力点模糊半径
             }],
@@ -329,7 +329,7 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
             ...option,
             geo: {
                 map: mapSourceName || 'china',
-                roam: true,
+                roam: config.isRoam || false,
                 label: {
                     show: config.labelVisible || false,
                 },
@@ -352,7 +352,7 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
                 emphasis: {
                     show: true,
                 },
-                roam: true,
+                roam: config.isRoam || false,
                 pointSize: config.pointSize || 20, // 散点像素大小
                 blurSize: config.blurSize || 20, // 散点模糊半径
             }],
@@ -395,7 +395,7 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
             ...option,
             geo: {
                 map: mapSourceName || 'china',
-                roam: true,
+                roam: config.isRoam || false,
                 label: {
                     show: config.labelVisible || false,
                 },
@@ -428,7 +428,7 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
             ...option,
             geo: {
                 map: mapSourceName || 'china',
-                roam: true,
+                roam: config.isRoam || false,
                 itemStyle: {
                     areaColor: config.areaColor || '#f3f3f3',
                     borderColor: config.borderColor || '#999',
@@ -445,7 +445,7 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
             ...option,
             geo: {
                 map: mapSourceName || 'china',
-                roam: true,
+                roam: config.isRoam || false,
                 itemStyle: {
                     areaColor: config.areaColor || '#f3f3f3',
                     borderColor: config.borderColor || '#999',
@@ -462,7 +462,7 @@ export default async function mapOption(config, fileDataMap, xData, yDataArr, se
             ...option,
             geo: {
                 map: mapSourceName || 'china',
-                roam: true,
+                roam: config.isRoam || false,
                 itemStyle: {
                     areaColor: config.areaColor || '#f3f3f3',
                     borderColor: config.borderColor || '#999',

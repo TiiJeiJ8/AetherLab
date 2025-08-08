@@ -110,7 +110,7 @@ export default function treeOption(config, fileDataMap, xData, yDataArr, selecte
                     edgeForkPosition: config.edgeForkPosition || '50%', // 折线分叉位置
                     initialTreeDepth: config.initialTreeDepth || 3,
                     expandAndCollapse: true, // 是否允许展开和折叠
-                    roam: true,
+                    roam: config.isRoam || false, // 是否允许缩放和平移
                     animationDuration: 500,
                     animationDurationUpdate: 700,
                 };
@@ -158,7 +158,7 @@ export default function treeOption(config, fileDataMap, xData, yDataArr, selecte
                     edgeForkPosition: config.edgeForkPosition || '50%', // 折线分叉位置
                     initialTreeDepth: config.initialTreeDepth || 2,
                     expandAndCollapse: true, // 是否允许展开和折叠
-                    roam: true,
+                    roam: config.isRoam || false,
                     animationDuration: 500,
                     animationDurationUpdate: 700,
                 }
