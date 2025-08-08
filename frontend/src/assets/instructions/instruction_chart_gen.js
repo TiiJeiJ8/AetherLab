@@ -412,6 +412,11 @@ export function generateConfigTreeOption(chartTitle, filter = {}) {
                     description: item.description || ''
                 }
             }
+            // 透传常见元信息
+            const metaKeys = ['min', 'max', 'step', 'placeholder', 'options', 'default']
+            metaKeys.forEach(k => {
+                if (item[k] !== undefined) node.meta[k] = item[k]
+            })
             if (item.highlight) {
                 node.meta.highlight = true
             }
@@ -505,10 +510,22 @@ export function generateConfigTreeOption(chartTitle, filter = {}) {
                 }
                 lines.push(`<div><b>${nameHtml}</b> <span style=\"color:#888;\">(config.${d.value})</span></div>`)
                 const tags = []
-                if (d.meta.type) tags.push(`<span style=\"color:#8b5cf6;\">[${d.meta.type}]</span>`)
-                if (d.meta.required) tags.push(`<span style=\"color:#ef4444;\">required</span>`)
-                if (d.meta.multiple) tags.push(`<span style=\"color:#3b82f6;\">multiple</span>`)
-                if (d.meta.highlight) tags.push(`<span style=\"color:#f59e42;\">Branch Only</span>`)
+                if (d.meta.type) tags.push(`<span style="color:#8b5cf6;border:1px solid #8b5cf6;border-radius:3px;padding:0 4px;margin-right:3px;font-size:11px;font-weight:600;">${d.meta.type}</span>`)
+                // number型参数自动提示min/max
+                if (d.meta.type === 'number') {
+                    let rangeTip = ''
+                    if (typeof d.meta.min === 'number' && typeof d.meta.max === 'number') {
+                        rangeTip = `min: ${d.meta.min}, max: ${d.meta.max}`
+                    } else if (typeof d.meta.min === 'number') {
+                        rangeTip = `min: ${d.meta.min}`
+                    } else if (typeof d.meta.max === 'number') {
+                        rangeTip = `max: ${d.meta.max}`
+                    }
+                    if (rangeTip) tags.push(`<span style="color:#10b981;border:1px solid #10b981;border-radius:3px;padding:0 4px;margin-right:3px;font-size:11px;">${rangeTip}</span>`)
+                }
+                if (d.meta.required) tags.push(`<span style="color:#ef4444;border:1px solid #ef4444;border-radius:3px;padding:0 4px;margin-right:3px;font-size:11px;font-weight:600;">required</span>`)
+                if (d.meta.multiple) tags.push(`<span style="color:#3b82f6;border:1px solid #3b82f6;border-radius:3px;padding:0 4px;margin-right:3px;font-size:11px;font-weight:600;">multiple</span>`)
+                if (d.meta.highlight) tags.push(`<span style="color:#f59e42;border:1px solid #f59e42;border-radius:3px;padding:0 4px;margin-right:3px;font-size:11px;font-weight:600;">Branch Only</span>`)
                 if (tags.length) lines.push(`<div>${tags.join(' ')}</div>`)
                 if (d.meta.description) lines.push(`<div style=\"margin-top:4px;color:#888;\">${d.meta.description}</div>`)
                 return lines.join('')
@@ -529,6 +546,8 @@ export function generateConfigTreeOption(chartTitle, filter = {}) {
                 align: 'right',
                 fontSize: 13,
                 fontWeight: 'bold',
+                color: '#868181ff',
+                textBorderWidth: 1.2,
             },
             leaves: {
                 label: {
