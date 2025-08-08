@@ -215,7 +215,7 @@ export const chartTypeConfig = {
             // 地图类型选择
             { key: 'mapType', label: 'Map Name', type: 'select', required: true, options: [{ label: 'China', value: 'china' }, { label: 'World', value: 'world' }, { label: 'Custom', value: 'custom' }], description: 'Type of map to display' },
             // 地图数据源名称（支持中英文）
-            { key: 'mapSourceName', label: 'Map Resource', type: 'text', placeholder: "Enter map resource name", description: 'Name of the map resource, e.g., "USA", "Foshan" or "美国", "佛山". (Uppercase and lowercase and Chinese are supported)' },
+            { key: 'mapSourceName', label: 'Map Resource', type: 'text', placeholder: "Enter map resource name", description: 'Name of the map resource, e.g., "Foshan", "佛山". (Uppercase and lowercase and Chinese are supported)' },
             //todo 外部地图JSON数据URL(future plan)
             // { key: 'mapSourceUrl', label: 'GeoJSON URL', type: 'text', placeholder: "Enter GeoJSON URL", description: 'URL for external GeoJSON data, e.g., https://example.com/map.json' }, // https://datav.aliyun.com/portal/school/atlas/area_selector
         ],

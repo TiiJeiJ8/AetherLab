@@ -72,18 +72,31 @@ function waitForSize(el, tries = 30) {
     })
 }
 
+// 让树图根据Geo_Map等类型的seriesType动态过滤参数
 async function initTree(id, title) {
     const el = treeRefs[id]
     if (!el) return
     await nextTick()
     const ok = await waitForSize(el)
     if (!ok) {
-        // 尝试强制一个最小高度再初始化
         el.style.minHeight = el.style.minHeight || '300px'
     }
     const inst = echarts.init(el)
     treeInstances[id] = inst
-    const option = generateConfigTreeOption(title)
+    // 处理Geo_Map及其分支类型的seriesType过滤
+    let filter = {}
+    // 统一小写判断
+    const norm = (title || '').replace(/\s|_/g, '').toLowerCase()
+    if ([
+        'geomap', 'geoofmap', 'geoofheatmap', 'geoofscatter', 'geoofpie'
+    ].includes(norm)) {
+        // 默认seriesType与分支名对应
+        if (norm === 'geoofmap' || norm === 'geomap') filter.seriesType = 'map'
+        if (norm === 'geoofheatmap') filter.seriesType = 'heatmap'
+        if (norm === 'geoofscatter') filter.seriesType = 'scatter'
+        if (norm === 'geoofpie') filter.seriesType = 'pie'
+    }
+    const option = generateConfigTreeOption(title, filter)
     inst.setOption(option)
     inst.resize()
     const handler = () => inst.resize()

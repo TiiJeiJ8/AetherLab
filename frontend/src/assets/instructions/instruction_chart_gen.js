@@ -270,6 +270,84 @@ export function generateConfigTreeOption(chartTitle, filter = {}) {
             }
             return cfg
         }
+        // Ripple (inherits Scatter)
+        if (norm === 'ripple') {
+            const base = chartTypeConfig['Scatter']
+            if (!base) return null
+            const deepClone = (obj) => JSON.parse(JSON.stringify(obj))
+            const cfg = deepClone(base)
+            if (cfg.advanced) {
+                cfg.advanced = cfg.advanced.map(item => {
+                    if (item.key === 'rippleEffect') {
+                        return {
+                            ...item,
+                            label: '[Ripple Branch Only] ' + (item.label || item.key),
+                            description: (item.description || '') + ' (This param is auto-activated for Ripple type)',
+                            highlight: true
+                        }
+                    }
+                    return item
+                })
+            }
+            cfg.__branchInfo = {
+                branch: 'Ripple',
+                base: 'Scatter',
+                note: 'Ripple type config is auto-inherited from Scatter, with rippleEffect highlighted.'
+            }
+            return cfg
+        }
+        // Nightingale (inherits Pie)
+        if (norm === 'nightingalerose' || norm === 'nightingale') {
+            const base = chartTypeConfig['Pie']
+            if (!base) return null
+            const deepClone = (obj) => JSON.parse(JSON.stringify(obj))
+            const cfg = deepClone(base)
+            if (cfg.advanced) {
+                cfg.advanced = cfg.advanced.map(item => {
+                    if (item.key === 'roseType') {
+                        return {
+                            ...item,
+                            label: '[Nightingale Branch Only] ' + (item.label || item.key),
+                            description: (item.description || '') + ' (This param is auto-activated for Nightingale type)',
+                            highlight: true
+                        }
+                    }
+                    return item
+                })
+            }
+            cfg.__branchInfo = {
+                branch: 'Nightingale',
+                base: 'Pie',
+                note: 'Nightingale type config is auto-inherited from Pie, with roseType highlighted.'
+            }
+            return cfg
+        }
+        // Doughnut (inherits Pie)
+        if (norm === 'doughnut') {
+            const base = chartTypeConfig['Pie']
+            if (!base) return null
+            const deepClone = (obj) => JSON.parse(JSON.stringify(obj))
+            const cfg = deepClone(base)
+            if (cfg.advanced) {
+                cfg.advanced = cfg.advanced.map(item => {
+                    if (item.key === 'isHalfDonut') {
+                        return {
+                            ...item,
+                            label: '[Doughnut Branch Only] ' + (item.label || item.key),
+                            description: (item.description || '') + ' (This param is auto-activated for Doughnut type)',
+                            highlight: true
+                        }
+                    }
+                    return item
+                })
+            }
+            cfg.__branchInfo = {
+                branch: 'Doughnut',
+                base: 'Pie',
+                note: 'Doughnut type config is auto-inherited from Pie, with isHalfDonut highlighted.'
+            }
+            return cfg
+        }
         // Geo_Map系列分支类型自动继承
         const geoBranchNorms = [
             'geoofmap', 'geomap', 'geoofheatmap', 'geoofscatter', 'geoofpie'
@@ -342,14 +420,65 @@ export function generateConfigTreeOption(chartTitle, filter = {}) {
         // Special label for branch type tree root node
         let rootName = chartTitle
         if (cfg.__branchInfo) {
-            rootName = `${chartTitle}(Inherited from ${cfg.__branchInfo.base}, Branch Type)`
+            rootName = `${chartTitle}(Inherited from ${cfg.__branchInfo.base})`
+        }
+        // Geo_Map mapping区复用前端逻辑
+        function getGeoMapMappingBySeriesType(baseMapping, seriesType) {
+            if (seriesType === 'map' || seriesType === 'bar') {
+                return [
+                    baseMapping.find(f => f.key === 'nameField'),
+                    baseMapping.find(f => f.key === 'value'),
+                ].filter(Boolean)
+            } else if (seriesType === 'heatmap') {
+                return [
+                    baseMapping.find(f => f.key === 'lngField'),
+                    baseMapping.find(f => f.key === 'latField'),
+                    baseMapping.find(f => f.key === 'value'),
+                ].filter(Boolean)
+            } else if (seriesType === 'scatter') {
+                return [
+                    baseMapping.find(f => f.key === 'lngField'),
+                    baseMapping.find(f => f.key === 'latField'),
+                    baseMapping.find(f => f.key === 'value'),
+                    baseMapping.find(f => f.key === 'name'),
+                ].filter(Boolean)
+            } else if (seriesType === 'lines') {
+                return [
+                    baseMapping.find(f => f.key === 'fromLngField'),
+                    baseMapping.find(f => f.key === 'fromLatField'),
+                    baseMapping.find(f => f.key === 'toLngField'),
+                    baseMapping.find(f => f.key === 'toLatField'),
+                    baseMapping.find(f => f.key === 'fromName'),
+                    baseMapping.find(f => f.key === 'toName'),
+                    baseMapping.find(f => f.key === 'value'),
+                ].filter(Boolean)
+            } else if (seriesType === 'pie') {
+                const valueField = baseMapping.find(f => f.key === 'value')
+                return [
+                    baseMapping.find(f => f.key === 'lngField'),
+                    baseMapping.find(f => f.key === 'latField'),
+                    baseMapping.find(f => f.key === 'nameField'),
+                    valueField ? { ...valueField, multiple: false } : undefined,
+                    baseMapping.find(f => f.key === 'categoryField'),
+                ].filter(Boolean)
+            }
+            // 默认
+            return baseMapping
         }
         return {
             name: rootName,
             children: sections.map(sec => {
                 let arr = cfg[sec] || []
-                // 仅对basic/advanced做条件过滤
-                if ((sec === 'basic' || sec === 'advanced') && filter && Object.keys(filter).length > 0) {
+                // mapping区Geo_Map及分支类型用前端逻辑
+                if (sec === 'mapping' && filter && filter.seriesType && (
+                    rootName.toLowerCase().includes('geo_map') ||
+                    rootName.toLowerCase().includes('geoofmap') ||
+                    rootName.toLowerCase().includes('geoofheatmap') ||
+                    rootName.toLowerCase().includes('geoofscatter') ||
+                    rootName.toLowerCase().includes('geoofpie')
+                )) {
+                    arr = getGeoMapMappingBySeriesType(arr, filter.seriesType)
+                } else if ((sec === 'mapping' || sec === 'basic' || sec === 'advanced') && filter && Object.keys(filter).length > 0) {
                     arr = arr.filter(item => matchCondition(item, filter))
                 }
                 return {
@@ -398,7 +527,7 @@ export function generateConfigTreeOption(chartTitle, filter = {}) {
                 position: 'left',
                 verticalAlign: 'middle',
                 align: 'right',
-                fontSize: 12,
+                fontSize: 13,
                 fontWeight: 'bold',
             },
             leaves: {
