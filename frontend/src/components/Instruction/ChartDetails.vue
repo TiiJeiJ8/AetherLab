@@ -23,7 +23,7 @@
             </div>
             <!-- /基于 ECharts 的配置树 -->
 
-            <!-- 其它内容（交互演示、参数面板、参数明细）后续追加 -->
+            <!-- 更多内容，后续追加 -->
         </div>
     </section>
 </div>
@@ -146,7 +146,7 @@ onBeforeUnmount(() => {
 }
 .echarts-tree-container {
     width: 100%;
-    height: 500px;
+    height: 700px;
     min-height: 500px;
     border: 1px solid var(--border-color, rgba(0,0,0,0.08));
     border-radius: 8px;
