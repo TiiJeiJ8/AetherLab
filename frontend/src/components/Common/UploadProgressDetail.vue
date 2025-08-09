@@ -30,19 +30,19 @@
 
             <div class="progress-stats">
                 <div class="stat-item">
-                    <span class="stat-label">状态:</span>
+                    <span class="stat-label">Status:</span>
                     <span class="stat-value" :class="status">{{ getStatusText(status) }}</span>
                 </div>
                 <div class="stat-item" v-if="speed > 0">
-                    <span class="stat-label">速度:</span>
+                    <span class="stat-label">Speed:</span>
                     <span class="stat-value">{{ formatUploadSpeed(speed) }}</span>
                 </div>
                 <div class="stat-item" v-if="estimatedTimeLeft > 0">
-                    <span class="stat-label">剩余时间:</span>
+                    <span class="stat-label">Time Left:</span>
                     <span class="stat-value">{{ formatRemainingTime(estimatedTimeLeft) }}</span>
                 </div>
                 <div class="stat-item" v-if="chunks && chunks.total > 1">
-                    <span class="stat-label">分块:</span>
+                    <span class="stat-label">Chunks:</span>
                     <span class="stat-value">{{ chunks.uploaded }}/{{ chunks.total }}</span>
                 </div>
             </div>
@@ -51,9 +51,26 @@
 </template>
 
 <script setup>
+/* eslint-disable */
 import { computed, defineProps, defineEmits } from 'vue'
-import { getThemeIcon } from '../assets/JS/icons.js'
-import { formatFileSize, formatUploadSpeed, formatRemainingTime } from '../utils/uploadConfig.js'
+import { getThemeIcon } from '../../assets/JS/SVG/icons.js'
+import { formatFileSize } from '../../assets/JS/utils/dataPreviewUtils.js'
+
+// 简单实现上传速度和剩余时间格式化
+function formatUploadSpeed(speed) {
+    if (!speed || speed <= 0) return '0 B/s';
+    const k = 1024;
+    const sizes = ['B/s', 'KB/s', 'MB/s', 'GB/s'];
+    const i = Math.floor(Math.log(speed) / Math.log(k));
+    return parseFloat((speed / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+function formatRemainingTime(seconds) {
+    if (!seconds || seconds <= 0) return '0s';
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return m > 0 ? `${m}分${s}秒` : `${s}秒`;
+}
 
 const props = defineProps({
     show: {
@@ -98,13 +115,13 @@ const canCancel = computed(() => ['uploading', 'paused', 'error'].includes(props
 
 function getStatusText (status) {
     const statusMap = {
-        uploading: '上传中',
-        paused: '已暂停',
-        error: '上传失败',
-        completed: '上传完成',
-        cancelled: '已取消'
+        uploading: 'Uploading',
+        paused: 'Paused',
+        error: 'Upload Failed',
+        completed: 'Completed',
+        cancelled: 'Cancelled'
     }
-    return statusMap[status] || '未知状态'
+    return statusMap[status] || 'Unknown Status'
 }
 </script>
 

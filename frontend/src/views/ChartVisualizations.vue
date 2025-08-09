@@ -87,6 +87,19 @@
       @minimize="handleStructureMinimize"
       @column-drag="handleColumnDrag"
     />
+
+    <!-- Toast 提示 -->
+    <transition name="toast-fade">
+      <div v-if="toast.visible" :class="['toast-notification', `toast-${toast.type}`]">
+        <span class="toast-icon">
+          <template v-if="toast.type === 'success'">✓</template>
+          <template v-else-if="toast.type === 'error'">✗</template>
+          <template v-else-if="toast.type === 'warning'">⚠</template>
+          <template v-else>ℹ</template>
+        </span>
+        <span class="toast-message">{{ toast.message }}</span>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -187,6 +200,20 @@ const chartOption = ref({})
 const chartHistory = ref([])
 
 const showHistory = ref(false)
+
+// Toast 提示
+const toast = ref({
+  visible: false,
+  message: '',
+  type: 'success' // 'success', 'error', 'warning', 'info'
+})
+
+function showToast(message, type = 'success') {
+  toast.value = { visible: true, message, type }
+  setTimeout(() => {
+    toast.value.visible = false
+  }, 3000)
+}
 function openHistory() {
   showHistory.value = true
 }
@@ -335,7 +362,8 @@ async function handleSaveHistory({ config }) {
     option = await generateEChartOption(config, fileDataMap.value, xData, yDataArr, selectedChartType, seriesData, customOption);
   } catch (e) {
     console.log('Saving history failed while generate option:', e);
-    option = null;
+    showToast('Failed to save chart to history. Please try again.', 'error');
+    return;
   }
     chartHistory.value.push({
       title: config.title || `Chart ${chartHistory.value.length + 1}`,
@@ -343,6 +371,9 @@ async function handleSaveHistory({ config }) {
       config: JSON.parse(JSON.stringify(config)),
       colorTheme: config.colorScheme || 'default',
     });
+    
+    // 显示保存成功提示
+    showToast('Chart saved to history successfully!', 'success');
 }
 
 /* 响应历史区标题编辑 */
@@ -444,5 +475,71 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .chart-history-item:hover {
   background: rgba(136, 133, 133, 0.1);
+}
+
+/* Toast 提示样式 */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  z-index: 9999;
+  max-width: 300px;
+  backdrop-filter: blur(10px);
+}
+
+.toast-success {
+  background: rgba(34, 197, 94, 0.9);
+  color: white;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.toast-error {
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.toast-warning {
+  background: rgba(245, 158, 11, 0.9);
+  color: white;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.toast-info {
+  background: rgba(59, 130, 246, 0.9);
+  color: white;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.toast-icon {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.toast-message {
+  flex: 1;
+}
+
+/* Toast 动画 */
+.toast-fade-enter-active,
+.toast-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.toast-fade-enter-from {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.toast-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
 }
 </style>

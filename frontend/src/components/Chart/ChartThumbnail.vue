@@ -34,9 +34,13 @@ async function loadAndRegisterTheme(themeName) {
     }
 }
 
-function getOptionWithoutTitle(option) {
+function getOptionForThumbnail(option) {
     const opt = JSON.parse(JSON.stringify(option))
+    // 移除可能遮挡缩略图的组件
     delete opt.title
+    delete opt.toolbox
+    delete opt.dataZoom
+    delete opt.brush
     return opt
 }
 
@@ -47,7 +51,7 @@ async function render() {
         chart = echarts.init(thumbRef.value, props.colorTheme)
     }
     if (chart && props.option) {
-        chart.setOption(getOptionWithoutTitle(props.option), true)
+        chart.setOption(getOptionForThumbnail(props.option), true)
     }
 }
 

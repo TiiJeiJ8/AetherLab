@@ -101,13 +101,21 @@
                                             {{ new Date(file.createdAt).toLocaleString() }}
                                         </span>
                                     </div>
-                                    <!-- 上传进度条 -->
-                                    <div v-if="file.status === 'uploading'" class="upload-progress">
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" :style="{ width: (file.uploadProgress || 0) + '%' }"></div>
-                                        </div>
-                                        <span class="progress-text">{{ file.uploadProgress || 0 }}%</span>
-                                    </div>
+                                    <!-- 上传进度条（详细组件） -->
+                                    <UploadProgressDetail
+                                        v-if="file.status === 'uploading'"
+                                        :show="true"
+                                        :fileName="file.name"
+                                        :fileSize="file.size"
+                                        :progress="file.uploadProgress || 0"
+                                        :status="file.status"
+                                        :speed="file.uploadSpeed || 0"
+                                        :estimatedTimeLeft="file.estimatedTimeLeft || 0"
+                                        :chunks="file.chunks || null"
+                                        @pause="handlePauseUpload(idx)"
+                                        @resume="handleResumeUpload(idx)"
+                                        @cancel="handleCancelUpload(idx)"
+                                    />
                                 </div>
                             </div>
                             <div class="file-actions">
@@ -186,11 +194,26 @@
             :is-side-preview="true"
             @close="closePreview"
         />
+
+        <!-- 删除确认弹窗 -->
+        <transition name="fade">
+            <div v-if="showDeleteConfirm" class="confirm-modal" @click.self="cancelDelete">
+                <div class="confirm-content">
+                    <h3>Confirmation</h3>
+                    <p>Are you sure you want to delete file "{{ deleteFileName }}"? This operation is irreversible.</p>
+                    <div class="confirm-buttons">
+                        <button class="cancel-btn" @click="cancelDelete">Cancel</button>
+                        <button class="confirm-btn" @click="handleDelete">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </transition>
     </div>
 </transition>
 </template>
 
 <script setup>
+import UploadProgressDetail from './UploadProgressDetail.vue'
 /* eslint-disable */
 import { ref, nextTick, onMounted, computed, watch } from 'vue'
 import DataPreviewModal from './DataPreviewModal.vue'
@@ -220,6 +243,11 @@ const showPreview = ref(false)
 const currentPreviewFile = ref(null)
 const previewData = ref([])
 const isLoading = ref(false)
+
+// 删除确认相关
+const showDeleteConfirm = ref(false)
+const deleteIndex = ref(null)
+const deleteFileName = ref('')
 
 // 监听 props 中的工作区文件变化
 watch(() => props.workspaceFiles, (newFiles) => {
@@ -315,15 +343,31 @@ async function finishRename(idx) {
 // 删除文件
 async function unloadFile(idx) {
     const file = files.value[idx]
-    if (confirm(`Are you sure you want to delete file "${file.name}"?`)) {
+    deleteIndex.value = idx
+    deleteFileName.value = file.name
+    showDeleteConfirm.value = true
+}
+
+function cancelDelete() {
+    showDeleteConfirm.value = false
+    deleteIndex.value = null
+    deleteFileName.value = ''
+}
+
+async function handleDelete() {
+    if (deleteIndex.value !== null) {
+        const file = files.value[deleteIndex.value]
         try {
             await deleteFile(file.id)
-            files.value.splice(idx, 1)
+            files.value.splice(deleteIndex.value, 1)
         } catch (error) {
             console.error('Delete failed:', error)
             alert('Delete failed: ' + error.message)
         }
     }
+    showDeleteConfirm.value = false
+    deleteIndex.value = null
+    deleteFileName.value = ''
 }
 
 // 获取文件详细信息
