@@ -33,8 +33,8 @@
 /* eslint-disable */
 import { onBeforeUnmount, reactive, nextTick } from 'vue'
 import * as echarts from 'echarts'
-import { instructionConfig } from '@/assets/instructions/config.js'
-import { generateConfigTreeOption } from '@/assets/instructions/instruction_chart_gen.js'
+import { instructionConfig } from '@/assets/JS/instructions/config.js'
+import { generateConfigTreeOption } from '@/assets/JS/instructions/instruction_chart_gen.js'
 
 const chartDetails = instructionConfig.modules
     .find(m => m.id === 'data-visualization')

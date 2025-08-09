@@ -1,8 +1,7 @@
 /* eslint-disable */
-import { name } from 'echarts-extension-amap'
-import { generateEChartOption } from '../JS/utils/echartOptionUtils'
-import { chartTypeConfig } from '../JS/Config/ChartTypeConfig.js'
-import { basicGlobalConfig } from '../JS/Config/basicGlobalConfig.js'
+import { generateEChartOption } from '../utils/echartOptionUtils.js'
+import { chartTypeConfig } from '../Config/ChartTypeConfig.js'
+import { basicGlobalConfig } from '../Config/basicGlobalConfig.js'
 
 // 生成架构关系图 option
 export async function generateArchitectureGraphOption() {

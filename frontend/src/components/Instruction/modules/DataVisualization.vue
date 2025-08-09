@@ -153,8 +153,9 @@
 import { nextTick, onMounted, onUnmounted, ref, computed, reactive } from 'vue'
 import ChartDetails from '../ChartDetails.vue'
 import { chartsTooltipConfig } from '../../../assets/JS/Config/ChartsTooltipConfig'
-import { generateChartGalleryOption } from '../../../assets/instructions/instruction_chart_gen'
+import { generateChartGalleryOption } from '../../../assets/JS/instructions/instruction_chart_gen.js'
 import { futurePlans_dataVisualization } from '../../../assets/JS/Config/FuturePlansConfig.js'
+import { instructionConfig } from '../../../assets/JS/instructions/config.js'
 
 // 接收父组件传入的非 props 属性，避免 Extraneous non-props attributes 警告
 const props = defineProps({
@@ -173,64 +174,7 @@ const renderGalleryChart = async () => {
     chart.setOption(option)
 }
 
-const StartSteps = [
-    {
-        id: 'upload-data',
-        title: 'Upload Data File',
-        description: 'Click the "Files" button to upload data files in CSV, Excel, or other formats.',
-        code: null,
-        img: '/img-step/step-upload-file.gif'
-    },
-    {
-        id: 'check-data',
-        title: 'Check Data',
-        description: 'Preview the uploaded data in the "Data Preview" panel to ensure it is correct.',
-        code: null,
-        img: '/img-step/step-check-data.gif'
-    },
-    {
-        id: 'add-to-workspace',
-        title: 'Add file to Workspace',
-        description: 'Click the "Add to Workspace" button to add the selected file to your workspace.',
-        code: null,
-        img: '/img-step/step-add-workspace.gif'
-    },
-    {
-        id: 'select-chart-type',
-        title: 'Select Chart Type',
-        description: 'Choose the appropriate visualization from 25+ chart types.',
-        code: null,
-        img: '/img-step/step-select-chart-type.gif'
-    },
-    {
-        id: 'open-structure-panel',
-        title: 'Open Structure Panel',
-        description: 'Click the "Structure" button to open the chart structure panel.',
-        code: null,
-        img: '/img-step/step-open-structure-panel.gif'
-    },
-    {
-        id: 'configure-chart',
-        title: 'Configure Chart',
-        description: 'Set data mapping, styles, themes, and other parameters.',
-        code: null,
-        img: '/img-step/step-config-chart.gif'
-    },
-    {
-        id: 'generate-chart',
-        title: 'Generate Chart',
-        description: 'Click the "Apply Configuration" button to create your visualization.',
-        code: null,
-        img: '/img-step/step-generate-chart.gif'
-    },
-    {
-        id: 'customize-style',
-        title: 'Customization',
-        description: 'Adjust styles, themes, data filters and advanced settings to meet your needs.',
-        code: null,
-        img: '/img-step/step-customization.gif'
-    }
-]
+const StartSteps = instructionConfig['StartSteps']
 
 const chartCategories = [
     {
@@ -393,69 +337,6 @@ const filteredCharts = computed(() => {
         description: cfg.description
         }))
 })
-
-const basicCharts = [
-    {
-        id: 'line',
-        name: 'Line Chart',
-        icon: '📈',
-        description: 'Suitable for showing data trends over time',
-        features: ['Time Series', 'Trend Analysis', 'Multi-line Comparison']
-    },
-    {
-        id: 'bar',
-        name: 'Bar Chart',
-        icon: '📊',
-        description: 'Suitable for comparing values across different categories',
-        features: ['Category Comparison', 'Ranked Display', 'Combined Charts']
-    },
-    {
-        id: 'pie',
-        name: 'Pie Chart',
-        icon: '🥧',
-        description: 'Suitable for showing proportions of parts to the whole',
-        features: ['Proportion Analysis', 'Donut Chart', 'Rose Chart']
-    },
-    {
-        id: 'scatter',
-        name: 'Scatter Plot',
-        icon: '⚬',
-        description: 'Suitable for exploring relationships between two variables',
-        features: ['Correlation Analysis', 'Bubble Chart', 'Cluster Display']
-    }
-]
-
-const advancedCharts = [
-    {
-        id: 'sankey',
-        name: 'Sankey Diagram',
-        icon: '🌊',
-        description: 'Suitable for showing data flow and transformation processes',
-        features: ['Process Analysis', 'Energy Flow', 'Path Tracking']
-    },
-    {
-        id: 'sunburst',
-        name: 'Sunburst Chart',
-        icon: '☀️',
-        description: 'Suitable for displaying hierarchical data',
-        features: ['Hierarchical Relationships', 'Drill-down Analysis', 'Proportion Display']
-    },
-    {
-        id: 'parallel',
-        name: 'Parallel Coordinates',
-        icon: '📏',
-        description: 'Suitable for comparative analysis of multi-dimensional data',
-        features: ['Multi-dimensional Comparison', 'Pattern Discovery', 'Anomaly Detection']
-    },
-    {
-        id: 'radar',
-        name: 'Radar Chart',
-        icon: '📡',
-        description: 'Suitable for multi-dimensional comprehensive evaluation',
-        features: ['Comprehensive Evaluation', 'Capability Analysis', 'Comparison Display']
-    }
-]
-
 
 // Listen to scroll, update current section
 const handleScroll = () => {

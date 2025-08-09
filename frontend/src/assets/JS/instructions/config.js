@@ -320,6 +320,74 @@ export const instructionConfig = {
         }
     ],
 
+    // 图表绘制步骤gif
+    StartSteps: [
+        {
+            id: 'upload-data',
+            title: 'Upload Data File',
+            description: 'Click the "Files" button to upload data files in CSV, Excel, or other formats.',
+            code: null,
+            img: '/img-step/step-upload-file.gif',
+            img_dark: '/img-step/step-upload-file-dark.gif'
+        },
+        {
+            id: 'check-data',
+            title: 'Check Data',
+            description: 'Preview the uploaded data in the "Data Preview" panel to ensure it is correct.',
+            code: null,
+            img: '/img-step/step-check-data.gif',
+            img_dark: '/img-step/step-check-data-dark.gif'
+        },
+        {
+            id: 'add-to-workspace',
+            title: 'Add file to Workspace',
+            description: 'Click the "Add to Workspace" button to add the selected file to your workspace.',
+            code: null,
+            img: '/img-step/step-add-workspace.gif',
+            img_dark: '/img-step/step-add-workspace-dark.gif'
+        },
+        {
+            id: 'select-chart-type',
+            title: 'Select Chart Type',
+            description: 'Choose the appropriate visualization from 25+ chart types.',
+            code: null,
+            img: '/img-step/step-select-chart-type.gif',
+            img_dark: '/img-step/step-select-chart-type-dark.gif'
+        },
+        {
+            id: 'open-structure-panel',
+            title: 'Open Structure Panel',
+            description: 'Click the "Structure" button to open the chart structure panel.',
+            code: null,
+            img: '/img-step/step-open-structure-panel.gif',
+            img_dark: '/img-step/step-open-structure-panel-dark.gif'
+        },
+        {
+            id: 'configure-chart',
+            title: 'Configure Chart',
+            description: 'Set data mapping, styles, themes, and other parameters.',
+            code: null,
+            img: '/img-step/step-config-chart.gif',
+            img_dark: '/img-step/step-config-chart-dark.gif'
+        },
+        {
+            id: 'generate-chart',
+            title: 'Generate Chart',
+            description: 'Click the "Apply Configuration" button to create your visualization.',
+            code: null,
+            img: '/img-step/step-generate-chart.gif',
+            img_dark: '/img-step/step-generate-chart-dark.gif'
+        },
+        {
+            id: 'customize-style',
+            title: 'Customization',
+            description: 'Adjust styles, themes, data filters and advanced settings to meet your needs.',
+            code: null,
+            img: '/img-step/step-customization.gif',
+            img_dark: '/img-step/step-customization-dark.gif'
+        }
+    ],
+
     // 导航配置
     navigation: {
         autoExpand: true,

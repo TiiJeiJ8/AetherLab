@@ -58,7 +58,7 @@ import NavigationTabs from '../components/Instruction/NavigationTabs.vue'
 import TableOfContents from '../components/Instruction/TableOfContents.vue'
 import ContentArea from '../components/Instruction/ContentArea.vue'
 import ThemeButton from '../components/Common/ThemeButton.vue'
-import { instructionConfig } from '../assets/instructions/config.js'
+import { instructionConfig } from '../assets/JS/instructions/config.js'
 
 // highlight.js 引入
 import hljs from 'highlight.js'

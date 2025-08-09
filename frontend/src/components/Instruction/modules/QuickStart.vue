@@ -195,10 +195,10 @@ python App.py</code></pre>
 <script setup>
 /* eslint-disable */
 import { onMounted, onUnmounted, ref, nextTick } from 'vue'
-
+import { instructionConfig } from '../../../assets/JS/instructions/config.js'
 // 引入 ECharts 和工具函数
 import * as echarts from 'echarts'
-import { generateArchitectureGraphOption } from '../../../assets/instructions/instruction_chart_gen'
+import { generateArchitectureGraphOption } from '../../../assets/JS/instructions/instruction_chart_gen.js'
 const archChart = ref(null)
 
 const renderArchChart = async () => {
@@ -250,64 +250,7 @@ const features = [
     // More...
 ]
 
-const quickStartSteps = [
-    {
-        id: 'upload-data',
-        title: 'Upload Data File',
-        description: 'Click the "Files" button to upload data files in CSV, Excel, or other formats.',
-        code: null,
-        img: '/img-step/step-upload-file.gif'
-    },
-    {
-        id: 'check-data',
-        title: 'Check Data',
-        description: 'Preview the uploaded data in the "Data Preview" panel to ensure it is correct.',
-        code: null,
-        img: '/img-step/step-check-data.gif'
-    },
-    {
-        id: 'add-to-workspace',
-        title: 'Add file to Workspace',
-        description: 'Click the "Add to Workspace" button to add the selected file to your workspace.',
-        code: null,
-        img: '/img-step/step-add-workspace.gif'
-    },
-    {
-        id: 'select-chart-type',
-        title: 'Select Chart Type',
-        description: 'Choose the appropriate visualization from 25+ chart types.',
-        code: null,
-        img: '/img-step/step-select-chart-type.gif'
-    },
-    {
-        id: 'open-structure-panel',
-        title: 'Open Structure Panel',
-        description: 'Click the "Structure" button to open the chart structure panel.',
-        code: null,
-        img: '/img-step/step-open-structure-panel.gif'
-    },
-    {
-        id: 'configure-chart',
-        title: 'Configure Chart',
-        description: 'Set data mapping, styles, themes, and other parameters.',
-        code: null,
-        img: '/img-step/step-config-chart.gif'
-    },
-    {
-        id: 'generate-chart',
-        title: 'Generate Chart',
-        description: 'Click the "Apply Configuration" button to create your visualization.',
-        code: null,
-        img: '/img-step/step-generate-chart.gif'
-    },
-    {
-        id: 'customize-style',
-        title: 'Customization',
-        description: 'Adjust styles, themes, data filters and advanced settings to meet your needs.',
-        code: null,
-        img: '/img-step/step-customization.gif'
-    }
-]
+const quickStartSteps = instructionConfig['StartSteps']
 
 // 监听滚动，更新当前章节
 const handleScroll = () => {
