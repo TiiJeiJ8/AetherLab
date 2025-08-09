@@ -50,7 +50,7 @@ export const instructionConfig = {
             title: 'Data Visualization',
             icon: '📊',
             description: 'Various chart types and visualization features',
-            badge: '🚧',
+            badge: '',
             children: [],
             tocItems: [
                 {
@@ -77,10 +77,7 @@ export const instructionConfig = {
                     id: 'chart-selection-guide',
                     title: 'Choose a Chart',
                     icon: '🧭',
-                    children: [
-                        // { id: 'selection-principles', title: 'Selection Principles', icon: '' },
-                        // { id: 'scenarios', title: 'Common Scenarios', icon: '' }
-                    ]
+                    children: []
                 },
                 {
                     id: 'chart-details',

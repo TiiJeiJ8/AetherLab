@@ -408,7 +408,7 @@
 }
 
 .data-visualization .suggestion-card {
-    background: #f8fafc;
+    background: var(--bg-color, #fff);
     border-style: dashed;
     border-color: #60a5fa;
 }
