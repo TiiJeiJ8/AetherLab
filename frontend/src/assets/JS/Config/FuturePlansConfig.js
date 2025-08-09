@@ -11,6 +11,11 @@ export const futurePlans_dataVisualization = [
         desc: 'Allow users to customize chart appearance and behavior more extensively.'
     },
     {
+        icon: '🔍',
+        title: 'Better Filter',
+        desc: 'Provide more advanced data filtering (supports nesting)'
+    },
+    {
         icon: '🔗',
         title: 'Data Source Integration',
         desc: 'Connect to databases, APIs, and cloud storage.'

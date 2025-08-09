@@ -34,7 +34,7 @@
         <div class="step-content">
             <h4>{{ step.title }}</h4>
             <p>{{ step.description }}</p>
-            <img v-if="step.img" :src="step.img" alt="step image" class="step-image" />
+            <img v-if="step.img" :src="isDark && step.img_dark ? step.img_dark : step.img" alt="step image" class="step-image" />
         </div>
         </div>
     </div>
@@ -107,6 +107,90 @@
     <!-- Chart Details -->
     <section id="chart-details" class="content-section">
         <ChartDetails />
+    </section>
+
+    <!-- Data Filter -->
+    <section id="data-filter" class="content-section">
+        <h2>🔍 Data Filter</h2>
+        <section class="content-card">
+            <p>Use the data filter to refine your chart data and improve visualization accuracy. The filtering system supports multiple conditions with flexible logic operations.</p>
+
+            <h3>Filter Features</h3>
+            <ul style="margin: 8px 0 8px 20px;">
+                <li><b>Multiple Data Types:</b> Number, String, Category, Boolean, Date</li>
+                <li><b>Flexible Operators:</b> Equals, Contains, Greater/Less Than, In/Not In</li>
+                <li><b>Logic Operations:</b> AND/OR between multiple conditions</li>
+                <li><b>Dynamic Values:</b> Category fields show available options automatically</li>
+            </ul>
+
+            <h3>How to Use Data Filter</h3>
+            <ol style="margin: 8px 0 8px 20px;">
+                <li><b>Add Filter Condition:</b> Click "+ Add Condition" button</li>
+                <li><b>Select Field:</b> Choose from mapped data fields in your chart</li>
+                <li><b>Choose Operator:</b> Select comparison method based on field type</li>
+                <li><b>Set Value:</b> Enter filter value or select from dropdown (for categories)</li>
+                <li><b>Logic Toggle:</b> Switch between AND/OR for multiple conditions</li>
+                <li><b>Remove Condition:</b> Click "×" button to delete unwanted filters</li>
+            </ol>
+
+            <h3>Operator Types by Data Type</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; margin: 12px 0;">
+                <div class="filter-type-card">
+                    <b>🔢 Number/Integer</b>
+                    <ul style="font-size: 13px; margin-top: 4px;">
+                        <li>Equals, Not Equals</li>
+                        <li>Greater/Less Than</li>
+                        <li>Greater/Less Than or Equal</li>
+                    </ul>
+                </div>
+                <div class="filter-type-card">
+                    <b>📝 String</b>
+                    <ul style="font-size: 13px; margin-top: 4px;">
+                        <li>Equals, Not Equals</li>
+                        <li>Contains, Not Contains</li>
+                        <li>Starts With, Ends With</li>
+                    </ul>
+                </div>
+                <div class="filter-type-card">
+                    <b>🏷️ Category</b>
+                    <ul style="font-size: 13px; margin-top: 4px;">
+                        <li>Equals, Not Equals</li>
+                        <li>In (multiple selection)</li>
+                        <li>Not In (exclusion)</li>
+                    </ul>
+                </div>
+                <div class="filter-type-card">
+                    <b>📅 Date</b>
+                    <ul style="font-size: 13px; margin-top: 4px;">
+                        <li>Equals, Not Equals</li>
+                        <li>Before, After</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Filter Tips</h3>
+            <ul style="margin: 8px 0 8px 20px;">
+                <li><b>Field Selection:</b> Only mapped chart fields are available for filtering</li>
+                <li><b>Category Values:</b> Dropdown shows unique values from your data automatically</li>
+                <li><b>Multiple Selection:</b> Use "In" operator for category fields to select multiple values</li>
+                <li><b>Logic Combination:</b> AND requires all conditions to be true, OR requires any condition to be true</li>
+                <li><b>Real-time Update:</b> Filters apply automatically as you configure them</li>
+                <li><b>Validation:</b> All fields must be completed before filter becomes active</li>
+            </ul>
+
+            <h3>Common Use Cases</h3>
+            <div style="background: var(--bg-secondary); padding: 12px; border-radius: 6px; margin: 8px 0;">
+                <b>Example 1:</b> Sales data filtering<br>
+                <span>• </span>
+                <code style="font-size: 16px; color: var(--text-secondary);border: 1px solid var(--border-color);border-radius: 10px;padding: 4px">Region equals "North America" AND Sales &gt; 10000</code><br><br>
+                <b>Example 2:</b> Category analysis<br>
+                <span>• </span>
+                <code style="font-size: 16px; color: var(--text-secondary);border: 1px solid var(--border-color);border-radius: 10px;padding: 4px">Product Type in ["Electronics", "Books"] OR Price &lt; 50</code><br><br>
+                <b>Example 3:</b> Text search<br>
+                <span>• </span>
+                <code style="font-size: 16px; color: var(--text-secondary);border: 1px solid var(--border-color);border-radius: 10px;padding: 4px">Product Name contains "Phone" AND Description not contains "Refurbished"</code>
+            </div>
+        </section>
     </section>
 
     <!-- Chart History -->
@@ -354,7 +438,17 @@ const handleScroll = () => {
     }
 }
 
+// 主题状态（本地维护）
+const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark')
+
+// 主题切换事件处理
+function handler(e) {
+    const colorScheme = e?.detail?.colorScheme
+    isDark.value = colorScheme === 'dark'
+}
+
 onMounted(() => {
+    window.addEventListener('app-theme-change', handler)
     window.addEventListener('scroll', handleScroll)
     emit('sectionChange', 'chart-types')
     nextTick(async () => {
@@ -363,6 +457,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+    window.removeEventListener('app-theme-change', handler)
     window.removeEventListener('scroll', handleScroll)
 })
 </script>

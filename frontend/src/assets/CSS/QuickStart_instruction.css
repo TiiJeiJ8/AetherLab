@@ -117,6 +117,7 @@
 }
 
 .quick-start .feature-card h3 {
+    font-size: 1.35rem;
     color: var(--text-main);
     margin-bottom: 12px;
 }

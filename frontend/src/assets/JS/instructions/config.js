@@ -169,6 +169,12 @@ export const instructionConfig = {
                     ]
                 },
                 {
+                    id: 'data-filter',
+                    title: 'Data Filter',
+                    icon: '🔍',
+                    children: []
+                },
+                {
                     id: 'chart-history',
                     title: 'Chart History',
                     icon: '🕑',

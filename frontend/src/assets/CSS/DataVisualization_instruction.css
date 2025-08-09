@@ -135,6 +135,13 @@
     padding-bottom: 8px;
 }
 
+.data-visualization .content-section h3 {
+    font-size: 1.35rem;
+    color: var(--text-main);
+    margin-bottom: 16px;
+    font-weight: bold;
+}
+
 .data-visualization #chart-details h3 {
     font-size: 1.3rem;
     color: var(--text-main);
@@ -458,4 +465,18 @@
         align-items: flex-start;
         gap: 8px;
     }
+}
+
+/* Data Filter 教程样式 */
+.data-visualization .filter-type-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    transition: all 0.2s ease;
+}
+
+.data-visualization .filter-type-card:hover {
+    border-color: var(--primary-color);
+    background: var(--bg-tertiary);
 }

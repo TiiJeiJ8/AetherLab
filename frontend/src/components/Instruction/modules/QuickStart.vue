@@ -184,7 +184,7 @@ python App.py</code></pre>
         <div class="step-content">
             <h4>{{ step.title }}</h4>
             <p>{{ step.description }}</p>
-            <img v-if="step.img" :src="step.img" alt="step image" class="step-image" />
+            <img v-if="step.img" :src="isDark && step.img_dark ? step.img_dark : step.img" alt="step image" class="step-image" />
         </div>
         </div>
     </div>
@@ -250,7 +250,17 @@ const features = [
     // More...
 ]
 
+
 const quickStartSteps = instructionConfig['StartSteps']
+
+// 主题状态（本地维护）
+const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark')
+
+// 主题切换事件处理
+function handler(e) {
+    const colorScheme = e?.detail?.colorScheme
+    isDark.value = colorScheme === 'dark'
+}
 
 // 监听滚动，更新当前章节
 const handleScroll = () => {
@@ -270,6 +280,7 @@ const handleScroll = () => {
 
 
 onMounted(() => {
+    window.addEventListener('app-theme-change', handler)
     window.addEventListener('scroll', handleScroll)
     emit('section-change', 'overview')
     nextTick(async () => {
@@ -278,6 +289,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+    window.removeEventListener('app-theme-change', handler)
     window.removeEventListener('scroll', handleScroll)
 })
 </script>
