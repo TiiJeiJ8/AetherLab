@@ -362,6 +362,57 @@
     font-size: 0.9rem;
 }
 
+/* 未来计划卡片 */
+.data-visualization .future-plans-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.data-visualization .future-plan-card {
+    background: var(--bg-color, #fff);
+    border: 1px solid var(--border-color, #e0e0e0);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    padding: 18px 20px 14px 18px;
+    min-width: 220px;
+    max-width: 320px;
+    flex: 1 1 220px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: box-shadow 0.2s;
+}
+
+.data-visualization .future-plan-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    border-color: #3b82f6;
+}
+
+.data-visualization .plan-icon {
+    font-size: 2em;
+    margin-top: 2px;
+}
+
+.data-visualization .plan-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.data-visualization .plan-desc {
+    color: var(--text-secondary, #666);
+    font-size: 0.98em;
+    margin-top: 2px;
+}
+
+.data-visualization .suggestion-card {
+    background: #f8fafc;
+    border-style: dashed;
+    border-color: #60a5fa;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
     .data-visualization .step-item {

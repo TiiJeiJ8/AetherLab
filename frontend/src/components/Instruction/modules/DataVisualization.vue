@@ -112,11 +112,38 @@
     <!-- Chart History -->
     <section id="chart-history" class="content-section">
         <h2>📜 Chart History</h2>
+        <section class="content-card">
+                <p>
+                    The Chart History section allows you to:
+                    <ul style="margin: 8px 0 8px 20px;">
+                        <li>Save your generated charts for future use</li>
+                        <li>Preview and restore any saved chart</li>
+                        <li>Edit chart titles for easy identification</li>
+                        <li>Delete charts you no longer need</li>
+                    </ul>
+                    <b>How to use:</b>
+                    <ol style="margin: 8px 0 8px 20px;">
+                        <li>After configuring and generating a chart, click <b>Save to History</b> in the configuration panel.</li>
+                        <li>Click the <b>History button</b> to open the Chart History panel.</li>
+                        <li><b>Click thumbnail</b> to reproduce the chart, or <b>edit/delete</b> the chart as needed.</li>
+                    </ol>
+                </p>
+        </section>
     </section>
 
-    <!-- Future Plan -->
-    <section id="future-plan" class="content-section">
-        <h2>🗓 Future Plan</h2>
+    <!-- Future Plans -->
+    <section id="future-plans" class="content-section">
+        <h2>🗓 Future Plans</h2>
+        <section class="future-plans-cards">
+            <div v-for="plan in futurePlans_dataVisualization" :key="plan.title" :class="['future-plan-card', { 'suggestion-card': plan.suggestion }]">
+                <span class="plan-icon">{{ plan.icon }}</span>
+                <div class="plan-content">
+                    <b>{{ plan.title }}</b>
+                    <div class="plan-desc" v-if="!plan.suggestion">{{ plan.desc }}</div>
+                    <div class="plan-desc" v-else v-html="plan.desc"></div>
+                </div>
+            </div>
+        </section>
     </section>
 </div>
 </template>
@@ -127,6 +154,7 @@ import { nextTick, onMounted, onUnmounted, ref, computed, reactive } from 'vue'
 import ChartDetails from '../ChartDetails.vue'
 import { chartsTooltipConfig } from '../../../assets/JS/Config/ChartsTooltipConfig'
 import { generateChartGalleryOption } from '../../../assets/instructions/instruction_chart_gen'
+import { futurePlans_dataVisualization } from '../../../assets/JS/Config/FuturePlansConfig.js'
 
 // 接收父组件传入的非 props 属性，避免 Extraneous non-props attributes 警告
 const props = defineProps({

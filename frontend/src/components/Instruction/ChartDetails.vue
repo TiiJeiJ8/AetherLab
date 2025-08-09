@@ -127,7 +127,6 @@ onBeforeUnmount(() => {
     margin: 16px 0 24px 0;
     padding: 12px 12px 16px 12px;
     border-radius: 8px;
-    background: var(--bg-secondary);
 }
 .echarts-tree-block {
     margin-top: 10px;

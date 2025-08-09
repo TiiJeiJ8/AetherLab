@@ -172,13 +172,13 @@ export const instructionConfig = {
                     ]
                 },
                 {
-                    id: 'history',
+                    id: 'chart-history',
                     title: 'Chart History',
                     icon: '🕑',
                     children: []
                 },
                 {
-                    id: 'roadmap',
+                    id: 'future-plans',
                     title: 'Future Plans',
                     icon: '🗓',
                     children: []
