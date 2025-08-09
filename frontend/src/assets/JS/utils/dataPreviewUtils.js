@@ -11,11 +11,13 @@
  */
 export function getCellValue(row, header, index) {
     if (Array.isArray(row)) {
-        return row[index] || ''
+        const value = row[index];
+        return value === undefined || value === null ? '' : value;
     } else if (typeof row === 'object' && row !== null) {
-        return row[header] !== undefined ? row[header] : ''
+        const value = row[header];
+        return value === undefined || value === null ? '' : value;
     }
-    return row || ''
+    return row === undefined || row === null ? '' : row;
 }
 
 /**
