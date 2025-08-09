@@ -2,6 +2,7 @@
 import { name } from 'echarts-extension-amap'
 import { generateEChartOption } from '../JS/utils/echartOptionUtils'
 import { chartTypeConfig } from '../JS/Config/ChartTypeConfig.js'
+import { basicGlobalConfig } from '../JS/Config/basicGlobalConfig.js'
 
 // 生成架构关系图 option
 export async function generateArchitectureGraphOption() {
@@ -417,6 +418,10 @@ export function generateConfigTreeOption(chartTitle, filter = {}) {
             metaKeys.forEach(k => {
                 if (item[k] !== undefined) node.meta[k] = item[k]
             })
+            // 透传tips
+            if (item.tips) {
+                node.meta.tips = item.tips
+            }
             if (item.highlight) {
                 node.meta.highlight = true
             }
@@ -474,6 +479,12 @@ export function generateConfigTreeOption(chartTitle, filter = {}) {
             name: rootName,
             children: sections.map(sec => {
                 let arr = cfg[sec] || []
+                // 合并全局基础项到basic区
+                if (sec === 'basic') {
+                    // 避免重复key
+                    const existKeys = new Set(arr.map(i => i.key))
+                    arr = [...basicGlobalConfig.filter(i => !existKeys.has(i.key)), ...arr]
+                }
                 // mapping区Geo_Map及分支类型用前端逻辑
                 if (sec === 'mapping' && filter && filter.seriesType && (
                     rootName.toLowerCase().includes('geo_map') ||
@@ -528,13 +539,24 @@ export function generateConfigTreeOption(chartTitle, filter = {}) {
                 if (d.meta.highlight) tags.push(`<span style="color:#f59e42;border:1px solid #f59e42;border-radius:3px;padding:0 4px;margin-right:3px;font-size:11px;font-weight:600;">Branch Only</span>`)
                 if (tags.length) lines.push(`<div>${tags.join(' ')}</div>`)
                 if (d.meta.description) lines.push(`<div style=\"margin-top:4px;color:#888;\">${d.meta.description}</div>`)
+                // 合并tips内容到select类型参数的tooltip，显示label: content
+                if (d.meta.type === 'select' && Array.isArray(d.meta.tips) && d.meta.tips.length > 0 && Array.isArray(d.meta.options)) {
+                    // 用options找label，tips找key
+                    const tipsText = d.meta.tips.map(tip => {
+                        const opt = d.meta.options.find(o => o.value === tip.key);
+                        const label = opt ? opt.label : tip.key;
+                        return `<b>${label}</b>: ${tip.content}`;
+                    }).join('<br/>');
+                    lines.push(`<div style=\"margin-top:4px;font-weight:bold;color:#666;\">Option Details:</div>`);
+                    lines.push(`<div style=\"margin-top:2px;color:#888;\">${tipsText}</div>`);
+                }
                 return lines.join('')
             }
         },
         series: [{
             type: 'tree',
             data: [data],
-            top: '4%', left: '30%', bottom: '4%', right: '30%',
+            top: '4%', left: '35%', bottom: '4%', right: '30%',
             orient: 'LR',
             symbol: 'circle',
             symbolSize: 13,
