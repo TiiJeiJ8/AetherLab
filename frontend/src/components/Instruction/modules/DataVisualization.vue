@@ -215,6 +215,17 @@
         </section>
     </section>
 
+    <!-- 疑难解惑 -->
+    <section id="troubleshooting" class="content-section">
+        <h2>🛠 Troubleshooting</h2>
+        <section class="troubleshooting-cards">
+            <div class="troubleshooting-card" v-for="(tip, idx) in troubleshootingTips" :key="idx">
+                <span class="troubleshooting-icon">💡</span>
+                <span v-html="tip"></span>
+            </div>
+        </section>
+    </section>
+
     <!-- Future Plans -->
     <section id="future-plans" class="content-section">
         <h2>🗓 Future Plans</h2>
@@ -351,6 +362,14 @@ const chartCategories = [
     }
 ]
 
+const troubleshootingTips = [
+    'If the date format data cannot be recognized correctly, please check if the column name is "date/time/日期/时间", and automatic parsing and recognition will be implemented in the future',
+    'Ensure your data is properly formatted and mapped to the chart fields.',
+    'Check for any errors in the console log for more details.',
+    'If a chart fails to render, try refreshing the page or clearing your browser cache or click "Reset Config" button.',
+    'For persistent issues, please report them on our <a href="https://github.com/AetherLab/AetherLab/issues">GitHub Issues</a> page.'
+]
+
 // --- 图表类型推荐区逻辑 ---
 
 // 1. 生成所有唯一的标签
@@ -464,4 +483,27 @@ onUnmounted(() => {
 
 <style scoped>
 @import '../../../assets/CSS/DataVisualization_instruction.css';
+
+.troubleshooting-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 12px;
+}
+.troubleshooting-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 16px 20px;
+    min-width: 400px;
+    max-width: 400px;
+    flex: 1 1 220px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+.troubleshooting-icon {
+    font-size: 1.5em;
+    margin-right: 8px;
+}
 </style>

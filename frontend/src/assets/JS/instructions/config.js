@@ -181,6 +181,12 @@ export const instructionConfig = {
                     children: []
                 },
                 {
+                    id: 'troubleshooting',
+                    title: 'Troubleshooting',
+                    icon: '🛠',
+                    children: []
+                },
+                {
                     id: 'future-plans',
                     title: 'Future Plans',
                     icon: '🗓',
