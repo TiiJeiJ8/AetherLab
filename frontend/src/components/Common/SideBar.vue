@@ -81,7 +81,7 @@ const isExpanded = computed(() => !isCollapsed.value || isHovered.value)
 const adaptiveCollapsedWidth = computed(() => {
     const min = 40;
     const max = 120;
-    const percent = 0.02; // 2% 屏幕宽度
+    const percent = 0.02; // 4% 屏幕宽度
     return Math.round(Math.max(min, Math.min(window.innerWidth * percent, max)));
 });
 

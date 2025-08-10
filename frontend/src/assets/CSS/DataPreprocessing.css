@@ -1,0 +1,78 @@
+.data-preprocessing-container .data-preprocessing-layout {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg-color);
+    padding-top: 80px;
+    /* 留出TopBar高度 */
+}
+
+/* SideBar宽度由组件控制 */
+.data-preprocessing-container .main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 24px 32px 0 32px;
+}
+
+/* 上下分区 */
+.data-preprocessing-container .data-table-area {
+    flex: 6;
+    min-height: 0;
+    margin-bottom: 18px;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.data-preprocessing-container .module-panel-area {
+    flex: 4;
+    min-height: 0;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+/* 占位样式 */
+.data-preprocessing-container .placeholder {
+    color: #aaa;
+    font-size: 1.2em;
+    letter-spacing: 1px;
+}
+
+/* 侧边栏导航项样式（可根据需要美化） */
+.data-preprocessing-container .sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.data-preprocessing-container .sidebar-nav-item:hover {
+    background: rgba(120, 120, 120, 0.08);
+}
+
+.data-preprocessing-container .sidebar-icon {
+    font-size: 1.1em;
+}
+
+.data-preprocessing-container .sidebar-label {
+    font-weight: 600;
+    font-size: 1em;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: visible;
+    transition: none;
+}

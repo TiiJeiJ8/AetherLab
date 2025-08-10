@@ -169,7 +169,7 @@ onMounted(() => {
     // 如果当前是深色模式，当有chartConfig时将其更新为dark主题
     console.log('[ChartVisualizations] Initial theme is dark, will update chartConfig when available')
   } else if (currentTheme === 'light') {
-    // 如果当前是浅色模式，当有chartConfig时将其更新为default主题  
+    // 如果当前是浅色模式，当有chartConfig时将其更新为default主题
     console.log('[ChartVisualizations] Initial theme is light, will update chartConfig when available')
   }
 })
