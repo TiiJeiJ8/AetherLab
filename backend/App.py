@@ -7,8 +7,19 @@ import os
 from loguru import logger
 import sys
 
-# Log directory
-LOG_DIR = os.path.join(os.path.dirname(__file__), "logs")
+# Base directory and paths - PyInstaller compatible
+if getattr(sys, 'frozen', False):
+    # Running as packaged executable
+    BASE_DIR = os.path.dirname(sys.executable)
+    LOG_DIR = os.path.join(BASE_DIR, "logs")
+    # 打包后的结构: App.exe 和 frontend/ 在同一目录
+    STATIC_FOLDER = os.path.join(BASE_DIR, "frontend", "dist")
+else:
+    # Running as script in development
+    BASE_DIR = os.path.dirname(__file__)
+    LOG_DIR = os.path.join(os.path.dirname(BASE_DIR), "logs")
+    STATIC_FOLDER = os.path.join(os.path.dirname(BASE_DIR), "frontend", "dist")
+
 os.makedirs(LOG_DIR, exist_ok=True)
 
 # Main channel log
@@ -17,8 +28,12 @@ logger.add(os.path.join(LOG_DIR, "main.log"), rotation="10 MB", retention="10 da
 logger.add(sys.stdout, colorize=True, format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>")
 
 logger.info("AetherLab main program started")
+logger.info(f"Running mode: {'Packaged' if getattr(sys, 'frozen', False) else 'Development'}")
+logger.info(f"Base directory: {BASE_DIR}")
+logger.info(f"Static folder: {STATIC_FOLDER}")
+logger.info(f"Static folder exists: {os.path.exists(STATIC_FOLDER)}")
 
-app = Flask(__name__, static_folder='../frontend/dist')
+app = Flask(__name__, static_folder=STATIC_FOLDER)
 CORS(app)
 
 # API example
