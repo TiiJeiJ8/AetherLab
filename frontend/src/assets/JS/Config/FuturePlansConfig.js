@@ -11,6 +11,11 @@ export const futurePlans_dataVisualization = [
         desc: 'Allow users to customize chart appearance and behavior more extensively.'
     },
     {
+        icon: '📊',
+        title: 'Dash Board',
+        desc: 'Provide drag and drop customizable dashboards based on Gridstack.js'
+    },
+    {
         icon: '🔍',
         title: 'Better Filter',
         desc: 'Provide more advanced data filtering (supports nesting)'
