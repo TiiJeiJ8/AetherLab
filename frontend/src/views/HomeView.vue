@@ -69,7 +69,7 @@ const cards = [
   },
   {
     icon: '🫣',
-    title: 'About Me',
+    title: 'About Me 🚧',
     description: 'Learn more about me ¯\\_(ツ)_/¯',
     buttonText: 'Explore',
     href: 'https://tiijeij8.github.io',
