@@ -98,7 +98,7 @@ export async function parseFileContent(file) {
                 // 自动将疑似日期/时间列的数字转为字符串
                 const headers = jsonData[0] || [];
                 const dateColIndexes = headers
-                    .map((h, i) => /date|日期|时间/i.test(h) ? i : -1)
+                    .map((h, i) => /date|日期|时间|time/i.test(h) ? i : -1)
                     .filter(i => i !== -1);
 
                 function excelDateToString(excelDate) {
