@@ -140,23 +140,23 @@ function handleEscKey(e) {
 }
 // 监听全局主题变化
 function handleGlobalThemeChange(event) {
-    const { colorScheme } = event.detail
-    console.log('[ChartVisualizations] Global theme changed to:', colorScheme)
-    
-    // 更新当前chartConfig中的colorScheme
-    if (chartConfig.value && chartConfig.value.colorScheme !== colorScheme) {
-        const prevTheme = chartConfig.value.colorScheme || 'default'
-        chartConfig.value.colorScheme = colorScheme
-        
-        // 如果有现有图表，强制刷新以应用新主题
-        if (chartOption.value && prevTheme !== colorScheme) {
-            const tmp = JSON.parse(JSON.stringify(chartOption.value));
-            chartOption.value = null;
-            nextTick(() => {
-                chartOption.value = tmp;
-            });
-        }
-    }
+  const { colorScheme } = event.detail
+  console.log('[ChartVisualizations] Global theme changed to:', colorScheme)
+  
+  // 更新当前chartConfig中的colorScheme
+  if (chartConfig.value && chartConfig.value.colorScheme !== colorScheme) {
+      const prevTheme = chartConfig.value.colorScheme || 'default'
+      chartConfig.value.colorScheme = colorScheme
+      
+      // 如果有现有图表，强制刷新以应用新主题
+      if (chartOption.value && prevTheme !== colorScheme) {
+          const tmp = JSON.parse(JSON.stringify(chartOption.value));
+          chartOption.value = null;
+          nextTick(() => {
+              chartOption.value = tmp;
+          });
+      }
+  }
 }
 
 onMounted(() => {
@@ -240,32 +240,32 @@ function deleteChart(idx) {
 
 // 图表选择
 function onChartTypeSelect(type) {
-    console.log(`Selected chart type: ${type}`)
-    selectedChartType.value = type
-    // 保证chartConfig.value.type始终同步
-    if (chartConfig.value) chartConfig.value.type = type
-    // 可添加处理为加载图表类型、切换组件等功能
+  console.log(`Selected chart type: ${type}`)
+  selectedChartType.value = type
+  // 保证chartConfig.value.type始终同步
+  if (chartConfig.value) chartConfig.value.type = type
+  // 可添加处理为加载图表类型、切换组件等功能
 }
 
 // 文件结构面板处理方法
 function handleShowStructure(file) {
-    console.log('Showing structure for file:', file.name)
-    currentStructureFile.value = file
-    showStructurePanel.value = true
+  console.log('Showing structure for file:', file.name)
+  currentStructureFile.value = file
+  showStructurePanel.value = true
 }
 
 function handleStructureMinimize(isMinimized) {
-    console.log('Structure panel minimized:', isMinimized)
+  console.log('Structure panel minimized:', isMinimized)
 }
 
 function handleColumnDrag(dragInfo) {
-    console.log('Column drag event:', dragInfo)
-    // 这里将来会处理列拖拽到图表配置的逻辑
-    if (dragInfo.action === 'start') {
-        console.log('Started dragging column:', dragInfo.column.name)
-    } else if (dragInfo.action === 'end') {
-        console.log('Finished dragging column')
-    }
+  console.log('Column drag event:', dragInfo)
+  // 这里将来会处理列拖拽到图表配置的逻辑
+  if (dragInfo.action === 'start') {
+      console.log('Started dragging column:', dragInfo.column.name)
+  } else if (dragInfo.action === 'end') {
+      console.log('Finished dragging column')
+  }
 }
 
 // 图表配置处理方法
