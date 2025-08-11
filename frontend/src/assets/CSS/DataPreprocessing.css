@@ -15,41 +15,7 @@
     padding: 24px 32px 0 32px;
 }
 
-/* 上下分区 */
-.data-preprocessing-container .data-table-area {
-    flex: 6;
-    min-height: 0;
-    margin-bottom: 18px;
-    background: var(--bg-secondary);
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-    padding: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.data-preprocessing-container .module-panel-area {
-    flex: 4;
-    min-height: 0;
-    background: var(--bg-secondary);
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-    padding: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 24px;
-}
-
-/* 占位样式 */
-.data-preprocessing-container .placeholder {
-    color: #aaa;
-    font-size: 1.2em;
-    letter-spacing: 1px;
-}
-
-/* 侧边栏导航项样式（可根据需要美化） */
+/* 侧边栏导航项样式 */
 .data-preprocessing-container .sidebar-nav-item {
     display: flex;
     align-items: center;
@@ -75,4 +41,195 @@
     white-space: nowrap;
     overflow: visible;
     transition: none;
+}
+
+/* 主区域横向布局 */
+.data-preprocessing-container .main-area-horizontal {
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 80px);
+    min-width: 0;
+    width: 100%;
+    background: none;
+    margin: 0;
+    padding: 0;
+}
+
+.data-preprocessing-container .data-table-area-horizontal {
+    background: var(--bg-secondary, #fff);
+    /* border-radius: 10px 0 0 10px; */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    padding: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: width 0.2s;
+    overflow: auto;
+    height: 100%;
+}
+
+.data-preprocessing-container .module-panel-area-horizontal {
+    background: var(--bg-secondary, #fff);
+    /* border-radius: 0 10px 10px 0; */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    padding: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: width 0.2s;
+    overflow: auto;
+    height: 100%;
+}
+
+.data-preprocessing-container .drag-divider {
+    width: 3px;
+    min-width: 3px;
+    max-width: 12px;
+    height: 60px;
+    margin: auto 0;
+    border-radius: 6px;
+    background: #d3d3d3;
+    box-shadow: 0 0 2px #bbb;
+    cursor: col-resize;
+    z-index: 10;
+    transition: background 0.2s, width 0.2s, box-shadow 0.2s;
+    position: relative;
+    display: block;
+}
+
+.data-preprocessing-container .drag-divider:hover {
+    background: #409eff;
+    width: 8px;
+    box-shadow: 0 0 8px #409eff44;
+}
+
+/* 表格预览区样式 */
+.data-preprocessing-container .table-header {
+    padding: 16px 20px;
+    background: var(--bg-color, #f8f9fa);
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.data-preprocessing-container .file-selector,
+.data-preprocessing-container .data-type-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.data-preprocessing-container .file-selector label,
+.data-preprocessing-container .data-type-selector label {
+    font-weight: 500;
+    color: var(--text-color, #333);
+    white-space: nowrap;
+}
+
+.data-preprocessing-container .file-selector select {
+    padding: 6px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: var(--bg-secondary, #fff);
+    color: var(--text-color, #333);
+    min-width: 150px;
+}
+
+.data-preprocessing-container .radio-group {
+    display: flex;
+    gap: 16px;
+}
+
+.data-preprocessing-container .radio-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.data-preprocessing-container .radio-item input[type="radio"] {
+    margin: 0;
+}
+
+.data-preprocessing-container .virtual-table-container {
+    flex: 1;
+    height: calc(100% - 70px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* 虚拟滚动表格主体 */
+.data-preprocessing-container .table-body {
+    flex: 1;
+    height: 100%;
+    overflow: auto;
+}
+
+/* RecycleScroller 样式 */
+.data-preprocessing-container .vue-recycle-scroller {
+    height: 100%;
+}
+
+.data-preprocessing-container .vue-recycle-scroller__item-wrapper {
+    overflow: hidden;
+}
+
+.data-preprocessing-container .simple-table {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.data-preprocessing-container .table-row {
+    display: flex;
+    border-bottom: 1px solid #f0f0f0;
+    min-height: 40px;
+    align-items: center;
+}
+
+.data-preprocessing-container .table-row.header-row {
+    background: var(--bg-color, #f8f9fa);
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.data-preprocessing-container .table-cell {
+    padding: 8px 12px;
+    border-right: 1px solid #f0f0f0;
+    min-width: 100px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.data-preprocessing-container .empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    text-align: center;
+}
+
+.data-preprocessing-container .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.data-preprocessing-container .empty-text {
+    font-size: 1.1rem;
+    font-weight: 500;
 }
