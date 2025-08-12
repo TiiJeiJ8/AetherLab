@@ -24,6 +24,8 @@
     "vue-router": "^4.0.3",
     "vue-virtual-scroller": "^2.0.0-beta.8",
     "vuex": "^4.0.0",
+    "vxe-table": "^4.15.6",
+    "xe-utils": "^3.7.8",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
