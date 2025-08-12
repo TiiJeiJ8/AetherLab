@@ -30,8 +30,6 @@ graph TB
     
     style A fill:#e23e57
     style B fill:#c06c84
-    style I fill:#c9d6df
-    style L fill:#c9d6df
 
 ```
 
