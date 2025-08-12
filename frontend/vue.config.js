@@ -5,6 +5,9 @@ module.exports = defineConfig({
   devServer: {
     historyApiFallback: true, // 解决前端路由刷新404问题
     port, // 设置端口
+    // client: {
+    //   overlay: false // 关闭前端 overlay 报错浮层
+    // }
   },
   transpileDependencies: true,
   publicPath: './', // 修改目录
