@@ -7,14 +7,21 @@
       <!-- 左侧 Sidebar -->
       <SideBar
         position="left"
-          :collapsedWidth="40"
+          :collapsedWidth="30"
           :expandedWidth="300"
       >
-        <!-- 模块导航列表 -->
-        <div class="sidebar-nav-item" v-for="item in sidebarModules" :key="item.id">
-          <span class="sidebar-icon">{{ item.icon }}</span>
-          <span class="sidebar-label">{{ item.label }}</span>
-        </div>
+        <!-- 模块导航列表（支持下拉） -->
+        <!-- 侧边栏树形菜单 -->
+        <SidebarItem
+          v-for="item in sidebarModules"
+          :key="item.id"
+          :item="item"
+          :level="0"
+          :expanded-items="expandedItems"
+          :active-id="activeSidebarId"
+          @toggle="handleSidebarToggle"
+          @select="handleSidebarSelect"
+        />
       </SideBar>
 
       <!-- 右侧主内容区 -->
@@ -29,7 +36,7 @@
               <div class="table-header">
                 <!-- 文件选择器 -->
                 <div class="file-selector" v-if="workspaceFiles && workspaceFiles.length > 0">
-                  <label>当前文件：</label>
+                  <label>Current File:</label>
                   <select v-model="currentActiveFile" @change="switchFile">
                     <option v-for="file in workspaceFiles" :key="file.name" :value="file.name">
                       {{ file.name }}
@@ -38,60 +45,48 @@
                 </div>
                 <!-- 数据类型切换 -->
                 <div class="data-type-selector" v-if="currentActiveFile">
-                  <label>数据类型：</label>
+                  <label>Data Type:</label>
                   <div class="radio-group">
                     <label class="radio-item">
                       <input type="radio" v-model="dataType" value="raw" />
-                      原始数据
+                      Raw Data
                     </label>
                     <label class="radio-item">
                       <input type="radio" v-model="dataType" value="processed" />
-                      预处理后
+                      Processed
                     </label>
                   </div>
                 </div>
               </div>
 
-              <!-- 虚拟滚动表格区 -->
-                        <!-- 数据表格 -->
-          <div class="virtual-table-container" v-if="currentTableData.length > 0">
-            <!-- 表头 -->
-            <div class="table-header" v-if="currentTableData[0]">
-              <div
-                v-for="(header, index) in currentTableData[0]"
-                :key="index"
-                class="table-cell"
-              >
-                {{ header }}
-              </div>
-            </div>
-
-            <!-- 虚拟滚动表格主体 -->
-            <RecycleScroller
-              class="table-body"
-              :items="tableRows"
-              :item-size="32"
-              key-field="rowIndex"
-              v-slot="{ item }"
-            >
-              <div class="table-row" :data-row-index="item.rowIndex">
-                <div
-                  v-for="(cell, cellIndex) in item.data"
-                  :key="cellIndex"
-                  class="table-cell"
-                  :title="String(cell)"
+              <!-- vxe-table 虚拟滚动表格区 -->
+              <div class="virtual-table-container" v-if="currentTableData.length > 0">
+                <vxe-table
+                  :data="vxeTableData"
+                  border
+                  show-overflow
+                  height="100%"
+                  :scroll-y="{enabled: true, gt: 20}"
+                  :scroll-x="{enabled: true, gt: 10}"
+                  :row-config="{height: 32}"
+                  :column-config="{resizable: true}"
                 >
-                  {{ cell }}
-                </div>
+                  <vxe-column
+                    v-for="col in vxeTableColumns"
+                    :key="col.field"
+                    :field="col.field"
+                    :title="col.title"
+                    :min-width="100"
+                    :show-overflow="true"
+                  />
+                </vxe-table>
               </div>
-            </RecycleScroller>
-          </div>
 
               <!-- 空状态 -->
               <div class="empty-state" v-else>
                 <div class="empty-icon">📊</div>
                 <div class="empty-text">
-                  {{ (!workspaceFiles || workspaceFiles.length === 0) ? '请先上传文件到工作区' : '当前文件暂无数据' }}
+                  {{ (!workspaceFiles || workspaceFiles.length === 0) ? 'Please upload files to workspace first' : 'No data in current file' }}
                 </div>
               </div>
             </section>
@@ -154,9 +149,9 @@ import FileUploadModal from '@/components/Common/FileUploadModal.vue'
 import DataPreviewModal from '@/components/Common/DataPreviewModal.vue'
 import FileWorkspace from '@/components/Common/FileWorkspace.vue'
 import FileStructurePanel from '@/components/Common/FileStructurePanel.vue'
-// 使用RecycleScroller进行虚拟滚动
-import { RecycleScroller } from 'vue-virtual-scroller'
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+import SidebarItem from '@/components/Common/SidebarItem.vue'
+import 'vxe-table/lib/style.css'
+import { VXETable, Table as VXETableComponent, Column as VXETableColumn } from 'vxe-table'
 import { workspaceFiles, fileDataMap, showDataPreview, currentDataFile, previewData } from '@/assets/JS/utils/dataStructureOptimize.js'
 import { handleWorkspaceUpdate, handleWorkspaceRemove, handleWorkspacePreview, loadFilePreview, handleWorkspaceClear } from '@/assets/JS/utils/workforceUtils.js'
 
@@ -171,15 +166,78 @@ const topBarActions = [
   { type: 'button', label: 'Back2Home', to: '/', external: false },
 ]
 
-// 侧边栏模块导航
+// 侧边栏模块导航，支持多级树结构
 const sidebarModules = [
-  { id: 'quality', icon: '📊', label: 'Data Quality Overview' },
-  { id: 'clean', icon: '🧹', label: 'Data Cleaning' },
-  { id: 'transform', icon: '🔄', label: 'Data Transformation' },
-  { id: 'filter', icon: '🔍', label: 'Data Filtering' },
-  { id: 'feature', icon: '🧩', label: 'Feature Engineering' },
-  { id: 'missing', icon: '🖊', label: 'Advanced Imputation' },
+  {
+    id: 'quality', icon: '📊', label: 'Data Quality Overview',
+    children: [
+      { id: 'quality-overview', label: 'Overview' },
+      { id: 'quality-report', label: 'Quality Report' }
+    ]
+  },
+  {
+    id: 'clean', icon: '🧹', label: 'Data Cleaning',
+    children: [
+      { id: 'remove-duplicates', label: 'Remove Duplicates' },
+      { id: 'outlier-detect', label: 'Outlier Detection' }
+    ]
+  },
+  {
+    id: 'transform', icon: '🔄', label: 'Data Transformation',
+    children: [
+      { id: 'normalize', label: 'Normalize' },
+      { id: 'encode', label: 'Encode' }
+    ]
+  },
+  {
+    id: 'filter', icon: '🔍', label: 'Data Filtering',
+    children: [
+      { id: 'filter-rows', label: 'Filter Rows' },
+      { id: 'filter-columns', label: 'Filter Columns' }
+    ]
+  },
+  {
+    id: 'feature', icon: '🧩', label: 'Feature Engineering',
+    children: [
+      { id: 'feature-select', label: 'Feature Selection' },
+      { id: 'feature-generate', label: 'Feature Generation' }
+    ]
+  },
+  {
+    id: 'missing', icon: '🖊', label: 'Advanced Imputation',
+    children: [
+      { id: 'fill-missing', label: 'Fill Missing' },
+      { id: 'impute-advanced', label: 'Advanced Impute' }
+    ]
+  }
 ]
+
+// 侧边栏展开状态和选中项
+const expandedItems = ref(new Set())
+const activeSidebarId = ref('')
+
+function handleSidebarToggle(id) {
+  if (expandedItems.value.has(id)) {
+    expandedItems.value.delete(id)
+  } else {
+    expandedItems.value.add(id)
+  }
+}
+function handleSidebarSelect(id) {
+  activeSidebarId.value = id
+}
+
+// 侧边栏展开状态
+const expandedModules = ref([]) // 存储已展开的大类id
+
+// 切换展开/收起
+function toggleModule(id) {
+  if (expandedModules.value.includes(id)) {
+    expandedModules.value = expandedModules.value.filter(mid => mid !== id)
+  } else {
+    expandedModules.value.push(id)
+  }
+}
 
 // 文件上传相关
 const showFileUpload = ref(false)
@@ -247,6 +305,23 @@ const tableRows = computed(() => {
     rowIndex: index,
     data: row
   }))
+})
+
+// vxe-table 列和数据适配
+const vxeTableColumns = computed(() => {
+  if (!currentTableData.value.length) return []
+  const headers = currentTableData.value[0]
+  return headers.map(h => ({ field: String(h), title: String(h) }))
+})
+const vxeTableData = computed(() => {
+  if (!currentTableData.value.length) return []
+  const headers = currentTableData.value[0]
+  // 只取数据行（去掉第一行表头）
+  return currentTableData.value.slice(2).map(row => {
+    const obj = {}
+    headers.forEach((h, i) => { obj[h] = row[i] })
+    return obj
+  })
 })
 
 // 文件切换

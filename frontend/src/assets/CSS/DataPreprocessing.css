@@ -12,7 +12,8 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
-    padding: 24px 32px 0 32px;
+    padding: 24px 40px 0 48px;
+    /* 左右边距加大，左侧更靠右 */
 }
 
 /* 侧边栏导航项样式 */
@@ -43,11 +44,56 @@
     transition: none;
 }
 
+.sidebar-main-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 10px;
+    padding: 10px 6px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.sidebar-main-item:hover {
+    background: rgba(120, 120, 120, 0.08);
+}
+
+.sidebar-arrow {
+    margin-left: auto;
+    transition: transform 0.2s;
+}
+
+.sidebar-arrow.expanded {
+    transform: rotate(180deg);
+}
+
+.sidebar-sub-list {
+    padding-left: 28px;
+    margin-top: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sidebar-sub-item {
+    padding: 6px 0 6px 8px;
+    font-size: 0.98em;
+    color: var(--text-secondary, #666);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.sidebar-sub-item:hover {
+    background: var(--hover-bg, #f0f0f0);
+    color: var(--primary-color, #4c63b6);
+}
+
 /* 主区域横向布局 */
 .data-preprocessing-container .main-area-horizontal {
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 80px);
+    height: calc(90vh - 40px);
     min-width: 0;
     width: 100%;
     background: none;
@@ -65,7 +111,7 @@
     flex-direction: column;
     position: relative;
     transition: width 0.2s;
-    overflow: auto;
+    overflow: hidden;
     height: 100%;
 }
 
@@ -109,11 +155,20 @@
 .data-preprocessing-container .table-header {
     padding: 16px 20px;
     background: var(--bg-color, #f8f9fa);
-    border-bottom: 1px solid #e9ecef;
     display: flex;
     gap: 24px;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    /* 由外层容器控制横向滚动 */
+    overflow-x: visible;
+    white-space: nowrap;
+}
+
+/* 横向滚动同步容器 */
+.data-preprocessing-container .virtual-table-scroll-x {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
 }
 
 .data-preprocessing-container .file-selector,
@@ -158,16 +213,17 @@
 
 .data-preprocessing-container .virtual-table-container {
     flex: 1;
-    height: calc(100% - 70px);
+    max-height: 100%;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: auto;
 }
 
 /* 虚拟滚动表格主体 */
 .data-preprocessing-container .table-body {
     flex: 1;
-    height: 100%;
+    min-height: 0;
+    max-height: 100%;
     overflow: auto;
 }
 
@@ -232,4 +288,77 @@
 .data-preprocessing-container .empty-text {
     font-size: 1.1rem;
     font-weight: 500;
+}
+
+/* vxe-table dark mode adaptation */
+:root[data-theme='dark'] .vxe-table--render-default {
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+:root[data-theme='dark'] .vxe-table--header {
+    background: var(--bg-secondary);
+    color: var(--text-color);
+}
+
+:root[data-theme='dark'] .vxe-header--column {
+    background: var(--bg-secondary);
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-color) !important;
+    border-right: 1px solid var(--border-color) !important;
+}
+
+:root[data-theme='dark'] .vxe-table--body {
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+:root[data-theme='dark'] .vxe-body--column {
+    background: var(--bg-color);
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+:root[data-theme='dark'] .vxe-table--border-line {
+    border-color: var(--border-color);
+}
+
+:root[data-theme='dark'] .vxe-table--footer {
+    background: var(--bg-tertiary);
+    color: var(--text-color);
+}
+
+:root[data-theme='dark'] .vxe-table--render-default ::-webkit-scrollbar {
+    background: var(--bg-color);
+    width: 8px;
+    height: 8px;
+}
+
+:root[data-theme='dark'] .vxe-table--render-default ::-webkit-scrollbar-thumb {
+    background: #666c7a;
+    border-radius: 4px;
+}
+
+:root[data-theme='dark'] .vxe-table--render-default ::-webkit-scrollbar-thumb:hover {
+    background: #888fa3;
+}
+
+:root[data-theme='dark'] .vxe-table--render-default ::-webkit-scrollbar-corner {
+    background: var(--bg-color);
+}
+
+:root[data-theme='dark'] .vxe-table--scroll-y-top-corner {
+    background: var(--bg-secondary);
+    /* 或其它深色 */
+    border-bottom: 1px solid var(--border-color);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
