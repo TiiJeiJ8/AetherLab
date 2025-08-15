@@ -4,7 +4,7 @@
     <section class="content-section">
         <!-- LOGO -->
         <h1 style="user-select: none;"><span class="float-rocket-icon">🚀</span><br>Quick Start</h1>
-        <p class="section-description" style="margin-bottom: 5%">Welcome to AetherLab! This is a powerful platform for data visualization, processing, and modeling.</p>
+        <p class="section-description" style="margin-bottom: 5%">Welcome to AetherLab! This is a powerful platform for data visualization and processing.</p>
 
         <!-- Contribution button -->
         <div class="contribution-links">
@@ -29,12 +29,12 @@
         <section id="what-is-aetherLab" class="content-section">
             <h2>❓ What is AetherLab</h2>
             <div class="content-card">
-                <p>AetherLab is a lightweight data processing and visualization tool for individuals and small teams. Built on the ECharts library and a Flask + Vue hybrid architecture, it enables multi-user collaboration over a local area network (LAN).</p>
+                <p>AetherLab is a lightweight data processing and visualization tool for individuals and small teams. Built on the ECharts library and a Flask + Vue hybrid architecture.</p>
                 <ul>
                 <li>Supports 25+ chart types</li>
-                <li>Flexible data filtering</li>
-                <li>Powerful official theme system</li>
-                <li>LAN multi-user collaboration</li>
+                <li>Rich visual customization options</li>
+                <li>Powerful data preprocessing</li>
+                <li>More features coming soon!</li>
                 <!--todo More -->
                 </ul>
             </div>
@@ -242,11 +242,11 @@ const features = [
         description: 'Separate frontend (input/display) and backend (high-performance computing on a local LAN host).'
     },
     {
-        id: 'collaboration',
-        icon: '👥',
-        title: 'Multi-user Collaboration',
-        description: 'Supports simultaneous use by multiple users in a LAN.'
-    },
+        id: 'moreFeatures',
+        icon: '✨',
+        title: 'More Features Coming Soon!',
+        description: 'Stay tuned for more exciting features and improvements.'
+    }
     // More...
 ]
 
