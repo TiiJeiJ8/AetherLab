@@ -3,7 +3,6 @@
     min-height: 100vh;
     background: var(--bg-color);
     padding-top: 80px;
-    /* 留出TopBar高度 */
 }
 
 /* SideBar宽度由组件控制 */
@@ -13,7 +12,6 @@
     flex-direction: column;
     min-width: 0;
     padding: 24px 40px 0 48px;
-    /* 左右边距加大，左侧更靠右 */
 }
 
 /* 侧边栏导航项样式 */
