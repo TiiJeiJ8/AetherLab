@@ -27,7 +27,7 @@ export const chartsTooltipConfig = {
         useCases: ["Correlation Analysis", "Outlier Detection"],
         description: "Reveals relationships between two continuous variables"
     },
-    "GEO/MAP": {
+    Geo_Map: {
         dataRequirements: ["Geographic Data"],
         useCases: ["Geographic Analysis"],
         description: "Visualizes data with geographic context"
