@@ -425,7 +425,7 @@ const filteredCharts = computed(() => {
         Heatmap: '🔥', Graph: '🕸️', Tree: '🌳', Treemap: '🗂️', Sunburst: '☀️',
         Parallel: '📏', Sankey: '🌊', Funnel: '🔄', Gauge: '📟',
         Candlestick: '🕯️', PictorialBar: '🖼️', ThemeRiver: '🌈', Calendar: '📅',
-        'GEO/MAP': '🌍'
+        GEO_MAP: '🌍'
     }
     return Object.entries(chartsTooltipConfig)
         .filter(([name, cfg]) => {
