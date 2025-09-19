@@ -5,6 +5,32 @@
     padding-top: 80px;
 }
 
+.data-preprocessing-container .main-content-preprocess {
+    display: flex;
+    gap: 32px;
+    margin-left: 7%;
+    margin-right: 0;
+    margin-top: 10px;
+    height: 900px;
+    width: calc(100% - 7% - 7%);
+}
+
+@media (max-width: 767px) {
+    .data-preprocessing-container .main-content-preprocess {
+        margin: 20px 30px 0 80px;
+        gap: 16px;
+        height: auto;
+    }
+}
+
+.data-preprocessing-container .preprocessing-main-section {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* SideBar宽度由组件控制 */
 .data-preprocessing-container .main-area {
     flex: 1;

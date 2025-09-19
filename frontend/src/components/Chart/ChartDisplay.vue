@@ -18,7 +18,6 @@ const currentIcon = computed(() => {
     const icon = iconList[iconIndex.value]
     return icon && typeof icon === 'object' ? icon : null
 })
-/* eslint-disable */
 import { ref, watch, onMounted, onBeforeUnmount, computed } from 'vue'
 import LineChartIcon from '../svg/LineChartIcon.vue'
 import BarChartIcon from '../svg/BarChartIcon.vue'
@@ -180,45 +179,45 @@ function startIconLoop() {
     }, 3500)
 }
 
-// 获取对比色函数
-function getContrastColor(bg) {
-    let r, g, b
-    if (!bg) return '#333'
-    if (bg.startsWith('#')) {
-        if (bg.length === 4) {
-        r = parseInt(bg[1] + bg[1], 16)
-        g = parseInt(bg[2] + bg[2], 16)
-        b = parseInt(bg[3] + bg[3], 16)
-        } else if (bg.length === 7) {
-        r = parseInt(bg.slice(1, 3), 16)
-        g = parseInt(bg.slice(3, 5), 16)
-        b = parseInt(bg.slice(5, 7), 16)
-        }
-    } else if (bg.startsWith('rgb')) {
-        const arr = bg.match(/\d+/g)
-        if (arr && arr.length >= 3) {
-        r = parseInt(arr[0])
-        g = parseInt(arr[1])
-        b = parseInt(arr[2])
-        }
-    }
-    if (r === undefined || g === undefined || b === undefined) return '#eee'
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b)
-    return luminance > 180 ? '#222' : '#333'
-}
+// // 获取对比色函数
+// function getContrastColor(bg) {
+//     let r, g, b
+//     if (!bg) return '#333'
+//     if (bg.startsWith('#')) {
+//         if (bg.length === 4) {
+//         r = parseInt(bg[1] + bg[1], 16)
+//         g = parseInt(bg[2] + bg[2], 16)
+//         b = parseInt(bg[3] + bg[3], 16)
+//         } else if (bg.length === 7) {
+//         r = parseInt(bg.slice(1, 3), 16)
+//         g = parseInt(bg.slice(3, 5), 16)
+//         b = parseInt(bg.slice(5, 7), 16)
+//         }
+//     } else if (bg.startsWith('rgb')) {
+//         const arr = bg.match(/\d+/g)
+//         if (arr && arr.length >= 3) {
+//         r = parseInt(arr[0])
+//         g = parseInt(arr[1])
+//         b = parseInt(arr[2])
+//         }
+//     }
+//     if (r === undefined || g === undefined || b === undefined) return '#eee'
+//     const luminance = (0.299 * r + 0.587 * g + 0.114 * b)
+//     return luminance > 180 ? '#222' : '#333'
+// }
 
-function getCssVar(name) {
-    return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-}
-function isTransparent(bg) {
-    if (!bg) return true
-    if (bg === 'transparent') return true
-    if (bg.startsWith('rgba')) {
-        const arr = bg.match(/\d+(\.\d+)?/g)
-        if (arr && arr.length === 4 && parseFloat(arr[3]) === 0) return true
-    }
-    return false
-}
+// function getCssVar(name) {
+//     return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+// }
+// function isTransparent(bg) {
+//     if (!bg) return true
+//     if (bg === 'transparent') return true
+//     if (bg.startsWith('rgba')) {
+//         const arr = bg.match(/\d+(\.\d+)?/g)
+//         if (arr && arr.length === 4 && parseFloat(arr[3]) === 0) return true
+//     }
+//     return false
+// }
 
 // 串行锁 promise
 let renderChartLock = Promise.resolve()

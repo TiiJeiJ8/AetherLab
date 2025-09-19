@@ -197,21 +197,23 @@
     <section id="chart-history" class="content-section">
         <h2>📜 Chart History</h2>
         <section class="content-card">
-                <p>
-                    The Chart History section allows you to:
-                    <ul style="margin: 8px 0 8px 20px;">
-                        <li>Save your generated charts for future use</li>
-                        <li>Preview and restore any saved chart</li>
-                        <li>Edit chart titles for easy identification</li>
-                        <li>Delete charts you no longer need</li>
-                    </ul>
-                    <b>How to use:</b>
-                    <ol style="margin: 8px 0 8px 20px;">
-                        <li>After configuring and generating a chart, click <b>Save to History</b> in the configuration panel.</li>
-                        <li>Click the <b>History button</b> to open the Chart History panel.</li>
-                        <li><b>Click thumbnail</b> to reproduce the chart, or <b>edit/delete</b> the chart as needed.</li>
-                    </ol>
-                </p>
+            <div class="chart-history-body">
+                <p>The Chart History section allows you to:</p>
+
+                <ul style="margin: 8px 0 8px 20px;">
+                    <li>Save your generated charts for future use</li>
+                    <li>Preview and restore any saved chart</li>
+                    <li>Edit chart titles for easy identification</li>
+                    <li>Delete charts you no longer need</li>
+                </ul>
+
+                <p><b>How to use:</b></p>
+                <ol style="margin: 8px 0 8px 20px;">
+                    <li>After configuring and generating a chart, click <b>Save to History</b> in the configuration panel.</li>
+                    <li>Click the <b>History button</b> to open the Chart History panel.</li>
+                    <li><b>Click thumbnail</b> to reproduce the chart, or <b>edit/delete</b> the chart as needed.</li>
+                </ol>
+            </div>
         </section>
     </section>
 

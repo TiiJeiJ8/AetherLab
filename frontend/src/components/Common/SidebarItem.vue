@@ -68,10 +68,15 @@ function emitSelect(id) { emit('select', id) }
     flex: 1;
     font-size: 1em;
     color: var(--text-color, #333);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 .sidebar-tree-arrow {
     margin-left: auto;
     transition: transform 0.2s;
+    flex-shrink: 0;
 }
 .sidebar-tree-arrow.expanded {
     transform: rotate(180deg);
@@ -90,5 +95,9 @@ function emitSelect(id) { emit('select', id) }
 }
 .fade-enter-from, .fade-leave-to {
     opacity: 0;
+}
+
+.sidebar-tree-icon {
+    flex-shrink: 0;
 }
 </style>

@@ -2,7 +2,7 @@
 <div class="chart-config-panel">
     <!-- 右侧边栏总标题 -->
     <div class="panel-header-CCP" style="position: relative; display: flex; align-items: center; justify-content: space-between;">
-        <h3 style="margin: 0;">
+        <h3 style="margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">
             Chart Configuration
         </h3>
         <!-- 图表类型及相关提示 -->

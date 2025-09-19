@@ -1,0 +1,75 @@
+.data-preprocessing-config-panel {
+    width: 100%;
+    height: 100%;
+    margin-right: 10%;
+    background: var(--bg-color, #ffffff);
+    overflow-y: auto;
+    transition: all 0.3s ease;
+    animation: slideIn 0.5s ease;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+}
+
+.data-preprocessing-config-panel::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari and Opera */
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 面板总标题 */
+.panel-header-DCP {
+    margin-bottom: 25px;
+    padding: 20px 0 15px 0;
+    border-bottom: 2px solid var(--border-color, #e5e5e5);
+    transition: all 0.3s ease;
+    position: relative;
+    animation: fadeInDown 0.5s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.panel-header-DCP::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    transition: width 0.5s ease;
+}
+
+.panel-header-DCP:hover::before {
+    width: 100%;
+}
+
+.panel-header-DCP h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-color, #333333);
+    transition: color 0.3s ease;
+    position: relative;
+}
