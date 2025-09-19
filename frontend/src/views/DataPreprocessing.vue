@@ -27,7 +27,7 @@
       <!-- 主内容区 -->
       <div class="main-content-preprocess">
         <section class="preprocessing-main-section">
-          <preprocessingDisplay />
+          <preprocessingDisplay :activeSidebarId="activeSidebarId" />
         </section>
       </div>
 
@@ -83,7 +83,7 @@
 
 <script setup>
 /* eslint-disable */
-import { ref, onMounted, onBeforeUnmount, nextTick, computed, watch } from 'vue'
+import { ref } from 'vue'
 import TopBar from '@/components/Common/TopBar.vue'
 import SideBar from '@/components/Common/SideBar.vue'
 import FileUploadModal from '@/components/Common/FileUploadModal.vue'
