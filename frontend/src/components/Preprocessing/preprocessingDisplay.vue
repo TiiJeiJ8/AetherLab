@@ -5,13 +5,14 @@
         <div class="empty-title">No Data Available</div>
         <div class="empty-desc">Please upload your data to <span class="faststart">get started with PREPROCESSING!</span></div>
     </div>
-    <div v-else class="preprocessing-content"></div>
+    <div v-else class="preprocessing-content">
+    </div>
 </div>
 </template>
 
 <script setup>
 /* eslint-disable */
-import { ref, watch, onMounted, onBeforeUnmount, computed } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount, computed, defineProps } from 'vue'
 import LineChartIcon from '../svg/LineChartIcon.vue'
 import BarChartIcon from '../svg/BarChartIcon.vue'
 import PieChartIcon from '../svg/PieChartIcon.vue'
@@ -33,6 +34,7 @@ import PictorialBarChartIcon from '../svg/PictorialBarChartIcon.vue'
 import ThemeRiverChartIcon from '../svg/ThemeRiverChartIcon.vue'
 import CalendarChartIcon from '../svg/CalendarChartIcon.vue'
 import AnimateIcon from '../Common/AnimateIcon.vue';
+import { workspaceFiles } from '@/assets/JS/utils/dataStructureOptimize.js'
 
 const iconList = [
     BarChartIcon,
@@ -84,6 +86,22 @@ onBeforeUnmount(() => {
     clearTimeout(fadeTimer)
 })
 
+const hasDataInWorkspace = computed(() => {
+    // 检查是否有有效数据文件
+    if (!workspaceFiles.value || workspaceFiles.value.length === 0) return false
+    // 至少有一个文件有 headers 且有数据行
+    return workspaceFiles.value.some(file => {
+        // 兼容多种数据结构
+        if (Array.isArray(file.data) && file.data.length > 0 && Array.isArray(file.headers) && file.headers.length > 0) {
+        return true
+        }
+        // 兼容 parsedData
+        if (Array.isArray(file.parsedData) && file.parsedData.length > 0) {
+        return true
+        }
+        return false
+    })
+})
 </script>
 
 <style scoped>
