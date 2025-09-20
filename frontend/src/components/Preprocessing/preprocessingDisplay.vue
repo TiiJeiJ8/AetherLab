@@ -6,6 +6,75 @@
         <div class="empty-desc">Please upload your data to <span class="faststart">get started with PREPROCESSING!</span></div>
     </div>
     <div v-else class="preprocessing-content">
+        <div v-if="props.activeSidebarId === 'quality'">
+            <!-- 质量分析内容 -->
+            <h2>Data Quality Analysis</h2>
+            <p>Here you can analyze the quality of your data, including missing values, duplicates, and outliers.</p>
+        </div>
+        <div v-else-if="props.activeSidebarId === 'raw-preview'">
+            <!-- 原始数据预览内容 -->
+            <h2>Raw Data Preview</h2>
+            <p>Here you can preview the raw data before any preprocessing steps are applied.</p>
+        </div>
+        <div v-else-if="props.activeSidebarId === 'processed-preview'">
+            <!-- 预处理后数据预览内容 -->
+            <h2>Processed Data Preview</h2>
+            <p>Here you can preview the data after preprocessing steps have been applied.</p>
+        </div>
+        <div v-else-if="props.activeSidebarId === 'remove-duplicates'">
+            <!-- 去重内容 -->
+            <h2>Remove Duplicates</h2>
+            <p>Here you can identify and remove duplicate records from your dataset.</p>
+        </div>
+        <div v-else-if="props.activeSidebarId === 'outlier-detect'">
+            <!-- 异常值检测内容 -->
+            <h2>Outlier Detection</h2>
+            <p>Here you can detect and handle outliers in your dataset.</p>
+        </div>
+        <div v-else-if="props.activeSidebarId === 'normalize'">
+            <!-- 归一化内容 -->
+            <h2>Data Normalization</h2>
+            <p>Here you can apply normalization techniques to scale your data.</p>
+        </div>
+        <div v-else-if="props.activeSidebarId === 'encode'">
+            <!-- 编码内容 -->
+            <h2>Data Encoding</h2>
+            <p>Here you can encode categorical variables into numerical format.</p>
+        </div>
+        <div v-else-if="props.activeSidebarId === 'filter-rows'">
+            <!-- 行过滤内容 -->
+            <h2>Row Filtering</h2>
+            <p>Here you can filter rows based on specific criteria.</p>
+        </div>
+        <div v-else-if="props.activeSidebarId === 'filter-columns'">
+            <!-- 列过滤内容 -->
+            <h2>Column Filtering</h2>
+            <p>Here you can filter columns based on specific criteria.</p>
+        </div>
+        <div v-else-if="props.activeSidebarId === 'feature-select'">
+            <!-- 特征选择内容 -->
+            <h2>Feature Selection</h2>
+            <p>Here you can select important features for your analysis.</p>
+        </div>
+        <div v-else-if="props.activeSidebarId === 'feature-generate'">
+            <!-- 特征生成内容 -->
+            <h2>Feature Generation</h2>
+            <p>Here you can generate new features from existing data.</p>
+        </div>
+        <div v-else-if="props.activeSidebarId === 'fill-missing'">
+            <!-- 填充缺失值内容 -->
+            <h2>Fill Missing Values</h2>
+            <p>Here you can fill missing values using various strategies.</p>
+        </div>
+        <div v-else-if="props.activeSidebarId === 'impute-advanced'">
+            <!-- 高级插补内容 -->
+            <h2>Advanced Imputation</h2>
+            <p>Here you can apply advanced imputation techniques to handle missing data.</p>
+        </div>
+        <div v-else>
+            <h2>Welcome to Data Preprocessing</h2>
+            <p>Select a module from the sidebar to get started.</p>
+        </div>
     </div>
 </div>
 </template>
@@ -84,6 +153,14 @@ onMounted(() => {
 onBeforeUnmount(() => {
     clearInterval(iconTimer)
     clearTimeout(fadeTimer)
+})
+
+// 接收来自父组件的 activeSidebarId prop
+const props = defineProps({
+    activeSidebarId: {
+        type: String,
+        default: ''
+    }
 })
 
 const hasDataInWorkspace = computed(() => {
