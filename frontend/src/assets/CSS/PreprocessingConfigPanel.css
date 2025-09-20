@@ -73,3 +73,216 @@
     transition: color 0.3s ease;
     position: relative;
 }
+
+.preprocessing-func-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 0;
+    max-width: 50%;
+    text-align: right;
+    word-break: break-all;
+    white-space: normal;
+    padding: 4px 10px;
+    background: var(--primary-color, #5470c6);
+    color: white;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    box-shadow: 0 2px 8px var(--shadow-color, rgba(84, 112, 198, 0.3));
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    -webkit-animation: slideInRight 0.2s ease;
+    animation: slideInRight 0.2s ease;
+    animation-fill-mode: both;
+    animation-delay: 0.1s;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.preprocessing-func-tag::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border-radius: 12px;
+    opacity: 0;
+    filter: blur(8px);
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.preprocessing-func-tag:hover::after {
+    opacity: 0.7;
+}
+
+.preprocessing-func-tag:hover {
+    transform: translateY(-3px) scale(1.05);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 5px 20px var(--shadow-color, rgba(84, 112, 198, 0.5));
+}
+
+/* 暗黑主题适配 */
+[data-theme="dark"] .preprocessing-func-tag,
+:root.dark .preprocessing-func-tag {
+    background: var(--primary-color, #4264a2);
+    box-shadow: 0 2px 8px rgba(107, 158, 255, 0.3);
+}
+
+[data-theme="dark"] .preprocessing-func-tag::after,
+:root.dark .preprocessing-func-tag::after {
+    background: linear-gradient(135deg, var(--primary-color, #6b9eff), var(--accent-color, #a8d068));
+}
+
+[data-theme="dark"] .preprocessing-func-tag:hover,
+:root.dark .preprocessing-func-tag:hover {
+    text-shadow: 0 0 10px rgba(107, 158, 255, 0.6);
+    box-shadow: 0 5px 20px rgba(107, 158, 255, 0.4);
+}
+
+.preprocessing-func-name {
+    color: var(--text-color, #333333);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+}
+
+/* 提示框样式 */
+.preprocessing-tooltip {
+    background: var(--bg-color);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    max-width: 320px;
+    min-width: 280px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    animation: tooltipFadeIn 0.2s ease-out;
+}
+
+/* 深色模式下的提示框样式 */
+[data-theme="dark"] .preprocessing-tooltip {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.tooltip-header {
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+    padding-bottom: 8px;
+}
+
+.tooltip-title {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text-color);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.tooltip-description {
+    color: var(--text-color);
+    opacity: 0.8;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.tooltip-section {
+    margin-bottom: 12px;
+}
+
+.tooltip-section:last-child {
+    margin-bottom: 0;
+}
+
+.tooltip-section h4 {
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-color);
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tooltip-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tooltip-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.data-tag {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    color: #1565c0;
+    border: 1px solid #90caf9;
+}
+
+.use-case-tag {
+    background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+    color: #7b1fa2;
+    border: 1px solid #ce93d8;
+}
+
+/* 深色模式下的标签样式 */
+[data-theme="dark"] .data-tag {
+    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+    color: #dbeafe;
+    border-color: #60a5fa;
+}
+
+[data-theme="dark"] .use-case-tag {
+    background: linear-gradient(135deg, #581c87, #9333ea);
+    color: #f3e8ff;
+    border-color: #c084fc;
+}
+
+.tooltip-tag:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 提示框淡入动画 */
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
