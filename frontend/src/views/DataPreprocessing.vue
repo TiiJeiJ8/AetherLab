@@ -37,7 +37,7 @@
           :collapsedWidth="30"
           :expandedWidth="600"
       >
-      <PreprocessingConfigPanel />
+      <PreprocessingConfigPanel :activeSidebarId="activeSidebarId" />
       </SideBar>
 
       <!-- 文件上传弹窗 -->
