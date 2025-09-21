@@ -31,14 +31,17 @@
         </section>
       </div>
 
-      <!-- 右侧 Sidebar -->
-      <SideBar
-        position="right"
+      <!-- 右侧 Sidebar（有文件时淡入淡出显示，无文件时隐藏） -->
+      <transition name="fade-sidebar">
+        <SideBar
+          v-if="workspaceFiles.length && activeSidebarId !== 'quality'"
+          position="right"
           :collapsedWidth="30"
           :expandedWidth="600"
-      >
-      <PreprocessingConfigPanel :activeSidebarId="activeSidebarId" />
-      </SideBar>
+        >
+          <PreprocessingConfigPanel :activeSidebarId="activeSidebarId" />
+        </SideBar>
+      </transition>
 
       <!-- 文件上传弹窗 -->
       <FileUploadModal
@@ -93,7 +96,7 @@ import FileStructurePanel from '@/components/Common/FileStructurePanel.vue'
 import SidebarItem from '@/components/Common/SidebarItem.vue'
 import PreprocessingConfigPanel from '../components/Preprocessing/PreprocessingConfigPanel.vue'
 import preprocessingDisplay from '../components/Preprocessing/preprocessingDisplay.vue'
-import { workspaceFiles, fileDataMap, showDataPreview, currentDataFile, previewData } from '@/assets/JS/utils/dataStructureOptimize.js'
+import { workspaceFiles, showDataPreview, currentDataFile, previewData } from '@/assets/JS/utils/dataStructureOptimize.js'
 import { handleWorkspaceUpdate, handleWorkspaceRemove, handleWorkspacePreview, loadFilePreview, handleWorkspaceClear } from '@/assets/JS/utils/workforceUtils.js'
 
 // 顶部操作按钮
