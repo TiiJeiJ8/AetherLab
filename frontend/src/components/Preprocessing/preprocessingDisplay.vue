@@ -170,11 +170,11 @@ const hasDataInWorkspace = computed(() => {
     return workspaceFiles.value.some(file => {
         // 兼容多种数据结构
         if (Array.isArray(file.data) && file.data.length > 0 && Array.isArray(file.headers) && file.headers.length > 0) {
-        return true
+            return true
         }
         // 兼容 parsedData
         if (Array.isArray(file.parsedData) && file.parsedData.length > 0) {
-        return true
+            return true
         }
         return false
     })
