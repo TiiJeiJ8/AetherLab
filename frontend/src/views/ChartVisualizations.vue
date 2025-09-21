@@ -14,18 +14,22 @@
     </SideBar>
 
     <!-- 右侧边栏 -->
-    <SideBar
-    position="right"
-    :collapsedWidth="40"
-    :expandedWidth="400">
-    <ChartConfigPanel
-        :selectedChartType="selectedChartType"
-        :currentFile="currentStructureFile"
-        @config-change="handleConfigChange"
-        @generate-chart="handleGenerateChart"
-        @save-history="handleSaveHistory"
-    />
-    </SideBar>
+    <transition name="fade-sidebar">
+      <SideBar
+        v-if="workspaceFiles.length && selectedChartType != 'Unknown'"
+        position="right"
+        :collapsedWidth="40"
+        :expandedWidth="400"
+      >
+        <ChartConfigPanel
+            :selectedChartType="selectedChartType"
+            :currentFile="currentStructureFile"
+            @config-change="handleConfigChange"
+            @generate-chart="handleGenerateChart"
+            @save-history="handleSaveHistory"
+        />
+      </SideBar>
+    </transition>
 
     <!-- Empty Space -->
     <!-- <div class="empty-space"></div> -->
@@ -541,5 +545,50 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 .toast-fade-leave-to {
   opacity: 0;
   transform: translateX(-100%);
+}
+
+/* 右侧侧边栏弹性弹入动画 */
+.fade-sidebar-enter-active {
+    animation: sidebar-bounce-in 0.6s cubic-bezier(0.23, 1.12, 0.32, 1) both;
+}
+
+.fade-sidebar-leave-active {
+    animation: sidebar-bounce-out 0.35s cubic-bezier(0.6, -0.28, 0.74, 0.05) both;
+}
+
+.fade-sidebar-enter-from,
+.fade-sidebar-leave-to {
+    opacity: 0;
+    transform: translateX(60px) scale(0.98);
+}
+
+.fade-sidebar-enter-to,
+.fade-sidebar-leave-from {
+    opacity: 1;
+    transform: none;
+}
+
+@keyframes sidebar-bounce-in {
+    0% {
+        opacity: 0;
+        transform: translateX(24px) scale(0.985);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes sidebar-bounce-out {
+    0% {
+        opacity: 1;
+        transform: none;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(24px) scale(0.985);
+    }
 }
 </style>
