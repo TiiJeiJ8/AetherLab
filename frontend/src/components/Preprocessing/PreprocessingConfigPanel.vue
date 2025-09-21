@@ -72,6 +72,7 @@ const props = defineProps({
 const tooltip = reactive({
     visible: false,
     id: '',
+    label: '',
     description: '',
     dataRequirements: [],
     useCases: [],
@@ -118,7 +119,6 @@ function positionTooltip(event) {
         zIndex: 1000
     }
 }
-
 
 let tooltipTimeout = null
 function showTooltip(event, id) {
