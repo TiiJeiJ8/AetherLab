@@ -27,19 +27,24 @@
       <!-- 主内容区 -->
       <div class="main-content-preprocess">
         <section class="preprocessing-main-section">
-          <preprocessingDisplay :activeSidebarId="activeSidebarId" />
+          <preprocessingDisplay
+            :activeSidebarId="activeSidebarId"
+          />
         </section>
       </div>
 
       <!-- 右侧 Sidebar（有文件时淡入淡出显示，无文件时隐藏） -->
       <transition name="fade-sidebar">
         <SideBar
-          v-if="workspaceFiles.length && activeSidebarId !== 'quality'"
+          v-if="workspaceFiles.length"
           position="right"
           :collapsedWidth="30"
-          :expandedWidth="600"
+          :expandedWidth="563"
         >
-          <PreprocessingConfigPanel :activeSidebarId="activeSidebarId" />
+          <preprocessingConfigPanel
+            :activeSidebarId="activeSidebarId"
+            :files="workspaceFiles"
+            @file-selected="handleFileSelected" />
         </SideBar>
       </transition>
 
@@ -94,7 +99,7 @@ import DataPreviewModal from '@/components/Common/DataPreviewModal.vue'
 import FileWorkspace from '@/components/Common/FileWorkspace.vue'
 import FileStructurePanel from '@/components/Common/FileStructurePanel.vue'
 import SidebarItem from '@/components/Common/SidebarItem.vue'
-import PreprocessingConfigPanel from '../components/Preprocessing/PreprocessingConfigPanel.vue'
+import preprocessingConfigPanel from '../components/Preprocessing/preprocessingConfigPanel'
 import preprocessingDisplay from '../components/Preprocessing/preprocessingDisplay.vue'
 import { workspaceFiles, showDataPreview, currentDataFile, previewData } from '@/assets/JS/utils/dataStructureOptimize.js'
 import { handleWorkspaceUpdate, handleWorkspaceRemove, handleWorkspacePreview, loadFilePreview, handleWorkspaceClear } from '@/assets/JS/utils/workforceUtils.js'
@@ -102,7 +107,6 @@ import { handleWorkspaceUpdate, handleWorkspaceRemove, handleWorkspacePreview, l
 // 顶部操作按钮
 const topBarActions = [
   { type: 'button', label: 'File', onClick: uploadFiles },
-  { type: 'button', label: 'Save', onClick: () => {} },
   { type: 'button', label: 'Export', onClick: () => {} },
   { type: 'button', label: 'Undo', onClick: () => {} },
   { type: 'button', label: 'History', onClick: () => {} },
@@ -199,6 +203,12 @@ function uploadFiles() {
 // 文件结构面板相关
 const showStructurePanel = ref(false)
 const currentStructureFile = ref(null)
+const selectedFile = ref(null)
+
+function handleFileSelected(file) {
+  selectedFile.value = file
+  console.log('Selected file in DataPreprocessing:', file)
+}
 
 // 文件结构面板处理方法
 function handleShowStructure(file) {
