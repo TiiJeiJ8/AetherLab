@@ -16,6 +16,9 @@
         </div>
     </div>
 
+    <!-- 基本配置项区域 -->
+    <preprocessingBasicConfig :files="props.files" @file-selected="handleFileSelected" />
+
     <!-- Tooltip DOM -->
     <div
         v-if="tooltip.visible"
@@ -57,16 +60,28 @@
 
 <script setup>
 /* eslint-disable */
-import { defineProps, nextTick, reactive, ref, onUnmounted } from 'vue';
+import { defineProps, nextTick, reactive, ref, onUnmounted, defineEmits } from 'vue';
 import { preprocessingTooltipConfig } from '@/assets/JS/Config/preprocessingTooltipConfig.js';
+
+import preprocessingBasicConfig from '../Preprocessing/panel/preprocessingBasicConfig.vue'
+
+const emit = defineEmits(['file-selected'])
 
 // 接收来自父组件的 activeSidebarId prop
 const props = defineProps({
     activeSidebarId: {
         type: String,
         default: ''
+    },
+    files: {
+        type: Array,
+        default: () => []
     }
 })
+
+function handleFileSelected(file) {
+    emit('file-selected', file)
+}
 
 // Tooltip state and ref
 const tooltip = reactive({
