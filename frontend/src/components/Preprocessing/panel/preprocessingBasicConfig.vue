@@ -19,6 +19,8 @@
 import { ref, watch } from 'vue';
 import AutoRenderToggle from '../../Common/AutoRenderToggle.vue';
 
+const autoRender = ref(false)
+
 const props = defineProps({
     files: { type: Array, default: () => [] }
 })
@@ -56,6 +58,10 @@ watch(selectedFile, (newFile) => {
     animation-fill-mode: both;
     animation-delay: 0.35s;
 }
+[data-theme="dark"] .basic-config-section {
+    border: 1px solid #444;
+    background: var(--bg-secondary);
+}
 
 .basic-config-section .basic-config-title {
     font-size: 16px;
@@ -63,14 +69,15 @@ watch(selectedFile, (newFile) => {
     margin-bottom: 10px;
 }
 
-.basic-config-section .basic-config.item {
+.basic-config-section .basic-config-item {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    margin-top: 10px;
     flex-wrap: nowrap;
 }
 
-.basic-config-section .basic-config.item label {
+.basic-config-section .basic-config-item label {
     width: 120px;
     font-size: 14px;
     color: #333;
