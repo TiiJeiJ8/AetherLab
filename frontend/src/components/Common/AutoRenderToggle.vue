@@ -29,15 +29,13 @@
 
 <script setup>
 /* eslint-disable */
-import { ref, nextTick, defineProps, defineEmits } from 'vue'
+import { ref, nextTick, defineProps } from 'vue'
 import { getThemeIcon } from '@/assets/JS/SVG/icons.js'
 
 const props = defineProps({
     modelValue: Boolean
 })
 const emit = defineEmits(['update:modelValue'])
-
-
 
 const toggleTooltip = ref({ visible: false, text: '', style: {} })
 let tooltipPositioned = false

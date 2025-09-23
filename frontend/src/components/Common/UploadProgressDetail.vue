@@ -52,7 +52,7 @@
 
 <script setup>
 /* eslint-disable */
-import { computed, defineProps, defineEmits } from 'vue'
+import { computed, defineProps } from 'vue'
 import { getThemeIcon } from '../../assets/JS/SVG/icons.js'
 import { formatFileSize } from '../../assets/JS/utils/dataPreviewUtils.js'
 
