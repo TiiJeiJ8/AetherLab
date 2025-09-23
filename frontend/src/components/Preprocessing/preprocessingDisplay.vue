@@ -2,14 +2,13 @@
 <div class="preprocessing-display-container">
     <div v-if="!hasDataInWorkspace" class="empty-tip">
         <AnimateIcon :icon-list="iconList" :interval="7500" :fade="600" />
-        <div class="empty-title">No Data Available</div>
-        <div class="empty-desc">Please upload your data to <span class="faststart">get started with PREPROCESSING!</span></div>
+        <div class="empty-title" style="user-select: none;">No Data Available</div>
+        <div class="empty-desc" style="user-select: none;">Please upload your data to <span class="faststart">get started with PREPROCESSING!</span></div>
     </div>
     <div v-else class="preprocessing-content">
         <div v-if="props.activeSidebarId === 'quality'">
             <!-- 质量分析内容 -->
-            <h2>Data Quality Analysis</h2>
-            <p>Here you can analyze the quality of your data, including missing values, duplicates, and outliers.</p>
+            <dataQualityReport />
         </div>
         <div v-else-if="props.activeSidebarId === 'raw-preview'">
             <!-- 原始数据预览内容 -->
@@ -104,6 +103,7 @@ import ThemeRiverChartIcon from '../svg/ThemeRiverChartIcon.vue'
 import CalendarChartIcon from '../svg/CalendarChartIcon.vue'
 import AnimateIcon from '../Common/AnimateIcon.vue';
 import { workspaceFiles } from '@/assets/JS/utils/dataStructureOptimize.js'
+import dataQualityReport from './module/dataQualityReport'
 
 const iconList = [
     BarChartIcon,
