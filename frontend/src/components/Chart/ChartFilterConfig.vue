@@ -1,7 +1,7 @@
 <template>
 <div class="filter-panel filter-section" :class="{ collapsed }">
     <div class="filter-panel-header">
-        <span>Data Filtering</span>
+        <h4 class="filter-panel-title">Data Filtering</h4>
         <div class="logic-toggle-block">
             <div class="block-toggle-group" style="margin:0;">
                 <div class="block-toggle" :class="{ 'checked': logic==='AND' }">
@@ -48,7 +48,7 @@
 
 <script setup>
 /* eslint-disable */
-import { ref, computed, defineProps, defineEmits, watch } from 'vue'
+import { ref, computed, defineProps, watch } from 'vue'
 /**
  * Props
  * @prop {Object} modelValue - v-model 绑定的配置对象，必填

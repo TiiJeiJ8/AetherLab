@@ -1,7 +1,7 @@
 <template>
 <div class="advanced-section">
     <div class="section-header adv-header" @click="toggleCollapse">
-        <h4>Advanced Settings</h4>
+        <h4 class="adv-title">Advanced Settings</h4>
         <span class="collapse-icon" :class="{ collapsed: isCollapsed }">&#9660;</span>
     </div>
     <transition name="collapse">
@@ -121,6 +121,11 @@ function toggleCollapse() {
     cursor: pointer;
     padding: 8px 12px;
     user-select: none;
+}
+.adv-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 .collapse-icon {
     font-size: 16px;

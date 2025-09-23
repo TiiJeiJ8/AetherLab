@@ -1,7 +1,7 @@
 <template>
 <div class="mapping-section">
 <div class="mapping-section-header" style="display: flex; align-items: center; justify-content: space-between;">
-    <h4 style="margin: 0;">Data Mapping</h4>
+    <h4 class="mapping-title" style="margin: 0;">Data Mapping</h4>
     <slot name="title-append"></slot>
 </div>
 <div v-for="(item, index) in mappingConfig" :key="item.key" class="mapping-item">
@@ -148,6 +148,11 @@ function removeField(key, idx) {
 
 <style scoped>
 /* eslint-disable */
+.mapping-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 .mapping-multi-list {
     display: flex;
     flex-wrap: wrap;

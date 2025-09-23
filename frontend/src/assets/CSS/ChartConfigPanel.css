@@ -67,7 +67,7 @@
 
 .panel-header-CCP h3 {
     margin: 0;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 600;
     color: var(--text-color, #333333);
     transition: color 0.3s ease;

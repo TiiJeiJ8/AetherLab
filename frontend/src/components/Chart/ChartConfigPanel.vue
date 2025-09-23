@@ -26,8 +26,8 @@
             @update:modelValue="onMappingModelUpdate"
         >
             <template #title-append>
-            <!-- 自动渲染开关 -->
-            <AutoRenderToggle v-model="autoRender" />
+                <!-- 自动渲染开关 -->
+                <AutoRenderToggle v-model="autoRender" />
             </template>
         </ChartMappingConfig>
     </div>
