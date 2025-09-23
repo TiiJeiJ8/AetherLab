@@ -17,7 +17,12 @@
     </div>
 
     <!-- 基本配置项区域 -->
-    <preprocessingBasicConfig :files="props.files" @file-selected="handleFileSelected" />
+    <preprocessingBasicConfig :files="props.files" @file-selected="handleFileSelected" class="preprocessing-basic-config"/>
+
+    <!--todo 数据列拖拽放置区 -->
+    <preprocessingMappingPanel :activeSidebarId="props.activeSidebarId" class="preprocessing-mapping-panel"/>
+
+    <!--todo 模块功能配置区 -->
 
     <!-- Tooltip DOM -->
     <div
@@ -64,6 +69,7 @@ import { defineProps, nextTick, reactive, ref, onUnmounted, defineEmits } from '
 import { preprocessingTooltipConfig } from '@/assets/JS/Config/preprocessingTooltipConfig.js';
 
 import preprocessingBasicConfig from '../Preprocessing/panel/preprocessingBasicConfig.vue'
+import preprocessingMappingPanel from '../Preprocessing/panel/preprocessingMappingPanel.vue'
 
 const emit = defineEmits(['file-selected'])
 
@@ -174,4 +180,10 @@ onUnmounted(() => {
 
 <style scoped>
 @import '../../assets/CSS/PreprocessingConfigPanel.css';
+
+.preprocessing-basic-config + .preprocessing-mapping-panel {
+    border-top: 1px solid var(--border-color);
+    margin-top: 12px;
+    padding-top: 12px;
+}
 </style>
