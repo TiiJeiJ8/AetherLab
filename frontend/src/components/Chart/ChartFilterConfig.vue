@@ -48,7 +48,7 @@
 
 <script setup>
 /* eslint-disable */
-import { ref, computed, defineProps, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 /**
  * Props
  * @prop {Object} modelValue - v-model 绑定的配置对象，必填
