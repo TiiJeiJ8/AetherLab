@@ -263,7 +263,7 @@ function handleStructureMinimize(isMinimized) {
 }
 
 function handleColumnDrag(dragInfo) {
-  console.log('Column drag event:', dragInfo)
+  // console.log('Column drag event:', dragInfo)
   // 这里将来会处理列拖拽到图表配置的逻辑
   if (dragInfo.action === 'start') {
       console.log('Started dragging column:', dragInfo.column.name)
@@ -274,7 +274,8 @@ function handleColumnDrag(dragInfo) {
 
 // 图表配置处理方法
 function handleConfigChange(config) {
-  console.log('Chart config changed:', JSON.parse(JSON.stringify(config)))
+  // console.log('Chart config changed:', JSON.parse(JSON.stringify(config)))
+  console.log('Chart config changed:')
   
   // 检查并同步当前的主题状态
   const currentTheme = document.documentElement.getAttribute('data-theme')

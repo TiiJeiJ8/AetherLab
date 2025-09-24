@@ -1491,13 +1491,12 @@ export function mergeChartData(config, fileDataMap, nullHandlingType = 'ignore',
     validateParams(config, fileDataMap);
     let chartType = config.type;
 
-    console.log('[mergeChartData] Inferred chart type:', chartType);
+    // console.log('[mergeChartData] Inferred chart type:', chartType);
 
     const handler = chartTypeHandlers[chartType] || xyChartHandler;
 
-    console.log('[mergeChartData] Handler:', handler);
+    // console.log('[mergeChartData] Handler:', handler);
 
-    // 允许config.isAggregate传递到handler
     return handler(config, fileDataMap, { ...options, nullHandlingType, isAggregate: config.isAggregate });
 }
 

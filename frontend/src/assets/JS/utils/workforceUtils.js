@@ -7,10 +7,10 @@ import { currentDataFile, previewData, showDataPreview } from './dataStructureOp
 // 工作区相关方法
 export function handleWorkspaceUpdate(files) {
     workspaceFiles.value = [...files]
-    console.log('Workspace updated:', workspaceFiles.value.length, 'files')
+    // console.log('Workspace updated:', workspaceFiles.value.length, 'files')
     //! 调试：输出全局文件数据结构
-    console.log('workspaceFiles:', JSON.parse(JSON.stringify(workspaceFiles.value)))
-    console.log('fileDataMap:', JSON.parse(JSON.stringify(fileDataMap.value)))
+    // console.log('workspaceFiles:', JSON.parse(JSON.stringify(workspaceFiles.value)))
+    // console.log('fileDataMap:', JSON.parse(JSON.stringify(fileDataMap.value)))
 }
 
 export function handleWorkspaceRemove(file) {

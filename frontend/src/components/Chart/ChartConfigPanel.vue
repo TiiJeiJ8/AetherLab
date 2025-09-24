@@ -254,7 +254,7 @@ const chartData = computed(() => props.chartData || [])
 const isConfigValid = computed(() => {
     const type = (props.selectedChartType || '').toLowerCase();
     const cfg = chartConfig.value;
-    console.log('Current chart type:', type, 'with config:', JSON.parse(JSON.stringify(cfg)));
+    // console.log('Current chart type:', type, 'with config:', JSON.parse(JSON.stringify(cfg)));
     if (['line', 'bar', 'scatter'].includes(type)) {
         const xValid = cfg.xAxis && cfg.xAxis.field;
         const y = cfg.yAxis;

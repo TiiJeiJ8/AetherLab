@@ -204,7 +204,7 @@ const emit = defineEmits(['update:modelValue'])
 // 获取当前类型的basic配置
 const basicConfigList = computed(() => {
     const type = props.chartType
-    console.log('chartType:', type, 'chartTypeConfig:', chartTypeConfig[type])
+    // console.log('chartType:', type, 'chartTypeConfig:', chartTypeConfig[type])
     if (type && chartTypeConfig[type] && Array.isArray(chartTypeConfig[type].basic)) {
         return chartTypeConfig[type].basic
     }
