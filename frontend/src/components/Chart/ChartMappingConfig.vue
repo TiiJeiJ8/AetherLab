@@ -1,18 +1,18 @@
 <template>
 <div class="mapping-section">
-<div class="mapping-section-header" style="display: flex; align-items: center; justify-content: space-between;">
-    <h4 class="mapping-title" style="margin: 0;">Data Mapping</h4>
-    <slot name="title-append"></slot>
-</div>
-<div v-for="(item, index) in mappingConfig" :key="item.key" class="mapping-item">
-    <div class="mapping-item-header">
-        <label class="mapping-label">
-            {{ item.label }}
-            <span v-if="item.required" class="required-star">*</span>
-            <span v-if="item.description" class="desc-tip" :title="item.description" style="margin-left:4px;cursor:pointer;">❓</span>
-        </label>
-        <div class="mapping-type-tag">{{ item.type }}</div>
+    <div class="mapping-section-header" style="display: flex; align-items: center; justify-content: space-between;">
+        <h4 class="mapping-title" style="margin: 0;">Data Mapping</h4>
+        <slot name="title-append"></slot>
     </div>
+    <div v-for="(item, index) in mappingConfig" :key="item.key" class="mapping-item">
+        <div class="mapping-item-header">
+            <label class="mapping-label">
+                {{ item.label }}
+                <span v-if="item.required" class="required-star">*</span>
+                <span v-if="item.description" class="desc-tip" :title="item.description" style="margin-left:4px;cursor:pointer;">❓</span>
+            </label>
+            <div class="mapping-type-tag">{{ item.type }}</div>
+        </div>
         <div class="drop-zone"
             @dragover.prevent
             @dragenter.prevent="dragOverIndex = index"
