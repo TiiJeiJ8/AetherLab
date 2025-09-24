@@ -11,7 +11,6 @@
 <script setup>
 /* eslint-disable */
 import { ref } from 'vue'
-import { workspaceFiles, fileDataMap } from '@/assets/JS/utils/dataStructureOptimize.js'
 
 import { generateDataQualityReport } from '@/assets/JS/utils/reportGen.js'
 const report = ref(null)

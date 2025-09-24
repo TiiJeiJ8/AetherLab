@@ -17,61 +17,103 @@
     </div>
 
     <!-- 基本配置项区域 -->
-    <preprocessingBasicConfig :files="props.files" @file-selected="handleFileSelected" class="preprocessing-basic-config"/>
+    <preprocessingBasicConfig
+        :files="props.files"
+        @file-selected="handleFileSelected"
+        v-model:autoRender="autoRender"
+        v-model:useCustomDataColumns="useCustomDataColumns"
+        class="preprocessing-basic-config"
+    />
 
-    <!--todo 数据列拖拽放置区 -->
-    <preprocessingMappingPanel :activeSidebarId="props.activeSidebarId" class="preprocessing-mapping-panel"/>
+    <!-- 数据列拖拽放置区 -->
+    <transition name="slide-fade">
+        <preprocessingMappingPanel
+            v-if="useCustomDataColumns"
+            :activeSidebarId="props.activeSidebarId"
+            class="preprocessing-mapping-panel"
+            @update:mappedColumns="updateMappedColumns"
+        />
+    </transition>
 
     <!--todo 模块功能配置区 -->
 
-    <!-- Tooltip DOM -->
-    <div
-        v-if="tooltip.visible"
-        class="preprocessing-tooltip"
-        :style="tooltip.style"
-        ref="tooltipRef"
-    >
-        <div class="tooltip-header">
-            <span class="tooltip-title">{{ tooltip.label }}</span>
-            <span class="tooltip-description">{{ tooltip.description }}</span>
-        </div>
-        <div class="tooltip-section">
-            <h4>Data Requirements</h4>
-            <div class="tooltip-tags">
-                <span
-                    v-for="requirement in tooltip.dataRequirements"
-                    :key="requirement"
-                    class="tooltip-tag data-tag"
-                >
-                    {{ requirement }}
-                </span>
-            </div>
-        </div>
-        <div class="tooltip-section">
-            <h4>Use Cases</h4>
-            <div class="tooltip-tags">
-                <span
-                    v-for="useCase in tooltip.useCases"
-                    :key="useCase"
-                    class="tooltip-tag use-case-tag"
-                >
-                    {{ useCase }}
-                </span>
-            </div>
-        </div>
+    <!-- 操作按钮 -->
+    <div class="action-section">
+        <!-- 应用配置按钮 -->
+        <button
+            class="apply-btn"
+            :disabled="autoRender"
+            @click="applyConfiguration"
+        >
+            Apply Configuration
+        </button>
+        <!-- 重置配置按钮 -->
+        <button
+            class="reset-btn"
+        >
+            Reset Configuration
+        </button>
     </div>
+
+    <!-- Tooltip DOM -->
+    <transition name="fade">
+        <div
+            v-if="tooltip.visible"
+            class="preprocessing-tooltip"
+            :style="tooltip.style"
+            ref="tooltipRef"
+        >
+            <div class="tooltip-header">
+                <span class="tooltip-title">{{ tooltip.label }}</span>
+                <span class="tooltip-description">{{ tooltip.description }}</span>
+            </div>
+            <div class="tooltip-section">
+                <h4>Data Requirements</h4>
+                <div class="tooltip-tags">
+                    <span
+                        v-for="requirement in tooltip.dataRequirements"
+                        :key="requirement"
+                        class="tooltip-tag data-tag"
+                    >
+                        {{ requirement }}
+                    </span>
+                </div>
+            </div>
+            <div class="tooltip-section">
+                <h4>Use Cases</h4>
+                <div class="tooltip-tags">
+                    <span
+                        v-for="useCase in tooltip.useCases"
+                        :key="useCase"
+                        class="tooltip-tag use-case-tag"
+                    >
+                        {{ useCase }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </transition>
 </div>
 </template>
 
 <script setup>
 /* eslint-disable */
-import { defineProps, nextTick, reactive, ref, onUnmounted, defineEmits } from 'vue';
+import { defineProps, nextTick, reactive, ref, onUnmounted, defineEmits, watch } from 'vue';
 import { preprocessingTooltipConfig } from '@/assets/JS/Config/preprocessingTooltipConfig.js';
+import { mergePreprocessedData } from '@/assets/JS/utils/preprocessingDataMergeUtils.js'
+import { workspaceFiles, fileDataMap } from '../../assets/JS/utils/dataStructureOptimize';
 
 import preprocessingBasicConfig from '../Preprocessing/panel/preprocessingBasicConfig.vue'
 import preprocessingMappingPanel from '../Preprocessing/panel/preprocessingMappingPanel.vue'
 
-const emit = defineEmits(['file-selected'])
+const emit = defineEmits(['file-selected', 'update:mappedColumns', 'merged-data'])
+
+const useCustomDataColumns = ref(false)
+const autoRender = ref(false)
+// 当 autoRender 为 true 时自动合并数据
+watch(autoRender, (val) => {
+    if (val) applyConfiguration()
+})
 
 // 接收来自父组件的 activeSidebarId prop
 const props = defineProps({
@@ -83,10 +125,52 @@ const props = defineProps({
         type: Array,
         default: () => []
     }
+    ,
+    selectedFileName: {
+        type: String,
+        default: ''
+    },
 })
+
+// 点击按钮时手动合并
+function applyConfiguration() {
+    const data = mergePreprocessedData(
+        props.activeSidebarId,
+        props.selectedFileName,
+        fileDataMap,
+        mappedColumns.value,
+        useCustomDataColumns.value // 是否使用自定义列
+    )
+    emit('merged-data', data)
+}
 
 function handleFileSelected(file) {
     emit('file-selected', file)
+}
+
+// 获取拖拽放置区的数据列索引数据
+const mappedColumns = ref([]) // 拖拽放置区获取的数据列索引
+/*
+eg.
+[
+    {
+        "field": "category", // 显示的列名
+        "type": "string", // 列的数据类型
+        "file": "bar_test_pos_neg.csv", // 列所属的文件名
+        "index": 0 // 列在文件中的索引
+    },
+    {
+        "field": "value",
+        "type": "integer",
+        "file": "bar_test_pos_neg.csv",
+        "index": 1
+    }
+]
+*/
+function updateMappedColumns(columns) {
+    mappedColumns.value = columns;
+    emit('update:mappedColumns', mappedColumns.value);
+    // console.log('[PreprocessingConfigPanel] Mapped Columns Updated:', mappedColumns.value);
 }
 
 // Tooltip state and ref
@@ -180,10 +264,4 @@ onUnmounted(() => {
 
 <style scoped>
 @import '../../assets/CSS/PreprocessingConfigPanel.css';
-
-.preprocessing-basic-config + .preprocessing-mapping-panel {
-    border-top: 1px solid var(--border-color);
-    margin-top: 12px;
-    padding-top: 12px;
-}
 </style>

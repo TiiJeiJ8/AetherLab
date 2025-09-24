@@ -42,9 +42,14 @@
           :expandedWidth="563"
         >
           <preprocessingConfigPanel
-            :activeSidebarId="activeSidebarId"
             :files="workspaceFiles"
-            @file-selected="handleFileSelected" />
+            :activeSidebarId="activeSidebarId"
+            :selectedFileName="selectedFileName"
+            :mappedColumns="mappedColumns"
+            @file-selected="handleFileSelected"
+            @update:mappedColumns="updateMappedColumns"
+            @merged-data="handleMergedData"
+          />
         </SideBar>
       </transition>
 
@@ -91,7 +96,7 @@
 
 <script setup>
 /* eslint-disable */
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import TopBar from '@/components/Common/TopBar.vue'
 import SideBar from '@/components/Common/SideBar.vue'
 import FileUploadModal from '@/components/Common/FileUploadModal.vue'
@@ -204,6 +209,7 @@ function uploadFiles() {
 const showStructurePanel = ref(false)
 const currentStructureFile = ref(null)
 const selectedFile = ref(null)
+const selectedFileName = computed(() => selectedFile.value?.name || '')
 
 function handleFileSelected(file) {
   selectedFile.value = file
@@ -222,13 +228,25 @@ function handleStructureMinimize(isMinimized) {
 }
 
 function handleColumnDrag(dragInfo) {
-    console.log('Column drag event:', dragInfo)
+    // console.log('Column drag event:', dragInfo)
     // 这里将来会处理列拖拽到数据预处理配置的逻辑
     if (dragInfo.action === 'start') {
       console.log('Started dragging column:', dragInfo.column.name)
     } else if (dragInfo.action === 'end') {
       console.log('Finished dragging column')
     }
+}
+
+// 接收右侧边栏中拖拽放置区的数据列索引数据
+const mappedColumns = ref([]) // 拖拽放置区获取的数据列索引
+const mergedData = ref(null)
+function updateMappedColumns(columns) {
+    mappedColumns.value = columns;
+}
+// 接收合并后的数据
+function handleMergedData(data) {
+  mergedData.value = data
+  console.log('Merged Data:', mergedData.value)
 }
 </script>
 

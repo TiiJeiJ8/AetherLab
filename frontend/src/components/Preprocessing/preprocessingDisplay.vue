@@ -81,6 +81,7 @@
 <script setup>
 /* eslint-disable */
 import { ref, watch, onMounted, onBeforeUnmount, computed, defineProps } from 'vue'
+
 import LineChartIcon from '../svg/LineChartIcon.vue'
 import BarChartIcon from '../svg/BarChartIcon.vue'
 import PieChartIcon from '../svg/PieChartIcon.vue'
@@ -102,7 +103,9 @@ import PictorialBarChartIcon from '../svg/PictorialBarChartIcon.vue'
 import ThemeRiverChartIcon from '../svg/ThemeRiverChartIcon.vue'
 import CalendarChartIcon from '../svg/CalendarChartIcon.vue'
 import AnimateIcon from '../Common/AnimateIcon.vue';
-import { workspaceFiles } from '@/assets/JS/utils/dataStructureOptimize.js'
+
+import { workspaceFiles, fileDataMap } from '@/assets/JS/utils/dataStructureOptimize.js'
+
 import dataQualityReport from './module/dataQualityReport'
 
 const iconList = [
@@ -146,7 +149,6 @@ function startIconLoop() {
         }, 400)
     }, 3500)
 }
-
 onMounted(() => {
     startIconLoop()
 })
@@ -163,6 +165,7 @@ const props = defineProps({
     }
 })
 
+// 计算是否有数据文件
 const hasDataInWorkspace = computed(() => {
     // 检查是否有有效数据文件
     if (!workspaceFiles.value || workspaceFiles.value.length === 0) return false

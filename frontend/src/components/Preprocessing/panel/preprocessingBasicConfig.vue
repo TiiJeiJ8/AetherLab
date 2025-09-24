@@ -11,21 +11,30 @@
             <option v-for="file in props.files" :key="file.id" :value="file">{{ file.name }}</option>
         </select>
     </div>
+    <!-- 是否使用自定义数据列 -->
+    <div class="basic-config-item">
+        <label>Custom Data Cols</label>
+        <label class="switch">
+            <input id="custom-data-columns" type="checkbox" v-model="useCustomDataColumns" />
+            <span class="slider"></span>
+        </label>
+        <span style="margin-left: 8px; min-width: 32px;">{{ useCustomDataColumns ? 'On' : 'Off' }}</span>
+    </div>
 </div>
 </template>
 
 <script setup>
 /* eslint-disable */
-import { ref, watch } from 'vue';
+import { ref, watch, defineModel } from 'vue';
 import AutoRenderToggle from '../../Common/AutoRenderToggle.vue';
 
-const autoRender = ref(false)
+const autoRender = defineModel('autoRender')
 
 const props = defineProps({
     files: { type: Array, default: () => [] }
 })
 
-const emit = defineEmits(['file-selected'])
+const emit = defineEmits(['file-selected', 'update:autoRender'])
 const selectedFile = ref(null)
 
 // 当文件列表变化时
@@ -37,6 +46,7 @@ watch(() => props.files, (newFiles) => {
         // 如果当前选中的文件不在新列表中，或者没有文件被选中
         // 则默认选择第一个文件（如果列表不为空）
         selectedFile.value = newFiles.length > 0 ? newFiles[0] : null
+        emit('file-selected', selectedFile.value) // 发出事件通知父组件
     }
 }, { immediate: true, deep: true })
 
@@ -44,6 +54,14 @@ watch(() => props.files, (newFiles) => {
 watch(selectedFile, (newFile) => {
     emit('file-selected', newFile)
 })
+
+// 当自动渲染选项变化时，发出事件
+watch(autoRender, (newVal) => {
+    emit('auto-render', newVal)
+})
+
+// 是否使用自定义数据列
+const useCustomDataColumns = defineModel('useCustomDataColumns')
 </script>
 
 <style scoped>
@@ -101,5 +119,33 @@ watch(selectedFile, (newFile) => {
     background: var(--bg-secondary);
     color: #dee2e6;
     border: 1px solid #444;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 38px;
+    height: 22px;
+    margin-left: 6px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--bg-secondary);
+    transition: .3s;
+    border-radius: 22px;
+    border: 2px solid var(--border-color, #ccc);
+}
+
+.switch input:checked + .slider {
+    background-color: #2fcb51be;
 }
 </style>
