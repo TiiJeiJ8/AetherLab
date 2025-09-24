@@ -378,34 +378,6 @@
     }
 }
 
-.drop-zone-filled {
-    border-color: var(--success-color, #28a745);
-    background-color: rgba(40, 167, 69, 0.05);
-    transform: scale(1.01);
-}
-
-.drop-zone-error {
-    border-color: var(--error-color, #dc3545);
-    background-color: rgba(220, 53, 69, 0.05);
-    animation: shake 0.5s ease-in-out;
-}
-
-@keyframes shake {
-
-    0%,
-    100% {
-        transform: translateX(0);
-    }
-
-    25% {
-        transform: translateX(-4px);
-    }
-
-    75% {
-        transform: translateX(4px);
-    }
-}
-
 .drop-placeholder {
     display: flex;
     align-items: center;
@@ -478,87 +450,10 @@
     transition: color 0.3s ease;
 }
 
-.mapped-field {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 8px 12px;
-    background: var(--bg-secondary, #f8f9fa);
-    border-radius: 6px;
-    position: relative;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    animation: slideInDown 0.4s ease;
-    overflow: hidden;
-}
-
-@keyframes slideInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.mapped-field::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 3px;
-    height: 100%;
-    background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
-    transition: width 0.3s ease;
-}
-
-.mapped-field:hover::before {
-    width: 100%;
-    opacity: 0.05;
-}
-
-.mapped-field::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-    border-radius: 6px;
-    opacity: 0.1;
-    transition: width 0.3s ease;
-}
-
-.mapped-field:hover::after {
-    width: 100%;
-}
-
-.mapped-field:hover {
-    background: var(--bg-tertiary, #e9ecef);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--shadow-color, rgba(0, 0, 0, 0.1));
-}
-
-.field-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
 .field-name {
     font-size: 13px;
     font-weight: 500;
     color: var(--text-color, #333333);
-}
-
-.field-type {
-    font-size: 11px;
-    color: var(--text-secondary, #666666);
-    text-transform: uppercase;
 }
 
 .remove-btn {
