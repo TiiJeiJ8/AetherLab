@@ -6,13 +6,13 @@
         <div v-else class="report-content">
             <!-- Header & KPI Cards -->
             <div class="dq-header">
-                <h2>Data Quality Report</h2>
+                <h2 style="user-select: none;">Data Quality Report</h2>
                 <div class="dq-cards">
-                <div class="dq-card" :class="healthClass"
-                        @mouseenter="showKpiTip($event, 'health')" @mouseleave="hideKpiTip">
-                    <div class="dq-card-title">Health Score</div>
-                    <div class="dq-card-value">{{ Math.round(report.metrics.healthScore) }}</div>
-                </div>
+                    <div class="dq-card" :class="healthClass"
+                            @mouseenter="showKpiTip($event, 'health')" @mouseleave="hideKpiTip">
+                        <div class="dq-card-title">Health Score</div>
+                        <div class="dq-card-value">{{ Math.round(report.metrics.healthScore) }}</div>
+                    </div>
                 <div class="dq-card" @mouseenter="showKpiTip($event, 'missing')" @mouseleave="hideKpiTip">
                     <div class="dq-card-title">Missing Rate</div>
                     <div class="dq-card-value">{{ (report.metrics.missing.globalRate * 100).toFixed(2) }}%</div>
@@ -54,13 +54,13 @@
             <div class="dq-section" v-html="report.html.issues"></div>
         </div>
 
-                <!-- KPI Tooltip -->
-                <transition name="fade">
-                    <div v-if="tip.visible" class="kpi-tooltip" :style="tip.style">
-                        <div class="kpi-title">{{ tip.title }}</div>
-                        <div class="kpi-desc">{{ tip.desc }}</div>
-                    </div>
-                </transition>
+        <!-- KPI Tooltip -->
+        <transition name="fade">
+            <div v-if="tip.visible" class="kpi-tooltip" :style="tip.style">
+                <div class="kpi-title">{{ tip.title }}</div>
+                <div class="kpi-desc">{{ tip.desc }}</div>
+            </div>
+        </transition>
     </div>
 </div>
 </template>
