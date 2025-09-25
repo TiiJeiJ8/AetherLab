@@ -164,6 +164,8 @@ function resetConfiguration() {
     mappedColumns.value = [];
     console.log('[PreprocessingConfigPanel] Mapped Columns Reset');
     emit('update:mappedColumns', mappedColumns.value);
+    // Notify parent that merged data is cleared so report can be reset
+    emit('merged-data', {})
 }
 
 // Tooltip state and ref

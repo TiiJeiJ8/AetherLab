@@ -29,7 +29,8 @@
         <section class="preprocessing-main-section">
           <preprocessingDisplay
             :activeSidebarId="activeSidebarId"
-            :merged-data="mergedData"
+            :mergedData="mergedData"
+            :selectedFileName="selectedFileName"
           />
         </section>
       </div>
