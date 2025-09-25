@@ -9,7 +9,8 @@
         <div v-if="props.activeSidebarId === 'quality'">
             <!-- 质量分析内容 -->
             <dataQualityReport
-                :data="props.mergeChartData"
+                :data="props.mergedData"
+                :title-name="props.selectedFileName"
             />
         </div>
         <div v-else-if="props.activeSidebarId === 'raw-preview'">
@@ -166,9 +167,13 @@ const props = defineProps({
         type: String,
         default: ''
     },
-    mergeChartData: {
+    mergedData: {
         type: Object,
         default: () => ({})
+    },
+    selectedFileName: {
+        type: String,
+        default: ''
     }
 })
 
@@ -205,7 +210,7 @@ const hasDataInWorkspace = computed(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(10px, 2vw, 20px) clamp(32px, 4vw, 48px); /* 增大左右内边距 */
+    padding: clamp(10px, 2vw, 15px) clamp(0px, 4vw, 5px); /* 增大左右内边距 */
     overflow-x: auto; /* 横向可滚动，防止legend溢出 */
     overflow-y: auto;
 }
