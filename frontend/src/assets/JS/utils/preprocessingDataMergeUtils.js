@@ -40,6 +40,7 @@ function extractData(fileName, fileDataMap, mappedColumns) {
 
     // 如果mappedColumns为空，直接返回原始对象数组
     if (mappedColumns.length === 0) {
+        console.log('[Extract Data] Exit Extract Data Handler');
         return fileData;
     }
 
@@ -104,13 +105,15 @@ export function mergePreprocessedData(activeSidebarId, fileName, fileDataMap, ma
     // 若不使用自定义列，则忽略 mappedColumns，可在此处理为默认逻辑
     const cols = isCustomCols ? mappedColumns : [];
 
+    console.log('[Preprocessing - Data Merging] Enter Data Merging Function');
+
     //! Debug 日志 输出
-    console.log('[Preprocessing - Data Merging - Check] Merging data for model type:', activeSidebarId);
-    console.log('[Preprocessing - Data Merging - Check] Selected file:', fileName);
-    console.log('[Preprocessing - Data Merging - Check] File Data Map:', fileDataMap);
-    console.log('[Preprocessing - Data Merging - Check] Mapped Columns:', cols);
-    console.log('[Preprocessing - Data Merging - Check] Using Custom Columns:', isCustomCols);
-    console.log('[Preprocessing - Data Merging - Check] Selected Handler:', preprocessingModelTypeHandlers[activeSidebarId]);
+    // console.log('[Preprocessing - Data Merging - Check] Merging data for model type:', activeSidebarId);
+    // console.log('[Preprocessing - Data Merging - Check] Selected file:', fileName);
+    // console.log('[Preprocessing - Data Merging - Check] File Data Map:', fileDataMap);
+    // console.log('[Preprocessing - Data Merging - Check] Mapped Columns:', cols);
+    // console.log('[Preprocessing - Data Merging - Check] Using Custom Columns:', isCustomCols);
+    // console.log('[Preprocessing - Data Merging - Check] Selected Handler:', preprocessingModelTypeHandlers[activeSidebarId]);
 
     const Dataset = extractData(fileName, fileDataMap, cols);
 
@@ -118,6 +121,8 @@ export function mergePreprocessedData(activeSidebarId, fileName, fileDataMap, ma
     if (typeof handler !== 'function') {
         throw new Error(`No handler registered for model type: ${activeSidebarId}`);
     }
+
+    console.log('[Preprocessing - Data Merging] Exit Data Merging Function');
 
     return handler(Dataset);
 }
