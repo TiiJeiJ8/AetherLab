@@ -8,7 +8,9 @@
     <div v-else class="preprocessing-content">
         <div v-if="props.activeSidebarId === 'quality'">
             <!-- 质量分析内容 -->
-            <dataQualityReport />
+            <dataQualityReport
+                :data="props.mergeChartData"
+            />
         </div>
         <div v-else-if="props.activeSidebarId === 'raw-preview'">
             <!-- 原始数据预览内容 -->
@@ -107,6 +109,7 @@ import AnimateIcon from '../Common/AnimateIcon.vue';
 import { workspaceFiles, fileDataMap } from '@/assets/JS/utils/dataStructureOptimize.js'
 
 import dataQualityReport from './module/dataQualityReport'
+import { mergeChartData } from '../../assets/JS/utils/dataMergeUtils'
 
 const iconList = [
     BarChartIcon,
@@ -162,6 +165,10 @@ const props = defineProps({
     activeSidebarId: {
         type: String,
         default: ''
+    },
+    mergeChartData: {
+        type: Object,
+        default: () => ({})
     }
 })
 

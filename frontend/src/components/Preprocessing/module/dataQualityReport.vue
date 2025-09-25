@@ -13,6 +13,11 @@
 import { ref } from 'vue'
 
 import { generateDataQualityReport } from '@/assets/JS/utils/reportGen.js'
+
+const props = defineProps({
+    data: { type: Object, default: () => ({}) }
+})
+
 const report = ref(null)
 
 </script>
