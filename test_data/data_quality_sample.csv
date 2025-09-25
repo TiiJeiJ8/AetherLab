@@ -1,0 +1,206 @@
+﻿user_id,age,income,gender,country,signup_date,email,comments,constant_col
+UID1088,,65619.84,Other,China,2021-04-04,user88@example.com,,CONST
+UID1143,37.0,49861.14,Other,China,2022-11-09,user143@example.com,N/A,CONST
+UID1022,36.0,73725.2,Female,Germany,2021-02-23,user22@example.com,Possible duplicate record,CONST
+UID1011,29.0,82711.31,Male,Germany,2022-01-01,user11@example.com,Check missing age,CONST
+UID1155,26.0,39949.41,Male,USA,2022-10-05,user155@example.com,Outlier in income,CONST
+UID1002,43.0,81661.02,Other,India,2022-05-11,user2@example.com,Good data quality,CONST
+UID1125,61.0,35716.23,Male,China,2024-02-29,user125@example.com,格式异常：请检查特殊字符,CONST
+UID1096,,77992.0,male,India,2022-10-30,user96@example.com,,CONST
+UID1066,34.0,92648.23,Other,China,2020-11-13,user66@example.com,N/A,CONST
+UID1063,21.0,39512.25,Other,India,2025-05-11,user63@example.com,Outlier in income,CONST
+UID1078,36.0,61396.04,Male,China,2023-03-14,user78@example.com,,CONST
+UID1098,35.0,76257.24,Male,USA,2021-09-21,user98@example.com,N/A,CONST
+UID1139,20.0,48725.51,FEMALE,India,2024-07-23,user139@example.com,格式异常：请检查特殊字符,CONST
+UID1065,51.0,35044.34,Female,Germany,2021-07-06,user65@example.com,Outlier in income,CONST
+UID1095,17.0,46141.81,Male,Brazil,2023-11-19,user95@example.com,Contains emoji 😊,CONST
+UID1162,49.0,,Other,India,2020-08-29,user162@example.com,Review country field,CONST
+UID1024,28.0,50561.36,Female,Brazil,2023-02-14,user24@example.com,Good data quality,CONST
+UID1101,30.0,48796.38,Male,Germany,2025-06-16,,,CONST
+UID1157,41.0,54226.83,FEMALE,India,2023-05-14,user157@example.com,,CONST
+UID1046,29.0,50501.09,Female,USA,2022-06-29,user46@example.com,N/A,CONST
+UID1183,41.0,49484.9,Female,,2024-07-19,user183@example.com,,CONST
+UID1141,51.0,64873.74,Female,India,2021-05-25,user141@example.com,N/A,CONST
+UID1145,44.0,,Female,USA,2022-03-07,user145@example.com,格式异常：请检查特殊字符,CONST
+UID1074,4.0,40369.83,Other,USA,2023-01-12,user74@example.com,Good data quality,CONST
+UID1191,45.0,69838.38,Male,USA,2022-10-28,user191@example.com,Check missing age,CONST
+UID1051,30.0,78357.24,Male,China,2020-04-09,user51@example.com,格式异常：请检查特殊字符,CONST
+UID1131,36.0,42054.91,Male,Germany,2024-10-08,user131@example.com,Check missing age,CONST
+UID1073,54.0,60204.66,male,Germany,2020-08-18,user73@example.com,Review country field,CONST
+UID1193,20.0,96629.18,Female,,2020-05-08,user193@example.com,Review country field,CONST
+UID1182,22.0,17522.09,Other,USA,2021-01-18,user182@example.com,Review country field,CONST
+UID1057,,45846.61,,Germany,2021-06-09,,Contains emoji 😊,CONST
+UID1108,38.0,70941.95,Male,India,2020-05-12,user108@example.com,Outlier in income,CONST
+UID1165,40.0,51975.59,Female,Germany,,user165@example.com,Outlier in income,CONST
+UID1086,46.0,56964.3,Other,China,2024-01-12,user86@example.com,Review country field,CONST
+UID1128,36.0,72482.4,Male,China,2025-01-21,user128@example.com,Good data quality,CONST
+UID1174,38.0,103063.65,Female,India,2021-05-09,,Possible duplicate record,CONST
+UID1009,42.0,137054.63,Female,Germany,2022-03-15,user9@example.com,,CONST
+UID1188,25.0,79008.48,Male,India,2022-01-15,user188@example.com,Review country field,CONST
+UID1082,53.0,91720.34,,Unknown,2020-03-06,,格式异常：请检查特殊字符,CONST
+UID1190,30.0,420317.1,Female,Germany,2021-01-09,user190@example.com,Outlier in income,CONST
+UID1138,45.0,68258.63,Other,India,2020-11-29,user138@example.com,Outlier in income,CONST
+UID1109,34.0,55956.15,Other,Germany,2023-07-23,user109@example.com,,CONST
+UID1060,29.0,41461.39,Female,USA,2021-01-09,user60@example.com,Good data quality,CONST
+UID1126,23.0,,Male,India,2024-07-13,user126@example.com,,CONST
+UID1027,40.0,,Female,USA,2024-10-29,user27@example.com,Check missing age,CONST
+UID1040,44.0,44149.59,FEMALE,China,2020-02-30,user40@example.com,Check missing age,CONST
+UID1045,26.0,,Female,Germany,2020-01-21,user45@example.com,Contains emoji 😊,CONST
+UID1164,47.0,73802.88,Male,Brazil,2023-06-28,user164@example.com,N/A,CONST
+UID1031,57.0,64329.17,male,India,,user31@example.com,Review country field,CONST
+UID1158,21.0,,Female,Germany,2022-11-01,user158@example.com,Possible duplicate record,CONST
+UID1032,,60911.44,Male,China,2024-12-02,user32@example.com,Good data quality,CONST
+UID1013,12.0,73027.83,Female,India,,user13@example.com,Check missing age,CONST
+UID1120,44.0,61939.92,,Germany,2025-05-10,user120@example.com,Check missing age,CONST
+UID1080,32.0,62270.35,Male,USA,2025-02-23,user80@example.com,Outlier in income,CONST
+UID1133,41.0,46456.77,,India,2021-09-11,user133@example.com,格式异常：请检查特殊字符,CONST
+UID1028,28.0,45693.93,Female,China,2021-07-31,user28@example.com,N/A,CONST
+UID1018,24.0,50292.73,male,USA,2024-09-08,user18@example.com,格式异常：请检查特殊字符,CONST
+UID1113,65.0,76270.19,,Germany,2021-05-27,user113@example.com,Contains emoji 😊,CONST
+UID1122,52.0,,Female,India,2023-05-12,user122@example.com,Outlier in income,CONST
+UID1099,,72592.58,Female,Brazil,2020-09-26,user99@example.com,Good data quality,CONST
+UID1115,,,FEMALE,USA,2021-07-29,user115@example.com,Check missing age,CONST
+UID1058,39.0,68876.39,Female,USA,2020-11-29,user58@example.com,Outlier in income,CONST
+UID1116,35.0,73639.06,Female,India,2022-06-04,,N/A,CONST
+UID1094,30.0,67140.31,Female,China,2020-10-13,user94@example.com,Check missing age,CONST
+UID1036,38.0,19497.15,Male,USA,2023-10-26,user36@example.com,格式异常：请检查特殊字符,CONST
+UID1085,29.0,20958.24,Other,China,2020-09-17,user85@example.com,Outlier in income,CONST
+UID1181,25.0,48012.15,Other,Brazil,2020-05-30,user181@example.com,,CONST
+UID1051,30.0,78357.24,Male,China,2020-04-09,user51@example.com,格式异常：请检查特殊字符,CONST
+UID1184,32.0,44817.35,Female,China,2025-01-10,user184@example.com,Outlier in income,CONST
+UID1054,47.0,29612.6,Male,Brazil,2024-06-10,user54@example.com,Outlier in income,CONST
+UID1084,25.0,102660.67,Female,India,2023-06-06,user84@example.com,Contains emoji 😊,CONST
+UID1163,25.0,,,Germany,2023-05-24,user163@example.com,格式异常：请检查特殊字符,CONST
+UID1097,38.0,66145.99,Male,,2024-09-26,user97@example.com,Outlier in income,CONST
+UID1037,11.0,63729.09,Female,Germany,,user37@example.com,格式异常：请检查特殊字符,CONST
+UID1134,24.0,79502.39,Female,USA,2020-02-30,user134@example.com,Check missing age,CONST
+UID1140,38.0,43555.59,Male,Germany,2022-08-26,user140@example.com,格式异常：请检查特殊字符,CONST
+UID1104,33.0,59581.97,Female,India,2022-04-23,user104@example.com,Contains emoji 😊,CONST
+UID1150,38.0,66218.15,Female,USA,2021-04-29,user150@example.com,Good data quality,CONST
+UID1049,14.0,68099.63,FEMALE,USA,2022-03-04,user49@example.com,Contains emoji 😊,CONST
+UID1199,21.0,84756.33,Other,China,2021-05-31,user199@example.com,Good data quality,CONST
+UID1005,32.0,41243.5,Male,Germany,2025-05-31,user5@example.com,Good data quality,CONST
+UID1017,39.0,55263.63,Male,Brazil,2024-05-04,,格式异常：请检查特殊字符,CONST
+UID1121,24.0,71903.14,FEMALE,China,2021-11-17,user121@example.com,格式异常：请检查特殊字符,CONST
+UID1173,39.0,79185.42,Female,India,2023-04-22,user173@example.com,N/A,CONST
+UID1180,43.0,43205.56,,USA,2025-02-18,user180@example.com,Review country field,CONST
+UID1105,40.0,62346.55,Male,USA,2022-05-11,,,CONST
+UID1062,22.0,-4825.35,male,China,2022-04-16,user62@example.com,Good data quality,CONST
+UID1064,45.0,54948.64,Female,Germany,2022-10-01,user64@example.com,Contains emoji 😊,CONST
+UID1026,21.0,61285.6,Male,India,2024-03-15,user26@example.com,Check missing age,CONST
+UID1102,31.0,74945.87,Female,Brazil,2024-06-16,,,CONST
+UID1041,37.0,57705.27,Male,India,2024-07-24,user_41atmail.com,Possible duplicate record,CONST
+UID1052,27.0,102443.12,Female,India,2022-01-21,user52@example.com,Possible duplicate record,CONST
+UID1177,52.0,63666.84,Male,USA,2020-02-30,user177@example.com,Check missing age,CONST
+UID1081,39.0,73242.61,Other,China,2020-01-28,user81@example.com,Contains emoji 😊,CONST
+UID1007,44.0,70275.72,Other,Brazil,2020-01-24,user7@example.com,N/A,CONST
+UID1091,47.0,50139.98,Male,USA,2020-10-27,user91@example.com,Good data quality,CONST
+UID1178,32.0,103796.06,Male,USA,2023-12-22,user178@example.com,Check missing age,CONST
+UID1169,26.0,44539.8,Other,USA,2024-12-25,user169@example.com,Possible duplicate record,CONST
+UID1070,39.0,88825.47,,India,2024-07-04,user70@example.com,Good data quality,CONST
+UID1171,25.0,69959.97,Male,India,2022-11-28,user171@example.com,格式异常：请检查特殊字符,CONST
+UID1114,33.0,86109.58,Female,China,,user114@example.com,Outlier in income,CONST
+UID1008,29.0,70300.95,Female,Brazil,2021-02-07,user8@example.com,N/A,CONST
+UID1106,58.0,85553.3,Male,USA,2023-10-16,user106@example.com,Good data quality,CONST
+UID1079,11.0,52293.73,Female,,2022-06-09,user79@example.com,Review country field,CONST
+UID1129,29.0,72566.91,Male,Germany,2020-06-04,user129@example.com,Review country field,CONST
+UID1132,22.0,61516.09,Male,USA,2025-04-09,user132@example.com,Review country field,CONST
+UID1029,31.0,73591.95,Female,India,2020-11-30,user29@example.com,Review country field,CONST
+UID1003,53.0,81076.04,Male,China,2024-10-14,user3@example.com,N/A,CONST
+UID1039,37.0,77048.67,Male,,2021-09-28,user39@example.com,Possible duplicate record,CONST
+UID1050,39.0,34782.32,Female,India,2024-03-23,user50@example.com,Check missing age,CONST
+UID1077,31.0,47995.66,Other,Germany,2022-04-17,user77@example.com,,CONST
+UID1168,32.0,61953.52,Male,Brazil,2023-08-22,user_168atmail.com,N/A,CONST
+UID1111,35.0,81975.54,Other,USA,2024-09-02,user111@example.com,N/A,CONST
+UID1117,21.0,53794.66,Female,USA,2023-07-31,user117@example.com,N/A,CONST
+UID1054,47.0,29612.6,Male,Brazil,2024-06-10,user54@example.com,Outlier in income,CONST
+UID1090,36.0,55837.55,Female,USA,2024-08-26,user90@example.com,格式异常：请检查特殊字符,CONST
+UID1189,17.0,48461.93,male,India,2022-06-10,user189@example.com,Possible duplicate record,CONST
+UID1043,,77315.1,male,USA,2021-06-13,user43@example.com,Outlier in income,CONST
+UID1146,20.0,31038.31,Male,China,2022-10-21,user146@example.com,Outlier in income,CONST
+UID1048,39.0,95309.08,Other,Germany,2022-05-16,user48@example.com,Contains emoji 😊,CONST
+UID1156,57.0,59629.74,Male,USA,2021-11-21,user156@example.com,,CONST
+UID1059,47.0,75492.68,Male,Germany,2020-01-02,user59@example.com,Good data quality,CONST
+UID1015,28.0,,Female,USA,2022-08-13,user15@example.com,,CONST
+UID1053,42.0,80649.31,Female,USA,2021-04-22,user53@example.com,Outlier in income,CONST
+UID1020,53.0,106293.17,Female,USA,2021-08-30,user20@example.com,Good data quality,CONST
+UID1124,42.0,39879.65,male,USA,2020-10-31,user_124atmail.com,格式异常：请检查特殊字符,CONST
+UID1014,14.0,53694.62,Female,Germany,2021-06-15,user14@example.com,格式异常：请检查特殊字符,CONST
+UID1192,38.0,33595.34,Male,,2023-09-26,user192@example.com,Check missing age,CONST
+UID1154,39.0,59619.68,Male,USA,2023-03-30,user154@example.com,Contains emoji 😊,CONST
+UID1076,36.0,63981.19,Female,Germany,2024-11-01,user76@example.com,Good data quality,CONST
+UID1107,,48168.57,Other,Unknown,2023-07-04,user107@example.com,Possible duplicate record,CONST
+UID1161,44.0,,Other,USA,2021-11-23,user161@example.com,Check missing age,CONST
+UID1012,38.0,79080.04,Other,Germany,2023-10-19,user12@example.com,Check missing age,CONST
+UID1016,23.0,44543.5,Male,Brazil,2020-05-31,user16@example.com,Good data quality,CONST
+UID1047,48.0,46933.42,Male,China,2024-10-26,user47@example.com,Good data quality,CONST
+UID1153,38.0,56801.23,Male,Brazil,2022-04-16,user153@example.com,Good data quality,CONST
+UID1119,,57397.14,Other,China,2023-02-04,user119@example.com,Outlier in income,CONST
+UID1021,32.0,22654.7,Male,China,2024-06-28,,Review country field,CONST
+UID1166,45.0,64481.85,FEMALE,Brazil,2020-05-05,user166@example.com,Check missing age,CONST
+UID1130,,59755.06,Male,Brazil,2020-02-30,user_130atmail.com,格式异常：请检查特殊字符,CONST
+UID1186,41.0,66835.12,Female,Germany,2023-09-21,user186@example.com,Review country field,CONST
+UID1073,54.0,60204.66,male,Germany,2020-08-18,user73@example.com,Review country field,CONST
+UID1030,,45392.67,Other,,2023-12-12,user30@example.com,,CONST
+UID1148,41.0,,Male,USA,2022-11-24,user148@example.com,Contains emoji 😊,CONST
+UID1033,22.0,46967.99,Male,India,2020-10-21,user33@example.com,Review country field,CONST
+UID1147,19.0,31850.72,,USA,2020-04-28,user147@example.com,Contains emoji 😊,CONST
+UID1170,24.0,60490.2,Male,Brazil,2023-04-23,user170@example.com,Possible duplicate record,CONST
+UID1179,,43834.03,Other,USA,2023-08-10,user179@example.com,格式异常：请检查特殊字符,CONST
+UID1123,18.0,101847.75,Female,USA,2020-06-13,user123@example.com,格式异常：请检查特殊字符,CONST
+UID1127,28.0,,Female,India,2024-04-28,user127@example.com,N/A,CONST
+UID1100,18.0,43420.1,FEMALE,Germany,2021-08-14,user100@example.com,Contains emoji 😊,CONST
+UID1149,39.0,557310.6,Other,China,2020-07-16,user149@example.com,Contains emoji 😊,CONST
+UID1160,23.0,70386.93,,Unknown,2020-10-02,user160@example.com,Good data quality,CONST
+UID1001,33.0,71215.69,Female,Germany,2025-01-14,user1@example.com,N/A,CONST
+UID1197,37.0,870774.5,Female,USA,2023-10-07,user197@example.com,Good data quality,CONST
+UID1061,,58809.49,Other,USA,2020-10-19,user61@example.com,Possible duplicate record,CONST
+UID1035,20.0,72678.38,Female,Germany,2022-01-24,user35@example.com,格式异常：请检查特殊字符,CONST
+UID1010,,71417.81,Female,Brazil,2021-05-30,user10@example.com,Outlier in income,CONST
+UID1195,40.0,50616.49,Other,USA,2020-02-30,user195@example.com,Good data quality,CONST
+UID1071,53.0,31282.76,Other,USA,2020-01-14,user71@example.com,格式异常：请检查特殊字符,CONST
+UID1198,36.0,57709.2,Female,USA,2023-10-13,user198@example.com,Contains emoji 😊,CONST
+UID1093,31.0,76992.04,Male,Germany,2023-08-19,user93@example.com,格式异常：请检查特殊字符,CONST
+UID1159,43.0,,Male,USA,2021-05-04,,Outlier in income,CONST
+UID1118,49.0,66483.33,Female,India,2023-02-18,user118@example.com,Outlier in income,CONST
+UID1144,38.0,50579.23,Female,India,2020-10-08,user144@example.com,Check missing age,CONST
+UID1001,33.0,71215.69,Female,Germany,2025-01-14,user1@example.com,N/A,CONST
+UID1083,29.0,35243.69,Other,China,2023-04-01,user83@example.com,Review country field,CONST
+UID1194,37.0,83588.8,Male,Germany,2022-10-11,user194@example.com,Possible duplicate record,CONST
+UID1087,39.0,,Male,,2023-12-18,user87@example.com,Check missing age,CONST
+UID1137,,53572.28,Male,USA,2025-03-20,,Possible duplicate record,CONST
+UID1004,32.0,32446.61,Male,Brazil,2020-06-07,user4@example.com,,CONST
+UID1038,19.0,46764.27,Female,India,2023-06-23,user38@example.com,Review country field,CONST
+UID1187,34.0,97523.42,Female,Germany,2025-05-23,user187@example.com,Possible duplicate record,CONST
+UID1034,45.0,102878.88,Male,India,2025-05-15,user34@example.com,Check missing age,CONST
+UID1112,36.0,76508.33,FEMALE,USA,2022-08-29,user112@example.com,格式异常：请检查特殊字符,CONST
+UID1152,27.0,77153.19,Female,Germany,2022-12-18,user152@example.com,Contains emoji 😊,CONST
+UID1056,25.0,,Male,,2022-07-28,,Check missing age,CONST
+UID1069,27.0,62614.81,Male,China,2021-01-15,user69@example.com,Contains emoji 😊,CONST
+UID1044,17.0,35994.07,Female,Unknown,2024-04-24,user44@example.com,Contains emoji 😊,CONST
+UID1019,18.0,61637.48,Male,Brazil,2022-08-04,user19@example.com,Review country field,CONST
+UID1006,54.0,70300.71,Other,Germany,2022-08-14,user6@example.com,格式异常：请检查特殊字符,CONST
+UID1055,46.0,50315.32,Other,,2023-08-14,user55@example.com,Check missing age,CONST
+UID1075,45.0,69242.07,Male,USA,2020-05-09,user75@example.com,Possible duplicate record,CONST
+UID1000,41.0,67155.75,Female,China,2023-09-17,user0@example.com,格式异常：请检查特殊字符,CONST
+UID1172,34.0,89022.87,Female,Brazil,2023-05-31,user172@example.com,N/A,CONST
+UID1135,54.0,57058.85,Female,USA,2022-08-14,user135@example.com,Check missing age,CONST
+UID1127,28.0,,Female,India,2024-04-28,user127@example.com,N/A,CONST
+UID1176,35.0,77446.41,Other,Germany,2023-04-16,user_176atmail.com,Outlier in income,CONST
+UID1068,39.0,51199.11,Female,,2025-01-25,user68@example.com,Outlier in income,CONST
+UID1167,58.0,60251.85,Female,China,2020-08-04,,格式异常：请检查特殊字符,CONST
+UID1136,26.0,43490.06,Female,,,user136@example.com,Possible duplicate record,CONST
+UID1042,34.0,70099.75,Male,Unknown,2023-06-14,user42@example.com,Review country field,CONST
+UID1110,12.0,55646.38,Female,India,2024-12-04,user110@example.com,Possible duplicate record,CONST
+UID1089,41.0,47546.01,Male,Brazil,2025-05-29,user89@example.com,,CONST
+UID1072,35.0,83263.28,Male,Germany,2021-05-18,user72@example.com,Possible duplicate record,CONST
+UID1023,18.0,27745.68,Male,USA,2023-06-27,user23@example.com,Good data quality,CONST
+UID1142,,64899.33,Other,USA,2023-08-09,user142@example.com,Review country field,CONST
+UID1185,44.0,63007.88,Male,USA,2020-11-03,user185@example.com,格式异常：请检查特殊字符,CONST
+UID1092,27.0,48212.7,Male,USA,2022-07-07,user92@example.com,Good data quality,CONST
+UID1103,25.0,72207.41,Other,Germany,2024-12-06,user103@example.com,Check missing age,CONST
+UID1151,39.0,89507.12,Female,India,2020-02-30,user151@example.com,Check missing age,CONST
+UID1067,47.0,31397.17,Male,China,2024-03-05,user67@example.com,Review country field,CONST
+UID1025,36.0,81779.01,male,Brazil,2022-05-15,user25@example.com,Good data quality,CONST
+UID1196,24.0,25737.31,Female,Germany,2021-10-30,,Contains emoji 😊,CONST
+UID1175,45.0,44653.05,Male,India,2021-03-02,user175@example.com,Check missing age,CONST
