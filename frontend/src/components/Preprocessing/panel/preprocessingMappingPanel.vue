@@ -11,7 +11,7 @@
         @drop.prevent="handleDrop"
         :class="{ 'drop-zone-active': dragOver }"
     >
-        <div v-if="mappedColumns.length === 0" class="drop-placeholder">
+    <div v-if="mappedColumns.length === 0" class="drop-placeholder">
             <div class="drop-icon">↓</div>
             <span class="drop-text">Drag columns here</span>
         </div>
@@ -19,7 +19,7 @@
             <span v-for="(field, idx) in mappedColumns" :key="field.field + idx" class="field-tag tag-item" :data-file="field.file">
                 <span class="field-name">{{ field.field }}</span>
                 <span class="type-tag" :class="'type-' + (field.type || 'unknown')">{{ field.type }}</span>
-                <button class="remove-mapping-tag-btn" @click="() => removeField(idx)" title="Remove">×</button>
+                <button class="remove-mapping-tag-btn" @click="removeField(idx)" title="Remove">×</button>
             </span>
         </div>
     </div>
@@ -28,18 +28,22 @@
 
 <script setup>
 /* eslint-disable */
-import { ref } from 'vue';
+import { ref, toRefs } from 'vue';
 
 const props = defineProps({
     activeSidebarId: {
         type: String,
         default: ''
+    },
+    mappedColumns: {
+        type: Array,
+        default: () => []
     }
-})
+});
+const { mappedColumns } = toRefs(props);
 
-const emit = defineEmits(['update:mappedColumns'])
+const emit = defineEmits(['update:mappedColumns']);
 const dragOver = ref(false);
-const mappedColumns = ref([]);
 
 function handleDrop(event) {
     dragOver.value = false;
@@ -47,18 +51,15 @@ function handleDrop(event) {
         let dragDataStr = event.dataTransfer.getData('application/json') || event.dataTransfer.getData('text/plain');
         const dragData = JSON.parse(dragDataStr);
         if (dragData.type === 'column') {
-            // console.log('[PreprocessingMappingPanel] drop column:', dragData.column);
-            
             const exists = mappedColumns.value.some(f => f.field === dragData.column.name && f.file === dragData.column.file && f.index === dragData.column.index);
             if (!exists) {
-                mappedColumns.value.push({
+                const newColumns = [...mappedColumns.value, {
                     field: dragData.column.name,
                     type: dragData.column.type,
                     file: dragData.column.file || dragData.fileName || dragData.file || '',
                     index: dragData.column.index
-                });
-                // console.log('[PreprocessingMappingPanel] Mapped Columns:', mappedColumns.value);
-                emit('update:mappedColumns', mappedColumns.value);
+                }];
+                emit('update:mappedColumns', newColumns);
             }
         }
     } catch (e) {
@@ -68,8 +69,9 @@ function handleDrop(event) {
 
 function removeField(idx) {
     if (typeof idx === 'number') {
-        mappedColumns.value.splice(idx, 1);
-        emit('update:mappedColumns', mappedColumns.value);
+        const newColumns = mappedColumns.value.slice();
+        newColumns.splice(idx, 1);
+        emit('update:mappedColumns', newColumns);
     }
 }
 </script>

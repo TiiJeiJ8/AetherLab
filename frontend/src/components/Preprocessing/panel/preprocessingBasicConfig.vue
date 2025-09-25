@@ -57,7 +57,7 @@ watch(selectedFile, (newFile) => {
 
 // 当自动渲染选项变化时，发出事件
 watch(autoRender, (newVal) => {
-    emit('auto-render', newVal)
+    emit('update:autoRender', newVal)
 })
 
 // 是否使用自定义数据列

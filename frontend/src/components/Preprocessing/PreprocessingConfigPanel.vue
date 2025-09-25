@@ -30,8 +30,8 @@
         <preprocessingMappingPanel
             v-if="useCustomDataColumns"
             :activeSidebarId="props.activeSidebarId"
+            v-model:mappedColumns="mappedColumns"
             class="preprocessing-mapping-panel"
-            @update:mappedColumns="updateMappedColumns"
         />
     </transition>
 
@@ -50,6 +50,7 @@
         <!-- 重置配置按钮 -->
         <button
             class="reset-btn"
+            @click="resetConfiguration"
         >
             Reset Configuration
         </button>
@@ -137,7 +138,7 @@ function applyConfiguration() {
     const data = mergePreprocessedData(
         props.activeSidebarId,
         props.selectedFileName,
-        fileDataMap,
+        fileDataMap.value,
         mappedColumns.value,
         useCustomDataColumns.value // 是否使用自定义列
     )
@@ -149,28 +150,20 @@ function handleFileSelected(file) {
 }
 
 // 获取拖拽放置区的数据列索引数据
-const mappedColumns = ref([]) // 拖拽放置区获取的数据列索引
-/*
-eg.
-[
-    {
-        "field": "category", // 显示的列名
-        "type": "string", // 列的数据类型
-        "file": "bar_test_pos_neg.csv", // 列所属的文件名
-        "index": 0 // 列在文件中的索引
-    },
-    {
-        "field": "value",
-        "type": "integer",
-        "file": "bar_test_pos_neg.csv",
-        "index": 1
+const mappedColumns = ref([])
+// mappedColumns 通过 v-model 在子组件中自动更新
+// 当 mappedColumns 变化且开启自动渲染时，自动应用配置
+watch(mappedColumns, (newCols) => {
+    if (autoRender.value) {
+        applyConfiguration()
     }
-]
-*/
-function updateMappedColumns(columns) {
-    mappedColumns.value = columns;
+})
+
+// 重置拖拽放置区
+function resetConfiguration() {
+    mappedColumns.value = [];
+    console.log('[PreprocessingConfigPanel] Mapped Columns Reset');
     emit('update:mappedColumns', mappedColumns.value);
-    // console.log('[PreprocessingConfigPanel] Mapped Columns Updated:', mappedColumns.value);
 }
 
 // Tooltip state and ref
