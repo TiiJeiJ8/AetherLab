@@ -20,6 +20,13 @@
     --disabled-color: #a8a8a8;
     --shadow-color: rgba(0, 0, 0, 0.1);
     --hover-bg: rgba(0, 0, 0, 0.02);
+    --dq-max-width: 1200px;
+    /* Data Quality Report max width */
+    /* Chart grid line visual tuning */
+    --chart-grid-color: rgba(0, 0, 0, 0.08);
+    --chart-grid-opacity: 0.18;
+    --chart-grid-vertical-opacity: 0.06;
+    --chart-grid-width: 1;
 }
 
 /* 暗黑主题CSS变量 */
@@ -45,4 +52,10 @@
     --disabled-color: #666666;
     --shadow-color: rgba(0, 0, 0, 0.3);
     --hover-bg: rgba(255, 255, 255, 0.05);
+    --dq-max-width: 1200px;
+    /* Chart grid tuning for dark */
+    --chart-grid-color: rgba(255, 255, 255, 0.06);
+    --chart-grid-opacity: 0.22;
+    --chart-grid-vertical-opacity: 0.08;
+    --chart-grid-width: 1;
 }

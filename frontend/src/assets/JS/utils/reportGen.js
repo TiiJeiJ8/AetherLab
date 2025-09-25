@@ -69,11 +69,11 @@ function buildIssuesTableHtml(metrics) {
     }).join('');
     return `
     <div class="dq-issues">
-            <h4>Top Fields with Issues (Top 3)</h4>
-      <table class="dq-table">
-                <thead><tr><th>Field</th><th>Issue Type</th><th>Severity</th><th>Value</th></tr></thead>
-                <tbody>${trs || '<tr><td colspan="4" style="text-align:center;color:#888;">No significant issues</td></tr>'}</tbody>
-      </table>
+            <h4>Top Fields with Issues</h4>
+        <table class="dq-table">
+                    <thead><tr><th>Field</th><th>Issue Type</th><th>Severity</th><th>Value</th></tr></thead>
+                    <tbody>${trs || '<tr><td colspan="4" style="text-align:center;color:#888;">No significant issues</td></tr>'}</tbody>
+        </table>
     </div>`;
 }
 function buildSuggestionsHtml(metrics) {
@@ -84,8 +84,8 @@ function buildSuggestionsHtml(metrics) {
     if (!suggestions.length) suggestions.push('Data quality looks good. No immediate action required.');
     return `
     <div class="dq-suggestions">
-            <h4>Recommendations</h4>
-      <ul>${suggestions.map(s => `<li>${s}</li>`).join('')}</ul>
+        <h4>Recommendations</h4>
+        <ul>${suggestions.map(s => `<li>${s}</li>`).join('')}</ul>
     </div>`;
 }
 
@@ -155,17 +155,17 @@ export function generateDataQualityReport(data, opts = {}) {
         return { column: col, stats: { min, q1, q2, q3, max }, count };
     });
 
-    // 选择一个字段用于分布图
-    let distOption = null;
-    if (numericCols.length) {
-        const col = numericCols[0];
+    // 为每个可分析字段生成分布图配置（保持向后兼容，仍返回 charts.distribution 作为默认）
+    const distributions = {};
+    // 数值列直方图
+    for (const col of numericCols) {
         const vals = rows.map(r => toNumber(r[col])).filter(v => v !== null);
         const { bins, counts } = histogram(vals, 30);
-        distOption = {
-            title: { text: `Distribution (Histogram) - ${col}`, left: 'center' },
+        distributions[col] = {
+            title: { text: `Distribution (Numeric) - ${col}`, left: 'center' },
             tooltip: { trigger: 'axis' },
             grid: { left: 40, right: 20, top: 60, bottom: 70 },
-            xAxis: { type: 'category', data: bins.map(b => b.toFixed(2)), axisLabel: { rotate: 45, margin: 10, hideOverlap: true } },
+            xAxis: { type: 'category', data: bins.map(b => Number.isFinite(b) ? b.toFixed(2) : String(b)), axisLabel: { rotate: 45, margin: 10, hideOverlap: true } },
             yAxis: { type: 'value' },
             series: [{ type: 'bar', data: counts, itemStyle: { color: '#4F8EF7' } }],
             dataZoom: [
@@ -173,15 +173,16 @@ export function generateDataQualityReport(data, opts = {}) {
                 { type: 'inside' }
             ]
         };
-    } else if (categoricalCols.length) {
-        const col = categoricalCols[0];
+    }
+    // 类别列频率条形图（前 50 项）
+    for (const col of categoricalCols) {
         const freq = {};
         rows.forEach(r => {
             const v = r[col] != null ? String(r[col]) : 'null';
             freq[v] = (freq[v] || 0) + 1;
         });
         const pairs = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 50);
-        distOption = {
+        distributions[col] = {
             title: { text: `Distribution (Categories) - ${col}`, left: 'center' },
             tooltip: { trigger: 'axis' },
             grid: { left: 140, right: 40, top: 60, bottom: 20 },
@@ -194,6 +195,11 @@ export function generateDataQualityReport(data, opts = {}) {
             ]
         };
     }
+
+    // 默认单图（保持向后兼容：使用第一个可用分布）
+    let distOption = null;
+    const distKeys = Object.keys(distributions);
+    if (distKeys.length) distOption = distributions[distKeys[0]];
 
     // 缺失率柱状图配置
     const missCats = missingPerColumn.map(x => x.column);
@@ -270,7 +276,9 @@ export function generateDataQualityReport(data, opts = {}) {
         charts: {
             missingBar: missingOption,
             outlierBox: boxOption,
-            distribution: distOption
+            distribution: distOption,
+            // maps columnName -> echarts option
+            distributions
         },
         html
     };

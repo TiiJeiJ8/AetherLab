@@ -43,7 +43,17 @@
                 <div ref="outlierRef" class="echart"></div>
             </div>
             <div class="chart-box">
-                <div class="chart-title">Distribution</div>
+                <div class="chart-title">Distribution
+                    <div v-if="distributionFields.length" class="dist-dropdown" ref="distDropdownRoot">
+                        <div class="dist-input" @click="toggleDropdown" :class="{ open: dropdownOpen }">
+                            <input type="text" v-model="distQuery" @input="onQueryInput" @keydown.down.prevent="onKeyDown('down')" @keydown.up.prevent="onKeyDown('up')" @keydown.enter.prevent="onKeyDown('enter')" placeholder="Search field..." />
+                            <button class="dist-toggle" @click.stop="toggleDropdown" aria-label="Toggle">▾</button>
+                        </div>
+                        <ul v-show="dropdownOpen" class="dist-list" role="listbox">
+                            <li v-for="(f, idx) in filteredDistributionFields" :key="f" :class="{ 'is-active': idx === highlightedIndex }" @click="selectDistribution(f)" @mousemove="highlightIndex(idx)">{{ f }}</li>
+                        </ul>
+                    </div>
+                </div>
                 <div ref="distRef" class="echart"></div>
             </div>
         </div>
@@ -79,6 +89,51 @@ const props = defineProps({
 
 const report = ref(null)
 const activeTab = ref('missing')
+const distributionFields = ref([])
+const selectedDistribution = ref('')
+const distQuery = ref('')
+const dropdownOpen = ref(false)
+const highlightedIndex = ref(-1)
+
+const filteredDistributionFields = computed(() => {
+    const q = String(distQuery.value || '').trim().toLowerCase()
+    if (!q) return distributionFields.value.slice()
+    return distributionFields.value.filter(f => String(f).toLowerCase().includes(q))
+})
+
+function toggleDropdown() {
+    dropdownOpen.value = !dropdownOpen.value
+    if (dropdownOpen.value) {
+        // open: reset highlight
+        highlightedIndex.value = -1
+    }
+}
+function onQueryInput() {
+    // keep dropdown open while typing
+    if (!dropdownOpen.value) dropdownOpen.value = true
+    highlightedIndex.value = -1
+}
+function selectDistribution(name) {
+    selectedDistribution.value = name
+    distQuery.value = ''
+    dropdownOpen.value = false
+    // re-render chart with new selection
+    renderCharts()
+}
+function highlightIndex(i) { highlightedIndex.value = i }
+function onKeyDown(dir) {
+    const list = filteredDistributionFields.value
+    if (!list.length) return
+    if (dir === 'down') {
+        highlightedIndex.value = Math.min(list.length - 1, highlightedIndex.value + 1)
+    } else if (dir === 'up') {
+        highlightedIndex.value = Math.max(0, highlightedIndex.value - 1)
+    } else if (dir === 'enter') {
+        const idx = highlightedIndex.value >= 0 ? highlightedIndex.value : 0
+        const val = list[idx]
+        if (val) selectDistribution(val)
+    }
+}
 
 // ECharts 实例与容器引用
 let missingChart = null
@@ -175,6 +230,10 @@ watch(
         if (newData && Object.keys(newData).length) {
             report.value = await generateDataQualityReport(newData)
             await nextTick()
+            // Prepare distribution selector
+            const dkeys = report.value?.charts?.distributions ? Object.keys(report.value.charts.distributions) : []
+            distributionFields.value = dkeys
+            selectedDistribution.value = dkeys.length ? dkeys[0] : ''
             renderCharts()
         }
     },
@@ -210,10 +269,15 @@ function renderCharts() {
     if (distRef.value) {
         distChart?.dispose()
         distChart = echarts.init(distRef.value, themeName)
-        if (report.value?.charts.distribution) {
-            const opt = themed(report.value.charts.distribution, 'distribution')
-            distChart.setOption(opt)
+        // Prefer per-column distributions if available
+        const dists = report.value?.charts?.distributions
+        let opt = null
+        if (dists && selectedDistribution.value && dists[selectedDistribution.value]) {
+            opt = themed(dists[selectedDistribution.value], 'distribution')
+        } else if (report.value?.charts.distribution) {
+            opt = themed(report.value.charts.distribution, 'distribution')
         }
+        if (opt) distChart.setOption(opt)
     }
 }
 
@@ -236,6 +300,9 @@ onMounted(() => {
                 themeRAF = requestAnimationFrame(() => renderCharts())
         })
     targets.forEach(t => themeObserver.observe(t, { attributes: true, attributeFilter: ['class', 'data-theme'] }))
+
+    // 点击外部关闭下拉
+    document.addEventListener('click', onDocClick)
 })
 onBeforeUnmount(() => {
     window.removeEventListener('resize', handleResize)
@@ -244,7 +311,18 @@ onBeforeUnmount(() => {
     outlierChart?.dispose();
     distChart?.dispose();
         themeObserver?.disconnect()
+    document.removeEventListener('click', onDocClick)
 })
+
+function onDocClick(e) {
+    const root = distDropdownRoot?.value
+    if (!root) return
+    if (!root.contains(e.target)) {
+        dropdownOpen.value = false
+    }
+}
+
+const distDropdownRoot = ref(null)
 
 // ----- Theme Helpers -----
 let themeObserver = null
@@ -279,6 +357,11 @@ function applyChartTheme(option, palette, role) {
     const opt = JSON.parse(JSON.stringify(option || {}))
     opt.backgroundColor = 'transparent'
     opt.textStyle = Object.assign({ color: palette.text }, opt.textStyle)
+    // read CSS variables for grid tuning
+    const gridColorVar = getCssVar('--chart-grid-color', palette.border)
+    const gridOpacityVar = parseFloat(getCssVar('--chart-grid-opacity', '0.18')) || 0.18
+    const gridVOpacityVar = parseFloat(getCssVar('--chart-grid-vertical-opacity', '0.06')) || 0.06
+    const gridWidthVar = parseFloat(getCssVar('--chart-grid-width', '1')) || 1
     if (opt.legend) {
         const legends = Array.isArray(opt.legend) ? opt.legend : [opt.legend]
         legends.forEach(l => {
@@ -310,8 +393,35 @@ function applyChartTheme(option, palette, role) {
         })
         opt.title = Array.isArray(opt.title) ? titles : titles[0]
     }
-    if (opt.xAxis) opt.xAxis = normalizeAxis(opt.xAxis, palette)
-    if (opt.yAxis) opt.yAxis = normalizeAxis(opt.yAxis, palette)
+    // Normalize axes and adjust grid lines for dark theme: remove vertical grid lines (x-axis splitLine)
+    const isDark = getCurrentThemeName() === 'dark'
+    if (opt.xAxis) {
+        opt.xAxis = normalizeAxis(opt.xAxis, palette)
+        const xaxes = Array.isArray(opt.xAxis) ? opt.xAxis : [opt.xAxis]
+        xaxes.forEach(xa => {
+            xa.splitLine = xa.splitLine || {}
+            if (isDark) {
+                // reduce visibility for vertical grid lines in dark theme
+                xa.splitLine.show = false
+                xa.splitLine.lineStyle = Object.assign({ color: gridColorVar, opacity: gridVOpacityVar, width: gridWidthVar }, xa.splitLine.lineStyle)
+            } else {
+                xa.splitLine.show = xa.splitLine.show !== false
+                xa.splitLine.lineStyle = Object.assign({ color: gridColorVar, opacity: gridOpacityVar, width: gridWidthVar }, xa.splitLine.lineStyle)
+            }
+        })
+        opt.xAxis = Array.isArray(opt.xAxis) ? xaxes : xaxes[0]
+    }
+    if (opt.yAxis) {
+        opt.yAxis = normalizeAxis(opt.yAxis, palette)
+        const yaxes = Array.isArray(opt.yAxis) ? opt.yAxis : [opt.yAxis]
+        yaxes.forEach(ya => {
+            ya.splitLine = ya.splitLine || {}
+            // horizontal lines should be visible but subtle in dark theme
+            ya.splitLine.show = true
+            ya.splitLine.lineStyle = Object.assign({ color: gridColorVar, opacity: gridOpacityVar, width: gridWidthVar }, ya.splitLine.lineStyle)
+        })
+        opt.yAxis = Array.isArray(opt.yAxis) ? yaxes : yaxes[0]
+    }
     if (opt.series) {
         const seriesArr = Array.isArray(opt.series) ? opt.series : [opt.series]
         seriesArr.forEach(s => {
@@ -347,42 +457,232 @@ function applyChartTheme(option, palette, role) {
     padding: 6px; /* 减少内边距以获得更大可用宽度 */
     overflow-y: auto;
 }
+/* 限制内容最大宽度，保持不同数据文件下的报告宽度一致 */
+.report-content {
+    max-width: var(--dq-max-width, 1200px);
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
 .report-placeholder {
     text-align: center;
     color: var(--text-secondary, #888);
     font-size: 1.2em;
 }
 /* Header & cards */
-.dq-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; padding: 12px; border: 1px solid var(--border-color, #e5e7eb); border-radius: 8px; background: var(--bg-color, #fff); }
-.dq-header h2 { margin: 0; }
-.dq-cards { display: grid; grid-template-columns: repeat(5, minmax(200px, 1fr)); gap: 14px; }
-.dq-card { padding: 14px 16px; border-radius: 10px; background: var(--bg-secondary, #f6f7fb); border: 1px solid var(--border-color, #e5e7eb); }
-.dq-card { position: relative; cursor: default; }
-.dq-card.ok { border-color: var(--success-color, #16a34a); }
-.dq-card.warn { border-color: var(--warning-color, #d97706); }
-.dq-card.bad { border-color: var(--error-color, #dc2626); }
-.dq-card-title { font-size: 13px; color: var(--text-secondary, #666); }
-.dq-card-value { font-size: 26px; font-weight: 800; }
+.dq-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding: 12px;
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 8px;
+    background: var(--bg-color, #fff);
+}
+.dq-header h2 {
+    margin: 0;
+}
+.dq-cards {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(200px, 1fr));
+    gap: 14px;
+    min-width: 0;
+}
+.dq-card {
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: var(--bg-secondary, #f6f7fb);
+    border: 1px solid var(--border-color, #e5e7eb);
+}
+.dq-card {
+    position: relative;
+    cursor: default;
+}
+.dq-card.ok {
+    border-color: var(--success-color, #16a34a);
+}
+.dist-select {
+    margin-left: 12px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color, #e5e7eb);
+    background: var(--bg-color, #fff);
+}
+
+/* Searchable dropdown styles */
+.dist-dropdown {
+    display: inline-block;
+    position: relative;
+    margin-left: 12px;
+    vertical-align: middle
+}
+.dist-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--bg-color, #fff);
+}
+.dist-input.open {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+.dist-input input {
+    border: none;
+    outline: none;
+    padding: 6px 8px;
+    min-width: 160px;
+    background: transparent;
+    color: var(--text-color, #222)
+}
+.dist-toggle {
+    border: none;
+    background: transparent;
+    padding: 6px 8px;
+    cursor: pointer;
+    color: var(--text-color, #222)
+}
+.dist-list {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 6px);
+    z-index: 40;
+    max-height: 260px;
+    overflow: auto; min-width: 220px;
+    background: var(--bg-color, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    border-radius: 6px; padding: 6px 0;
+    scrollbar-width: none;
+}
+.dist-list li {
+    list-style: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    color: var(--text-color, #222)
+}
+.dist-list li:hover, .dist-list li.is-active {
+    background: var(--bg-secondary, #f3f4f6);
+}
+
+/* Dark theme overrides when document has data-theme="dark" or .dark class */
+:root[data-theme='dark'] .dist-input,
+.dark .dist-input,
+:root[data-theme='dark'] .dist-list,
+.dark .dist-list {
+    background: var(--bg-color, #333333ff);
+    border-color: var(--border-dark, #223049);
+}
+:root[data-theme='dark'] .dist-input input,
+.dark .dist-input input,
+:root[data-theme='dark'] .dist-list li,
+.dark .dist-list li {
+    color: var(--text-dark, #d8e6ff);
+}
+:root[data-theme='dark'] .dist-list li:hover,
+.dark .dist-list li:hover,
+:root[data-theme='dark'] .dist-list li.is-active,
+.dark .dist-list li.is-active {
+    background: rgba(255,255,255,0.04);
+}
+.dq-card.warn {
+    border-color: var(--warning-color, #d97706);
+}
+.dq-card.bad {
+    border-color: var(--error-color, #dc2626);
+}
+.dq-card-title {
+    font-size: 13px;
+    color: var(--text-secondary, #666);
+}
+.dq-card-value {
+    font-size: 26px;
+    font-weight: 800;
+}
 
 /* Charts */
-.dq-charts.three-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.chart-box { width: 100%; height: 400px; background: var(--bg-color, #fff); border: 1px solid var(--border-color, #e5e7eb); border-radius: 8px; padding: 8px; display: flex; flex-direction: column; }
-.chart-title { font-size: 14px; color: var(--text-color, #444); margin: 2px 8px; }
-.echart { width: 100%; height: 100%; }
+.dq-charts.three-cols {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+.chart-box {
+    width: 100%;
+    height: 400px;
+    background: var(--bg-color, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+}
+.chart-box {
+    min-width: 0;
+    box-sizing: border-box;
+}
+.chart-title {
+    font-size: 14px;
+    color: var(--text-color, #444);
+    margin: 2px 8px;
+}
+.echart {
+    width: 100%;
+    height: 100%;
+}
 
 /* Text sections */
-.dq-texts { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: stretch; }
-.dq-section.wide { grid-column: 1 / -1; }
-.dq-section:first-child, .dq-section:nth-child(2) { min-height: 160px; }
+.dq-texts {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: stretch;
+}
+.dq-section.wide {
+    grid-column: 1 / -1;
+}
+.dq-section:first-child, .dq-section:nth-child(2) {
+    min-height: 160px;
+}
 @media (max-width: 1200px) {
     .dq-texts { grid-template-columns: 1fr; }
     .dq-section.wide { grid-column: auto; }
 }
-.dq-section { border: 1px solid var(--border-color, #e5e7eb); border-radius: 8px; background: var(--bg-color, #fff); padding: 12px; color: var(--text-color); }
-.dq-section.wide { max-height: 360px; overflow: auto; }
-.dq-section:first-child, .dq-section:nth-child(2) { min-height: 180px; }
-.dq-table { width: 100%; border-collapse: collapse; }
-.dq-table th, .dq-table td { padding: 8px; border: 1px solid var(--border-color, #e5e7eb); }
+.dq-section {
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 8px;
+    background: var(--bg-color, #fff);
+    padding: 12px;
+    color: var(--text-color);
+    box-sizing: border-box;
+}
+.dq-section.wide {
+    max-height: 360px;
+    overflow: auto;
+}
+.dq-section:first-child, .dq-section:nth-child(2) {
+    min-height: 180px;
+}
+.dq-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    word-break: break-word;
+}
+.dq-table th, .dq-table td {
+    padding: 8px;
+    border: 1px solid var(--border-color, #e5e7eb);
+}
+/* Prevent first column from expanding the table; truncate long field names */
+::v-deep .dq-issues .dq-table th:first-child,
+::v-deep .dq-issues .dq-table td:first-child {
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 /* Header & cards */
 .dq-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
 .dq-cards { display: flex; gap: 12px; flex-wrap: wrap; }
