@@ -181,7 +181,8 @@ export function generateDataQualityReport(data, opts = {}) {
             const v = r[col] != null ? String(r[col]) : 'null';
             freq[v] = (freq[v] || 0) + 1;
         });
-        const pairs = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 50);
+        const pairs = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+        // .slice(0, 50)
         distributions[col] = {
             title: { text: `Distribution (Categories) - ${col}`, left: 'center' },
             tooltip: { trigger: 'axis' },
