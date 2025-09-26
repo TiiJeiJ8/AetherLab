@@ -36,7 +36,9 @@ function extractData(fileName, fileDataMap, mappedColumns) {
 
     let Dataset = [];
 
-    const fileData = fileDataMap[fileName] || [];
+    // fileDataMap[fileName] may include header row as first element; remove it non-destructively
+    const fileDataAll = fileDataMap[fileName] || [];
+    const fileData = Array.isArray(fileDataAll) ? fileDataAll.slice(1) : fileDataAll;
 
     // 如果mappedColumns为空，直接返回原始对象数组
     if (mappedColumns.length === 0) {
