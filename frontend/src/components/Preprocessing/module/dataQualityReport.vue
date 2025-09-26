@@ -370,7 +370,11 @@ function applyChartTheme(option, palette, role) {
         opt.legend = Array.isArray(opt.legend) ? legends : legends[0]
     }
     if (opt.tooltip) {
-        opt.tooltip = Object.assign({ backgroundColor: 'rgba(0,0,0,0.7)', textStyle: { color: palette.text } }, opt.tooltip)
+        // 根据主题选择 tooltip 背景和文字颜色：深色使用半透明黑背景与浅色文字；浅色使用接近白的背景与深色文字
+        const isDarkLocal = getCurrentThemeName() === 'dark'
+        const tooltipBg = isDarkLocal ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.8)'
+        const tooltipText = isDarkLocal ? (getCssVar('--text-color', '#fff')) : (getCssVar('--text-color', '#111'))
+        opt.tooltip = Object.assign({ backgroundColor: tooltipBg, textStyle: { color: tooltipText } }, opt.tooltip)
     }
     if (opt.dataZoom) {
         const dz = Array.isArray(opt.dataZoom) ? opt.dataZoom : [opt.dataZoom]
@@ -676,8 +680,8 @@ function applyChartTheme(option, palette, role) {
     border: 1px solid var(--border-color, #e5e7eb);
 }
 /* Prevent first column from expanding the table; truncate long field names */
-::v-deep .dq-issues .dq-table th:first-child,
-::v-deep .dq-issues .dq-table td:first-child {
+:deep(.dq-issues .dq-table th:first-child),
+:deep(.dq-issues .dq-table td:first-child) {
     max-width: 260px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -714,22 +718,22 @@ function applyChartTheme(option, palette, role) {
 .kpi-tooltip .kpi-desc { font-size: 12px; line-height: 1.45; opacity: 0.95; }
 
 /* Styles for HTML injected content (v-html) - use deep selector so scoped SFC styles apply */
-::v-deep .dq-issues .dq-table {
+:deep(.dq-issues .dq-table) {
     width: 100%;
     border-collapse: collapse;
 }
-::v-deep .dq-issues .dq-table th,
-::v-deep .dq-issues .dq-table td {
+:deep(.dq-issues .dq-table th),
+:deep(.dq-issues .dq-table td) {
     padding: 1px;
     border: 1px solid var(--border-color, #e5e7eb);
     text-align: left;
     vertical-align: middle;
 }
-::v-deep .dq-issues .dq-table thead th {
+:deep(.dq-issues .dq-table thead th) {
     background: rgba(0,0,0,0.03);
     color: var(--text-secondary, #666);
 }
-::v-deep .dq-issues .dq-field-name {
+:deep(.dq-issues .dq-field-name) {
     display: inline-block;
     max-width: 220px; /* 控制截断宽度，可按需调整 */
     overflow: hidden;
