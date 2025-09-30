@@ -111,7 +111,7 @@ export function defaultFilterPlugin(rows, filters) {
         const results = conds.map(f => {
             const val = row[f.field];
             switch (f.type) {
-                case 'integer': {
+                case 'number': {
                     console.log(`[defaultFilterPlugin] Checking integer field ${f.field} with value ${val}`);
                     const num = parseFloat(val);
                     const cmp = parseFloat(f.value);

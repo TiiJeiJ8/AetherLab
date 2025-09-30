@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style>
-@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css');
+@import url('./assets/CSS/bootstrap.min.css');
 @import './assets/CSS/btn.css';
 @import './assets/CSS/index_style.css';
 @import './assets/CSS/construction_style.css';

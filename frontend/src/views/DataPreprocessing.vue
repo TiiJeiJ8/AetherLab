@@ -149,13 +149,6 @@ const sidebarModules = [
     ]
   },
   {
-    id: 'filter', icon: '🔍', label: 'Data Filtering',
-    children: [
-      { id: 'filter-rows', label: 'Filter Rows' },
-      { id: 'filter-columns', label: 'Filter Columns' }
-    ]
-  },
-  {
     id: 'feature', icon: '🧩', label: 'Feature Engineering',
     children: [
       { id: 'feature-select', label: 'Feature Selection' },

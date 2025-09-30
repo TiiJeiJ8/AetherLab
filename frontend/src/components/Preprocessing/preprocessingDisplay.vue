@@ -43,16 +43,6 @@
             <h2>Data Encoding</h2>
             <p>Here you can encode categorical variables into numerical format.</p>
         </div>
-        <div v-else-if="props.activeSidebarId === 'filter-rows'">
-            <!-- 行过滤内容 -->
-            <h2>Row Filtering</h2>
-            <p>Here you can filter rows based on specific criteria.</p>
-        </div>
-        <div v-else-if="props.activeSidebarId === 'filter-columns'">
-            <!-- 列过滤内容 -->
-            <h2>Column Filtering</h2>
-            <p>Here you can filter columns based on specific criteria.</p>
-        </div>
         <div v-else-if="props.activeSidebarId === 'feature-select'">
             <!-- 特征选择内容 -->
             <h2>Feature Selection</h2>

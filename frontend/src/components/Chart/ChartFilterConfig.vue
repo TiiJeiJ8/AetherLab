@@ -76,14 +76,12 @@ const emit = defineEmits(['update:modelValue'])
 
 const filters = ref([])
 const logic = ref('AND')
-// 已移除折叠栏
 const errorMsg = ref('')
 
-// 移除 guessType 函数，availableFields 只用 type
 const availableFields = computed(() => {
     const fields = []
     const used = new Set()
-    // 直接用 props.rawData
+
     let allRows = props.rawData || []
     Object.values(props.modelValue).forEach(val => {
         if (Array.isArray(val)) {
@@ -117,7 +115,7 @@ const availableFields = computed(() => {
         }
     })
     // 调试：输出所有可用字段及类型
-    console.log('[FilterPanel] availableFields:', fields)
+    // console.log('[FilterPanel] availableFields:', fields)
     return fields
 })
 
@@ -218,7 +216,6 @@ function validate () {
     return true
 }
 
-// 移除 applyFilters 相关逻辑，改为 watch filters 自动 emit
 watch([filters, logic], () => {
     // 校验通过才 emit
     if (validate()) {
