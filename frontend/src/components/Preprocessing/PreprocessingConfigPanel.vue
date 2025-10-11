@@ -20,17 +20,18 @@
     <preprocessingBasicConfig
         :files="props.files"
         @file-selected="handleFileSelected"
-        v-model:autoRender="autoRender"
-        v-model:useCustomDataColumns="useCustomDataColumns"
+        :autoRender="autoRender"
+        @update:autoRender="autoRender = $event"
+        :useCustomDataColumns="useCustomDataColumns"
+        @update:useCustomDataColumns="useCustomDataColumns = $event"
         class="preprocessing-basic-config"
     />
-
-    <!-- 数据列拖拽放置区 -->
     <transition name="slide-fade">
         <preprocessingMappingPanel
             v-if="useCustomDataColumns"
             :activeSidebarId="props.activeSidebarId"
-            v-model:mappedColumns="mappedColumns"
+            :mappedColumns="mappedColumns"
+            @update:mappedColumns="mappedColumns = $event"
             class="preprocessing-mapping-panel"
         />
     </transition>
