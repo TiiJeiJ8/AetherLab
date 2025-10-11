@@ -37,6 +37,7 @@
     </transition>
 
     <!--todo 模块功能配置区 -->
+    <transition name="slide-fade"></transition>
 
     <!-- 操作按钮 -->
     <div class="action-section">
