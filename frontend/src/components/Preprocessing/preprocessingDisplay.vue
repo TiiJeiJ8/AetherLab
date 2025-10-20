@@ -6,29 +6,28 @@
         <div class="empty-desc" style="user-select: none;">Please upload your data to <span class="faststart">get started with PREPROCESSING!</span></div>
     </div>
     <div v-else class="preprocessing-content">
-        <div v-if="props.activeSidebarId === 'quality'">
+        <div v-if="props.activeSidebarId === 'quality'" class="quality">
             <!-- 质量分析内容 -->
             <dataQualityReport
                 :data="props.mergedData"
                 :title-name="props.selectedFileName"
             />
         </div>
-        <div v-else-if="props.activeSidebarId === 'raw-preview'">
-            <!-- 原始数据预览内容 -->
-            <h2>Raw Data Preview</h2>
-            <p>Here you can preview the raw data before any preprocessing steps are applied.</p>
+        <div v-else-if="props.activeSidebarId === 'raw-preview'" class="raw-data-preview">
+            <!-- 原始数据预览内容（内嵌） -->
+            <RawDataPreview :data="rawPreviewData" :file-name="props.selectedFileName || rawPreviewFileName" />
         </div>
-        <div v-else-if="props.activeSidebarId === 'processed-preview'">
+        <div v-else-if="props.activeSidebarId === 'processed-preview'" class="processed-data-preview">
             <!-- 预处理后数据预览内容 -->
             <h2>Processed Data Preview</h2>
             <p>Here you can preview the data after preprocessing steps have been applied.</p>
         </div>
-        <div v-else-if="props.activeSidebarId === 'remove-duplicates'">
+        <div v-else-if="props.activeSidebarId === 'remove-duplicates'" class="remove-duplicates">
             <!-- 去重内容 -->
             <h2>Remove Duplicates</h2>
             <p>Here you can identify and remove duplicate records from your dataset.</p>
         </div>
-        <div v-else-if="props.activeSidebarId === 'outlier-detect'">
+        <div v-else-if="props.activeSidebarId === 'outlier-detect'" class="outlier-detect">
             <!-- 异常值检测内容 -->
             <h2>Outlier Detection</h2>
             <p>Here you can detect and handle outliers in your dataset.</p>
@@ -101,6 +100,7 @@ import { workspaceFiles, fileDataMap } from '@/assets/JS/utils/dataStructureOpti
 
 import dataQualityReport from './module/dataQualityReport'
 import { mergeChartData } from '../../assets/JS/utils/dataMergeUtils'
+import RawDataPreview from './module/RawDataPreview.vue'
 
 const iconList = [
     BarChartIcon,
@@ -184,6 +184,30 @@ const hasDataInWorkspace = computed(() => {
         return false
     })
 })
+
+// 原始预览数据回退：优先 props.mergedData，否则使用 workspaceFiles 中第一个有效文件
+const rawPreviewData = computed(() => {
+    if (props.mergedData && Object.keys(props.mergedData).length > 0) return props.mergedData
+    if (workspaceFiles.value && workspaceFiles.value.length > 0) {
+        const file = workspaceFiles.value.find(f => {
+            if (!f) return false
+            if (Array.isArray(f.data) && f.data.length > 0 && Array.isArray(f.headers) && f.headers.length > 0) return true
+            if (Array.isArray(f.parsedData) && f.parsedData.length > 0) return true
+            return false
+        })
+        if (file) return file
+    }
+    return {}
+})
+
+const rawPreviewFileName = computed(() => {
+    if (props.selectedFileName) return props.selectedFileName
+    if (workspaceFiles.value && workspaceFiles.value.length > 0) {
+        const f = workspaceFiles.value[0]
+        return f && f.name ? f.name : ''
+    }
+    return ''
+})
 </script>
 
 <style scoped>
@@ -203,6 +227,13 @@ const hasDataInWorkspace = computed(() => {
     padding: clamp(10px, 2vw, 15px) clamp(0px, 4vw, 5px); /* 增大左右内边距 */
     overflow-x: auto; /* 横向可滚动，防止legend溢出 */
     overflow-y: auto;
+}
+.preprocessing-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* allow children to scroll inside flex */
 }
 .empty-tip {
     color: #888;

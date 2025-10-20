@@ -472,6 +472,10 @@ function applyChartTheme(option, palette, role) {
     text-align: center;
     color: var(--text-secondary, #888);
     font-size: 1.2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 /* Header & cards */
 .dq-header {

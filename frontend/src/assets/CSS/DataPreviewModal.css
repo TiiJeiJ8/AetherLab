@@ -25,8 +25,8 @@
     --border-color: #252c38;
     --header-bg: linear-gradient(135deg, #374151 0%, #4b5563 100%);
     --table-bg: #1f2937;
-    --table-header-bg: #374151;
-    --table-row-hover: linear-gradient(135deg, #374151 0%, #1e3a8a 100%);
+    --table-header-bg: #242e3d3e;
+    --table-row-hover: linear-gradient(135deg, #374151 0%, #1f26388c 100%);
     --row-number-bg: linear-gradient(135deg, #4b5563 0%, #6b7280 100%);
     --row-number-header-bg: #4b5563;
     --scrollbar-track: #374151;
