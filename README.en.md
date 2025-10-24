@@ -2,9 +2,7 @@
 
 [CN 中文](README.md) | [EN English](README.en.md)
 
-> A powerful data visualization and chart generation platform with 25+ chart types and intelligent data processing capabilities
-
-[![Star History](https://api.star-history.com/svg?repos=TiiJeiJ8/AetherLab&type=Date)](https://star-history.com/#TiiJeiJ8/AetherLab&Date)
+> A powerful platform for data preprocessing, mathematical modeling, visualization, and chart generation, offering over 25 chart types and intelligent data processing along with standard mathematical modeling capabilities
 
 **If you find this project interesting and want to follow its progress, please give it a star🌟!**
 
@@ -26,11 +24,7 @@
 
 ## 🎯 Overview
 
-AetherLab is a modern data visualization platform designed for data analysts and developers. It provides an intuitive interface and powerful features to help users quickly create professional data visualization charts.
-
-❕ **Architecture Refactoring**: To improve maintainability and development efficiency, we are refactoring from the original tightly coupled architecture to a decoupled front-end and back-end architecture. 💪
-
-**New Architecture is Developing...**
+AetherLab is a modern data processing, modeling, and visualization platform. It offers an intuitive interface and powerful features, enabling users to quickly process data, view the modeling effects of standard models, and create data visualization charts.
 
 ---
 
@@ -42,9 +36,12 @@ AetherLab is a modern data visualization platform designed for data analysts and
 - **Custom Themes**: Multiple built-in themes with support for custom color schemes
 
 ### 📊 Data Processing
-- **Multi-Format Support**: CSV, Excel, JSON, and various other data formats
-- **Data Preview**: Real-time preview and validation of uploaded data
-- **Smart Mapping**: Automatic field recognition and chart type suggestions
+- **Multi-format support**: CSV, Excel, JSON, and other data formats
+- **Data Preview**: Real-time preview and validation of uploaded data and processed data
+- **History Tracing**: Supports undo and redo for data processing steps
+
+### 📈 Mathematical Modeling
+- **In development ..**
 
 ### 🔧 Flexible Configuration
 - **Visual Configuration**: Easy chart parameter configuration through drag-and-drop and forms
