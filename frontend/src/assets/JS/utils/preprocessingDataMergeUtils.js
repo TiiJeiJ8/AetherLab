@@ -73,8 +73,7 @@ function extractData(fileName, fileDataMap, mappedColumns) {
 
 /**
  * 质量分析模型的数据处理函数
- * @param {Object} fileDataMap - 文件名到数据的映射对象
- * @param {Array} mappedColumns - 右侧边栏中拖拽放置区的数据列索引数组
+ * @param {Object} Dataset - 数据对象
  * @returns {Object} - 处理后的数据对象
  */
 function qualityModelHandler(Dataset) {
@@ -87,10 +86,25 @@ function qualityModelHandler(Dataset) {
     return Dataset;
 }
 
+/**
+ * 原始数据预览处理函数
+ * @param {Object} rawPreviewData
+ * @returns {Object} rawPreviewData
+ */
+function rawPreviewDataModelHandler(rawPreviewData) {
+    console.log('[Raw Data Preview Model] Enter Raw Data Preview Model Handler')
+
+    console.log('[Raw Data Preview Model - Check - Input] Dataset:', rawPreviewData)
+
+    console.log('[Raw Data Preview Model] Exit Raw Data Preview Model Handler')
+    return rawPreviewData
+}
+
 // ------------------- 预处理模块分发器 -------------------
 
 const preprocessingModelTypeHandlers = {
     'quality': qualityModelHandler,
+    'raw-preview': rawPreviewDataModelHandler,
     // ...
 }
 
